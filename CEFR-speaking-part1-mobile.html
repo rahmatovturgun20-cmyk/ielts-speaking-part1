@@ -108,6 +108,7 @@
   .btn.gray { background: #94a3b8; }
   .btn-wrap { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-top: 14px; }
   .btn-wrap .full { grid-column: 1 / -1; }
+  .btn-wrap.tri { grid-template-columns: repeat(3, 1fr); }
 
   .back-row { margin-bottom: 10px; }
   .back-btn {
@@ -240,7 +241,8 @@
 
     <div class="mic-status" id="micStatus">🔇 Listen to the question...</div>
 
-    <div class="btn-wrap">
+    <div class="btn-wrap tri">
+      <button class="btn gray" id="prevBtn">⏮ Prev</button>
       <button class="btn gray" id="pauseBtn">⏸ Pause</button>
       <button class="btn gray" id="skipBtn">⏭ Skip</button>
     </div>
@@ -444,6 +446,7 @@ const ANSWER_SEC = 30;  // answer time in seconds
   const resultCard = $('resultCard');
   const startBtn = $('startBtn');
   const skipBtn = $('skipBtn');
+  const prevBtn = $('prevBtn');
   const pauseBtn = $('pauseBtn');
   const backBtn = $('backBtn');
   const backResultBtn = $('backResultBtn');
@@ -654,6 +657,16 @@ const ANSWER_SEC = 30;  // answer time in seconds
       isPaused = false;
       afterAnswer();
     }
+  });
+
+  prevBtn.addEventListener('click', () => {
+    if (idx <= 0) { return; }
+    clearTimer();
+    stopSpeech();
+    isPaused = false;
+    results = results.filter(r => r.question !== questions[idx]);
+    idx--;
+    nextQuestion();
   });
 
   pauseBtn.addEventListener('click', () => {

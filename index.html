@@ -221,6 +221,7 @@
     <div class="mic-status" id="micStatus">🔇 Listen to the question...</div>
 
     <div class="btn-wrap">
+      <button class="btn gray" id="prevBtn">⏮ Prev</button>
       <button class="btn gray" id="pauseBtn">⏸ Pause</button>
       <button class="btn gray" id="skipBtn">⏭ Skip</button>
     </div>
@@ -431,6 +432,7 @@ const ANSWER_SEC = 30;  // answer time in seconds
   const resultCard = $('resultCard');
   const startBtn = $('startBtn');
   const skipBtn = $('skipBtn');
+  const prevBtn = $('prevBtn');
   const pauseBtn = $('pauseBtn');
   const backBtn = $('backBtn');
   const backResultBtn = $('backResultBtn');
@@ -678,6 +680,20 @@ const ANSWER_SEC = 30;  // answer time in seconds
       isPaused = false;
       await afterAnswer();
     }
+  });
+
+  prevBtn.addEventListener('click', async () => {
+    if (idx <= 0) { return; }
+    clearTimer();
+    stopSpeech();
+    isPaused = false;
+    if (recorder && recorder.state !== 'inactive') {
+      try { await stopRecording(); } catch (e) { /* ignore */ }
+    }
+    results = results.filter(r => r.question !== questions[idx]);
+    idx--;
+    await new Promise(r => setTimeout(r, 300));
+    nextQuestion();
   });
 
   pauseBtn.addEventListener('click', () => {
