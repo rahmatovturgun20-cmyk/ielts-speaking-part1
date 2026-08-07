@@ -30,6 +30,45 @@
   }
   .container { max-width: 640px; width: 100%; }
 
+  /* ---- phones (small) ---- */
+  @media (max-width: 360px) {
+    body { padding: 12px; padding-bottom: calc(24px + env(safe-area-inset-bottom)); }
+    header h1 { font-size: 22px; }
+    .btn { padding: 14px 14px; font-size: 15px; }
+    .question-box .q { font-size: 17px; }
+  }
+
+  /* ---- larger phones ---- */
+  @media (min-width: 400px) {
+    .container { max-width: 680px; }
+    header h1 { font-size: 28px; }
+    .question-box .q { font-size: 21px; }
+    .btn { font-size: 17px; min-height: 56px; }
+    .card { padding: 22px; }
+  }
+
+  /* ---- tablets & landscape ---- */
+  @media (min-width: 700px) {
+    body { padding: 28px; padding-bottom: calc(36px + env(safe-area-inset-bottom)); }
+    .container { max-width: 820px; }
+    header h1 { font-size: 32px; }
+    header p { font-size: 15px; }
+    .card { padding: 28px; }
+    .question-box { min-height: 130px; }
+    .question-box .q { font-size: 24px; }
+    .status-bar { font-size: 14px; }
+    .bar-track { height: 20px; }
+    .timer-num { font-size: 28px; }
+    .btn { font-size: 18px; min-height: 60px; }
+    .btn-wrap { grid-template-columns: 1fr 1fr; gap: 14px; margin-top: 18px; }
+  }
+
+  /* ---- wide tablets / short screens: keep everything on screen ---- */
+  @media (min-height: 500px) and (min-width: 900px) {
+    .container { max-width: 900px; }
+    .btn-wrap { grid-template-columns: 1fr 1fr; }
+  }
+
   header { text-align: center; margin-bottom: 18px; }
   header h1 {
     font-size: 26px; color: var(--blue); letter-spacing: 1px; font-weight: 800;
