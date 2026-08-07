@@ -78,6 +78,16 @@
   .btn.gray { background: #94a3b8; }
   .btn-wrap { display: flex; gap: 10px; justify-content: center; margin-top: 14px; flex-wrap: wrap; }
 
+  .back-row { margin-bottom: 10px; }
+  .back-btn {
+    display: inline-flex; align-items: center; gap: 6px;
+    border: 2px solid var(--border); background: var(--card);
+    color: var(--blue); border-radius: 10px; padding: 9px 18px;
+    font-size: 14px; font-weight: 700; cursor: pointer; font-family: inherit;
+    transition: background .2s, border-color .2s;
+  }
+  .back-btn:hover { background: #eef2f7; border-color: var(--blue); }
+
   .intro { font-size: 14px; color: var(--text); line-height: 1.6; margin-bottom: 14px; }
   .intro code, .intro b {
     background: #eef2f7; padding: 2px 7px; border-radius: 6px;
@@ -196,6 +206,7 @@
 
   <!-- STEP 2: practice -->
   <div class="card hidden" id="practiceCard">
+    <div class="back-row"><button class="back-btn" id="backBtn">← Back</button></div>
     <div class="status-bar">
       <span id="qCounter">Question 1 / 1</span>
       <span class="chip" id="phaseChip">⏳ Preparation</span>
@@ -217,6 +228,9 @@
 
   <!-- STEP 3: results -->
   <div class="card hidden" id="resultCard">
+    <div class="back-row">
+      <button class="back-btn" id="backResultBtn">← Back</button>
+    </div>
     <div class="step-title"><span class="num">✓</span> Results</div>
     <div class="summary" id="summaryText"></div>
     <div id="resultList"></div>
@@ -418,6 +432,8 @@ const ANSWER_SEC = 30;  // answer time in seconds
   const startBtn = $('startBtn');
   const skipBtn = $('skipBtn');
   const pauseBtn = $('pauseBtn');
+  const backBtn = $('backBtn');
+  const backResultBtn = $('backResultBtn');
   const againBtn = $('againBtn');
   const qCounter = $('qCounter');
   const phaseChip = $('phaseChip');
@@ -698,6 +714,23 @@ const ANSWER_SEC = 30;  // answer time in seconds
     setupCard.classList.remove('hidden');
     if (stream) { stream.getTracks().forEach(t => t.stop()); stream = null; }
   });
+
+  function goBackToStart() {
+    clearTimer();
+    stopSpeech();
+    setPhaseUI('prep');
+    practiceCard.classList.add('hidden');
+    resultCard.classList.add('hidden');
+    setupCard.classList.remove('hidden');
+    if (stream) { stream.getTracks().forEach(t => t.stop()); stream = null; }
+    if (recorder && recorder.state !== 'inactive') {
+      try { recorder.stop(); } catch (e) { /* ignore */ }
+    }
+    results = [];
+  }
+
+  backBtn.addEventListener('click', goBackToStart);
+  backResultBtn.addEventListener('click', goBackToStart);
 })();
 </script>
 </body>
