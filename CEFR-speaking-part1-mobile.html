@@ -1,0 +1,632 @@
+<!DOCTYPE html>
+<html lang="uz">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<title>Multilevel Speaking Test (Mobile)</title>
+<style>
+  :root {
+    --blue: #1a4b8c;
+    --blue-dark: #123562;
+    --red: #e63946;
+    --green: #2ecc71;
+    --bg: #eef2f7;
+    --card: #ffffff;
+    --text: #1f2d3d;
+    --muted: #64748b;
+    --border: #dbe4ee;
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+  body {
+    font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+    background: linear-gradient(150deg, #eef2f7 0%, #dbe4ee 100%);
+    min-height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+    padding: 16px;
+    padding-bottom: calc(28px + env(safe-area-inset-bottom));
+    color: var(--text);
+  }
+  .container { max-width: 640px; width: 100%; }
+
+  header { text-align: center; margin-bottom: 18px; }
+  header h1 {
+    font-size: 26px; color: var(--blue); letter-spacing: 1px; font-weight: 800;
+  }
+  header h1 span { color: var(--red); }
+  header p { color: var(--muted); font-size: 13px; margin-top: 6px; }
+
+  .card {
+    background: var(--card);
+    border-radius: 16px;
+    box-shadow: 0 10px 30px rgba(26, 75, 140, 0.12);
+    padding: 20px;
+    margin-bottom: 18px;
+  }
+
+  .step-title {
+    font-size: 13px; font-weight: 700; color: var(--blue);
+    text-transform: uppercase; letter-spacing: 1.5px;
+    margin-bottom: 12px; display: flex; align-items: center; gap: 8px;
+  }
+  .step-title .num {
+    background: var(--blue); color: #fff; width: 24px; height: 24px;
+    border-radius: 50%; display: inline-flex; align-items: center;
+    justify-content: center; font-size: 12px; flex-shrink: 0;
+  }
+
+  .btn {
+    display: flex; align-items: center; justify-content: center; gap: 8px;
+    border: none; border-radius: 12px; padding: 15px 22px;
+    font-size: 16px; font-weight: 700; cursor: pointer; color: #fff;
+    background: var(--blue); transition: transform .12s, background .2s, opacity .2s;
+    font-family: inherit; width: 100%; min-height: 52px; user-select: none;
+  }
+  .btn:active { transform: scale(.98); }
+  .btn:disabled { opacity: .45; cursor: not-allowed; transform: none; }
+  .btn.green { background: var(--green); }
+  .btn.gray { background: #94a3b8; }
+  .btn-wrap { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-top: 14px; }
+  .btn-wrap .full { grid-column: 1 / -1; }
+
+  .intro { font-size: 14px; color: var(--text); line-height: 1.6; margin-bottom: 14px; }
+  .rules { list-style: none; padding: 0; }
+  .rules li {
+    font-size: 14px; color: var(--text); padding: 8px 0;
+    border-bottom: 1px dashed var(--border); line-height: 1.5;
+  }
+  .rules li:last-child { border-bottom: none; }
+  .rules li b { color: var(--blue); }
+
+  /* ---- practice view ---- */
+  .status-bar {
+    display: flex; justify-content: space-between; align-items: center;
+    margin-bottom: 14px; font-size: 13px; color: var(--muted); font-weight: 600;
+  }
+  .status-bar .chip {
+    background: var(--blue); color: #fff; padding: 5px 12px;
+    border-radius: 20px; font-size: 12px; letter-spacing: .5px;
+  }
+
+  .question-box {
+    background: linear-gradient(135deg, var(--blue) 0%, var(--blue-dark) 100%);
+    border-radius: 14px; padding: 20px 16px; color: #fff;
+    min-height: 110px; display: flex; align-items: center; justify-content: center;
+    text-align: center; margin-bottom: 16px;
+  }
+  .question-box .q { font-size: 19px; font-weight: 600; line-height: 1.45; }
+
+  .phase-label {
+    text-align: center; font-size: 15px; font-weight: 700; margin-bottom: 12px;
+    letter-spacing: .3px;
+  }
+  .phase-label.prep { color: #b45309; }
+  .phase-label.answer { color: var(--red); }
+  .phase-label.answer .dot {
+    display: inline-block; width: 11px; height: 11px; border-radius: 50%;
+    background: var(--red); margin-right: 6px; vertical-align: middle;
+    animation: pulse 1s infinite;
+  }
+  @keyframes pulse {
+    0%, 100% { opacity: 1; transform: scale(1); }
+    50% { opacity: .35; transform: scale(1.35); }
+  }
+
+  .bar-track {
+    height: 16px; background: #e2e8f0; border-radius: 20px; overflow: hidden;
+  }
+  .bar-fill {
+    height: 100%; width: 0%; border-radius: 20px;
+    background: linear-gradient(90deg, #38bdf8, var(--blue));
+    transition: width .1s linear;
+  }
+  .bar-fill.prep { background: linear-gradient(90deg, #fbbf24, #b45309); }
+  .bar-fill.answer { background: linear-gradient(90deg, #f87171, var(--red)); }
+
+  .timer-num {
+    text-align: center; margin-top: 8px;
+    font-size: 22px; font-weight: 800; font-variant-numeric: tabular-nums;
+    color: var(--blue);
+  }
+  .timer-num.prep { color: #b45309; }
+  .timer-num.answer { color: var(--red); }
+
+  .mic-status {
+    text-align: center; margin-top: 14px; font-size: 13px; color: var(--muted);
+    min-height: 18px; font-weight: 600;
+  }
+
+  /* ---- results ---- */
+  .result-item {
+    border: 2px solid var(--border); border-radius: 12px; padding: 14px 16px;
+    margin-bottom: 12px;
+  }
+  .result-item .q-text { font-size: 14.5px; font-weight: 600; margin-bottom: 6px; color: var(--blue); }
+  .result-item .q-text small { display: block; color: var(--muted); font-weight: 400; font-size: 12px; margin-top: 2px; }
+  .summary { text-align: center; color: var(--muted); font-size: 14px; margin-bottom: 14px; }
+
+  .hidden { display: none !important; }
+</style>
+</head>
+<body>
+<div class="container">
+  <header>
+    <h1><span>Multilevel</span> Speaking Test</h1>
+    <p>📱 Mobile version · ⏳ 5 sec prep · 🗣 30 sec speaking per question</p>
+  </header>
+
+  <!-- STEP 1: start -->
+  <div class="card" id="setupCard">
+    <div class="step-title"><span class="num">1</span> Start the practice</div>
+    <p class="intro">
+      To edit the questions, open <code>ielts-speaking-part1-mobile.html</code> and
+      edit the <code>SAVOLLAR</code> list.
+    </p>
+    <ul class="rules">
+      <li>⏳ <b>5 seconds</b> of preparation time for each question</li>
+      <li>🔊 The question is <b>read aloud</b> by an examiner-like voice</li>
+      <li>🗣 You <b>answer out loud</b> — no microphone or recording needed</li>
+      <li>➡️ Questions are shown automatically, one after another</li>
+      <li>⏭ Use "Skip" or "Next question" to move on early</li>
+    </ul>
+    <div class="btn-wrap">
+      <button class="btn full" id="startBtn">🎙️ Start the practice</button>
+    </div>
+  </div>
+
+  <!-- STEP 2: practice -->
+  <div class="card hidden" id="practiceCard">
+    <div class="status-bar">
+      <span id="qCounter">Question 1 / 1</span>
+      <span class="chip" id="phaseChip">⏳ Preparation</span>
+    </div>
+
+    <div class="question-box"><div class="q" id="qText">Question</div></div>
+
+    <div class="phase-label prep" id="phaseLabel">⏳ Preparation time</div>
+    <div class="bar-track"><div class="bar-fill" id="barFill"></div></div>
+    <div class="timer-num" id="timerNum">0</div>
+
+    <div class="mic-status" id="micStatus">🔇 Listen to the question...</div>
+
+    <div class="btn-wrap">
+      <button class="btn gray" id="pauseBtn">⏸ Pause</button>
+      <button class="btn gray" id="skipBtn">⏭ Skip</button>
+    </div>
+  </div>
+
+  <!-- STEP 3: results -->
+  <div class="card hidden" id="resultCard">
+    <div class="step-title"><span class="num">✓</span> Results</div>
+    <div class="summary" id="summaryText"></div>
+    <div id="resultList"></div>
+    <div class="btn-wrap">
+      <button class="btn green" id="againBtn">🔄 Start over</button>
+    </div>
+  </div>
+</div>
+
+<script>
+const SAVOLLAR = [
+  /* ---- Hometown ---- */
+  "Where is your hometown located?",
+  "Do you like your hometown?",
+  "What do you like most about your hometown?",
+  "Has your hometown changed much over the years?",
+  "Would you like to live in your hometown in the future?",
+
+  /* ---- Work / Study ---- */
+  "Do you work or are you a student?",
+  "Why did you choose that job?",
+  "What do you enjoy most about your job?",
+  "What subject did you choose and why?",
+  "Do you enjoy your studies?",
+  "What is your favourite subject?",
+  "What subject do you find most difficult?",
+  "Do you have any plans for after graduation?",
+
+  /* ---- Home & Accommodation ---- */
+  "Do you live in a house or a flat?",
+  "Which is your favourite room in your home?",
+  "What do you like about your home?",
+  "Would you change anything about your home?",
+  "Who usually cooks meals in your family?",
+  "What do you often do together with your family?",
+
+  /* ---- Free time & Hobbies ---- */
+  "What do you do in your free time?",
+  "Is there anything you have been doing recently for fun?",
+  "Do you prefer spending time alone or with other people?",
+  "How much time do you spend on your hobby?",
+  "Did you have hobbies when you were a child?",
+  "How did you learn to do your favourite hobby?",
+  "What did you do last weekend?",
+  "Are you planning to do anything this weekend?",
+
+  /* ---- Sports ---- */
+  "What sports do you do?",
+  "What sport do you enjoy watching?",
+  "Did you play any sports as a child?",
+  "Do you prefer team sports or individual sports?",
+  "What sports are popular in your country?",
+
+  /* ---- Music & Singing ---- */
+  "What kind of music do you like?",
+  "When do you usually listen to music?",
+  "What music do you usually listen to?",
+  "Do you like singing?",
+  "Have you ever been to a concert?",
+  "Can you play a musical instrument?",
+
+  /* ---- Reading & Writing ---- */
+  "Do you like reading? What do you usually read?",
+  "What was the last book you read?",
+  "Do you read books often or watch movies?",
+  "Did you enjoy reading when you were a child?",
+  "Do you ever write letters or postcards?",
+  "Do you prefer to read a written book or electronic one?",
+
+  /* ---- Movies & TV ---- */
+  "Do you like watching movies?",
+  "What kind of films do you like?",
+  "Do you prefer watching films at home or at the cinema?",
+  "What type of television programmes do you like?",
+  "Do you watch TV a lot?",
+
+  /* ---- Internet & Technology ---- */
+  "How often do you use the internet?",
+  "What do you usually do on the internet?",
+  "Do you use social media? Which one?",
+  "Do you spend too much time on your phone?",
+  "What apps do you use most often?",
+  "Do you like shopping online?",
+  "What is the newest electronic device you have bought?",
+
+  /* ---- Travel & Transport ---- */
+  "Do you like travelling?",
+  "What are the favourite places you have visited?",
+  "Do you prefer to travel to new places or familiar ones?",
+  "Do you prefer travelling by train or by car?",
+  "Do you like public transport?",
+
+  /* ---- Weather & Climate ---- */
+  "What is the weather like in your country?",
+  "Do you like rainy weather?",
+  "Do you prefer hot or cold weather?",
+  "Have you ever caught in the rain?",
+  "Do you hope to travel to places with a different climate?",
+
+  /* ---- Food ---- */
+  "What's your favourite food?",
+  "Do you prefer to eat at home or eat out?",
+  "Who usually cooks in your family?",
+  "Do you enjoy baking or cooking?",
+  "Did you try any new food recently?",
+
+  /* ---- Shopping ---- */
+  "Do you like shopping?",
+  "How often do you go shopping?",
+  "Do you prefer shopping online or in real stores?",
+  "What is the last thing you bought?",
+  "Do you bargain when you shop?",
+
+  /* ---- Colours ---- */
+  "What is your favourite colour?",
+  "Did you like that colour when you were a child?",
+  "Do you prefer light colours or bright colours?",
+  "Is colour important in your daily life?",
+
+  /* ---- Weather of your city ---- */
+  "Do you like the weather in your city?",
+  "What season do you like the most?",
+  "Does the weather affect your mood?",
+
+  /* ---- Animals & Pets ---- */
+  "Do you like animals?",
+  "Have you ever kept a pet?",
+  "Do you think pets are important?",
+  "What is the most popular pet in your country?",
+
+  /* ---- Parks, Trees & Flowers ---- */
+  "Do you like parks?",
+  "How often do you visit parks?",
+  "Do you like trees?",
+  "What trees are common in your country?",
+  "Do you like flowers?",
+  "What flowers do you have in your home?",
+
+  /* ---- Photos & Photography ---- */
+  "Do you like taking photos?",
+  "What was the last photo you took?",
+  "Do you prefer taking photos yourself or having them taken?",
+  "Do you take photographs of yourself? (selfies)",
+
+  /* ---- Collecting ---- */
+  "Do you like collecting things?",
+  "What did you use to collect when you were a child?",
+  "Do you keep things for a long time?",
+
+  /* ---- Reading, Newspapers & Magazines ---- */
+  "Do you read newspapers or magazines nowadays?",
+  "What kind of magazines do you like?",
+  "Do you buy magazines in shops or read them online?",
+
+  /* ---- Numbers & Time ---- */
+  "Do you have a favourite number?",
+  "What number is meaningful to you?",
+  "Are you good at managing time?",
+  "Do you usually think about time a lot?",
+
+  /* ---- Memories & Past ---- */
+  "Do you have a good memory?",
+  "What is the earliest memory you have?",
+  "Do you keep photographs of the past?",
+
+  /* ---- Other common topics ---- */
+  "Do you like to be near the beach or sea?",
+  "Do you like fishing?",
+  "Do you like handwritten letters?",
+  "What is a memorable gift you have received?",
+  "Do you prefer to talk or listen?",
+  "Do you like meeting new people?",
+  "How often do you meet people?",
+  "Are you good at making new friends?",
+  "Do you like long-term plans?",
+  "Do you plan today and tomorrow everyday?",
+  "Did you plan anything recently?",
+  "Do you prefer to give than to receive?",
+];
+
+const PREP_SEC = 5;     // preparation time in seconds
+const ANSWER_SEC = 30;  // answer time in seconds
+
+(function () {
+  'use strict';
+
+  const $ = (id) => document.getElementById(id);
+
+  const setupCard = $('setupCard');
+  const practiceCard = $('practiceCard');
+  const resultCard = $('resultCard');
+  const startBtn = $('startBtn');
+  const skipBtn = $('skipBtn');
+  const pauseBtn = $('pauseBtn');
+  const againBtn = $('againBtn');
+  const qCounter = $('qCounter');
+  const phaseChip = $('phaseChip');
+  const phaseLabel = $('phaseLabel');
+  const qText = $('qText');
+  const barFill = $('barFill');
+  const timerNum = $('timerNum');
+  const micStatus = $('micStatus');
+  const summaryText = $('summaryText');
+  const resultList = $('resultList');
+
+  let questions = [];
+  let idx = 0;
+  let timerId = null;
+  let endTime = 0;
+  let results = [];
+  let currentPhase = 'idle'; // 'prep' | 'answer'
+  let isPaused = false;
+  let pausedRemain = 0;
+  let onEndCb = null;
+
+  function beep(freq, dur, delay) {
+    try {
+      const ctx = new (window.AudioContext || window.webkitAudioContext)();
+      const osc = ctx.createOscillator();
+      const osc2 = ctx.createOscillator();
+      const gain = ctx.createGain();
+      osc.connect(gain); osc2.connect(gain); gain.connect(ctx.destination);
+      osc.type = 'sine'; osc.frequency.value = freq;
+      osc2.type = 'sine'; osc2.frequency.value = freq * 2;
+      const g2 = ctx.createGain();
+      osc2.connect(g2); g2.connect(gain);
+      g2.gain.value = 0.3;
+      gain.gain.setValueAtTime(0.25, ctx.currentTime + (delay || 0));
+      gain.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + (delay || 0) + dur);
+      osc.start(ctx.currentTime + (delay || 0)); osc.stop(ctx.currentTime + (delay || 0) + dur);
+      osc2.start(ctx.currentTime + (delay || 0)); osc2.stop(ctx.currentTime + (delay || 0) + dur);
+    } catch (e) { /* ignore */ }
+  }
+
+  function signalSound() {
+    beep(880, 0.10);
+    beep(1174.66, 0.10, 0.12);
+    beep(1760, 0.35, 0.24);
+  }
+
+  /* ---------------- TTS (examiner voice) ---------------- */
+  function speakQuestion(text, onDone) {
+    try {
+      window.speechSynthesis.cancel();
+      const u = new SpeechSynthesisUtterance(text);
+      u.lang = 'en-US';
+      u.rate = 0.95;
+      u.pitch = 1;
+      const voices = window.speechSynthesis.getVoices();
+      const enVoice = voices.find(v => /en(-|_)/i.test(v.lang) && /samantha|karen|zira|jenny|aria|hazel|susan|victoria|google|natural/i.test(v.name))
+        || voices.find(v => /en(-|_)/i.test(v.lang));
+      if (enVoice) { u.voice = enVoice; u.lang = enVoice.lang; }
+      if (onDone) { u.onend = onDone; u.onerror = onDone; }
+      window.speechSynthesis.speak(u);
+    } catch (e) { if (onDone) { onDone(); } }
+  }
+
+  function stopSpeech() {
+    try { window.speechSynthesis.cancel(); } catch (e) { /* ignore */ }
+  }
+
+  /* ---------------- TIMER ---------------- */
+  function startTimer(seconds, onEnd, phase) {
+    clearTimer();
+    currentPhase = phase;
+    onEndCb = onEnd;
+    endTime = Date.now() + seconds * 1000;
+
+    const update = () => {
+      const remain = Math.max(0, (endTime - Date.now()) / 1000);
+      const frac = remain / seconds;
+      barFill.style.width = (frac * 100) + '%';
+      timerNum.textContent = Math.ceil(remain);
+      if (remain <= 0) { clearTimer(); onEnd(); }
+    };
+    update();
+    timerId = setInterval(update, 100);
+  }
+
+  function clearTimer() {
+    if (timerId) { clearInterval(timerId); timerId = null; }
+  }
+
+  function startAnswerWhenReady() {
+    const waitForSpeech = () => {
+      let speaking = false;
+      try { speaking = window.speechSynthesis.speaking && !window.speechSynthesis.paused; } catch (e) { /* ignore */ }
+      if (speaking) {
+        setTimeout(waitForSpeech, 100);
+      } else {
+        phaseAnswer();
+      }
+    };
+    waitForSpeech();
+  }
+
+  function setPhaseUI(phase) {
+    barFill.classList.toggle('prep', phase === 'prep');
+    barFill.classList.toggle('answer', phase === 'answer');
+    timerNum.classList.toggle('prep', phase === 'prep');
+    timerNum.classList.toggle('answer', phase === 'answer');
+
+    if (phase === 'prep') {
+      phaseChip.textContent = '⏳ Preparation';
+      phaseLabel.textContent = '⏳ Preparation time — listen to the question';
+      micStatus.textContent = '🔇 Listening to the question...';
+      skipBtn.textContent = '⏭ Skip';
+      skipBtn.disabled = false;
+      isPaused = false;
+      pauseBtn.textContent = '⏸ Pause';
+      pauseBtn.disabled = false;
+    } else {
+      phaseChip.textContent = '🗣 Answering';
+      phaseLabel.innerHTML = '<span class="dot"></span>Speak now!';
+      micStatus.textContent = '🗣 Speak your answer out loud...';
+      skipBtn.textContent = '⏭ Next question';
+      skipBtn.disabled = false;
+    }
+  }
+
+  function nextQuestion() {
+    if (idx >= questions.length) { finish(); return; }
+    qCounter.textContent = 'Question ' + (idx + 1) + ' / ' + questions.length;
+    qText.textContent = questions[idx];
+    setPhaseUI('prep');
+    speakQuestion(questions[idx], () => {
+      startTimer(PREP_SEC, () => { startAnswerWhenReady(); }, 'prep');
+    });
+  }
+
+  function phaseAnswer() {
+    stopSpeech();
+    signalSound();
+    setPhaseUI('answer');
+    startTimer(ANSWER_SEC, () => { afterAnswer(); }, 'answer');
+  }
+
+  function afterAnswer() {
+    clearTimer();
+    stopSpeech();
+    results.push({ question: questions[idx], seconds: ANSWER_SEC });
+    idx++;
+    if (idx < questions.length) {
+      setTimeout(() => nextQuestion(), 400);
+    } else {
+      finish();
+    }
+  }
+
+  function finish() {
+    clearTimer();
+    stopSpeech();
+    setPhaseUI('prep');
+    practiceCard.classList.add('hidden');
+    renderResults();
+    resultCard.classList.remove('hidden');
+  }
+
+  /* ---------------- RESULTS ---------------- */
+  function renderResults() {
+    summaryText.textContent = results.length + ' questions completed. Keep practicing!';
+    resultList.innerHTML = '';
+    results.forEach((r, i) => {
+      const item = document.createElement('div');
+      item.className = 'result-item';
+      item.innerHTML =
+        '<div class="q-text">' + (i + 1) + '. ' + escapeHtml(r.question) +
+        '<small>' + r.seconds + ' seconds</small></div>';
+      resultList.appendChild(item);
+    });
+  }
+
+  function escapeHtml(s) {
+    return s.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
+  }
+
+  /* ---------------- FLOW ---------------- */
+  startBtn.addEventListener('click', () => {
+    questions = SAVOLLAR.slice();
+    if (questions.length === 0) {
+      alert('Please add at least one question to the SAVOLLAR list in the file!');
+      return;
+    }
+    idx = 0; results = [];
+    setupCard.classList.add('hidden');
+    resultCard.classList.add('hidden');
+    practiceCard.classList.remove('hidden');
+    nextQuestion();
+  });
+
+  skipBtn.addEventListener('click', () => {
+    stopSpeech();
+    if (currentPhase === 'prep') {
+      clearTimer();
+      isPaused = false;
+      phaseAnswer();
+    } else if (currentPhase === 'answer') {
+      clearTimer();
+      isPaused = false;
+      afterAnswer();
+    }
+  });
+
+  pauseBtn.addEventListener('click', () => {
+    if (isPaused) {
+      isPaused = false;
+      pauseBtn.textContent = '⏸ Pause';
+      skipBtn.disabled = false;
+      micStatus.textContent = (currentPhase === 'prep') ? '🔇 Listening to the question...' : '🗣 Speak your answer out loud...';
+      try { window.speechSynthesis.resume(); } catch (e) { /* ignore */ }
+      startTimer(pausedRemain, onEndCb, currentPhase);
+    } else {
+      if (currentPhase === 'idle') { return; }
+      isPaused = true;
+      pausedRemain = Math.max(0, (endTime - Date.now()) / 1000);
+      clearTimer();
+      pauseBtn.textContent = '▶ Resume';
+      skipBtn.disabled = true;
+      micStatus.textContent = '⏸ Paused — press Resume to continue';
+      try { window.speechSynthesis.pause(); } catch (e) { /* ignore */ }
+    }
+  });
+
+  againBtn.addEventListener('click', () => {
+    resultCard.classList.add('hidden');
+    practiceCard.classList.add('hidden');
+    setupCard.classList.remove('hidden');
+  });
+})();
+</script>
+</body>
+</html>
