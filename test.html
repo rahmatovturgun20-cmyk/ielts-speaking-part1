@@ -289,6 +289,111 @@
   </div>
 </div>
 
+<!-- TEST SHIM -->
+<script>
+(function () {
+  function log(m) {
+    var p = document.getElementById('testlog');
+    if (!p) { p = document.createElement('div'); p.id = 'testlog'; document.body.appendChild(p); }
+    p.textContent += m + '\n';
+  }
+  window.onerror = function (msg, src, line) { log('ERR ' + msg + ' @' + line); };
+  window.onunhandledrejection = function (e) { log('REJ ' + (e && e.reason ? e.reason : e)); };
+  window.alert = function (m) { log('ALERT: ' + m); };
+
+  var ss = window.speechSynthesis;
+  try {
+    Object.defineProperty(ss, 'speaking', { value: false, configurable: true });
+    Object.defineProperty(ss, 'paused', { value: false, configurable: true });
+    ss.cancel = function () {};
+    ss.pause = function () {};
+    ss.resume = function () {};
+    ss.getVoices = function () { return []; };
+    ss.speak = function (u) {
+      var onend = u.onend;
+      setTimeout(function () { try { if (onend) onend(); } catch (e) {} }, 0);
+    };
+  } catch (e) { log('SS override failed: ' + e); }
+
+  function makeGain() {
+    return {
+      gain: { value: 0, setValueAtTime: function () {}, exponentialRampToValueAtTime: function () {} },
+      connect: function () {}, disconnect: function () {}
+    };
+  }
+  function makeOsc() {
+    return {
+      frequency: { value: 0 }, type: 'sine',
+      connect: function () {}, start: function () {}, stop: function () {}
+    };
+  }
+  function makeSource() {
+    return { connect: function () {}, disconnect: function () {} };
+  }
+  function makeProcessor() {
+    var obj = { connect: function () {}, disconnect: function () {}, onaudioprocess: null };
+    setInterval(function () {
+      if (obj.onaudioprocess) {
+        try {
+          var ch = new Float32Array(4096).fill(0.05);
+          obj.onaudioprocess({ inputBuffer: { getChannelData: function () { return ch; } } });
+        } catch (e) {}
+      }
+    }, 40);
+    return obj;
+  }
+
+  var FakeAC = function () {
+    this.sampleRate = 48000;
+    this.destination = {};
+    this.state = 'running';
+  };
+  FakeAC.prototype.createGain = makeGain;
+  FakeAC.prototype.createOscillator = makeOsc;
+  FakeAC.prototype.createMediaStreamSource = makeSource;
+  FakeAC.prototype.createScriptProcessor = makeProcessor;
+  FakeAC.prototype.close = function () { this.state = 'closed'; };
+  FakeAC.prototype.decodeAudioData = function () { return Promise.reject(new Error('n/a')); };
+
+  window.AudioContext = FakeAC;
+  window.webkitAudioContext = FakeAC;
+
+  if (navigator.mediaDevices && navigator.mediaDevices.getUserMedia) {
+    navigator.mediaDevices.getUserMedia = function () {
+      return Promise.resolve({ getTracks: function () { return [{ stop: function () {} }]; } });
+    };
+  } else {
+    Object.defineProperty(navigator, 'mediaDevices', {
+      value: { getUserMedia: function () { return Promise.resolve({ getTracks: function () { return [{ stop: function () {} }]; } }); } },
+      configurable: true, writable: true
+    });
+  }
+
+  var started = false;
+  function autoStart() {
+    if (started) return;
+    var b = document.getElementById('startBtn');
+    if (b) {
+      started = true;
+      try { b.click(); log('CLICKED startBtn'); } catch (e) { log('click failed: ' + e); }
+    } else { log('startBtn not found'); }
+  }
+  window.addEventListener('DOMContentLoaded', function () { setTimeout(autoStart, 300); });
+  log('SHIM READY');
+  setInterval(function () {
+    var qt = document.getElementById('qText');
+    var ph = document.getElementById('phaseChip');
+    var tn = document.getElementById('timerNum');
+    var ms = document.getElementById('micStatus');
+    if (qt) { log('Q[' + (qt.textContent || '').slice(0, 24) + '] phase=' + (ph ? ph.textContent : '?') + ' t=' + (tn ? tn.textContent : '?') + ' mic=' + (ms ? (ms.textContent || '').slice(0, 30) : '?')); }
+    var rc = document.getElementById('reviewCard');
+    var rl = document.getElementById('reviewList');
+    if (rc && rl && !rc.classList.contains('hidden') && rl.children.length > 0) { log('REVIEW SHOWN with ' + rl.children.length + ' items'); }
+    var cb = document.getElementById('continueBtn');
+    if (cb && rc && rl && !rc.classList.contains('hidden') && rl.children.length > 0) { log('CLICKED continue'); cb.click(); }
+  }, 2000);
+})();
+</script>
 <script>
 /* ============================================================
    QUESTIONS LIST

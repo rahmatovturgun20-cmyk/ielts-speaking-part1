@@ -1,295 +1,4 @@
-<!DOCTYPE html>
-<html lang="uz">
-<head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Multilevel Speaking Test</title>
-<style>
-  :root {
-    --blue: #1a4b8c;
-    --blue-dark: #123562;
-    --red: #e63946;
-    --green: #2ecc71;
-    --bg: #eef2f7;
-    --card: #ffffff;
-    --text: #1f2d3d;
-    --muted: #64748b;
-    --border: #dbe4ee;
-  }
-  * { margin: 0; padding: 0; box-sizing: border-box; }
-  body {
-    font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
-    background: linear-gradient(150deg, #eef2f7 0%, #dbe4ee 100%);
-    min-height: 100vh;
-    display: flex;
-    justify-content: center;
-    align-items: flex-start;
-    padding: 28px 16px;
-    color: var(--text);
-  }
-  .container { max-width: 720px; width: 100%; }
 
-  header { text-align: center; margin-bottom: 22px; }
-  header h1 {
-    font-size: 30px; color: var(--blue); letter-spacing: 1px; font-weight: 800;
-  }
-  header h1 span { color: var(--red); }
-  header p { color: var(--muted); font-size: 14px; margin-top: 6px; }
-
-  .card {
-    background: var(--card);
-    border-radius: 16px;
-    box-shadow: 0 10px 30px rgba(26, 75, 140, 0.12);
-    padding: 26px;
-    margin-bottom: 18px;
-  }
-
-  .step-title {
-    font-size: 13px; font-weight: 700; color: var(--blue);
-    text-transform: uppercase; letter-spacing: 1.5px;
-    margin-bottom: 12px; display: flex; align-items: center; gap: 8px;
-  }
-  .step-title .num {
-    background: var(--blue); color: #fff; width: 24px; height: 24px;
-    border-radius: 50%; display: inline-flex; align-items: center;
-    justify-content: center; font-size: 12px; flex-shrink: 0;
-  }
-
-  textarea {
-    width: 100%; min-height: 150px;
-    border: 2px solid var(--border); border-radius: 10px;
-    padding: 12px 14px; font-size: 15px; font-family: inherit;
-    resize: vertical; outline: none; transition: border-color .2s;
-  }
-  textarea:focus { border-color: var(--blue); }
-  .hint { font-size: 12.5px; color: var(--muted); margin-top: 8px; line-height: 1.5; }
-
-  .btn {
-    display: inline-flex; align-items: center; justify-content: center; gap: 8px;
-    border: none; border-radius: 10px; padding: 13px 26px;
-    font-size: 16px; font-weight: 700; cursor: pointer; color: #fff;
-    background: var(--blue); transition: transform .12s, box-shadow .2s, background .2s;
-    font-family: inherit;
-  }
-  .btn:hover { background: var(--blue-dark); transform: translateY(-1px); }
-  .btn:active { transform: translateY(0); }
-  .btn:disabled { opacity: .5; cursor: not-allowed; transform: none; }
-  .btn.green { background: var(--green); }
-  .btn.gray { background: #94a3b8; }
-  .btn-wrap { display: flex; gap: 10px; justify-content: center; margin-top: 14px; flex-wrap: wrap; }
-
-  .intro { font-size: 14px; color: var(--text); line-height: 1.6; margin-bottom: 14px; }
-  .intro code, .intro b {
-    background: #eef2f7; padding: 2px 7px; border-radius: 6px;
-    font-family: Consolas, monospace; font-size: 13px; color: var(--blue);
-  }
-  .rules { list-style: none; padding: 0; }
-  .rules li {
-    font-size: 14px; color: var(--text); padding: 7px 0;
-    border-bottom: 1px dashed var(--border); line-height: 1.5;
-  }
-  .rules li:last-child { border-bottom: none; }
-  .rules li b { color: var(--blue); }
-
-  .toggle-row {
-    display: flex; align-items: center; gap: 10px; cursor: pointer;
-    background: #fef3c7; border: 2px solid #fde68a; border-radius: 10px;
-    padding: 12px 14px; margin-top: 8px; font-size: 14px; font-weight: 600;
-    color: var(--text); user-select: none;
-  }
-  .toggle-row input { width: 18px; height: 18px; accent-color: #d97706; }
-
-  /* ---- practice view ---- */
-  .status-bar {
-    display: flex; justify-content: space-between; align-items: center;
-    margin-bottom: 16px; font-size: 13px; color: var(--muted); font-weight: 600;
-  }
-  .status-bar .chip {
-    background: var(--blue); color: #fff; padding: 5px 12px;
-    border-radius: 20px; font-size: 12.5px; letter-spacing: .5px;
-  }
-
-  .question-box {
-    background: linear-gradient(135deg, var(--blue) 0%, var(--blue-dark) 100%);
-    border-radius: 14px; padding: 22px; color: #fff;
-    min-height: 96px; display: flex; align-items: center; justify-content: center;
-    text-align: center; margin-bottom: 18px;
-  }
-  .question-box .q { font-size: 20px; font-weight: 600; line-height: 1.45; }
-
-  .phase-label {
-    text-align: center; font-size: 15px; font-weight: 700; margin-bottom: 12px;
-    letter-spacing: .3px;
-  }
-  .phase-label.prep { color: #b45309; }
-  .phase-label.answer { color: var(--red); }
-  .phase-label.answer .dot {
-    display: inline-block; width: 11px; height: 11px; border-radius: 50%;
-    background: var(--red); margin-right: 6px; vertical-align: middle;
-    animation: pulse 1s infinite;
-  }
-  @keyframes pulse {
-    0%, 100% { opacity: 1; transform: scale(1); }
-    50% { opacity: .35; transform: scale(1.35); }
-  }
-
-  .phase-label.prep { color: #b45309; }
-  .bar-track {
-    height: 14px; background: #e2e8f0; border-radius: 20px; overflow: hidden;
-  }
-  .bar-fill {
-    height: 100%; width: 0%; border-radius: 20px;
-    background: linear-gradient(90deg, #38bdf8, var(--blue));
-    transition: width .1s linear;
-  }
-  .bar-fill.prep { background: linear-gradient(90deg, #fbbf24, #b45309); }
-  .bar-fill.answer { background: linear-gradient(90deg, #f87171, var(--red)); }
-
-  .timer-num {
-    text-align: center; margin-top: 8px;
-    font-size: 22px; font-weight: 800; font-variant-numeric: tabular-nums;
-    color: var(--blue);
-  }
-  .timer-num.prep { color: #b45309; }
-  .timer-num.answer { color: var(--red); }
-
-  .mic-status {
-    text-align: center; margin-top: 16px; font-size: 13px; color: var(--muted);
-    min-height: 18px; font-weight: 600;
-  }
-  .mic-status.rec { color: var(--red); }
-
-  /* ---- results ---- */
-  .result-item {
-    border: 2px solid var(--border); border-radius: 12px; padding: 14px 16px;
-    margin-bottom: 12px;
-  }
-  .result-item .q-text { font-size: 14.5px; font-weight: 600; margin-bottom: 10px; color: var(--blue); }
-  .result-item .q-text small { display: block; color: var(--muted); font-weight: 400; font-size: 12px; margin-top: 2px; }
-  audio { width: 100%; height: 40px; }
-  .download-link {
-    display: inline-block; margin-top: 8px; font-size: 13px; font-weight: 700;
-    color: var(--green); text-decoration: none; border-bottom: 1.5px dashed var(--green);
-  }
-  .summary { text-align: center; color: var(--muted); font-size: 14px; margin-bottom: 14px; }
-
-  /* ---- sample answer ---- */
-  .sample-box {
-    background: linear-gradient(135deg, #fffbeb 0%, #fef3c7 100%);
-    border: 2px solid #fcd34d;
-    border-radius: 12px;
-    padding: 16px 18px;
-    margin: 18px 0 4px;
-    color: var(--text);
-  }
-  .sample-box.reveal { animation: sampleIn .5s ease; }
-  @keyframes sampleIn {
-    from { opacity: 0; transform: translateY(12px); }
-    to { opacity: 1; transform: translateY(0); }
-  }
-  .sample-label {
-    font-size: 12.5px; font-weight: 800; letter-spacing: 1px;
-    color: #b45309; text-transform: uppercase; margin-bottom: 8px;
-    display: flex; align-items: center; gap: 6px;
-  }
-  .sample-text { font-size: 15px; line-height: 1.65; }
-
-.result-sample {
-    background: #fef3c7; border-radius: 8px; padding: 10px 12px;
-    font-size: 13.5px; line-height: 1.55; margin-top: 8px; color: #584205;
-  }
-  .result-sample b { color: #b45309; }
-  .sample-toggle {
-    border: none; background: #fef3c7; color: #b45309; cursor: pointer;
-    font-family: inherit; font-weight: 700; font-size: 12.5px; border-radius: 8px;
-    padding: 6px 12px; margin-top: 8px;
-  }
-  .sample-toggle:hover { background: #fde68a; }
-
-  .hidden { display: none !important; }
-</style>
-</head>
-<body>
-<div class="container">
-  <header>
-    <h1><span>Multilevel</span> Speaking Test</h1>
-    <p>⏳ 5 sec preparation · 🎙️ your answer is recorded · 30 sec speaking per question</p>
-  </header>
-
-  <!-- STEP 1: start -->
-  <div class="card" id="setupCard">
-    <div class="step-title"><span class="num">1</span> Start the practice</div>
-    <p class="intro">
-      To edit the questions, open <code>ielts-speaking-part1.html</code> in <b>VS Code</b>
-      and edit the <code>SAVOLLAR</code> list.
-    </p>
-    <ul class="rules">
-      <li>⏳ <b>5 seconds</b> of preparation time for each question</li>
-      <li>🔊 The question is <b>read aloud</b> by an examiner-like voice</li>
-      <li>🎙️ Your <b>answer is recorded</b> and can be downloaded at the end</li>
-      <li>➡️ Questions are shown automatically, one after another</li>
-      <li>⏭ Use "Skip" or "Next question" to move on early</li>
-      <li>💡 After each 30-second answer, a <b>B2 sample answer</b> is read aloud by another speaker, then the next question starts automatically</li>
-      <li>👂 After every <b>5 questions</b>, you can <b>listen to your recordings</b> and evaluate yourself before continuing</li>
-    </ul>
-    <label class="toggle-row">
-      <input type="checkbox" id="samplesToggle" checked>
-      <span>Show B2 sample answers after each answer</span>
-    </label>
-    <div class="btn-wrap">
-      <button class="btn" id="startBtn">🎙️ Start the practice</button>
-    </div>
-  </div>
-
-  <!-- STEP 2: practice -->
-  <div class="card hidden" id="practiceCard">
-    <div class="status-bar">
-      <span id="qCounter">Question 1 / 1</span>
-      <span class="chip" id="phaseChip">⏳ Preparation</span>
-    </div>
-
-    <div class="question-box"><div class="q" id="qText">Question</div></div>
-
-    <div class="sample-box hidden" id="sampleBox">
-      <div class="sample-label">💡 Sample answer — B2 level</div>
-      <div class="sample-text" id="sampleText"></div>
-    </div>
-
-    <div class="phase-label prep" id="phaseLabel">⏳ Preparation time</div>
-    <div class="bar-track"><div class="bar-fill" id="barFill"></div></div>
-    <div class="timer-num" id="timerNum">0</div>
-
-    <div class="mic-status" id="micStatus">🔇 Listen to the question...</div>
-
-    <div class="btn-wrap">
-      <button class="btn gray" id="prevBtn">⏮ Prev</button>
-      <button class="btn gray" id="pauseBtn">⏸ Pause</button>
-      <button class="btn gray" id="skipBtn">⏭ Skip</button>
-    </div>
-  </div>
-
-<!-- STEP 2b: review after every 5 questions -->
-  <div class="card hidden" id="reviewCard">
-    <div class="step-title"><span class="num">👂</span> Review your answers</div>
-    <p class="summary" id="reviewSummary"></p>
-    <div id="reviewList"></div>
-    <div class="btn-wrap">
-      <button class="btn green" id="continueBtn">➡️ Continue</button>
-    </div>
-  </div>
-
-  <!-- STEP 3: results -->
-  <div class="card hidden" id="resultCard">
-    <div class="step-title"><span class="num">✓</span> Results</div>
-    <div class="summary" id="summaryText"></div>
-    <div id="resultList"></div>
-    <div class="btn-wrap">
-      <button class="btn green" id="againBtn">🔄 Start over</button>
-    </div>
-  </div>
-</div>
-
-<script>
 /* ============================================================
    QUESTIONS LIST
    ------------------------------------------------------------
@@ -299,7 +8,6 @@
    ============================================================ */
 const SAVOLLAR = [
   /* ---- Hometown ---- */
-  "Where is your hometown located?",
   "Do you like your hometown?",
   "What do you like most about your hometown?",
   "Has your hometown changed much over the years?",
@@ -320,19 +28,16 @@ const SAVOLLAR = [
   "Which is your favourite room in your home?",
   "What do you like about your home?",
   "Would you change anything about your home?",
-  "Who usually cooks meals in your family?",
   "What do you often do together with your family?",
 
   /* ---- Free time & Hobbies ---- */
   "What do you do in your free time?",
-  "Is there anything you have been doing recently for fun?",
   "Do you prefer spending time alone or with other people?",
   "How much time do you spend on your hobby?",
   "Did you have hobbies when you were a child?",
   "How did you learn to do your favourite hobby?",
   "What did you do last weekend?",
-  "Are you planning to do anything this weekend?",
-
+  
   /* ---- Sports ---- */
   "What sports do you do?",
   "What sport do you enjoy watching?",
@@ -353,7 +58,6 @@ const SAVOLLAR = [
   "What was the last book you read?",
   "Do you read books often or watch movies?",
   "Did you enjoy reading when you were a child?",
-  "Do you ever write letters or postcards?",
   "Do you prefer to read a written book or electronic one?",
 
   /* ---- Movies & TV ---- */
@@ -389,8 +93,6 @@ const SAVOLLAR = [
   /* ---- Food ---- */
   "What's your favourite food?",
   "Do you prefer to eat at home or eat out?",
-  "Who usually cooks in your family?",
-  "Do you enjoy baking or cooking?",
   "Did you try any new food recently?",
 
   /* ---- Shopping ---- */
@@ -398,15 +100,11 @@ const SAVOLLAR = [
   "How often do you go shopping?",
   "Do you prefer shopping online or in real stores?",
   "What is the last thing you bought?",
-  "Do you bargain when you shop?",
-
-  /* ---- Colours ---- */
+    /* ---- Colours ---- */
   "What is your favourite colour?",
   "Did you like that colour when you were a child?",
   "Do you prefer light colours or bright colours?",
-  "Is colour important in your daily life?",
-
-  /* ---- Weather of your city ---- */
+    /* ---- Weather of your city ---- */
   "Do you like the weather in your city?",
   "What season do you like the most?",
   "Does the weather affect your mood?",
@@ -427,14 +125,11 @@ const SAVOLLAR = [
 
   /* ---- Photos & Photography ---- */
   "Do you like taking photos?",
-  "What was the last photo you took?",
   "Do you prefer taking photos yourself or having them taken?",
   "Do you take photographs of yourself? (selfies)",
 
   /* ---- Collecting ---- */
-  "Do you like collecting things?",
   "What did you use to collect when you were a child?",
-  "Do you keep things for a long time?",
 
   /* ---- Reading, Newspapers & Magazines ---- */
   "Do you read newspapers or magazines nowadays?",
@@ -443,30 +138,19 @@ const SAVOLLAR = [
 
   /* ---- Numbers & Time ---- */
   "Do you have a favourite number?",
-  "What number is meaningful to you?",
   "Are you good at managing time?",
-  "Do you usually think about time a lot?",
 
-  /* ---- Memories & Past ---- */
+    /* ---- Memories & Past ---- */
   "Do you have a good memory?",
-  "What is the earliest memory you have?",
   "Do you keep photographs of the past?",
 
   /* ---- Other common topics ---- */
   "Do you like to be near the beach or sea?",
-  "Do you like fishing?",
-  "Do you like handwritten letters?",
   "What is a memorable gift you have received?",
-  "Do you prefer to talk or listen?",
   "Do you like meeting new people?",
-  "How often do you meet people?",
   "Are you good at making new friends?",
-  "Do you like long-term plans?",
-  "Do you plan today and tomorrow everyday?",
   "Did you plan anything recently?",
-  "Do you prefer to give than to receive?",
-];
-
+  ];
 
 const SAMPLES = {
   "Where is your hometown located?": "My hometown is Tashkent, which is located in the north-east of Uzbekistan. It's the capital, so it's a fast-moving, busy city, but what I really appreciate about it is that it's surrounded by the Tien Shan mountains, which means we get plenty of fresh air and some truly breathtaking views.",
@@ -593,6 +277,7 @@ const SAMPLES = {
   "Do you prefer to give than to receive?": "I prefer to give, definitely, because giving brings a different kind of deep joy. You feel the happiness of the other person, and you've shared a small piece of your care. I do appreciate receiving, of course, because it reminds me that I'm remembered, but giving feels more lasting."
 };
 
+
 const PREP_SEC = 5;     // preparation time in seconds
 const ANSWER_SEC = 30;  // answer time in seconds
 
@@ -615,7 +300,7 @@ const ANSWER_SEC = 30;  // answer time in seconds
   const qText = $('qText');
   const barFill = $('barFill');
   const timerNum = $('timerNum');
-  const micStatus = $('micStatus');
+const micStatus = $('micStatus');
   const summaryText = $('summaryText');
   const resultList = $('resultList');
 const sampleBox = $('sampleBox');
@@ -631,7 +316,7 @@ const sampleBox = $('sampleBox');
   let endTime = 0;
   let stream = null;
   let recorder = null;
-  let results = [];
+let results = [];
   let currentPhase = 'idle'; // 'prep' | 'answer' | 'sample'
   let isPaused = false;
   let pausedRemain = 0;
@@ -678,7 +363,7 @@ const sampleBox = $('sampleBox');
     } catch (e) { if (onDone) { onDone(); } }
   }
 
-  function stopSpeech() {
+function stopSpeech() {
     try { window.speechSynthesis.cancel(); } catch (e) { /* ignore */ }
   }
 
@@ -701,7 +386,7 @@ const sampleBox = $('sampleBox');
     } catch (e) { if (onDone) { onDone(); } }
   }
 
-/* ---------------- RECORDING (direct PCM → WAV, always 30 s) ---------------- */
+  /* ---------------- RECORDING (direct PCM → WAV, always 30 s) ---------------- */
   let micCtx = null;
   let micProc = null;
   let pcmBuf = null;
@@ -839,7 +524,7 @@ const sampleBox = $('sampleBox');
     timerNum.classList.toggle('prep', phase === 'prep');
     timerNum.classList.toggle('answer', phase === 'answer');
 
-    if (phase === 'prep') {
+if (phase === 'prep') {
       phaseChip.textContent = '⏳ Preparation';
       phaseLabel.textContent = '⏳ Preparation time — listen to the question';
       micStatus.textContent = '🔇 Listening to the question...';
@@ -868,7 +553,7 @@ const sampleBox = $('sampleBox');
     }
   }
 
-  async function nextQuestion() {
+async function nextQuestion() {
     if (idx >= questions.length) { await finish(); return; }
     sampleAdvancePending = false;
     sampleBox.classList.add('hidden');
@@ -889,7 +574,7 @@ const sampleBox = $('sampleBox');
     startTimer(ANSWER_SEC, () => { afterAnswer(); }, 'answer');
   }
 
-  async function afterAnswer() {
+async function afterAnswer() {
     clearTimer();
     stopSpeech();
     const rec = await stopRecording();
@@ -1020,7 +705,7 @@ async function finish() {
   function renderResults() {
     summaryText.textContent = results.length + ' answers recorded. Listen and evaluate yourself!';
     resultList.innerHTML = '';
-results.forEach((r, i) => {
+    results.forEach((r, i) => {
       const item = document.createElement('div');
       item.className = 'result-item';
       let recBlock;
@@ -1029,7 +714,7 @@ results.forEach((r, i) => {
         recBlock =
           '<audio controls src="' + r.rec.url + '"></audio><br>' +
           '<a class="download-link" href="' + r.rec.url + '" download="speaking-q' + (i + 1) + '.' + ext + '">⬇ Download</a>';
-      } else {
+} else {
         recBlock = '<span style="color:var(--muted); font-size:12px;">No recording</span>';
       }
       const sample = SAMPLES[r.question];
@@ -1039,14 +724,14 @@ results.forEach((r, i) => {
           '<button class="sample-toggle" data-i="' + i + '">💡 Show sample answer</button>' +
           '<div class="result-sample hidden" id="rsample-' + i + '"><b>Sample answer:</b> ' + escapeHtml(sample) + '</div>';
       }
-item.innerHTML =
+      item.innerHTML =
         '<div class="q-text">' + (i + 1) + '. ' + escapeHtml(r.question) +
         '<small>' + r.seconds + ' seconds</small></div>' + recBlock + sampleBlock;
       resultList.appendChild(item);
     });
   }
 
-  function escapeHtml(s) {
+function escapeHtml(s) {
     return s.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
   }
 
@@ -1062,7 +747,7 @@ item.innerHTML =
   });
 
   /* ---------------- FLOW ---------------- */
-  startBtn.addEventListener('click', async () => {
+startBtn.addEventListener('click', async () => {
     questions = SAVOLLAR.slice();
     showSamples = $('samplesToggle').checked;
     if (questions.length === 0) {
@@ -1169,6 +854,3 @@ againBtn.addEventListener('click', () => {
     if (stream) { stream.getTracks().forEach(t => t.stop()); stream = null; }
   });
 })();
-</script>
-</body>
-</html>
