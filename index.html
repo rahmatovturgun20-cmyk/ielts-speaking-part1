@@ -230,6 +230,7 @@
       <li>➡️ Questions are shown automatically, one after another</li>
       <li>⏭ Use "Skip" or "Next question" to move on early</li>
       <li>💡 After each 30-second answer, a <b>B2 sample answer</b> is read aloud by another speaker, then the next question starts automatically</li>
+      <li>👂 After every <b>5 questions</b>, you can <b>listen to your recordings</b> and evaluate yourself before continuing</li>
     </ul>
     <label class="toggle-row">
       <input type="checkbox" id="samplesToggle" checked>
@@ -264,6 +265,16 @@
       <button class="btn gray" id="prevBtn">⏮ Prev</button>
       <button class="btn gray" id="pauseBtn">⏸ Pause</button>
       <button class="btn gray" id="skipBtn">⏭ Skip</button>
+    </div>
+  </div>
+
+<!-- STEP 2b: review after every 5 questions -->
+  <div class="card hidden" id="reviewCard">
+    <div class="step-title"><span class="num">👂</span> Review your answers</div>
+    <p class="summary" id="reviewSummary"></p>
+    <div id="reviewList"></div>
+    <div class="btn-wrap">
+      <button class="btn green" id="continueBtn">➡️ Continue</button>
     </div>
   </div>
 
@@ -607,8 +618,12 @@ const ANSWER_SEC = 30;  // answer time in seconds
   const micStatus = $('micStatus');
   const summaryText = $('summaryText');
   const resultList = $('resultList');
-  const sampleBox = $('sampleBox');
+const sampleBox = $('sampleBox');
   const sampleText = $('sampleText');
+  const reviewCard = $('reviewCard');
+  const reviewList = $('reviewList');
+  const reviewSummary = $('reviewSummary');
+  const continueBtn = $('continueBtn');
 
   let questions = [];
   let idx = 0;
@@ -626,6 +641,7 @@ const ANSWER_SEC = 30;  // answer time in seconds
   let sampleAdvancePending = false;
   let lastSampleText = '';
   let sampleStartPos = 0;
+  let reviewResolve = null;
 
   function beep(freq, dur, delay) {
     try {
@@ -832,6 +848,9 @@ const ANSWER_SEC = 30;  // answer time in seconds
   async function advanceAfterAnswer() {
     sampleAdvancePending = false;
     sampleBox.classList.add('hidden');
+    if (results.length > 0 && results.length % 5 === 0 && idx + 1 < questions.length) {
+      await showReview();
+    }
     idx++;
     if (idx < questions.length) {
       await new Promise(r => setTimeout(r, 400));
@@ -841,11 +860,77 @@ const ANSWER_SEC = 30;  // answer time in seconds
     }
   }
 
+  /* ---------------- REVIEW EVERY 5 QUESTIONS ---------------- */
+  function showReview() {
+    return new Promise((resolve) => {
+      reviewResolve = resolve;
+      clearTimer();
+      stopSpeech();
+      renderReviewList();
+      practiceCard.classList.add('hidden');
+      reviewCard.classList.remove('hidden');
+    });
+  }
+
+  function renderReviewList() {
+    const batch = results.slice(-5);
+    const first = results.length - batch.length + 1;
+    reviewSummary.textContent = 'Questions ' + first + '–' + results.length + ' — listen to your recordings, then press Continue.';
+    reviewList.innerHTML = '';
+    batch.forEach((r, i) => {
+      const absIdx = results.length - batch.length + i;
+      const item = document.createElement('div');
+      item.className = 'result-item';
+      let recBlock = '';
+      if (r.rec) {
+        const ext = (r.rec.blob.type.includes('mp4')) ? 'm4a' : 'webm';
+        recBlock =
+          '<audio controls preload="metadata" src="' + r.rec.url + '"></audio><br>' +
+          '<a class="download-link" href="' + r.rec.url + '" download="speaking-q' + (absIdx + 1) + '.' + ext + '">⬇ Download</a>';
+      } else {
+        recBlock = '<span style="color:var(--muted); font-size:12px;">No recording</span>';
+      }
+      const sample = SAMPLES[r.question];
+      let sampleBlock = '';
+      if (sample) {
+        sampleBlock =
+          '<button class="sample-toggle" data-abs="' + absIdx + '">💡 Show sample answer</button>' +
+          '<div class="result-sample hidden" id="rrev-' + absIdx + '"><b>Sample answer:</b> ' + escapeHtml(sample) + '</div>';
+      }
+      item.innerHTML =
+        '<div class="q-text">' + (absIdx + 1) + '. ' + escapeHtml(r.question) +
+        '<small>' + r.seconds + ' seconds</small></div>' + recBlock + sampleBlock;
+      reviewList.appendChild(item);
+    });
+  }
+
+  reviewList.addEventListener('click', function reviewToggle(e) {
+    const btn = e.target.closest('.sample-toggle');
+    if (!btn) return;
+    const el = document.getElementById('rrev-' + btn.dataset.abs);
+    if (el) {
+      const isHidden = el.classList.contains('hidden');
+      el.classList.toggle('hidden', !isHidden);
+      btn.innerHTML = isHidden ? '🙈 Hide sample answer' : '💡 Show sample answer';
+    }
+  });
+
+  continueBtn.addEventListener('click', async () => {
+    reviewCard.classList.add('hidden');
+    practiceCard.classList.remove('hidden');
+    if (reviewResolve) {
+      const rr = reviewResolve;
+      reviewResolve = null;
+      rr();
+    }
+  });
+
 async function finish() {
     clearTimer();
     stopSpeech();
     sampleAdvancePending = false;
     sampleBox.classList.add('hidden');
+    reviewCard.classList.add('hidden');
     setPhaseUI('prep');
     practiceCard.classList.add('hidden');
     renderResults();
@@ -912,9 +997,10 @@ item.innerHTML =
       alert('Microphone access was denied or no microphone was found. Allow access in your browser settings.');
       return;
     }
-    idx = 0; results = [];
+idx = 0; results = [];
     setupCard.classList.add('hidden');
     resultCard.classList.add('hidden');
+    reviewCard.classList.add('hidden');
     practiceCard.classList.remove('hidden');
     nextQuestion();
   });

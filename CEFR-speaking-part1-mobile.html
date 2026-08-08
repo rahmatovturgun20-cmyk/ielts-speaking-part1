@@ -172,9 +172,16 @@
   .timer-num.prep { color: #b45309; }
   .timer-num.answer { color: var(--red); }
 
-  .mic-status {
+.mic-status {
     text-align: center; margin-top: 14px; font-size: 13px; color: var(--muted);
     min-height: 18px; font-weight: 600;
+  }
+  .mic-status.rec { color: var(--red); }
+
+  audio { width: 100%; height: 40px; margin: 6px 0 2px; }
+  .download-link {
+    display: inline-block; margin: 4px 0 8px; color: var(--blue);
+    font-weight: 700; font-size: 13px; text-decoration: none;
   }
 
   /* ---- results ---- */
@@ -246,11 +253,12 @@
     </p>
     <ul class="rules">
       <li>⏳ <b>5 seconds</b> of preparation time for each question</li>
-      <li>🔊 The question is <b>read aloud</b> by an examiner-like voice</li>
-      <li>🗣 You <b>answer out loud</b> — no microphone or recording needed</li>
+<li>🔊 The question is <b>read aloud</b> by an examiner-like voice</li>
+      <li>🎙️ Your <b>answer is recorded</b> — microphone permission is needed</li>
       <li>➡️ Questions are shown automatically, one after another</li>
       <li>⏭ Use "Skip" or "Next question" to move on early</li>
       <li>💡 After each 30-second answer, a <b>B2 sample answer</b> is read aloud by another speaker, so the next question starts automatically</li>
+      <li>👂 After every <b>5 questions</b>, you can <b>listen to your recordings</b> and evaluate yourself</li>
     </ul>
     <label class="toggle-row">
       <input type="checkbox" id="samplesToggle" checked>
@@ -285,6 +293,16 @@
       <button class="btn gray" id="prevBtn">⏮ Prev</button>
       <button class="btn gray" id="pauseBtn">⏸ Pause</button>
       <button class="btn gray" id="skipBtn">⏭ Skip</button>
+    </div>
+  </div>
+
+<!-- STEP 2b: review after every 5 questions -->
+  <div class="card hidden" id="reviewCard">
+    <div class="step-title"><span class="num">👂</span> Review your answers</div>
+    <p class="summary" id="reviewSummary"></p>
+    <div id="reviewList"></div>
+    <div class="btn-wrap">
+      <button class="btn green" id="continueBtn">➡️ Continue</button>
     </div>
   </div>
 
@@ -620,14 +638,21 @@ const ANSWER_SEC = 30;  // answer time in seconds
   const timerNum = $('timerNum');
 const micStatus = $('micStatus');
   const summaryText = $('summaryText');
-  const sampleBox = $('sampleBox');
+const sampleBox = $('sampleBox');
   const sampleText = $('sampleText');
   const resultList = $('resultList');
+  const reviewCard = $('reviewCard');
+  const reviewList = $('reviewList');
+  const reviewSummary = $('reviewSummary');
+  const continueBtn = $('continueBtn');
 
   let questions = [];
   let idx = 0;
   let timerId = null;
   let endTime = 0;
+  let stream = null;
+  let recorder = null;
+  let chunks = [];
 let results = [];
   let currentPhase = 'idle'; // 'prep' | 'answer' | 'sample'
   let isPaused = false;
@@ -637,6 +662,7 @@ let results = [];
   let sampleAdvancePending = false;
   let lastSampleText = '';
   let sampleStartPos = 0;
+  let reviewResolve = null;
 
   function beep(freq, dur, delay) {
     try {
@@ -703,6 +729,25 @@ function stopSpeech() {
       } catch (e) { if (onDone) { onDone(); } }
   }
 
+  /* ---------------- RECORDING ---------------- */
+  function startRecording() {
+    chunks = [];
+    recorder = new MediaRecorder(stream);
+    recorder.ondataavailable = (e) => { if (e.data.size > 0) chunks.push(e.data); };
+    recorder.start();
+  }
+
+  function stopRecording() {
+    return new Promise((resolve) => {
+      if (!recorder || recorder.state === 'inactive') { resolve(null); return; }
+      recorder.onstop = () => {
+        const blob = new Blob(chunks, { type: recorder.mimeType || 'audio/webm' });
+        resolve({ blob, url: URL.createObjectURL(blob) });
+      };
+      recorder.stop();
+    });
+  }
+
   /* ---------------- TIMER ---------------- */
   function startTimer(seconds, onEnd, phase) {
     clearTimer();
@@ -748,6 +793,7 @@ if (phase === 'prep') {
       phaseChip.textContent = '⏳ Preparation';
       phaseLabel.textContent = '⏳ Preparation time — listen to the question';
       micStatus.textContent = '🔇 Listening to the question...';
+      micStatus.classList.remove('rec');
       skipBtn.textContent = '⏭ Skip';
       skipBtn.disabled = false;
       isPaused = false;
@@ -757,14 +803,16 @@ if (phase === 'prep') {
       phaseChip.textContent = '💡 Sample answer';
       phaseLabel.innerHTML = '<span class="dot"></span>Listen to the sample — a B2 answer by another speaker';
       micStatus.textContent = '📖 The sample answer is being read aloud — the next question starts automatically afterwards';
+      micStatus.classList.remove('rec');
       skipBtn.textContent = '➡️ Next question';
       skipBtn.disabled = false;
       isPaused = false;
       pauseBtn.textContent = '⏸ Pause';
     } else {
-      phaseChip.textContent = '🗣 Answering';
-      phaseLabel.innerHTML = '<span class="dot"></span>Speak now!';
-      micStatus.textContent = '🗣 Speak your answer out loud...';
+      phaseChip.textContent = '🎙️ Answering';
+      phaseLabel.innerHTML = '<span class="dot"></span>Speak now — your voice is being recorded';
+      micStatus.textContent = '🎙️ Microphone is recording your answer...';
+      micStatus.classList.add('rec');
       skipBtn.textContent = '⏭ Next question';
       skipBtn.disabled = false;
     }
@@ -783,17 +831,19 @@ function nextQuestion() {
     });
   }
 
-  function phaseAnswer() {
+function phaseAnswer() {
     stopSpeech();
     signalSound();
     setPhaseUI('answer');
+    try { startRecording(); } catch (e) { /* ignore */ }
     startTimer(ANSWER_SEC, () => { afterAnswer(); }, 'answer');
   }
 
-function afterAnswer() {
+async function afterAnswer() {
     clearTimer();
     stopSpeech();
-    results.push({ question: questions[idx], seconds: ANSWER_SEC });
+    const rec = await stopRecording();
+    results.push({ question: questions[idx], rec: rec, seconds: ANSWER_SEC });
     const sample = SAMPLES[questions[idx]];
     if (showSamples && sample && idx < questions.length) {
       showSamplePhase(sample);
@@ -822,9 +872,12 @@ function afterAnswer() {
     setTimeout(() => { advanceAfterAnswer(); }, 800);
   }
 
-  function advanceAfterAnswer() {
+  async function advanceAfterAnswer() {
     sampleAdvancePending = false;
     sampleBox.classList.add('hidden');
+    if (results.length > 0 && results.length % 5 === 0 && idx + 1 < questions.length) {
+      await showReview();
+    }
     idx++;
     if (idx < questions.length) {
       setTimeout(() => nextQuestion(), 400);
@@ -833,24 +886,100 @@ function afterAnswer() {
     }
   }
 
+  /* ---------------- REVIEW EVERY 5 QUESTIONS ---------------- */
+  function showReview() {
+    return new Promise((resolve) => {
+      reviewResolve = resolve;
+      clearTimer();
+      stopSpeech();
+      renderReviewList();
+      practiceCard.classList.add('hidden');
+      reviewCard.classList.remove('hidden');
+    });
+  }
+
+  function renderReviewList() {
+    const batch = results.slice(-5);
+    const first = results.length - batch.length + 1;
+    reviewSummary.textContent = 'Questions ' + first + '–' + results.length + ' — listen to your recordings, then press Continue.';
+    reviewList.innerHTML = '';
+    batch.forEach((r, i) => {
+      const absIdx = results.length - batch.length + i;
+      const item = document.createElement('div');
+      item.className = 'result-item';
+      let recBlock = '';
+      if (r.rec) {
+        const ext = (r.rec.blob.type.includes('mp4')) ? 'm4a' : 'webm';
+        recBlock =
+          '<audio controls preload="metadata" src="' + r.rec.url + '"></audio><br>' +
+          '<a class="download-link" href="' + r.rec.url + '" download="speaking-q' + (absIdx + 1) + '.' + ext + '">⬇ Download</a>';
+      } else {
+        recBlock = '<span style="color:var(--muted); font-size:12px;">No recording</span>';
+      }
+      const sample = SAMPLES[r.question];
+      let sampleBlock = '';
+      if (sample) {
+        sampleBlock =
+          '<button class="sample-toggle" data-abs="' + absIdx + '">💡 Show sample answer</button>' +
+          '<div class="result-sample hidden" id="rrev-' + absIdx + '"><b>Sample answer:</b> ' + escapeHtml(sample) + '</div>';
+      }
+      item.innerHTML =
+        '<div class="q-text">' + (absIdx + 1) + '. ' + escapeHtml(r.question) +
+        '<small>' + r.seconds + ' seconds</small></div>' + recBlock + sampleBlock;
+      reviewList.appendChild(item);
+    });
+  }
+
+  reviewList.addEventListener('click', function reviewToggle(e) {
+    const btn = e.target.closest('.sample-toggle');
+    if (!btn) return;
+    const el = document.getElementById('rrev-' + btn.dataset.abs);
+    if (el) {
+      const isHidden = el.classList.contains('hidden');
+      el.classList.toggle('hidden', !isHidden);
+      btn.innerHTML = isHidden ? '🙈 Hide sample answer' : '💡 Show sample answer';
+    }
+  });
+
+  continueBtn.addEventListener('click', () => {
+    reviewCard.classList.add('hidden');
+    practiceCard.classList.remove('hidden');
+    if (reviewResolve) {
+      const rr = reviewResolve;
+      reviewResolve = null;
+      rr();
+    }
+  });
+
   function finish() {
     clearTimer();
     stopSpeech();
     sampleAdvancePending = false;
     sampleBox.classList.add('hidden');
+    reviewCard.classList.add('hidden');
     setPhaseUI('prep');
     practiceCard.classList.add('hidden');
     renderResults();
     resultCard.classList.remove('hidden');
+    if (stream) { stream.getTracks().forEach(t => t.stop()); stream = null; }
   }
 
   /* ---------------- RESULTS ---------------- */
 function renderResults() {
-    summaryText.textContent = results.length + ' questions completed. Keep practicing!';
+    summaryText.textContent = results.length + ' answers recorded. Listen and evaluate yourself!';
     resultList.innerHTML = '';
     results.forEach((r, i) => {
       const item = document.createElement('div');
       item.className = 'result-item';
+      let recBlock = '';
+      if (r.rec) {
+        const ext = (r.rec.blob.type.includes('mp4')) ? 'm4a' : 'webm';
+        recBlock =
+          '<audio controls preload="metadata" src="' + r.rec.url + '"></audio><br>' +
+          '<a class="download-link" href="' + r.rec.url + '" download="speaking-q' + (i + 1) + '.' + ext + '">⬇ Download</a>';
+      } else {
+        recBlock = '<span style="color:var(--muted); font-size:12px;">No recording</span>';
+      }
       const sample = SAMPLES[r.question];
       let sampleBlock = '';
       if (sample) {
@@ -860,7 +989,7 @@ function renderResults() {
       }
       item.innerHTML =
         '<div class="q-text">' + (i + 1) + '. ' + escapeHtml(r.question) +
-        '<small>' + r.seconds + ' seconds</small></div>' + sampleBlock;
+        '<small>' + r.seconds + ' seconds</small></div>' + recBlock + sampleBlock;
       resultList.appendChild(item);
     });
   }
@@ -881,21 +1010,28 @@ function escapeHtml(s) {
   });
 
   /* ---------------- FLOW ---------------- */
-startBtn.addEventListener('click', () => {
+startBtn.addEventListener('click', async () => {
     questions = SAVOLLAR.slice();
     showSamples = $('samplesToggle').checked;
     if (questions.length === 0) {
       alert('Please add at least one question to the SAVOLLAR list in the file!');
       return;
     }
+    try {
+      stream = await navigator.mediaDevices.getUserMedia({ audio: true });
+    } catch (e) {
+      alert('Microphone access was denied or no microphone was found. Allow access in your browser settings.');
+      return;
+    }
     idx = 0; results = [];
     setupCard.classList.add('hidden');
     resultCard.classList.add('hidden');
+    reviewCard.classList.add('hidden');
     practiceCard.classList.remove('hidden');
     nextQuestion();
   });
 
-skipBtn.addEventListener('click', () => {
+skipBtn.addEventListener('click', async () => {
     stopSpeech();
     if (currentPhase === 'prep') {
       clearTimer();
@@ -904,7 +1040,7 @@ skipBtn.addEventListener('click', () => {
     } else if (currentPhase === 'answer') {
       clearTimer();
       isPaused = false;
-      afterAnswer();
+      await afterAnswer();
 } else if (currentPhase === 'sample') {
       clearTimer();
       isPaused = false;
@@ -913,13 +1049,16 @@ skipBtn.addEventListener('click', () => {
     }
   });
 
-prevBtn.addEventListener('click', () => {
+prevBtn.addEventListener('click', async () => {
     if (idx <= 0) { return; }
     sampleAdvancePending = false;
     sampleBox.classList.add('hidden');
     clearTimer();
     stopSpeech();
     isPaused = false;
+    if (recorder && recorder.state !== 'inactive') {
+      try { await stopRecording(); } catch (e) { /* ignore */ }
+    }
     results = results.filter(r => r.question !== questions[idx]);
     idx--;
     nextQuestion();
@@ -941,11 +1080,16 @@ pauseBtn.addEventListener('click', () => {
       }
       return;
     }
-    if (isPaused) {
+if (isPaused) {
       isPaused = false;
       pauseBtn.textContent = '⏸ Pause';
       skipBtn.disabled = false;
-      micStatus.textContent = (currentPhase === 'prep') ? '🔇 Listening to the question...' : '🗣 Speak your answer out loud...';
+      if (recorder && recorder.state === 'paused') {
+        try { recorder.resume(); } catch (e) { /* ignore */ }
+      }
+      micStatus.textContent = (currentPhase === 'prep') ? '🔇 Listening to the question...' : '🎙️ Microphone is recording...';
+      micStatus.classList.remove('rec');
+      if (currentPhase === 'answer') { micStatus.classList.add('rec'); }
       try { window.speechSynthesis.resume(); } catch (e) { /* ignore */ }
       startTimer(pausedRemain, onEndCb, currentPhase);
     } else {
@@ -955,7 +1099,11 @@ pauseBtn.addEventListener('click', () => {
       clearTimer();
       pauseBtn.textContent = '▶ Resume';
       skipBtn.disabled = true;
+      if (recorder && recorder.state === 'recording') {
+        try { recorder.pause(); } catch (e) { /* ignore */ }
+      }
       micStatus.textContent = '⏸ Paused — press Resume to continue';
+      micStatus.classList.remove('rec');
       try { window.speechSynthesis.pause(); } catch (e) { /* ignore */ }
     }
   });
@@ -963,7 +1111,9 @@ pauseBtn.addEventListener('click', () => {
   againBtn.addEventListener('click', () => {
     resultCard.classList.add('hidden');
     practiceCard.classList.add('hidden');
+    reviewCard.classList.add('hidden');
     setupCard.classList.remove('hidden');
+    if (stream) { stream.getTracks().forEach(t => t.stop()); stream = null; }
   });
 })();
 </script>
