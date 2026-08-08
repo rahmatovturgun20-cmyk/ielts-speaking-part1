@@ -702,7 +702,7 @@ const sampleBox = $('sampleBox');
     } catch (e) { if (onDone) { onDone(); } }
   }
 
-  /* ---------------- RECORDING ---------------- */
+/* ---------------- RECORDING ---------------- */
   async function startRecording() {
     chunks = [];
     recorder = new MediaRecorder(stream);
@@ -710,12 +710,72 @@ const sampleBox = $('sampleBox');
     recorder.start();
   }
 
+  function writeWavString(dv, offset, str) {
+    for (let i = 0; i < str.length; i++) dv.setUint8(offset + i, str.charCodeAt(i));
+  }
+
+  function blobToArrayBuffer(blob) {
+    return new Promise((resolve, reject) => {
+      const fr = new FileReader();
+      fr.onload = () => resolve(fr.result);
+      fr.onerror = reject;
+      fr.readAsArrayBuffer(blob);
+    });
+  }
+
+  function padToWav(buffer, targetSec) {
+    const sampleRate = buffer.sampleRate;
+    const ch = Math.min(2, buffer.numberOfChannels);
+    const numSamples = Math.round(targetSec * sampleRate);
+    const dataLen = numSamples * ch * 2;
+    const ab = new ArrayBuffer(44 + dataLen);
+    const dv = new DataView(ab);
+    writeWavString(dv, 0, 'RIFF');
+    dv.setUint32(4, 36 + dataLen, true);
+    writeWavString(dv, 8, 'WAVE');
+    writeWavString(dv, 12, 'fmt ');
+    dv.setUint32(16, 16, true);
+    dv.setUint16(20, 1, true);
+    dv.setUint16(22, ch, true);
+    dv.setUint32(24, sampleRate, true);
+    dv.setUint32(28, sampleRate * ch * 2, true);
+    dv.setUint16(32, ch * 2, true);
+    dv.setUint16(34, 16, true);
+    writeWavString(dv, 36, 'data');
+    dv.setUint32(40, dataLen, true);
+    let offset = 44;
+    for (let i = 0; i < numSamples; i++) {
+      for (let c = 0; c < ch; c++) {
+        let s = 0;
+        if (i < buffer.length) s = buffer.getChannelData(c)[i];
+        s = Math.max(-1, Math.min(1, s));
+        dv.setInt16(offset, s < 0 ? s * 0x8000 : s * 0x7FFF, true);
+        offset += 2;
+      }
+    }
+    return new Blob([ab], { type: 'audio/wav' });
+  }
+
+  let wavCtx = null;
+  function getWavCtx() {
+    if (!wavCtx) wavCtx = new (window.AudioContext || window.webkitAudioContext)();
+    return wavCtx;
+  }
+
   function stopRecording() {
     return new Promise((resolve) => {
       if (!recorder || recorder.state === 'inactive') { resolve(null); return; }
       recorder.onstop = () => {
-        const blob = new Blob(chunks, { type: recorder.mimeType || 'audio/webm' });
-        resolve({ blob, url: URL.createObjectURL(blob) });
+        (async () => {
+          const raw = new Blob(chunks, { type: recorder.mimeType || 'audio/webm' });
+          try {
+            const buf = await getWavCtx().decodeAudioData(await blobToArrayBuffer(raw));
+            const wav = padToWav(buf, ANSWER_SEC);
+            resolve({ blob: wav, url: URL.createObjectURL(wav) });
+          } catch (e) {
+            resolve({ blob: raw, url: URL.createObjectURL(raw) });
+          }
+        })();
       };
       recorder.stop();
     });
@@ -883,7 +943,7 @@ const sampleBox = $('sampleBox');
       item.className = 'result-item';
       let recBlock = '';
       if (r.rec) {
-        const ext = (r.rec.blob.type.includes('mp4')) ? 'm4a' : 'webm';
+        const ext = (r.rec.blob.type.includes('mp4')) ? 'm4a' : (r.rec.blob.type.indexOf('wav') !== -1 || r.rec.blob.type.indexOf('wave') !== -1) ? 'wav' : 'webm';
         recBlock =
           '<audio controls preload="metadata" src="' + r.rec.url + '"></audio><br>' +
           '<a class="download-link" href="' + r.rec.url + '" download="speaking-q' + (absIdx + 1) + '.' + ext + '">⬇ Download</a>';
@@ -947,7 +1007,7 @@ results.forEach((r, i) => {
       item.className = 'result-item';
       let recBlock;
       if (r.rec) {
-        const ext = (r.rec.blob.type.includes('mp4')) ? 'm4a' : 'webm';
+        const ext = (r.rec.blob.type.includes('mp4')) ? 'm4a' : (r.rec.blob.type.indexOf('wav') !== -1 || r.rec.blob.type.indexOf('wave') !== -1) ? 'wav' : 'webm';
         recBlock =
           '<audio controls src="' + r.rec.url + '"></audio><br>' +
           '<a class="download-link" href="' + r.rec.url + '" download="speaking-q' + (i + 1) + '.' + ext + '">⬇ Download</a>';
