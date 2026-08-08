@@ -6,20 +6,25 @@
 <title>Multilevel Speaking Test</title>
 <style>
   :root {
-    --blue: #1a4b8c;
-    --blue-dark: #123562;
-    --red: #e63946;
-    --green: #2ecc71;
-    --bg: #eef2f7;
+    --primary: #4f46e5;
+    --primary-dark: #4338ca;
+    --violet: #7c3aed;
+    --red: #e11d48;
+    --green: #10b981;
+    --amber: #d97706;
+    --bg: #f4f6fb;
     --card: #ffffff;
-    --text: #1f2d3d;
-    --muted: #64748b;
-    --border: #dbe4ee;
+    --text: #1f2937;
+    --muted: #6b7280;
+    --border: #e3e8f0;
   }
   * { margin: 0; padding: 0; box-sizing: border-box; }
   body {
     font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
-    background: linear-gradient(150deg, #eef2f7 0%, #dbe4ee 100%);
+    background:
+      radial-gradient(1100px 480px at 88% -12%, rgba(124, 58, 237, .12), transparent 60%),
+      radial-gradient(900px 420px at 6% 108%, rgba(79, 70, 229, .12), transparent 60%),
+      linear-gradient(160deg, #f9fafc 0%, #eef1f8 100%);
     min-height: 100vh;
     display: flex;
     justify-content: center;
@@ -29,99 +34,141 @@
   }
   .container { max-width: 720px; width: 100%; }
 
-  header { text-align: center; margin-bottom: 22px; }
+  header { text-align: center; margin-bottom: 24px; }
   header h1 {
-    font-size: 30px; color: var(--blue); letter-spacing: 1px; font-weight: 800;
+    font-size: 32px; letter-spacing: .5px; font-weight: 900; color: var(--text);
   }
-  header h1 span { color: var(--red); }
-  header p { color: var(--muted); font-size: 14px; margin-top: 6px; }
+  header h1 span {
+    background: linear-gradient(90deg, var(--primary), var(--violet));
+    -webkit-background-clip: text; background-clip: text; color: transparent;
+  }
+  header p {
+    color: var(--muted); font-size: 13.5px; margin-top: 8px;
+    display: inline-flex; align-items: center; gap: 6px;
+    background: rgba(255, 255, 255, .85); border: 1px solid var(--border);
+    padding: 6px 14px; border-radius: 999px;
+  }
 
   .card {
     background: var(--card);
-    border-radius: 16px;
-    box-shadow: 0 10px 30px rgba(26, 75, 140, 0.12);
+    border-radius: 20px;
+    border: 1px solid rgba(227, 232, 240, .9);
+    box-shadow: 0 24px 48px -24px rgba(30, 41, 59, .22);
     padding: 26px;
-    margin-bottom: 18px;
+    margin-bottom: 20px;
   }
 
   .step-title {
-    font-size: 13px; font-weight: 700; color: var(--blue);
-    text-transform: uppercase; letter-spacing: 1.5px;
-    margin-bottom: 12px; display: flex; align-items: center; gap: 8px;
+    font-size: 12.5px; font-weight: 800; color: var(--primary);
+    text-transform: uppercase; letter-spacing: 1.6px;
+    margin-bottom: 14px; display: flex; align-items: center; gap: 9px;
   }
   .step-title .num {
-    background: var(--blue); color: #fff; width: 24px; height: 24px;
+    background: linear-gradient(135deg, var(--primary), var(--violet));
+    color: #fff; width: 25px; height: 25px;
     border-radius: 50%; display: inline-flex; align-items: center;
-    justify-content: center; font-size: 12px; flex-shrink: 0;
+    justify-content: center; font-size: 12.5px; flex-shrink: 0;
+    box-shadow: 0 6px 14px -6px rgba(79, 70, 229, .7);
   }
 
   textarea {
     width: 100%; min-height: 150px;
-    border: 2px solid var(--border); border-radius: 10px;
+    border: 2px solid var(--border); border-radius: 12px;
     padding: 12px 14px; font-size: 15px; font-family: inherit;
-    resize: vertical; outline: none; transition: border-color .2s;
+    resize: vertical; outline: none; transition: border-color .2s, box-shadow .2s;
   }
-  textarea:focus { border-color: var(--blue); }
+  textarea:focus { border-color: var(--primary); box-shadow: 0 0 0 4px rgba(79, 70, 229, .12); }
   .hint { font-size: 12.5px; color: var(--muted); margin-top: 8px; line-height: 1.5; }
 
   .btn {
     display: inline-flex; align-items: center; justify-content: center; gap: 8px;
-    border: none; border-radius: 10px; padding: 13px 26px;
-    font-size: 16px; font-weight: 700; cursor: pointer; color: #fff;
-    background: var(--blue); transition: transform .12s, box-shadow .2s, background .2s;
+    border: none; border-radius: 14px; padding: 14px 26px;
+    font-size: 15.5px; font-weight: 700; cursor: pointer; color: #fff;
+    background: linear-gradient(135deg, var(--primary), var(--violet));
+    box-shadow: 0 12px 26px -12px rgba(79, 70, 229, .65);
+    transition: transform .15s, box-shadow .2s, filter .2s;
     font-family: inherit;
   }
-  .btn:hover { background: var(--blue-dark); transform: translateY(-1px); }
-  .btn:active { transform: translateY(0); }
-  .btn:disabled { opacity: .5; cursor: not-allowed; transform: none; }
-  .btn.green { background: var(--green); }
-  .btn.gray { background: #94a3b8; }
-  .btn-wrap { display: flex; gap: 10px; justify-content: center; margin-top: 14px; flex-wrap: wrap; }
+  .btn:hover { filter: brightness(1.08); transform: translateY(-2px); }
+  .btn:active { transform: translateY(0) scale(.98); }
+  .btn:disabled { opacity: .5; cursor: not-allowed; transform: none; filter: none; box-shadow: none; }
+  .btn.green { background: linear-gradient(135deg, #34d399, #059669); box-shadow: 0 12px 26px -12px rgba(16, 185, 129, .6); }
+  .btn.gray { background: linear-gradient(135deg, #94a3b8, #64748b); box-shadow: 0 12px 26px -12px rgba(100, 116, 139, .55); }
+  .btn-wrap { display: flex; gap: 10px; justify-content: center; margin-top: 16px; flex-wrap: wrap; }
 
   .intro { font-size: 14px; color: var(--text); line-height: 1.6; margin-bottom: 14px; }
   .intro code, .intro b {
-    background: #eef2f7; padding: 2px 7px; border-radius: 6px;
-    font-family: Consolas, monospace; font-size: 13px; color: var(--blue);
+    background: #eef2ff; padding: 2px 8px; border-radius: 7px;
+    font-family: Consolas, monospace; font-size: 13px; color: var(--primary);
   }
   .rules { list-style: none; padding: 0; }
   .rules li {
-    font-size: 14px; color: var(--text); padding: 7px 0;
+    display: flex; gap: 9px; align-items: flex-start;
+    font-size: 14px; color: var(--text); padding: 8px 0;
     border-bottom: 1px dashed var(--border); line-height: 1.5;
   }
   .rules li:last-child { border-bottom: none; }
-  .rules li b { color: var(--blue); }
+  .rules li b { color: var(--primary); }
 
   .toggle-row {
     display: flex; align-items: center; gap: 10px; cursor: pointer;
-    background: #fef3c7; border: 2px solid #fde68a; border-radius: 10px;
-    padding: 12px 14px; margin-top: 8px; font-size: 14px; font-weight: 600;
-    color: var(--text); user-select: none;
+    background: #f6f7ff; border: 1.5px solid #e0e7ff; border-radius: 14px;
+    padding: 13px 15px; margin-top: 10px; font-size: 14px; font-weight: 600;
+    color: var(--text); user-select: none; transition: border-color .2s, background .2s;
   }
-  .toggle-row input { width: 18px; height: 18px; accent-color: #d97706; }
+  .toggle-row:hover { border-color: #c7d2fe; background: #eef1ff; }
+  .toggle-row input { width: 18px; height: 18px; accent-color: var(--primary); }
 
-  /* ---- practice view ---- */
+  .group-panel {
+    margin-top: 10px; padding: 14px 15px; border-radius: 14px;
+    background: #f6f7ff; border: 1.5px solid #e0e7ff;
+  }
+  .group-title {
+    font-size: 12px; font-weight: 800; letter-spacing: 1px;
+    color: var(--primary); text-transform: uppercase; margin-bottom: 10px;
+    display: flex; align-items: center; gap: 6px;
+  }
+  .group-list { display: flex; flex-wrap: wrap; gap: 8px; }
+  .group-btn {
+    border: 1.5px solid #c7d2fe; background: #fff; color: var(--primary);
+    border-radius: 999px; padding: 7px 14px; font-size: 13px; font-weight: 700;
+    cursor: pointer; font-family: inherit; user-select: none;
+    transition: background .15s, color .15s, box-shadow .15s;
+  }
+  .group-btn:hover { background: #eef1ff; }
+  .group-btn.active {
+    background: linear-gradient(135deg, var(--primary), var(--violet));
+    color: #fff; border-color: transparent;
+    box-shadow: 0 8px 18px -8px rgba(79, 70, 229, .7);
+  }
+
+
+/* ---- practice view ---- */
   .status-bar {
     display: flex; justify-content: space-between; align-items: center;
     margin-bottom: 16px; font-size: 13px; color: var(--muted); font-weight: 600;
   }
   .status-bar .chip {
-    background: var(--blue); color: #fff; padding: 5px 12px;
-    border-radius: 20px; font-size: 12.5px; letter-spacing: .5px;
+    background: linear-gradient(135deg, var(--primary), var(--violet));
+    color: #fff; padding: 6px 14px;
+    border-radius: 999px; font-size: 12px; letter-spacing: .5px; font-weight: 700;
+    box-shadow: 0 6px 14px -8px rgba(79, 70, 229, .7);
   }
 
   .question-box {
-    background: linear-gradient(135deg, var(--blue) 0%, var(--blue-dark) 100%);
-    border-radius: 14px; padding: 22px; color: #fff;
-    min-height: 96px; display: flex; align-items: center; justify-content: center;
-    text-align: center; margin-bottom: 18px;
+    background: linear-gradient(135deg, var(--primary) 0%, var(--violet) 65%, #8b5cf6 100%);
+    border-radius: 18px; padding: 24px 22px; color: #fff;
+    min-height: 100px; display: flex; align-items: center; justify-content: center;
+    text-align: center; margin-bottom: 20px;
+    box-shadow: 0 18px 40px -18px rgba(79, 70, 229, .55);
   }
-  .question-box .q { font-size: 20px; font-weight: 600; line-height: 1.45; }
+  .question-box .q { font-size: 20px; font-weight: 700; line-height: 1.45; }
 
   .phase-label {
     text-align: center; font-size: 15px; font-weight: 700; margin-bottom: 12px;
     letter-spacing: .3px;
   }
-  .phase-label.prep { color: #b45309; }
+  .phase-label.prep { color: var(--amber); }
   .phase-label.answer { color: var(--red); }
   .phase-label.answer .dot {
     display: inline-block; width: 11px; height: 11px; border-radius: 50%;
@@ -133,24 +180,23 @@
     50% { opacity: .35; transform: scale(1.35); }
   }
 
-  .phase-label.prep { color: #b45309; }
   .bar-track {
-    height: 14px; background: #e2e8f0; border-radius: 20px; overflow: hidden;
+    height: 14px; background: #e8ecf3; border-radius: 999px; overflow: hidden;
   }
   .bar-fill {
-    height: 100%; width: 0%; border-radius: 20px;
-    background: linear-gradient(90deg, #38bdf8, var(--blue));
+    height: 100%; width: 0%; border-radius: 999px;
+    background: linear-gradient(90deg, #818cf8, var(--primary));
     transition: width .1s linear;
   }
-  .bar-fill.prep { background: linear-gradient(90deg, #fbbf24, #b45309); }
-  .bar-fill.answer { background: linear-gradient(90deg, #f87171, var(--red)); }
+  .bar-fill.prep { background: linear-gradient(90deg, #fbbf24, var(--amber)); }
+  .bar-fill.answer { background: linear-gradient(90deg, #fb7185, var(--red)); }
 
   .timer-num {
-    text-align: center; margin-top: 8px;
-    font-size: 22px; font-weight: 800; font-variant-numeric: tabular-nums;
-    color: var(--blue);
+    text-align: center; margin-top: 10px;
+    font-size: 24px; font-weight: 900; font-variant-numeric: tabular-nums;
+    color: var(--primary);
   }
-  .timer-num.prep { color: #b45309; }
+  .timer-num.prep { color: var(--amber); }
   .timer-num.answer { color: var(--red); }
 
   .mic-status {
@@ -159,25 +205,33 @@
   }
   .mic-status.rec { color: var(--red); }
 
-  /* ---- results ---- */
+/* ---- results ---- */
   .result-item {
-    border: 2px solid var(--border); border-radius: 12px; padding: 14px 16px;
-    margin-bottom: 12px;
+    border: 1.5px solid var(--border); border-radius: 16px; padding: 15px 16px;
+    margin-bottom: 14px; background: #fff;
+    transition: border-color .2s, box-shadow .2s;
   }
-  .result-item .q-text { font-size: 14.5px; font-weight: 600; margin-bottom: 10px; color: var(--blue); }
-  .result-item .q-text small { display: block; color: var(--muted); font-weight: 400; font-size: 12px; margin-top: 2px; }
-  audio { width: 100%; height: 40px; }
+  .result-item .q-text { font-size: 14.5px; font-weight: 700; margin-bottom: 10px; color: var(--text); }
+  .result-item .q-text small { display: block; color: var(--muted); font-weight: 400; font-size: 12px; margin-top: 3px; }
+  .result-item.playing {
+    border-color: var(--primary);
+    background: #f5f6ff;
+    box-shadow: 0 0 0 4px rgba(79, 70, 229, .14);
+  }
+  audio { width: 100%; height: 44px; border-radius: 10px; }
   .download-link {
     display: inline-block; margin-top: 8px; font-size: 13px; font-weight: 700;
     color: var(--green); text-decoration: none; border-bottom: 1.5px dashed var(--green);
+    transition: opacity .2s;
   }
+  .download-link:hover { opacity: .75; }
   .summary { text-align: center; color: var(--muted); font-size: 14px; margin-bottom: 14px; }
 
   /* ---- sample answer ---- */
-  .sample-box {
+.sample-box {
     background: linear-gradient(135deg, #fffbeb 0%, #fef3c7 100%);
-    border: 2px solid #fcd34d;
-    border-radius: 12px;
+    border: 1.5px solid #fcd34d;
+    border-radius: 16px;
     padding: 16px 18px;
     margin: 18px 0 4px;
     color: var(--text);
@@ -192,19 +246,19 @@
     color: #b45309; text-transform: uppercase; margin-bottom: 8px;
     display: flex; align-items: center; gap: 6px;
   }
-  .sample-text { font-size: 15px; line-height: 1.65; }
+.sample-text { font-size: 15px; line-height: 1.65; }
 
-.result-sample {
-    background: #fef3c7; border-radius: 8px; padding: 10px 12px;
+  .result-sample {
+    background: #fffbeb; border: 1px solid #fde68a; border-radius: 12px; padding: 10px 12px;
     font-size: 13.5px; line-height: 1.55; margin-top: 8px; color: #584205;
   }
-  .result-sample b { color: #b45309; }
+  .result-sample b { color: var(--amber); }
   .sample-toggle {
-    border: none; background: #fef3c7; color: #b45309; cursor: pointer;
-    font-family: inherit; font-weight: 700; font-size: 12.5px; border-radius: 8px;
-    padding: 6px 12px; margin-top: 8px;
+    border: 1px solid #fde68a; background: #fffbeb; color: #b45309; cursor: pointer;
+    font-family: inherit; font-weight: 700; font-size: 12.5px; border-radius: 10px;
+    padding: 7px 13px; margin-top: 8px; transition: background .2s;
   }
-  .sample-toggle:hover { background: #fde68a; }
+  .sample-toggle:hover { background: #fef3c7; }
 
   .hidden { display: none !important; }
 </style>
@@ -230,12 +284,16 @@
       <li>➡️ Questions are shown automatically, one after another</li>
       <li>⏭ Use "Skip" or "Next question" to move on early</li>
       <li>💡 After each 30-second answer, a <b>B2 sample answer</b> is read aloud by another speaker, then the next question starts automatically</li>
-      <li>👂 After every <b>5 questions</b>, you can <b>listen to your recordings</b> and evaluate yourself before continuing</li>
+      <li>👂 After every <b>5 questions</b> (<b>5, 10, 15…</b>) the answers are <b>played automatically</b> one by one, and the test <b>continues by itself</b> afterwards</li>
     </ul>
-    <label class="toggle-row">
+<label class="toggle-row">
       <input type="checkbox" id="samplesToggle" checked>
       <span>Show B2 sample answers after each answer</span>
     </label>
+    <div class="group-panel">
+      <div class="group-title">📚 Choose a group of questions</div>
+      <div class="group-list" id="groupList"></div>
+    </div>
     <div class="btn-wrap">
       <button class="btn" id="startBtn">🎙️ Start the practice</button>
     </div>
@@ -250,7 +308,7 @@
 
     <div class="question-box"><div class="q" id="qText">Question</div></div>
 
-    <div class="sample-box hidden" id="sampleBox">
+<div class="sample-box hidden" id="sampleBox">
       <div class="sample-label">💡 Sample answer — B2 level</div>
       <div class="sample-text" id="sampleText"></div>
     </div>
@@ -594,7 +652,7 @@ const ANSWER_SEC = 30;  // answer time in seconds
 const micStatus = $('micStatus');
   const summaryText = $('summaryText');
   const resultList = $('resultList');
-const sampleBox = $('sampleBox');
+  const sampleBox = $('sampleBox');
   const sampleText = $('sampleText');
   const reviewCard = $('reviewCard');
   const reviewList = $('reviewList');
@@ -613,10 +671,42 @@ let results = [];
   let pausedRemain = 0;
   let onEndCb = null;
   let showSamples = true;
+  let selGroupStart = 0;
+  let selGroupEnd = 0;
   let sampleAdvancePending = false;
   let lastSampleText = '';
   let sampleStartPos = 0;
   let reviewResolve = null;
+  let reviewAudios = [];
+  let reviewAudioIdx = 0;
+  let autoContinueTimer = null;
+  let reviewPlayHintShown = false;
+
+  function renderGroupButtons() {
+    const gl = $('groupList');
+    if (!gl) { return; }
+    const n = SAVOLLAR.length;
+    const groups = [{ from: 0, to: n, label: 'All (' + 1 + '–' + n + ')', all: true }];
+    for (let f = 0; f < n; f += 5) {
+      const t = Math.min(f + 5, n);
+      if (t - f === n) { continue; }
+      groups.push({ from: f, to: t, label: (f + 1) + '–' + t });
+    }
+    groups.forEach((g) => {
+      const btn = document.createElement('button');
+      btn.type = 'button';
+      btn.className = 'group-btn' + (g.all ? ' active' : '');
+      btn.textContent = g.label;
+      btn.addEventListener('click', () => {
+        selGroupStart = g.from;
+        selGroupEnd = g.all ? 0 : g.to;
+        gl.querySelectorAll('.group-btn').forEach(b => b.classList.remove('active'));
+        btn.classList.add('active');
+      });
+      gl.appendChild(btn);
+    });
+  }
+  renderGroupButtons();
 
   function beep(freq, dur, delay) {
     try {
@@ -637,7 +727,25 @@ let results = [];
     beep(1760, 0.35, 0.24);
   }
 
-  /* ---------------- TTS (examiner voice) ---------------- */
+/* ---------------- TTS (examiner voice) ---------------- */
+  let _ttsVoices = [];
+  function refreshVoices() {
+    try {
+      const vs = window.speechSynthesis.getVoices();
+      if (vs && vs.length) { _ttsVoices = vs; }
+    } catch (e) { /* ignore */ }
+  }
+  if (window.speechSynthesis) {
+    refreshVoices();
+    try { window.speechSynthesis.onvoiceschanged = refreshVoices; } catch (e) { /* ignore */ }
+  }
+  function pickEnglishVoice(pref) {
+    refreshVoices();
+    return _ttsVoices.find(v => /en(-|_)/i.test(v.lang) && pref.test(v.name))
+      || _ttsVoices.find(v => /^en(-|_)/i.test(v.lang))
+      || _ttsVoices.find(v => /en/i.test(v.lang))
+      || null;
+  }
   function speakQuestion(text, onDone) {
     try {
       window.speechSynthesis.cancel();
@@ -645,9 +753,7 @@ let results = [];
       u.lang = 'en-US';
       u.rate = 0.95;
       u.pitch = 1;
-      const voices = window.speechSynthesis.getVoices();
-      const enVoice = voices.find(v => /en(-|_)/i.test(v.lang) && /female|female|samantha|karen|zira|jenny|aria|hazel|susan|victoria|google|natural/i.test(v.name))
-        || voices.find(v => /en(-|_)/i.test(v.lang));
+const enVoice = pickEnglishVoice(/samantha|karen|zira|jenny|aria|hazel|susan|victoria|google|natural|microsoft|female|en-us/i);
       if (enVoice) { u.voice = enVoice; u.lang = enVoice.lang; }
       if (onDone) { u.onend = onDone; u.onerror = onDone; }
       window.speechSynthesis.speak(u);
@@ -667,10 +773,8 @@ function stopSpeech() {
       u.lang = 'en-US';
       u.rate = 0.92;
       u.pitch = 1;
-      const voices = window.speechSynthesis.getVoices();
-      const sampleVoice = voices.find(v => /en(-|_)/i.test(v.lang) && /david|daniel|george|guy|mark|alex|james|ryan|tom|thomas|oliver|matthew|anthony|sean|aaron|fred|lee/i.test(v.name))
-        || voices.find(v => /en(-|_)/i.test(v.lang));
-      if (sampleVoice) { u.voice = sampleVoice; u.lang = sampleVoice.lang; }
+      const sampleVoice = pickEnglishVoice(/david|daniel|george|guy|mark|alex|james|ryan|tom|thomas|oliver|matthew|anthony|sean|aaron|fred|lee|microsoft|male/i);
+        if (sampleVoice) { u.voice = sampleVoice; u.lang = sampleVoice.lang; }
       if (onDone) { u.onend = onDone; u.onerror = onDone; }
       u.onboundary = (e) => { sampleStartPos = base + (e.charIndex || 0); };
       window.speechSynthesis.speak(u);
@@ -849,7 +953,7 @@ async function nextQuestion() {
     sampleAdvancePending = false;
     sampleBox.classList.add('hidden');
     sampleBox.classList.remove('reveal');
-    qCounter.textContent = 'Question ' + (idx + 1) + ' / ' + questions.length;
+    qCounter.textContent = 'Question ' + (selGroupStart + idx + 1) + ' / ' + questions.length;
     qText.textContent = questions[idx];
     setPhaseUI('prep');
     speakQuestion(questions[idx], () => {
@@ -901,7 +1005,7 @@ async function afterAnswer() {
   async function advanceAfterAnswer() {
     sampleAdvancePending = false;
     sampleBox.classList.add('hidden');
-    if (results.length > 0 && results.length % 5 === 0) {
+    if ((idx + 1) % 5 === 0) {
       await showReview();
     }
     idx++;
@@ -922,14 +1026,16 @@ async function afterAnswer() {
       renderReviewList();
       practiceCard.classList.add('hidden');
       reviewCard.classList.remove('hidden');
+      startReviewPlayback();
     });
   }
 
   function renderReviewList() {
     const batch = results.slice(-5);
     const first = results.length - batch.length + 1;
-    reviewSummary.textContent = 'Questions ' + first + '–' + results.length + ' — listen to your recordings, then press Continue.';
+    reviewSummary.textContent = 'Questions ' + (selGroupStart + first) + '–' + (selGroupStart + results.length) + ' — the recordings play automatically, then the test continues by itself.';
     reviewList.innerHTML = '';
+    reviewAudios = [];
     batch.forEach((r, i) => {
       const absIdx = results.length - batch.length + i;
       const item = document.createElement('div');
@@ -938,8 +1044,8 @@ async function afterAnswer() {
       if (r.rec) {
         const ext = (r.rec.blob.type.includes('mp4')) ? 'm4a' : (r.rec.blob.type.indexOf('wav') !== -1 || r.rec.blob.type.indexOf('wave') !== -1) ? 'wav' : 'webm';
         recBlock =
-          '<audio controls preload="metadata" src="' + r.rec.url + '"></audio><br>' +
-          '<a class="download-link" href="' + r.rec.url + '" download="speaking-q' + (absIdx + 1) + '.' + ext + '">⬇ Download</a>';
+          '<audio controls preload="auto" src="' + r.rec.url + '"></audio><br>' +
+          '<a class="download-link" href="' + r.rec.url + '" download="speaking-q' + (selGroupStart + absIdx + 1) + '.' + ext + '">⬇ Download</a>';
       } else {
         recBlock = '<span style="color:var(--muted); font-size:12px;">No recording</span>';
       }
@@ -951,10 +1057,86 @@ async function afterAnswer() {
           '<div class="result-sample hidden" id="rrev-' + absIdx + '"><b>Sample answer:</b> ' + escapeHtml(sample) + '</div>';
       }
       item.innerHTML =
-        '<div class="q-text">' + (absIdx + 1) + '. ' + escapeHtml(r.question) +
+        '<div class="q-text">' + (selGroupStart + absIdx + 1) + '. ' + escapeHtml(r.question) +
         '<small>' + r.seconds + ' seconds</small></div>' + recBlock + sampleBlock;
+      const audio = item.querySelector('audio');
+      if (audio) {
+        audio.dataset.i = reviewAudios.length;
+        audio.addEventListener('play', function () {
+          reviewAudioIdx = +this.dataset.i;
+          reviewAudios.forEach((a, j) => a.classList.toggle('playing', j === reviewAudioIdx));
+        });
+        audio.addEventListener('ended', function () {
+          const n = +this.dataset.i + 1;
+          if (n < reviewAudios.length) {
+            setTimeout(() => playReviewAudio(n), 500);
+          } else {
+            scheduleAutoContinue(3000);
+          }
+        });
+        reviewAudios.push(audio);
+      }
       reviewList.appendChild(item);
     });
+  }
+
+  function startReviewPlayback() {
+    reviewAudioIdx = 0;
+    reviewPlayHintShown = false;
+    reviewAudios.forEach((a) => {
+      try { a.pause(); a.currentTime = 0; } catch (e) { /* ignore */ }
+      a.classList.remove('playing');
+    });
+    if (reviewAudios.length === 0) {
+      scheduleAutoContinue(1200);
+      return;
+    }
+    playReviewAudio(0);
+  }
+
+  function playReviewAudio(i) {
+    if (autoContinueTimer) { return; }
+    if (i >= reviewAudios.length) {
+      scheduleAutoContinue(1500);
+      return;
+    }
+    reviewAudioIdx = i;
+    reviewAudios.forEach((a, j) => a.classList.toggle('playing', j === i));
+    const item = reviewAudios[i].closest('.result-item');
+    if (item) { try { item.scrollIntoView({ behavior: 'smooth', block: 'nearest' }); } catch (e) { /* ignore */ } }
+    reviewAudios[i].play().catch(() => {
+      if (!reviewPlayHintShown) {
+        reviewPlayHintShown = true;
+        reviewSummary.textContent += ' — if a recording does not start, tap the ▶ button on it.';
+      }
+    });
+  }
+
+  function scheduleAutoContinue(ms) {
+    if (autoContinueTimer) { return; }
+    autoContinueTimer = setTimeout(() => {
+      autoContinueTimer = null;
+      continueReview();
+    }, ms);
+  }
+
+  function stopReviewAudios() {
+    if (autoContinueTimer) { clearTimeout(autoContinueTimer); autoContinueTimer = null; }
+    reviewAudios.forEach((a) => {
+      try { a.pause(); } catch (e) { /* ignore */ }
+      a.classList.remove('playing');
+    });
+  }
+
+  function continueReview() {
+    stopReviewAudios();
+    reviewCard.classList.add('hidden');
+    practiceCard.classList.remove('hidden');
+    if (reviewResolve) {
+      const rr = reviewResolve;
+      reviewResolve = null;
+      rr();
+    }
   }
 
   reviewList.addEventListener('click', function reviewToggle(e) {
@@ -968,13 +1150,13 @@ async function afterAnswer() {
     }
   });
 
-  continueBtn.addEventListener('click', async () => {
-    reviewCard.classList.add('hidden');
-    practiceCard.classList.remove('hidden');
-    if (reviewResolve) {
-      const rr = reviewResolve;
-      reviewResolve = null;
-      rr();
+  continueBtn.addEventListener('click', continueReview);
+
+  reviewCard.addEventListener('pointerdown', function () {
+    if (reviewAudios.length === 0) { return; }
+    const cur = reviewAudios[reviewAudioIdx];
+    if (cur && cur.paused) {
+      cur.play().catch(() => { /* ignore */ });
     }
   });
 
@@ -993,19 +1175,19 @@ async function finish() {
   }
 
   /* ---------------- RESULTS ---------------- */
-  function renderResults() {
+function renderResults() {
     summaryText.textContent = results.length + ' answers recorded. Listen and evaluate yourself!';
     resultList.innerHTML = '';
     results.forEach((r, i) => {
       const item = document.createElement('div');
       item.className = 'result-item';
-      let recBlock;
+      let recBlock = '';
       if (r.rec) {
         const ext = (r.rec.blob.type.includes('mp4')) ? 'm4a' : (r.rec.blob.type.indexOf('wav') !== -1 || r.rec.blob.type.indexOf('wave') !== -1) ? 'wav' : 'webm';
         recBlock =
-          '<audio controls src="' + r.rec.url + '"></audio><br>' +
-          '<a class="download-link" href="' + r.rec.url + '" download="speaking-q' + (i + 1) + '.' + ext + '">⬇ Download</a>';
-} else {
+          '<audio controls preload="metadata" src="' + r.rec.url + '"></audio><br>' +
+          '<a class="download-link" href="' + r.rec.url + '" download="speaking-q' + (selGroupStart + i + 1) + '.' + ext + '">⬇ Download</a>';
+      } else {
         recBlock = '<span style="color:var(--muted); font-size:12px;">No recording</span>';
       }
       const sample = SAMPLES[r.question];
@@ -1016,7 +1198,7 @@ async function finish() {
           '<div class="result-sample hidden" id="rsample-' + i + '"><b>Sample answer:</b> ' + escapeHtml(sample) + '</div>';
       }
       item.innerHTML =
-        '<div class="q-text">' + (i + 1) + '. ' + escapeHtml(r.question) +
+        '<div class="q-text">' + (selGroupStart + i + 1) + '. ' + escapeHtml(r.question) +
         '<small>' + r.seconds + ' seconds</small></div>' + recBlock + sampleBlock;
       resultList.appendChild(item);
     });
@@ -1039,7 +1221,7 @@ function escapeHtml(s) {
 
   /* ---------------- FLOW ---------------- */
 startBtn.addEventListener('click', async () => {
-    questions = SAVOLLAR.slice();
+    questions = SAVOLLAR.slice(selGroupStart, selGroupEnd || SAVOLLAR.length);
     showSamples = $('samplesToggle').checked;
     if (questions.length === 0) {
       alert('Please add at least one question to the SAVOLLAR list in the file!');
