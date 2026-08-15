@@ -1,0 +1,232 @@
+<!DOCTYPE html>
+<html lang="uz">
+<head>
+<meta charset="UTF-8">
+<meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+<meta http-equiv="Pragma" content="no-cache">
+<meta http-equiv="Expires" content="0">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Multilevel Mock Test — Kirish</title>
+<style>
+  :root {
+    --bg: #0f172a; --surface: #1e293b; --surface2: #334155;
+    --border: #475569; --text: #f1f5f9; --muted: #94a3b8;
+    --accent: #6366f1; --accent2: #818cf8; --green: #22c55e;
+    --red: #ef4444; --amber: #f59e0b;}
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{font-family:'Segoe UI',system-ui,sans-serif;background:var(--bg);color:var(--text);min-height:100vh;display:flex;align-items:center;justify-content:center;padding:20px}
+  .wrap{width:100%;max-width:480px}
+  .card{background:var(--surface);border:1px solid var(--border);border-radius:20px;padding:32px 28px}
+  .logo{text-align:center;margin-bottom:8px}
+  .logo h1{font-size:28px;font-weight:800;background:linear-gradient(135deg,var(--accent),var(--accent2));-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent}
+  .logo p{color:var(--muted);font-size:14px;margin-top:4px}
+  .tabs{display:flex;gap:6px;margin:24px 0;background:var(--surface2);border-radius:12px;padding:4px}
+  .tab{flex:1;padding:10px;border:none;border-radius:10px;font-weight:700;font-size:14px;cursor:pointer;font-family:inherit;background:none;color:var(--muted);transition:.2s}
+  .tab.active{background:var(--accent);color:#fff}
+  .panel{display:none}
+  .panel.active{display:block}
+  .field{margin-bottom:16px}
+  .field label{display:block;font-size:13px;font-weight:700;color:var(--muted);margin-bottom:7px}
+  .field input{width:100%;padding:12px 15px;border:1.5px solid var(--border);border-radius:12px;font-size:15px;font-family:inherit;color:var(--text);background:var(--bg);outline:none;transition:border-color .2s}
+  .field input:focus{border-color:var(--accent)}
+  .field input::placeholder{color:var(--muted)}
+  .btn{width:100%;padding:13px;border:none;border-radius:12px;font-size:15px;font-weight:800;cursor:pointer;font-family:inherit;background:linear-gradient(135deg,var(--accent),var(--accent2));color:#fff;transition:opacity .2s,transform .1s}
+  .btn:hover{opacity:.9}
+  .btn:active{transform:scale(.98)}
+  .btn:disabled{opacity:.5;cursor:not-allowed}
+  .btn.green{background:linear-gradient(135deg,#16a34a,var(--green))}
+  .btn.outline{background:none;border:1.5px solid var(--border);color:var(--text)}
+  .alert{padding:12px 14px;border-radius:12px;font-size:13px;font-weight:700;margin-bottom:16px}
+  .alert.error{background:#7f1d1d20;border:1.5px solid #7f1d1d;color:var(--red)}
+  .alert.info{background:#1e3a5f20;border:1.5px solid #1e3a5f;color:var(--accent2)}
+  .alert.success{background:#064e3b20;border:1.5px solid #064e3b;color:var(--green)}
+  .plans-title{font-size:18px;font-weight:800;margin:28px 0 6px}
+  .plans-sub{color:var(--muted);font-size:13px;margin-bottom:16px}
+  .plans{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+  .plan{border:1.5px solid var(--border);border-radius:14px;padding:16px;cursor:pointer;transition:.2s;position:relative;background:var(--bg)}
+  .plan:hover{border-color:var(--accent)}
+  .plan.selected{border-color:var(--accent);background:var(--accent)10}
+  .plan .badge{position:absolute;top:10px;right:12px;font-size:18px}
+  .plan .p-name{font-weight:800;font-size:14px;margin-bottom:4px}
+  .plan .p-price{color:var(--accent2);font-weight:800;font-size:17px}
+  .plan .p-days{color:var(--muted);font-size:12px;margin-top:4px}
+  .card-info{background:linear-gradient(135deg,#312e81,#4338ca);border-radius:16px;padding:20px;margin:16px 0;text-align:center}
+  .card-info .ci-label{font-size:11px;text-transform:uppercase;letter-spacing:1px;color:#a5b4fc;margin-bottom:8px}
+  .card-info .ci-number{font-size:22px;font-weight:800;letter-spacing:2px;color:#fff;font-family:'Courier New',monospace}
+  .card-info .ci-holder{color:#c7d2fe;font-size:13px;margin-top:6px}
+  .file-upload{border:2px dashed var(--border);border-radius:14px;padding:24px;text-align:center;cursor:pointer;transition:.2s;margin:16px 0}
+  .file-upload:hover{border-color:var(--accent);background:var(--surface2)}
+  .file-upload .fu-icon{font-size:36px;margin-bottom:10px}
+  .file-upload .fu-text{font-size:13px;color:var(--muted)}
+  .file-upload input[type=file]{display:none}
+  .preview{border:1.5px solid var(--border);border-radius:12px;overflow:hidden;margin:12px 0}
+  .preview img{max-width:100%;display:block}
+  .preview .p-info{padding:10px 14px;color:var(--muted);font-size:12px;background:var(--bg)}
+  .status-bar{display:flex;align-items:center;gap:10px;padding:12px;border-radius:12px;background:var(--bg);border:1px solid var(--border);margin-bottom:16px}
+  .status-bar .dot{width:10px;height:10px;border-radius:50%}
+  .status-bar .dot.active{background:var(--green)}
+  .status-bar .dot.expired{background:var(--red)}
+  .hint{font-size:12px;color:var(--muted);text-align:center;margin-top:14px;padding:10px;background:var(--bg);border-radius:10px}
+  .footer{font-size:12px;color:var(--muted);text-align:center;margin-top:20px}
+  .footer a{color:var(--accent2);font-weight:700;text-decoration:none}
+  .tg-box{background:var(--surface2);border:1.5px solid var(--border);border-radius:14px;padding:16px;margin:16px 0}
+  .tg-title{font-weight:800;margin-bottom:6px}
+  .tg-text{color:var(--muted);font-size:13px;margin-bottom:10px;line-height:1.5}
+  .tg-msg{background:var(--bg);border:1.5px dashed var(--accent);border-radius:10px;padding:12px;font-size:14px;margin-bottom:10px;line-height:1.5}
+  .tg-actions{display:flex;gap:8px;flex-wrap:wrap}
+  .tg-actions .btn{width:auto;flex:1;min-width:140px}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div class="card" id="authCard">
+    <div class="logo"><h1>Multilevel Mock Test</h1><p>CEFR — professional tayyorgarlik</p></div>
+
+    {% if error == 'login' %}<div class="alert error">Telefon yoki parol noto'g'ri.</div>{% endif %}
+    {% if error == 'blocked' %}<div class="alert error">Hisobingiz bloklangan. Admin bilan bog'laning.</div>{% endif %}
+    {% if error == 'exists' %}<div class="alert error">Bu telefon allaqachon ro'yxatdan o'tgan.</div>{% endif %}
+    {% if error == 'register' %}<div class="alert error">{{ msg or 'Telefon va 4+ belgili parol kiriting.' }}</div>{% endif %}
+
+    <div class="tabs">
+      <button class="tab active" id="tabLogin" onclick="switchTab('login')">Kirish</button>
+      <button class="tab" id="tabReg" onclick="switchTab('reg')">Ro'yxatdan o'tish</button>
+    </div>
+    <div class="panel active" id="panelLogin">
+      <form method="POST" action="/auth/login">
+        <div class="field"><label>Telefon raqam</label><input type="text" name="phone" value="+998 " oninput="phonePrefix(this)" placeholder="+998 90 123 45 67" required></div>
+        <div class="field"><label>Parol</label><input type="password" name="password" placeholder="••••••••" required></div>
+        <button class="btn" type="submit">Kirish</button>
+      </form>
+    </div>
+    <div class="panel" id="panelReg">
+      <form method="POST" action="/auth/register">
+        <div class="field"><label>Ism (ixtiyoriy)</label><input type="text" name="name" placeholder="Ismingiz"></div>
+        <div class="field"><label>Telefon raqam</label><input type="text" name="phone" value="+998 " oninput="phonePrefix(this)" placeholder="+998 90 123 45 67" required></div>
+        <div class="field"><label>Parol (kamida 4 belgi)</label><input type="password" name="password" placeholder="••••••••" required></div>
+        <button class="btn" type="submit">Ro'yxatdan o'tish</button>
+      </form>
+    </div>
+  </div>
+
+  <div id="rightsWrap" style="display:none;">
+    <div class="card" style="margin-top:16px;">
+      <div class="status-bar" id="statusLine"><span style="color:var(--muted)">Yuklanmoqda…</span></div>
+      <div class="plans-title">Tarif tanlang</div>
+      <div class="plans-sub">O'zingizga mos tarifni tanlab, to'lov chekini yuklang.</div>
+      <div class="plans" id="plansList"></div>
+
+      <div class="card-info">
+        <div class="ci-label">To'lov kartasi</div>
+        <div class="ci-number" id="cardNum">—</div>
+        <div class="ci-holder" id="cardHolder">—</div>
+      </div>
+
+      <div class="tg-box">
+        <div class="tg-title">📱 Telegram orqali sotib olish</div>
+        <p class="tg-text">Pulni yuqoridagi kartaga o'tkazing, so'ng quyidagi xabarni nusxalab Telegramga yuboring (chekni ham ilova qiling):</p>
+        <div class="tg-msg">Assalomu aleykum, men sizni website ingizni premium package ini sotib olmoqchiman</div>
+        <div class="tg-actions">
+          <button class="btn" style="flex:1;background:var(--surface2);color:var(--text);border:1.5px solid var(--border)" onclick="copyTgMsg()">📋 Matnni nusxalash</button>
+          <a class="btn" style="flex:1;background:#229ED9;text-decoration:none;text-align:center" href="https://t.me/rahmatovturgun?text=Assalomu%20aleykum%2C%20men%20sizni%20website%20ingizni%20premium%20package%20ini%20sotib%20olmoqchiman" target="_blank" rel="noopener">📤 Telegram</a>
+        </div>
+      </div>
+
+      <div class="file-upload" id="uploadZone" onclick="document.getElementById('receiptInput').click()">
+        <div class="fu-icon" id="fuIcon">📸</div>
+        <div class="fu-text" id="fuText">To'lov cheki skrinshotini shu yerga bosing yoki sudrab keltiring</div>
+        <input type="file" id="receiptInput" accept="image/*,.pdf" onchange="previewReceipt()">
+      </div>
+      <div class="preview" id="receiptPreview" style="display:none">
+        <img id="prevImg" src="" alt="Chek">
+        <div class="p-info" id="prevInfo"></div>
+      </div>
+
+      <button class="btn green" id="payBtn" style="display:none" onclick="startPay()">📤 Chekni yuborish</button>
+      <div class="hint" id="payHint"></div>
+    </div>
+  </div>
+
+  <div class="footer">© Multilevel Mock Test · <a href="/logout">Chiqish</a></div>
+</div>
+
+<script>
+function phonePrefix(el){
+  var v = el.value;
+  if (v.indexOf('+998') !== 0) {
+    var digits = v.replace(/[^0-9]/g, '').replace(/^998/, '');
+    el.value = '+998 ' + digits.slice(0, 9);
+  }
+}
+
+function copyTgMsg(){
+  var text = 'Assalomu aleykum, men sizni website ingizni premium package ini sotib olmoqchiman';
+  function done(){ alert('Matn nusxalandi. Telegramda xabarni joylang va chekni ilova qiling.'); }
+  if (navigator.clipboard && navigator.clipboard.writeText) {
+    navigator.clipboard.writeText(text).then(done).catch(function(){ fallback(); });
+  } else { fallback(); }
+  function fallback(){
+    var ta = document.createElement('textarea');
+    ta.value = text;
+    ta.style.position = 'fixed';
+    ta.style.opacity = '0';
+    document.body.appendChild(ta);
+    ta.select();
+    try { document.execCommand('copy'); } catch(e) {}
+    document.body.removeChild(ta);
+    done();
+  }
+}
+
+function switchTab(t){document.getElementById('tabLogin').classList.toggle('active',t==='login');document.getElementById('tabReg').classList.toggle('active',t==='reg');document.getElementById('panelLogin').classList.toggle('active',t==='login');document.getElementById('panelReg').classList.toggle('active',t==='reg')}
+var plans=[],selPlan=null;
+
+fetch('/api/me').then(function(r){return r.json()}).then(function(me){
+  if(me.ok){document.getElementById('authCard').style.display='none';document.getElementById('rightsWrap').style.display='block';
+    var s=document.getElementById('statusLine');
+    if(me.lifetime) s.innerHTML='<span class="dot active"></span> Umrbod kirish faol — uzaytirishingiz mumkin';
+    else if(me.access_until && me.access) s.innerHTML='<span class="dot active"></span> Obuna faol: <b>'+me.access_until.slice(0,10)+'</b> — uzaytirishingiz mumkin';
+    else if(me.access_until) s.innerHTML='<span class="dot expired"></span> Bepul sinov/obuna tugagan: <b>'+me.access_until.slice(0,10)+'</b> — obuna oling';
+    else s.innerHTML='<span class="dot expired"></span> Kirish yopiq — obuna oling'}
+  fetch('/api/plans').then(function(r){return r.json()}).then(function(d){
+    plans=d;var el=document.getElementById('plansList');el.innerHTML='';
+    d.forEach(function(p,i){var div=document.createElement('div');
+      div.className='plan'+(i===0?' selected':'');
+      div.innerHTML='<div class="badge">'+(p.kind==='lifetime'?'👑':'🔥')+'</div><div class="p-name">'+p.name+'</div><div class="p-price">'+p.price_fmt+'</div><div class="p-days">'+(p.kind==='lifetime'?'Bir martalik — umrbod':p.days+' kun')+'</div>';
+      div.onclick=function(){document.querySelectorAll('.plan').forEach(function(x){x.classList.remove('selected')});div.classList.add('selected');selPlan=d[i];updateBtn()};
+      el.appendChild(div)});
+    selPlan=d[0];updateBtn()})
+}).catch(function(){var s=document.getElementById('statusLine');if(s)s.innerHTML='<span style="color:var(--red)">Server bilan bog\'lanishda xatolik</span>'});
+
+function updateBtn(){var b=document.getElementById('payBtn');if(selPlan){b.style.display='block';b.textContent='📤 '+selPlan.name+' — '+selPlan.price_fmt}}
+
+function previewReceipt(){var inp=document.getElementById('receiptInput');var f=inp.files&&inp.files[0];
+  if(!f)return;var z=document.getElementById('uploadZone');var p=document.getElementById('receiptPreview');
+  z.style.display='none';p.style.display='block';
+  if(f.type.startsWith('image/')){var r=new FileReader();r.onload=function(e){document.getElementById('prevImg').src=e.target.result};r.readAsDataURL(f)}
+  else{document.getElementById('prevImg').style.display='none'}
+  document.getElementById('prevInfo').textContent=f.name+' ('+Math.round(f.size/1024)+' KB)';
+  var b=document.getElementById('payBtn');b.style.display='block';b.disabled=false;b.textContent='📤 '+selPlan.name+' — '+selPlan.price_fmt+' (yuborish)'
+}
+
+function startPay(){if(!selPlan)return;var inp=document.getElementById('receiptInput');
+  if(!inp.files||!inp.files[0]){alert('Iltimos, to\'lov chekini yuklang');return}
+  var b=document.getElementById('payBtn');b.disabled=true;b.textContent='Yuborilmoqda…';
+  var fd=new FormData();fd.append('plan_id',selPlan.id);fd.append('receipt',inp.files[0]);
+  fetch('/api/pay/checkout',{method:'POST',body:fd}).then(function(r){return r.json()}).then(function(d){
+    if(d.ok){b.style.display='none';document.getElementById('receiptPreview').style.display='none';
+      document.getElementById('payHint').innerHTML='✅ To\'lov #'+d.payment_id+' qabul qilindi.<br>Admin tekshirib, 24 soat ichida tasdiqlaydi.'}
+    else{alert(d.error||'Xatolik');b.disabled=false;b.textContent='📤 '+selPlan.name+' — '+selPlan.price_fmt}
+  }).catch(function(){alert('Server bilan bog\'lanishda xatolik');b.disabled=false})
+}
+
+var drop=document.getElementById('uploadZone');
+drop.addEventListener('dragover',function(e){e.preventDefault();drop.style.borderColor='var(--accent)'});
+drop.addEventListener('dragleave',function(){drop.style.borderColor='var(--border)'});
+drop.addEventListener('drop',function(e){e.preventDefault();drop.style.borderColor='var(--border)';var f=e.dataTransfer.files[0];if(f){document.getElementById('receiptInput').files=e.dataTransfer.files;previewReceipt()}});
+
+fetch('/api/config-public').then(function(r){return r.json()}).then(function(c){
+  if(c.ok){document.getElementById('cardNum').textContent=c.card_number||'—';document.getElementById('cardHolder').textContent=c.card_holder||'—'}
+}).catch(function(){})
+</script>
+</body>
+</html>

@@ -1,0 +1,275 @@
+<!DOCTYPE html>
+<html lang="uz">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Admin — Multilevel Mock Test</title>
+<style>
+  :root {
+    --bg:#0f172a;--surface:#1e293b;--surface2:#334155;--border:#475569;
+    --text:#f1f5f9;--muted:#94a3b8;--accent:#6366f1;--accent2:#818cf8;
+    --green:#22c55e;--red:#ef4444;--amber:#f59e0b;}
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{font-family:'Segoe UI',system-ui,sans-serif;background:var(--bg);color:var(--text);min-height:100vh}
+  .layout{display:flex;min-height:100vh}
+  .sidebar{width:220px;background:var(--surface);border-right:1px solid var(--border);padding:24px 0;position:fixed;top:0;bottom:0;left:0;z-index:10}
+  .sidebar h2{padding:0 20px 20px;font-size:16px;background:linear-gradient(135deg,var(--accent),var(--accent2));-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;font-weight:800}
+  .nav a{display:block;padding:12px 20px;color:var(--muted);text-decoration:none;font-size:14px;font-weight:600;transition:.15s;border-left:3px solid transparent}
+  .nav a:hover,.nav a.active{color:var(--text);background:var(--surface2);border-left-color:var(--accent)}
+  .nav a .icon{margin-right:8px}
+  .main{margin-left:220px;flex:1;padding:28px 32px}
+  .top{display:flex;justify-content:space-between;align-items:center;margin-bottom:24px}
+  .top h1{font-size:24px;font-weight:800}
+  .top .actions{display:flex;gap:10px}
+  .btn{padding:9px 16px;border:none;border-radius:10px;font-size:13px;font-weight:700;cursor:pointer;font-family:inherit;background:var(--accent);color:#fff;transition:.15s;text-decoration:none;display:inline-block}
+  .btn:hover{opacity:.85}
+  .btn.green{background:var(--green)}
+  .btn.red{background:var(--red)}
+  .btn.gray{background:var(--surface2);color:var(--text);border:1px solid var(--border)}
+  .btn.sm{padding:5px 10px;font-size:11px;border-radius:7px}
+  .stats{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:14px;margin-bottom:24px}
+  .stat{background:var(--surface);border:1px solid var(--border);border-radius:16px;padding:20px}
+  .stat .v{font-size:28px;font-weight:800;color:var(--accent2)}
+  .stat .l{font-size:13px;color:var(--muted);margin-top:6px}
+  .card{background:var(--surface);border:1px solid var(--border);border-radius:16px;padding:20px;margin-bottom:20px}
+  .card h2{font-size:16px;font-weight:800;margin-bottom:16px}
+  .tags{display:flex;gap:8px;margin-bottom:18px}
+  .tag{padding:7px 14px;border-radius:8px;font-size:13px;font-weight:700;cursor:pointer;border:1px solid var(--border);color:var(--muted);background:none;font-family:inherit;transition:.15s}
+  .tag:hover{color:var(--text)}
+  .tag.active{background:var(--accent);border-color:var(--accent);color:#fff}
+  table{width:100%;border-collapse:collapse;font-size:13px}
+  th,td{text-align:left;padding:10px 12px;border-bottom:1px solid var(--border)}
+  th{color:var(--muted);font-size:11px;text-transform:uppercase;letter-spacing:.5px;font-weight:700}
+  tr:hover td{background:var(--bg)}
+  .badge{display:inline-block;padding:3px 9px;border-radius:6px;font-size:11px;font-weight:800}
+  .badge.green{background:#064e3b40;color:var(--green)}
+  .badge.red{background:#7f1d1d40;color:var(--red)}
+  .badge.amber{background:#78350f40;color:var(--amber)}
+  .badge.gray{background:var(--surface2);color:var(--muted)}
+  .badge.blue{background:#1e3a5f40;color:var(--accent2)}
+  .field{margin-bottom:12px}
+  .field label{display:block;font-size:12px;font-weight:700;color:var(--muted);margin-bottom:6px}
+  .field input{width:100%;padding:10px 14px;border:1.5px solid var(--border);border-radius:10px;font-size:14px;font-family:inherit;color:var(--text);background:var(--bg);outline:none}
+  .field input:focus{border-color:var(--accent)}
+  .row{display:flex;gap:10px;flex-wrap:wrap;margin-bottom:14px}
+  .row input{padding:9px 12px;border:1.5px solid var(--border);border-radius:10px;font-size:13px;font-family:inherit;background:var(--bg);color:var(--text);outline:none;flex:1}
+  .row input:focus{border-color:var(--accent)}
+  .grid2{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+  .muted{color:var(--muted)}
+  .login-wrap{max-width:420px;margin:80px auto 0;background:var(--surface);border:1px solid var(--border);border-radius:20px;padding:36px 28px}
+  .login-wrap h2{text-align:center;margin-bottom:24px;font-size:22px}
+  .alert{padding:10px 14px;border-radius:10px;font-size:13px;font-weight:700;margin-bottom:16px;display:none}
+  .alert.show{display:block}
+  .alert.error{background:#7f1d1d30;border:1px solid #7f1d1d;color:var(--red)}
+  @media(max-width:800px){.sidebar{display:none}.main{margin-left:0;padding:16px}}
+  .modal-overlay{display:none;position:fixed;top:0;left:0;right:0;bottom:0;background:rgba(0,0,0,.6);backdrop-filter:blur(6px);z-index:1000;align-items:center;justify-content:center}
+  .modal-overlay.show{display:flex}
+  .modal-box{background:var(--surface);border:1px solid var(--border);border-radius:16px;padding:24px;max-width:420px;width:92%;box-shadow:0 25px 60px rgba(0,0,0,.4)}
+  .modal-box h2{font-size:18px;font-weight:800;margin-bottom:6px}
+  .modal-box .modal-sub{color:var(--muted);font-size:13px;margin-bottom:16px}
+  .modal-plans{display:flex;flex-direction:column;gap:10px}
+  .modal-plan{display:flex;justify-content:space-between;align-items:center;background:var(--bg);border:1.5px solid var(--border);border-radius:12px;padding:13px 16px;cursor:pointer;transition:.2s}
+  .modal-plan:hover{border-color:var(--accent)}
+  .modal-plan .mp-name{font-weight:800;font-size:14px}
+  .modal-plan .mp-price{color:var(--accent2);font-weight:800;font-size:14px}
+  .modal-close{margin-top:14px;width:100%;background:var(--surface2);border:none;color:var(--text);padding:10px;border-radius:10px;font-weight:700;cursor:pointer;font-family:inherit}
+</style>
+</head>
+<body>
+
+{% if not is_admin %}
+<div class="login-wrap">
+  <h2>🔐 Admin Panel</h2>
+  {% if error == 'login' %}<div class="alert error show">Telefon yoki parol noto'g'ri</div>{% endif %}
+  <form method="POST" action="/admin/login">
+    <div class="field"><label>Telefon raqam</label><input type="text" name="phone" value="{{ phone or '+998 ' }}" oninput="phonePrefix(this)" placeholder="+998 90 123 45 67" required></div>
+    <div class="field"><label>Parol</label><input type="password" name="password" required></div>
+    <button class="btn" type="submit" style="width:100%">Kirish</button>
+  </form>
+</div>
+{% else %}
+<div class="layout">
+  <div class="sidebar">
+    <h2>Multilevel Mock Test</h2>
+    <div class="nav">
+      <a href="#users" class="active" onclick="showTab('users',this)"><span class="icon">👥</span> Foydalanuvchilar</a>
+      <a href="#payments" onclick="showTab('payments',this)"><span class="icon">💳</span> To'lovlar</a>
+      <a href="#plans" onclick="showTab('plans',this)"><span class="icon">📋</span> Tariflar</a>
+      <a href="#settings" onclick="showTab('settings',this)"><span class="icon">⚙️</span> Sozlamalar</a>
+    </div>
+  </div>
+  <div class="main">
+    <div class="top">
+      <h1>Admin Panel</h1>
+      <div class="actions">
+        <a href="/admin/api/backup" class="btn gray">⬇️ Backup</a>
+        <a href="/logout" class="btn gray">🚪 Chiqish</a>
+      </div>
+    </div>
+
+    <div class="stats">
+      <div class="stat"><div class="v" id="st-total">{{ stats.total_users }}</div><div class="l">Jami foydalanuvchilar</div></div>
+      <div class="stat"><div class="v" id="st-active">{{ stats.active }}</div><div class="l">Faol obunalar</div></div>
+      <div class="stat"><div class="v" id="st-expiring">{{ stats.expiring }}</div><div class="l">7 kun ichida tugaydi</div></div>
+      <div class="stat"><div class="v" id="st-revenue">{{ stats.revenue }}</div><div class="l">Umumiy tushum</div></div>
+    </div>
+
+    <div id="tab-users" class="tab-content">
+      <div class="card">
+        <h2>Yangi foydalanuvchi qo'shish</h2>
+        <form id="addUserForm" class="row" style="align-items:flex-end">
+          <input name="phone" value="+998 " oninput="phonePrefix(this)" placeholder="+998 90 123 45 67" required>
+          <input name="password" placeholder="Parol" required>
+          <input name="name" placeholder="Ism">
+          <button class="btn" type="submit">➕ Qo'shish</button>
+        </form>
+      </div>
+      <div class="card">
+        <h2>Foydalanuvchilar ro'yxati</h2>
+        <div class="row"><input id="userSearch" placeholder="Qidirish…" oninput="loadUsers()" style="max-width:320px"></div>
+        <div id="usersTable"></div>
+      </div>
+    </div>
+
+    <div id="tab-payments" class="tab-content" style="display:none">
+      <div class="card">
+        <h2>To'lovlar</h2>
+        <div class="tags">
+          <button class="tag active" onclick="filterPays('',this)">Hammasi</button>
+          <button class="tag" onclick="filterPays('pending',this)">Kutilmoqda</button>
+          <button class="tag" onclick="filterPays('paid',this)">To'langan</button>
+        </div>
+        <div id="paymentsTable"></div>
+      </div>
+    </div>
+
+    <div id="tab-plans" class="tab-content" style="display:none">
+      <div class="card">
+        <h2>Tariflar</h2>
+        <div id="plansTable"></div>
+      </div>
+    </div>
+
+    <div id="tab-settings" class="tab-content" style="display:none">
+      <div class="card">
+        <h2>To'lov sozlamalari</h2>
+        <form id="configForm">
+          <div class="grid2">
+            <div class="field"><label>Karta raqami</label><input name="card_number" id="cf-card"></div>
+            <div class="field"><label>Karta egasi (F.I.Sh.)</label><input name="card_holder" id="cf-holder"></div>
+          </div>
+          <div class="field"><label>Sayt manzili</label><input name="base_url" id="cf-base"></div>
+          <h3 style="font-size:14px;font-weight:800;margin:14px 0 8px;">📱 Telegram bildirishnoma</h3>
+          <div class="grid2">
+            <div class="field"><label>Bot tokeni (BotFather dan)</label><input name="telegram_bot_token" id="cf-tg-token" placeholder="123456:ABC-DEF..."></div>
+            <div class="field"><label>Chat ID (sizning ID)</label><input name="telegram_chat_id" id="cf-tg-chat" placeholder="123456789"></div>
+          </div>
+          <button class="btn" type="submit">💾 Saqlash</button>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="modal-overlay" id="grantModal">
+  <div class="modal-box">
+    <h2>🔑 Ruxsat berish</h2>
+    <div class="modal-sub" id="grantUserInfo">Foydalanuvchi</div>
+    <div class="modal-plans" id="grantPlanList"></div>
+    <button class="modal-close" onclick="closeGrant()">Bekor qilish</button>
+  </div>
+</div>
+
+<script>
+var currentTab='users';
+function phonePrefix(el){var v=el.value;if(v.indexOf('+998')!==0){var d=v.replace(/[^0-9]/g,'').replace(/^998/,'');el.value='+998 '+d.slice(0,9)}}
+function showTab(name,btn){document.querySelectorAll('.nav a').forEach(function(a){a.classList.remove('active')});btn.classList.add('active');document.querySelectorAll('.tab-content').forEach(function(t){t.style.display='none'});var el=document.getElementById('tab-'+name);if(el){el.style.display='block';currentTab=name}}
+
+function api(url,method,body,ok){var opts={method:method,headers:{}};if(body instanceof FormData)opts.body=body;else if(body){opts.body=new FormData();for(var k in body)opts.body.append(k,body[k])}
+  fetch(url,opts).then(function(r){return r.json()}).then(function(d){if(!d.ok)alert(d.error||'Xatolik');if(ok)ok(d)}).catch(function(){alert('Server bilan bog\'lanishda xatolik')})}
+
+loadUsers();loadPayments();loadPlans();loadConfig();
+
+function esc(v){if(v===null||v===undefined)return'—';var d=document.createElement('div');d.textContent=String(v);return d.innerHTML}
+
+function loadStats(){fetch('/admin/api/stats').then(function(r){return r.json()}).then(function(d){if(!d.ok)return;var st=document.getElementById('st-total');if(st)st.textContent=d.total_users;st=document.getElementById('st-active');if(st)st.textContent=d.active;st=document.getElementById('st-expiring');if(st)st.textContent=d.expiring;st=document.getElementById('st-revenue');if(st)st.textContent=d.revenue}).catch(function(){})}
+
+function fmtDur(sec){if(!sec||sec<=0)return'—';sec=parseInt(sec);var h=Math.floor(sec/3600);var m=Math.floor((sec%3600)/60);if(h>0)return h+' soat '+m+' daq';if(m>0)return m+' daqiqa';return sec+' soniya'}
+
+function loadUsers(){var q=document.getElementById('userSearch').value||'';
+  fetch('/admin/api/users?q='+encodeURIComponent(q)).then(function(r){return r.json()}).then(function(d){
+    if(!d.ok)return;var rows=d.users.map(function(u){var st=u.blocked?'<span class="badge red">Bloklangan</span>':u.lifetime?'<span class="badge green">Umrbod</span>':(u.access_until&&u.access_until>new Date().toISOString()?'<span class="badge amber">'+u.access_until.slice(0,10)+'</span>':'<span class="badge gray">Kirish yo\'q</span>');
+      return'<tr><td><b>'+esc(u.name)+'</b><br><span class="muted">'+esc(u.phone)+'</span></td>'+
+        '<td>'+(u.is_admin?'<span class="badge blue">Admin</span>':'')+'</td><td>'+st+'</td>'+
+        '<td><b style="color:var(--accent2)">'+fmtDur(u.usage_seconds)+'</b></td>'+
+        '<td class="muted">'+(u.created_at||'').slice(0,10)+'</td>'+
+        '<td><button class="btn sm green" onclick="openGrant('+u.id+')">Ruxsat berish</button> '+
+        '<button class="btn sm gray" onclick="block('+u.id+')">'+(u.blocked?'Qaytarish':'Bloklash')+'</button> '+
+        '<button class="btn sm red" onclick="delUser('+u.id+')">O\'chirish</button></td></tr>'}).join('');
+    document.getElementById('usersTable').innerHTML='<table><tr><th>Foydalanuvchi</th><th>Rol</th><th>Holat</th><th>Foydalanish vaqti</th><th>Ro\'yxatdan o\'tgan</th><th>Amallar</th></tr>'+rows+'</table>';allUsers=d.users})}
+function extend(uid){api('/admin/api/users/'+uid+'/extend','POST',{days:30},function(){loadUsers()})}
+function lifetime(uid){api('/admin/api/users/'+uid+'/lifetime','POST',null,function(){loadUsers()})}
+function block(uid){api('/admin/api/users/'+uid+'/block','POST',null,function(){loadUsers()})}
+function delUser(uid){if(!confirm('O\'chirilsinmi?'))return;api('/admin/api/users/'+uid+'/delete','POST',null,function(){loadUsers()})}
+
+var grantUid=null, allUsers=[];
+function openGrant(uid){
+  grantUid=uid;
+  var u=(allUsers||[]).filter(function(x){return x.id===uid})[0]||{};
+  document.getElementById('grantUserInfo').textContent=(u.name||'Foydalanuvchi')+' — '+(u.phone||'');
+  fetch('/admin/api/plans').then(function(r){return r.json()}).then(function(d){
+    var el=document.getElementById('grantPlanList');
+    el.innerHTML='';
+    (d.plans||d).forEach(function(p){
+      var div=document.createElement('div');
+      div.className='modal-plan';
+      div.innerHTML='<span class="mp-name">'+p.name+'</span><span class="mp-price">'+p.price_fmt+'</span>';
+      div.onclick=function(){grantPlan(p.id)};
+      el.appendChild(div);
+    });
+  });
+  document.getElementById('grantModal').classList.add('show');
+}
+function closeGrant(){document.getElementById('grantModal').classList.remove('show');grantUid=null}
+function grantPlan(planId){
+  if(!grantUid)return;
+  var fd=new FormData();
+  fd.append('plan_id',planId);
+  fetch('/admin/api/users/'+grantUid+'/grant',{method:'POST',body:fd}).then(function(r){
+    if(!r.ok){return r.text().then(function(t){throw new Error('HTTP '+r.status+' '+t)})}
+    return r.json();
+  }).then(function(d){
+    if(!d.ok){alert(d.error||'Xatolik');return}
+    alert('Ruxsat berildi: +'+d.days+' kun');
+    closeGrant();
+    loadUsers();loadStats();loadPayments();
+  }).catch(function(e){alert('Ruxsat berishda xatolik: '+(e.message||'server bilan bog\'lanishda xatolik'))});
+}
+document.getElementById('addUserForm').addEventListener('submit',function(e){e.preventDefault();api('/admin/api/users/add','POST',new FormData(this),function(){this.reset();loadUsers()}.bind(this))})
+
+var payFilter='';
+function filterPays(st,btn){payFilter=st;document.querySelectorAll('#tab-payments .tag').forEach(function(t){t.classList.remove('active')});btn.classList.add('active');loadPayments()}
+function loadPayments(){fetch('/admin/api/payments?status='+encodeURIComponent(payFilter)).then(function(r){return r.json()}).then(function(d){
+    if(!d.ok)return;var rows=d.payments.map(function(p){var tag=p.status==='paid'?'<span class="badge green">To\'langan</span>':p.status==='pending'?'<span class="badge amber">Kutilmoqda</span>':'<span class="badge red">Xato</span>';
+      var btns=p.status==='pending'?'<button class="btn sm green" onclick="confirmPay('+p.id+')">Tasdiqlash</button>':'';
+      var rc=p.receipt_url?'<a href="'+p.receipt_url+'" target="_blank" class="btn sm gray">Chek</a>':'<span class="muted">—</span>';
+      return'<tr><td>#'+p.id+'</td><td>'+esc(p.phone)+'</td><td>'+esc(p.plan_name)+'</td><td>'+tag+'</td><td><b>'+esc(p.amount_fmt)+'</b></td><td>'+rc+'</td><td class="muted">'+(p.created_at||'').slice(0,16)+'</td><td>'+btns+'</td></tr>'}).join('');
+    document.getElementById('paymentsTable').innerHTML='<table><tr><th>ID</th><th>Foydalanuvchi</th><th>Tarif</th><th>Holat</th><th>Summa</th><th>Chek</th><th>Sana</th><th></th></tr>'+rows+'</table>'})}
+function confirmPay(pid){api('/admin/api/payments/'+pid+'/confirm','POST',null,function(){loadPayments()})}
+
+function loadPlans(){fetch('/admin/api/plans').then(function(r){return r.json()}).then(function(d){
+    if(!d.ok)return;var rows=d.plans.map(function(p){return'<tr><td><input value="'+esc(p.name)+'" id="pl-name-'+p.id+'" style="width:100%;padding:6px 10px;border:1px solid var(--border);border-radius:8px;background:var(--bg);color:var(--text);font-size:13px;font-family:inherit"></td>'+
+      '<td><input type="number" value="'+p.price+'" id="pl-price-'+p.id+'" style="width:110px;padding:6px 10px;border:1px solid var(--border);border-radius:8px;background:var(--bg);color:var(--text);font-size:13px;font-family:inherit"></td>'+
+      '<td><input type="number" value="'+(p.days||'')+'" id="pl-days-'+p.id+'" style="width:70px;padding:6px 10px;border:1px solid var(--border);border-radius:8px;background:var(--bg);color:var(--text);font-size:13px;font-family:inherit"></td>'+
+      '<td>'+(p.kind==='lifetime'?'<span class="badge green">Umrbod</span>':'<span class="badge gray">Obuna</span>')+'</td>'+
+      '<td><button class="btn sm" onclick="savePlan('+p.id+')">Saqlash</button></td></tr>'}).join('');
+    document.getElementById('plansTable').innerHTML='<table><tr><th>Nomi</th><th>Narxi</th><th>Kun</th><th>Turi</th><th></th></tr>'+rows+'</table>'})}
+function savePlan(pid){var fd=new FormData();fd.append('name',document.getElementById('pl-name-'+pid).value);fd.append('price',document.getElementById('pl-price-'+pid).value);fd.append('days',document.getElementById('pl-days-'+pid).value||'');api('/admin/api/plans/'+pid,'POST',fd,function(){loadPlans()})}
+
+function loadConfig(){fetch('/admin/api/config').then(function(r){return r.json()}).then(function(d){
+    if(!d.ok)return;document.getElementById('cf-card').value=d.card_number||'';document.getElementById('cf-holder').value=d.card_holder||'';document.getElementById('cf-base').value=d.base_url||'';document.getElementById('cf-tg-token').value=d.telegram_bot_token||'';document.getElementById('cf-tg-chat').value=d.telegram_chat_id||''})}
+document.getElementById('configForm').addEventListener('submit',function(e){e.preventDefault();api('/admin/api/config','POST',new FormData(this),function(){loadConfig()})})
+</script>
+{% endif %}
+</body>
+</html>

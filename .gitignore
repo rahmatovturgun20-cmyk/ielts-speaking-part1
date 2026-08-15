@@ -1,0 +1,32 @@
+# Sensitive / local files
+site.db
+config.json
+receipts/
+*.pem
+*.key
+*.log
+__pycache__/
+*.pyc
+
+# Local tools (not needed on VPS)
+cloudflared.exe
+jprq.exe
+*.bat
+*.vbs
+getlink.py
+signal-preview.html
+start-server-https.py
+cert.pem
+key.pem
+
+# PDFs and temp
+*.pdf
+link.txt
+cf*.log
+jprq*.log
+py*.log
+server*.log
+
+# Node / build artifacts
+node_modules/
+react-app/node_modules/
