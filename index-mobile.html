@@ -22,13 +22,13 @@
 
 
 
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
 
 
 
 
 
-<title>Multilevel Mock Test</title>
+<title>Multilevel Mock Test (Mobile)</title>
 
 
 
@@ -2017,7 +2017,7 @@
 
 
 
-  /* Part 1.2: vertical flow — question on top, pictures, timer, sample below */
+  /* Part 1.2: question on top, picture center, timer below on mobile */
 
 
 
@@ -2041,37 +2041,13 @@
 
 
 
-    grid-template-areas:
+    grid-template-areas: "qtop" "pic" "timer" "sample";
 
 
 
 
 
-      "qtop"
-
-
-
-
-
-      "pic"
-
-
-
-
-
-      "timer"
-
-
-
-
-
-      "sample";
-
-
-
-
-
-    gap: 18px;
+    gap: 14px;
 
 
 
@@ -2119,13 +2095,13 @@
 
 
 
-    background: var(--card); border: 1.5px solid var(--border); border-radius: 18px;
+    background: var(--card); border: 1.5px solid var(--border); border-radius: 16px;
 
 
 
 
 
-    padding: 22px 20px;
+    padding: 16px 14px;
 
 
 
@@ -2953,7 +2929,811 @@
 
 
 
-  /* ============ ☀️ Day Mode / 🌙 Night Mode ============ */
+  /* ============ MOBILE VERSION — universal (320px → 700px) ============ */
+
+
+
+
+
+  * { -webkit-tap-highlight-color: transparent; }
+
+
+
+
+
+  html { touch-action: manipulation; overflow-x: clip; }
+
+
+
+
+
+  body {
+
+
+
+
+
+    padding: 8px;
+
+
+
+
+
+    padding-bottom: calc(12px + env(safe-area-inset-bottom));
+
+
+
+
+
+    overflow-x: clip;
+
+
+
+
+
+  }
+
+
+
+
+
+  .container {
+
+
+
+
+
+    width: 100%; max-width: 100%;
+
+
+
+
+
+    margin-left: auto; margin-right: auto;
+
+
+
+
+
+    overflow-x: hidden;
+
+
+
+
+
+  }
+
+
+
+
+
+  textarea, button { font-size: 16px; }
+
+
+
+
+
+  textarea { min-height: 110px; }
+
+
+
+
+
+  .card { padding: 12px; border-radius: 14px; margin-bottom: 10px; }
+
+
+
+
+
+  .intro { font-size: 13px; margin-bottom: 8px; }
+
+
+
+
+
+  .rules li { flex-wrap: wrap; font-size: 13px; padding: 5px 0; }
+
+
+
+
+
+  .step-title { font-size: 11px; margin-bottom: 8px; }
+
+
+
+
+
+  .toggle-row { padding: 10px 12px; font-size: 13px; margin-top: 6px; }
+
+
+
+
+
+  .group-panel { padding: 10px; margin-top: 6px; }
+
+
+
+
+
+  .group-title { margin-bottom: 6px; }
+
+
+
+
+
+  .group-list { gap: 6px; }
+
+
+
+
+
+  .group-btn { padding: 8px 12px; font-size: 12.5px; }
+
+
+
+
+
+  /* tugmalar: keng + ixcham, yonma-yon */
+
+
+
+
+
+  .btn { background: var(--primary); border: none; 
+
+
+
+
+
+    flex: 1 1 140px; min-height: 46px;
+
+
+
+
+
+    padding: 9px 14px; font-size: 14px; border-radius: 12px;
+
+
+
+
+
+  }
+
+
+
+
+
+  .btn-wrap {
+
+
+
+
+
+    display: flex; flex-direction: row; flex-wrap: wrap;
+
+
+
+
+
+    gap: 8px; justify-content: center; align-items: stretch;
+
+
+
+
+
+    margin-top: 10px;
+
+
+
+
+
+  }
+
+
+
+
+
+  /* part tugmalar: har telefonda 2×2 to'liq kenglik */
+
+
+
+
+
+  #setupCard > .group-panel:first-of-type .group-list {
+
+
+
+
+
+    display: grid; grid-template-columns: repeat(2, 1fr); gap: 8px;
+
+
+
+
+
+  }
+
+
+
+
+
+  #setupCard > .group-panel:first-of-type .part-btn {
+
+
+
+
+
+    width: 100%; justify-content: center; text-align: center;
+
+
+
+
+
+    min-height: 56px; padding: 9px 8px; font-size: 13px;
+
+
+
+
+
+    white-space: normal; line-height: 1.3; border-radius: 12px;
+
+
+
+
+
+  }
+
+
+
+
+
+  #setupCard > .group-panel:first-of-type .part-btn small { font-size: 10.5px; }
+
+
+
+
+
+  /* keng telefonlar (420px+): part tugmalar 4 yonma-yon, qoidalar 2 ustun */
+
+
+
+
+
+  @media (min-width: 420px) {
+
+
+
+
+
+    #setupCard > .group-panel:first-of-type .group-list {
+
+
+
+
+
+      grid-template-columns: repeat(4, 1fr);
+
+
+
+
+
+    }
+
+
+
+
+
+    #setupCard > .group-panel:first-of-type .part-btn {
+
+
+
+
+
+      min-height: 60px; font-size: 12px; padding: 9px 5px;
+
+
+
+
+
+    }
+
+
+
+
+
+    #setupCard > .group-panel:first-of-type .part-btn small { font-size: 9.5px; }
+
+
+
+
+
+    .rules { display: grid; grid-template-columns: 1fr 1fr; column-gap: 14px; }
+
+
+
+
+
+  }
+
+
+
+
+
+  /* practice: hammasi bitta ekranga sig'adigan ixcham */
+
+
+
+
+
+  #practiceCard:not(.hidden) { min-height: calc(100vh - 76px); }
+
+
+
+
+
+  @supports (min-height: 100dvh) {
+
+
+
+
+
+    #practiceCard:not(.hidden) { min-height: calc(100dvh - 76px); }
+
+
+
+
+
+  }
+
+
+
+
+
+  .status-bar { flex-wrap: wrap; gap: 6px; margin-bottom: 8px; font-size: 12.5px; }
+
+
+
+
+
+  .practice-grid { gap: 10px; }
+
+
+
+
+
+  .question-box {
+
+
+
+
+
+    padding: 12px 12px; min-height: 82px; border-radius: 14px; margin-bottom: 10px;
+
+
+
+
+
+  }
+
+
+
+
+
+  .question-box .q {
+
+
+
+
+
+    font-size: clamp(15px, 4vw, 18px);
+
+
+
+
+
+    line-height: 1.4;
+
+
+
+
+
+    text-align: center;
+
+
+
+
+
+    max-width: 560px;
+
+
+
+
+
+    margin: 0 auto;
+
+
+
+
+
+  }
+
+
+
+
+
+  .mock-layout .question-box { min-height: 100px; }
+
+
+
+
+
+  .mock-layout .question-box .q { font-size: clamp(16px, 4.2vw, 20px); }
+
+
+
+
+
+  .phase-label { font-size: 13px; margin-bottom: 6px; }
+
+
+
+
+
+  .bar-track { height: 10px; }
+
+
+
+
+
+  .timer-num { font-size: 22px; margin-top: 6px; }
+
+
+
+
+
+  .mic-status { margin-top: 8px; font-size: 12.5px; }
+
+
+
+
+
+  .cue-card, .sample-box { padding: 12px; margin: 10px 0 0; }
+
+
+
+
+
+  .cue-q { font-size: 16px; }
+
+
+
+
+
+  .cue-points li { font-size: 14px; padding: 7px 0 7px 24px; }
+
+
+
+
+
+  .sample-text { font-size: 14px; }
+
+
+
+
+
+  #practiceCard.cols.p3cols .pic-frame { min-height: 180px; }
+
+
+
+
+
+  #practiceCard .btn-wrap { display: grid; grid-template-columns: 1fr 1fr 1fr; }
+
+
+
+
+
+  .result-item { padding: 11px 12px; margin-bottom: 10px; }
+
+
+
+
+
+  .result-item .q-text { font-size: 14px; }
+
+
+
+
+
+  .full-audio { padding: 12px 13px; margin-bottom: 10px; }
+
+
+
+
+
+  audio { height: 40px; }
+
+
+
+
+
+  /* planshet / katta ekran */
+
+
+
+
+
+  @media (min-width: 700px) {
+
+
+
+
+
+    body { padding: 24px 16px; padding-bottom: calc(28px + env(safe-area-inset-bottom)); }
+
+
+
+
+
+    .container { max-width: 860px; }
+
+
+
+
+
+    .card { padding: 20px; }
+
+
+
+
+
+    .rules { display: block; }
+
+
+
+
+
+    .question-box .q { font-size: 21px; }
+
+
+
+
+
+    .mock-layout .question-box .q { font-size: 23px; }
+
+
+
+
+
+    .timer-num { font-size: 24px; }
+
+
+
+
+
+    .btn { background: var(--primary); border: none;  flex: 0 0 auto; min-height: 0; padding: 13px 22px; font-size: 15px; }
+
+
+
+
+
+    #practiceCard .btn-wrap { display: flex; }
+
+
+
+
+
+    #setupCard > .group-panel:first-of-type .group-list { display: flex; }
+
+
+
+
+
+    #setupCard > .group-panel:first-of-type .part-btn { min-height: 0; font-size: 14px; }
+
+
+
+
+
+    #practiceCard:not(.hidden) { min-height: calc(100vh - 88px); }
+
+
+
+
+
+  }
+
+
+
+
+
+  /* planshet gorizontal (900px+) — kengroq, rasmlar yonma-yon */
+
+
+
+
+
+  @media (min-width: 900px) {
+
+
+
+
+
+    body { padding: 28px 24px; }
+
+
+
+
+
+    .container { max-width: 1000px; }
+
+
+
+
+
+    .card { padding: 24px; }
+
+
+
+
+
+    .question-box .q { font-size: 22px; }
+
+
+
+
+
+    .mock-layout .question-box .q { font-size: 24px; }
+
+
+
+
+
+    .status-bar { font-size: 14px; }
+
+
+
+
+
+    .timer-num { font-size: 26px; }
+
+
+
+
+
+    .bar-track { height: 14px; }
+
+
+
+
+
+    .btn { background: var(--primary); border: none;  padding: 14px 26px; font-size: 16px; }
+
+
+
+
+
+    #setupCard > .group-panel:first-of-type .part-btn { font-size: 15px; padding: 14px 18px; }
+
+
+
+
+
+    #practiceCard:not(.hidden) { min-height: calc(100vh - 104px); }
+
+
+
+
+
+    #practiceCard.cols:not(.p3cols) .practice-grid { flex-direction: row; align-items: stretch; }
+
+
+
+
+
+    #practiceCard.cols:not(.p3cols) .pic-col { flex: 1 1 55%; width: auto; }
+
+
+
+
+
+    #practiceCard.cols:not(.p3cols) .timer-col { flex: 1 1 40%; width: auto; }
+
+
+
+
+
+    #practiceCard.cols:not(.p3cols) .pic-frame img { max-height: 62vh; }
+
+
+
+
+
+    #practiceCard.cols.p3cols .practice-grid { flex-direction: column; align-items: center; }
+
+
+
+
+
+    #practiceCard.cols.p3cols .pic-col { flex: none; width: min(960px, 100%); }
+
+
+
+
+
+    #practiceCard.cols:not(.p3cols) .practice-grid {
+
+
+
+
+
+      grid-template-columns: minmax(0, 1fr);
+
+
+
+
+
+      grid-template-areas:
+
+
+
+
+
+        "qtop"
+
+
+
+
+
+        "pic"
+
+
+
+
+
+        "timer"
+
+
+
+
+
+        "sample";
+
+
+
+
+
+      gap: 22px;
+
+
+
+
+
+    }
+
+
+
+
+
+    #practiceCard.cols:not(.p3cols) .bar-view { padding: 22px 20px; border-radius: 18px; }
+
+
+
+
+
+    #practiceCard.cols.p3cols .pic-frame { min-height: 320px; }
+
+
+
+
+
+  }
+
+
+
+
+
+/* ============ ☀️ Day Mode / 🌙 Night Mode ============ */
 
 
 
@@ -6514,7 +7294,7 @@ function selectPart(part) {
 
 
 
-  function stopSpeech() {
+function stopSpeech() {
 
 
 
