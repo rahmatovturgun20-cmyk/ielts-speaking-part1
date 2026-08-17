@@ -1,4 +1,4 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 
 
 
@@ -4317,12 +4317,6 @@ const SAVOLLAR = [
 
 
 
-  "Did you like that colour when you were a child?",
-
-
-
-
-
   "Do you prefer light colours or bright colours?",
 
 
@@ -5091,31 +5085,13 @@ const SAMPLES = {
 
 
 
-  "Do you bargain when you shop?": "In the bazaar or with small businesses, I actually do bargain, because it's traditional and even expected. But I don't mean to squeeze every penny out of the seller; it's more about reaching a fair price for the situation. In major stores, I accept the marked price.",
-
-
-
-
-
   "What is your favourite colour?": "My favourite colour is green. For me, it represents nature, calm and new beginnings, which is the world I want to live in. Interestingly, my rooms always have green details, from the curtains to the plants. It is simply the colour that feels most like me. Even my phone case is green, which friends always notice.",
 
 
 
 
 
-  "Did you like that colour when you were a child?": "No, as a child I preferred bright red and blue, just like most kids. I remember choosing red toys and clothes all the time. My taste changed gradually, and by my teenage years, green became my favourite. I think our preferences simply grow with us over time. Growing up truly teaches you new favourites in every area.",
-
-
-
-
-
   "Do you prefer light colours or bright colours?": "For daily life, I prefer light colours, because they feel calm and easy to match. Bright colours, though, make great accents, like a yellow bag or red cap, for a bold mood. So it depends on the purpose and the season, honestly. Balance works best for me. My wardrobe proves that both worlds coexist perfectly.",
-
-
-
-
-
-  "Is colour important in your daily life?": "I think it is, more than people admit. For example, I'm careful about the colours in my room, because lighter shades help me concentrate and feel calm. I also notice how my mood changes when I wear bright clothes. So colour is a real, daily emotional influence.",
 
 
 
@@ -5284,12 +5260,6 @@ const SAMPLES = {
 
 
   "Do you have a good memory?": "I think I have a decent memory, especially for what I am interested in. I easily remember faces, conversations and lyrics of songs I hear. On the other hand, I tend to forget names and small chores if I do not write them down. So memory is selective with me. Even so, I respect people who remember everything, because I clearly cannot.",
-
-
-
-
-
-  "What is the earliest memory you have?": "One of the earliest memories I have is a winter evening with my grandmother. I remember the warm smell of her kitchen, the dim light, and the feeling of being wrapped in a blanket. I'm not sure how accurate the memory is, but it's strong and warm, and it makes me smile.",
 
 
 
@@ -15753,7 +15723,7 @@ startBtn.addEventListener('click', async () => {
 
 
 
-      const allShuffled = SAVOLLAR.slice();
+      const allShuffled = (selGroupEnd === 0) ? SAVOLLAR.slice() : SAVOLLAR.slice(selGroupStart, selGroupEnd);
 
 
 
@@ -15783,7 +15753,7 @@ startBtn.addEventListener('click', async () => {
 
 
 
-      questions = (selGroupEnd === 0) ? allShuffled : allShuffled.slice(0, selGroupEnd - selGroupStart);
+      questions = allShuffled;
 
 
 
