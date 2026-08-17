@@ -81,6 +81,7 @@
 <div class="login-wrap">
   <h2>🔐 Admin Panel</h2>
   {% if error == 'login' %}<div class="alert error show">Telefon yoki parol noto'g'ri</div>{% endif %}
+  {% if error == 'kicked' %}<div class="alert error show">Siz boshqa qurilmadan kirdingiz — sessiya yopildi. Qayta kiring.</div>{% endif %}
   <form method="POST" action="/admin/login">
     <div class="field"><label>Telefon raqam</label><input type="text" name="phone" value="{{ phone or '+998 ' }}" oninput="phonePrefix(this)" placeholder="+998 90 123 45 67" required></div>
     <div class="field"><label>Parol</label><input type="password" name="password" required></div>

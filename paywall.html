@@ -83,6 +83,7 @@
     <div class="logo"><h1>Multilevel Mock Test</h1><p>CEFR — professional tayyorgarlik</p></div>
 
     {% if error == 'login' %}<div class="alert error">Telefon yoki parol noto'g'ri.</div>{% endif %}
+    {% if error == 'kicked' %}<div class="alert error">Siz boshqa qurilmadan tizimga kirdingiz — shu qurilmadagi sessiya yopildi. Iltimos qayta kiring.</div>{% endif %}
     {% if error == 'blocked' %}<div class="alert error">Hisobingiz bloklangan. Admin bilan bog'laning.</div>{% endif %}
     {% if error == 'exists' %}<div class="alert error">Bu telefon allaqachon ro'yxatdan o'tgan.</div>{% endif %}
     {% if error == 'register' %}<div class="alert error">{{ msg or 'Telefon va 4+ belgili parol kiriting.' }}</div>{% endif %}
@@ -111,8 +112,8 @@
   <div id="rightsWrap" style="display:none;">
     <div class="card" style="margin-top:16px;">
       <div class="status-bar" id="statusLine"><span style="color:var(--muted)">Yuklanmoqda…</span></div>
-      <div class="plans-title">Tarif tanlang</div>
-      <div class="plans-sub">O'zingizga mos tarifni tanlab, to'lov chekini yuklang.</div>
+      <div class="plans-title">Tariflar</div>
+      <div class="plans-sub">Kerakli tarifni tanlang — pulni kartaga o'tkazing va Telegram orqali yozing.</div>
       <div class="plans" id="plansList"></div>
 
       <div class="card-info">
@@ -123,26 +124,11 @@
 
       <div class="tg-box">
         <div class="tg-title">📱 Telegram orqali sotib olish</div>
-        <p class="tg-text">Pulni yuqoridagi kartaga o'tkazing, so'ng quyidagi xabarni nusxalab Telegramga yuboring (chekni ham ilova qiling):</p>
-        <div class="tg-msg">Assalomu aleykum, men sizni website ingizni premium package ini sotib olmoqchiman</div>
+        <p class="tg-text">Pulni yuqoridagi kartaga o'tkazing, so'ng Telegramga yozing (to'lov chekini ham ilova qiling):</p>
         <div class="tg-actions">
-          <button class="btn" style="flex:1;background:var(--surface2);color:var(--text);border:1.5px solid var(--border)" onclick="copyTgMsg()">📋 Matnni nusxalash</button>
-          <a class="btn" style="flex:1;background:#229ED9;text-decoration:none;text-align:center" href="https://t.me/rahmatovturgun?text=Assalomu%20aleykum%2C%20men%20sizni%20website%20ingizni%20premium%20package%20ini%20sotib%20olmoqchiman" target="_blank" rel="noopener">📤 Telegram</a>
+          <a class="btn" id="tgBuyBtn" style="flex:1;background:#229ED9;text-decoration:none;text-align:center" href="https://t.me/rahmatovturgun?text=Assalomu%20alaykum!%20Men%20sizning%20veb-saytingizdagi%20Premium%20paketni%20sotib%20olmoqchiman." target="_blank" rel="noopener">📤 Telegram orqali sotib olish</a>
         </div>
       </div>
-
-      <div class="file-upload" id="uploadZone" onclick="document.getElementById('receiptInput').click()">
-        <div class="fu-icon" id="fuIcon">📸</div>
-        <div class="fu-text" id="fuText">To'lov cheki skrinshotini shu yerga bosing yoki sudrab keltiring</div>
-        <input type="file" id="receiptInput" accept="image/*,.pdf" onchange="previewReceipt()">
-      </div>
-      <div class="preview" id="receiptPreview" style="display:none">
-        <img id="prevImg" src="" alt="Chek">
-        <div class="p-info" id="prevInfo"></div>
-      </div>
-
-      <button class="btn green" id="payBtn" style="display:none" onclick="startPay()">📤 Chekni yuborish</button>
-      <div class="hint" id="payHint"></div>
     </div>
   </div>
 
@@ -158,27 +144,11 @@ function phonePrefix(el){
   }
 }
 
-function copyTgMsg(){
-  var text = 'Assalomu aleykum, men sizni website ingizni premium package ini sotib olmoqchiman';
-  function done(){ alert('Matn nusxalandi. Telegramda xabarni joylang va chekni ilova qiling.'); }
-  if (navigator.clipboard && navigator.clipboard.writeText) {
-    navigator.clipboard.writeText(text).then(done).catch(function(){ fallback(); });
-  } else { fallback(); }
-  function fallback(){
-    var ta = document.createElement('textarea');
-    ta.value = text;
-    ta.style.position = 'fixed';
-    ta.style.opacity = '0';
-    document.body.appendChild(ta);
-    ta.select();
-    try { document.execCommand('copy'); } catch(e) {}
-    document.body.removeChild(ta);
-    done();
-  }
-}
-
 function switchTab(t){document.getElementById('tabLogin').classList.toggle('active',t==='login');document.getElementById('tabReg').classList.toggle('active',t==='reg');document.getElementById('panelLogin').classList.toggle('active',t==='login');document.getElementById('panelReg').classList.toggle('active',t==='reg')}
-var plans=[],selPlan=null;
+var plans=[], selPlan=null;
+var TG_BASE_MSG='Assalomu alaykum! Men sizning veb-saytingizdagi Premium paketni sotib olmoqchiman.';
+function tgLink(){var m=TG_BASE_MSG;if(selPlan){m+=' Tanlangan obuna: '+selPlan.name+' ('+selPlan.price_fmt+').'}return 'https://t.me/rahmatovturgun?text='+encodeURIComponent(m)}
+function updateTgBtn(){var a=document.getElementById('tgBuyBtn');if(a)a.href=tgLink()}
 
 fetch('/api/me').then(function(r){return r.json()}).then(function(me){
   if(me.ok){document.getElementById('authCard').style.display='none';document.getElementById('rightsWrap').style.display='block';
@@ -192,41 +162,20 @@ fetch('/api/me').then(function(r){return r.json()}).then(function(me){
     d.forEach(function(p,i){var div=document.createElement('div');
       div.className='plan'+(i===0?' selected':'');
       div.innerHTML='<div class="badge">'+(p.kind==='lifetime'?'👑':'🔥')+'</div><div class="p-name">'+p.name+'</div><div class="p-price">'+p.price_fmt+'</div><div class="p-days">'+(p.kind==='lifetime'?'Bir martalik — umrbod':p.days+' kun')+'</div>';
-      div.onclick=function(){document.querySelectorAll('.plan').forEach(function(x){x.classList.remove('selected')});div.classList.add('selected');selPlan=d[i];updateBtn()};
+      div.onclick=function(){document.querySelectorAll('.plan').forEach(function(x){x.classList.remove('selected')});div.classList.add('selected');selPlan=d[i];updateTgBtn()};
       el.appendChild(div)});
-    selPlan=d[0];updateBtn()})
+    selPlan=d[0];updateTgBtn();
+  })
 }).catch(function(){var s=document.getElementById('statusLine');if(s)s.innerHTML='<span style="color:var(--red)">Server bilan bog\'lanishda xatolik</span>'});
-
-function updateBtn(){var b=document.getElementById('payBtn');if(selPlan){b.style.display='block';b.textContent='📤 '+selPlan.name+' — '+selPlan.price_fmt}}
-
-function previewReceipt(){var inp=document.getElementById('receiptInput');var f=inp.files&&inp.files[0];
-  if(!f)return;var z=document.getElementById('uploadZone');var p=document.getElementById('receiptPreview');
-  z.style.display='none';p.style.display='block';
-  if(f.type.startsWith('image/')){var r=new FileReader();r.onload=function(e){document.getElementById('prevImg').src=e.target.result};r.readAsDataURL(f)}
-  else{document.getElementById('prevImg').style.display='none'}
-  document.getElementById('prevInfo').textContent=f.name+' ('+Math.round(f.size/1024)+' KB)';
-  var b=document.getElementById('payBtn');b.style.display='block';b.disabled=false;b.textContent='📤 '+selPlan.name+' — '+selPlan.price_fmt+' (yuborish)'
-}
-
-function startPay(){if(!selPlan)return;var inp=document.getElementById('receiptInput');
-  if(!inp.files||!inp.files[0]){alert('Iltimos, to\'lov chekini yuklang');return}
-  var b=document.getElementById('payBtn');b.disabled=true;b.textContent='Yuborilmoqda…';
-  var fd=new FormData();fd.append('plan_id',selPlan.id);fd.append('receipt',inp.files[0]);
-  fetch('/api/pay/checkout',{method:'POST',body:fd}).then(function(r){return r.json()}).then(function(d){
-    if(d.ok){b.style.display='none';document.getElementById('receiptPreview').style.display='none';
-      document.getElementById('payHint').innerHTML='✅ To\'lov #'+d.payment_id+' qabul qilindi.<br>Admin tekshirib, 24 soat ichida tasdiqlaydi.'}
-    else{alert(d.error||'Xatolik');b.disabled=false;b.textContent='📤 '+selPlan.name+' — '+selPlan.price_fmt}
-  }).catch(function(){alert('Server bilan bog\'lanishda xatolik');b.disabled=false})
-}
-
-var drop=document.getElementById('uploadZone');
-drop.addEventListener('dragover',function(e){e.preventDefault();drop.style.borderColor='var(--accent)'});
-drop.addEventListener('dragleave',function(){drop.style.borderColor='var(--border)'});
-drop.addEventListener('drop',function(e){e.preventDefault();drop.style.borderColor='var(--border)';var f=e.dataTransfer.files[0];if(f){document.getElementById('receiptInput').files=e.dataTransfer.files;previewReceipt()}});
 
 fetch('/api/config-public').then(function(r){return r.json()}).then(function(c){
   if(c.ok){document.getElementById('cardNum').textContent=c.card_number||'—';document.getElementById('cardHolder').textContent=c.card_holder||'—'}
 }).catch(function(){})
+</script>
+<script>
+{% if error == 'register' or error == 'exists' %}
+switchTab('reg');
+{% endif %}
 </script>
 </body>
 </html>

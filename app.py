@@ -310,6 +310,10 @@ def init_db():
         conn.execute("ALTER TABLE users ADD COLUMN mock_used INTEGER DEFAULT 0")
     except sqlite3.OperationalError:
         pass
+    try:
+        conn.execute("ALTER TABLE users ADD COLUMN session_token TEXT")
+    except sqlite3.OperationalError:
+        pass
     # Mavjud jadval uchun unique index (race condition oldini olish)
     try:
         conn.execute("DELETE FROM plans WHERE id NOT IN (SELECT MIN(id) FROM plans GROUP BY name)")
@@ -366,6 +370,14 @@ def current_user():
     conn = db()
     u = conn.execute("SELECT * FROM users WHERE id=?", (uid,)).fetchone()
     conn.close()
+    if u is None:
+        session.clear()
+        return None
+    # Bitta qurilma cheklovi: boshqa qurilmadan kirilsa, eski sessiya yopiladi
+    if u["session_token"] != session.get("token"):
+        session.clear()
+        session["kicked"] = "1"
+        return None
     return u
 
 
@@ -515,6 +527,9 @@ def paywall():
     body = open(os.path.join(BASE_DIR, "paywall.html"), encoding="utf-8").read()
     error = request.args.get("error", "")
     msg = request.args.get("msg", "")
+    if not error and session.get("kicked"):
+        session.pop("kicked", None)
+        error = "kicked"
     resp = make_response(render_template_string(body, error=error, msg=msg, plans=None))
     resp.headers["Cache-Control"] = "no-store, no-cache, must-revalidate, max-age=0"
     resp.headers["Pragma"] = "no-cache"
@@ -562,8 +577,14 @@ def auth_login():
     if u["blocked"]:
         log.warning("LOGIN BLOCKED: phone=%s", phone)
         return redirect("/paywall?error=blocked")
+    token = secrets.token_hex(16)
+    conn = db()
+    conn.execute("UPDATE users SET session_token=? WHERE id=?", (token, u["id"]))
+    conn.commit()
+    conn.close()
     session.clear()
     session["uid"] = u["id"]
+    session["token"] = token
     log.info("LOGIN OK: uid=%s phone=%s", u["id"], phone)
     return redirect("/")
 
@@ -586,9 +607,10 @@ def auth_register():
         if row is not None:
             conn.close()
             return redirect("/paywall?error=exists")
+        token = secrets.token_hex(16)
         conn.execute(
-            "INSERT INTO users (phone, password_hash, name, created_at) VALUES (?,?,?,?)",
-            (phone, hash_password(pw), name, now.isoformat(timespec="seconds")))
+            "INSERT INTO users (phone, password_hash, name, created_at, session_token) VALUES (?,?,?,?,?)",
+            (phone, hash_password(pw), name, now.isoformat(timespec="seconds"), token))
         conn.commit()
         u_new = conn.execute("SELECT id FROM users WHERE phone=?", (phone,)).fetchone()
         conn.close()
@@ -599,18 +621,29 @@ def auth_register():
         return redirect("/paywall?error=register&msg=Server+xatosi")
     session.clear()
     session["uid"] = u_new["id"]
+    session["token"] = token
     log.info("REGISTER OK: uid=%s phone=%s name=%s", u_new["id"], phone, name)
     return redirect("/")
 
 
 # ---------------- Gating ----------------
 
+MOBILE_UA_KEYS = ("android", "iphone", "ipad", "ipod", "windows phone", "mobile")
+
+
+def is_mobile():
+    ua = (request.headers.get("User-Agent") or "").lower()
+    return any(k in ua for k in MOBILE_UA_KEYS)
+
+
 @app.route("/")
 def index_page():
     u = current_user()
     if u is None:
+        if session.get("kicked"):
+            return redirect("/paywall")
         return _serve_cached("landing.html")
-    return gate_page("index.html")
+    return gate_page("index-mobile.html" if is_mobile() else "index.html")
 
 
 @app.route("/index.html")
@@ -625,7 +658,7 @@ def page_index_mobile():
 
 @app.route("/CEFR-speaking-part1.html")
 def page_cefr():
-    return gate_page("CEFR-speaking-part1.html")
+    return gate_page("CEFR-speaking-part1-mobile.html" if is_mobile() else "CEFR-speaking-part1.html")
 
 
 @app.route("/CEFR-speaking-part1-mobile.html")
@@ -635,8 +668,10 @@ def page_cefr_mobile():
 
 def gate_page(fn):
     u = current_user()
-    if u is None or u["blocked"]:
+    if u is None:
         return redirect("/paywall")
+    if u["blocked"]:
+        return redirect("/paywall?error=blocked")
     return _serve_cached(fn)
 
 
@@ -924,6 +959,9 @@ def admin_page():
     phone = request.args.get("phone", "")
     body = open(os.path.join(BASE_DIR, "admin.html"), encoding="utf-8").read()
     if u is None or not u["is_admin"]:
+        if not error and session.get("kicked"):
+            session.pop("kicked", None)
+            error = "kicked"
         return render_template_string(body, is_admin=False, error=error, phone=phone, stats={})
     now = datetime.datetime.now()
     in7 = (now + datetime.timedelta(days=7)).isoformat()
@@ -975,8 +1013,14 @@ def admin_login():
         log.warning("ADMIN LOGIN FAIL (wrong password): phone=%s id=%s IP=%s",
                     phone, u["id"], request.remote_addr)
         return redirect("/admin?error=login&phone=" + urllib.parse.quote(phone))
+    token = secrets.token_hex(16)
+    conn = db()
+    conn.execute("UPDATE users SET session_token=? WHERE id=?", (token, u["id"]))
+    conn.commit()
+    conn.close()
     session.clear()
     session["uid"] = u["id"]
+    session["token"] = token
     session.permanent = True
     log.info("ADMIN LOGIN OK: id=%s phone=%s IP=%s", u["id"], phone, request.remote_addr)
     return redirect("/admin")

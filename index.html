@@ -5669,7 +5669,7 @@ function openPlansModal() {
 }
 function closePlansModal() { var m = document.getElementById('plansModal'); if (m) { m.classList.add('hidden'); } }
 function selectPlan(p) {
-  var msg = 'Assalomu aleykum, men sizni website ingizni premium package ini sotib olmoqchiman. Tanlangan tarif: ' + p.name + ' (' + p.price_fmt + ')';
+  var msg = 'Assalomu alaykum! Men sizning veb-saytingizdagi Premium paketni sotib olmoqchiman. Tanlangan obuna: ' + p.name + ' (' + p.price_fmt + ').';
   window.open('https://t.me/rahmatovturgun?text=' + encodeURIComponent(msg), '_blank');
   closePlansModal();
 }
@@ -5686,9 +5686,12 @@ function markFree(id, freeCount, setDefault) {
   var firstFree = null;
   btns.forEach(function(btn, i) {
     if (i === 0 || i > freeCount) {
-      btn.classList.add('premium');
-      btn.innerHTML = btn.textContent + ' <span class="prem-badge">🔒 Premium</span>';
-      btn.addEventListener('click', function() { openPlansModal(); });
+      var clone = btn.cloneNode(true);
+      clone.classList.remove('active');
+      btn.parentNode.replaceChild(clone, btn);
+      clone.classList.add('premium');
+      clone.innerHTML = clone.textContent + ' <span class="prem-badge">🔒 Premium</span>';
+      clone.addEventListener('click', function() { openPlansModal(); });
     } else {
       btn.classList.add('free');
       btn.innerHTML = btn.textContent + ' <span class="free-badge">🆓 Bepul</span>';
@@ -5696,7 +5699,7 @@ function markFree(id, freeCount, setDefault) {
     }
   });
   if (firstFree) {
-    btns.forEach(function(b) { b.classList.remove('active'); });
+    gl.querySelectorAll('.group-btn').forEach(function(b) { b.classList.remove('active'); });
     firstFree.classList.add('active');
     setDefault();
   }
@@ -10665,7 +10668,7 @@ startBtn.addEventListener('click', async () => {
 
 
 
-      const allShuffled = SAVOLLAR.slice();
+      const allShuffled = (selGroupEnd === 0) ? SAVOLLAR.slice() : SAVOLLAR.slice(selGroupStart, selGroupEnd);
 
 
 
@@ -10695,7 +10698,7 @@ startBtn.addEventListener('click', async () => {
 
 
 
-      questions = (selGroupEnd === 0) ? allShuffled : allShuffled.slice(0, selGroupEnd - selGroupStart);
+      questions = allShuffled;
 
 
 
@@ -10847,7 +10850,7 @@ idx = 0; results = [];
 
   mockBtn.addEventListener('click', async () => {
 
-    try { const mc = await fetch('/api/mock/start', { method: 'POST' }); const md = await mc.json(); if (!md.ok) { window.open('https://t.me/rahmatovturgun?text=' + encodeURIComponent('Assalomu aleykum, men sizni website ingizni premium package ini sotib olmoqchiman'), '_blank'); return; } } catch (e) {}
+    try { const mc = await fetch('/api/mock/start', { method: 'POST' }); const md = await mc.json(); if (!md.ok) { window.open('https://t.me/rahmatovturgun?text=' + encodeURIComponent('Assalomu alaykum! Men sizning veb-saytingizdagi Premium paketni sotib olmoqchiman.'), '_blank'); return; } } catch (e) {}
 
 
 
