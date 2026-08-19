@@ -223,7 +223,7 @@ app.config["SESSION_COOKIE_HTTPONLY"] = True
 app.config["SESSION_COOKIE_SAMESITE"] = "Lax"
 app.config["SESSION_COOKIE_SECURE"] = True
 app.config["PERMANENT_SESSION_LIFETIME"] = datetime.timedelta(days=7)
-app.config["MAX_CONTENT_LENGTH"] = 32 * 1024 * 1024
+app.config["MAX_CONTENT_LENGTH"] = 50 * 1024 * 1024
 
 
 # ---- Error handlers ----
@@ -1114,6 +1114,51 @@ def api_push_unsubscribe():
 
 # ---------------- AI scoring (Gemini) ----------------
 
+RUBRICS = {
+    "1.1": {
+        "level": "A1-A2", "scale": "0-5", "max": 5,
+        "text": ("5 = above A2. "
+                 "4 (Higher A2): all 3 answers on-topic; some simple grammar correct but systematic basic errors; "
+                 "sufficient vocabulary but inappropriate word choices; mispronunciations noticeable; frequent pausing/reformulation but meaning clear. "
+                 "3 (Lower A2): 2 answers on-topic (same features). "
+                 "2 (Higher A1): grammar limited to words/phrases, basic errors impede meaning; very basic personal vocabulary; mostly unintelligible pronunciation; frequent pausing. "
+                 "1 (Lower A1): 1 answer on-topic. "
+                 "0: no meaningful language or off-topic."),
+    },
+    "1.2": {
+        "level": "B1", "scale": "0-5", "max": 5,
+        "text": ("5 = above B1. "
+                 "4 (Higher B1): simple grammar correct, errors when attempting complex structures; sufficient vocabulary range/control; "
+                 "generally intelligible pronunciation; some pausing; uses only simple cohesive devices. "
+                 "3 (Lower B1): 2 answers on-topic (same features). "
+                 "2 (Higher A2): basic mistakes systematically occur; cohesion limited (list of points). "
+                 "1 (Lower A2): 1 answer on-topic. "
+                 "0: below A2 or no language."),
+    },
+    "2": {
+        "level": "B2", "scale": "0-5", "max": 5,
+        "text": ("5 = above B2. "
+                 "4 (Higher B2): some complex grammar accurate, errors do not impede understanding; sufficient vocabulary; "
+                 "intelligible pronunciation; some pausing; limited cohesive devices. "
+                 "3 (Lower B2): 2 answers on-topic (same features). "
+                 "2 (Higher B1): simple structures correct, errors with complex; limited vocabulary; only simple cohesive devices. "
+                 "1 (Lower B1): 1 answer on-topic. "
+                 "0: below B1."),
+    },
+    "3": {
+        "level": "C1", "scale": "0-6", "max": 6,
+        "text": ("6 = above C1. "
+                 "5 (C1): clear presentation, gives reasons for and against; range of complex grammar accurate (minor errors); "
+                 "range of vocabulary (some awkward usage); intelligible pronunciation; backtracking does not interrupt flow; range of cohesive devices. "
+                 "4 (Higher B2): addresses both sides; some complex grammar accurate; sufficient vocabulary; intelligible; some pausing; limited cohesive devices. "
+                 "3 (Lower B2): addresses only one side. "
+                 "2 (Higher B1): cannot construct a coherent sustained response, heavily dependent on prompts. "
+                 "1 (Lower B1): reads directly from the prompts. "
+                 "0: below B1."),
+    },
+}
+
+
 def _prep_audio(data, mime_type):
     try:
         if (mime_type or "").startswith("audio/wav") or data[:4] == b"RIFF":
@@ -1145,25 +1190,53 @@ def _prep_audio(data, mime_type):
     return data, mime_type
 
 
-def ai_score(audio_bytes, mime_type, question):
+def ai_score(audio_bytes, mime_type, question, part="1.1"):
+    audio_bytes, mime_type = _prep_audio(audio_bytes, mime_type)
+    result, err = _ai_score_groq(audio_bytes, mime_type, question, part)
+    if result is not None:
+        return result, None
+    log.warning("Groq AI failed (%s) - falling back to Gemini", err)
+    result, err = _ai_score_gemini(audio_bytes, mime_type, question, part)
+    if result is not None:
+        return result, None
+    return None, err or "Barcha AI xizmatlar hozir band. Birozdan keyin qayta urinib ko'ring."
+
+
+def _ai_score_groq(audio_bytes, mime_type, question, part):
     key = cfg.get("groq_api_key", "").strip()
     if not key:
         return None, "Groq API kaliti sozlanmagan"
-    audio_bytes, mime_type = _prep_audio(audio_bytes, mime_type)
     import requests
+    import time as _time
 
-    # 1) Speech-to-text (Whisper)
+    def _post(url, retries=1, **kwargs):
+        for _attempt in range(retries + 1):
+            try:
+                r = requests.post(url, headers={"Authorization": "Bearer " + key}, timeout=120, **kwargs)
+            except Exception as e:
+                log.error("Groq request error: %s", str(e))
+                return None
+            if r.status_code == 429 and _attempt < retries:
+                wait = 55.0
+                try:
+                    ra = r.headers.get("Retry-After")
+                    if ra:
+                        wait = min(float(ra) + 2.0, 60.0)
+                except Exception:
+                    pass
+                log.warning("Groq 429 - retrying in %.0fs", wait)
+                _time.sleep(wait)
+                continue
+            return r
+        return None
+
     stt_model = (cfg.get("groq_stt_model", "") or "whisper-large-v3-turbo").strip()
-    try:
-        r = requests.post(
-            "https://api.groq.com/openai/v1/audio/transcriptions",
-            headers={"Authorization": "Bearer " + key},
-            files={"file": ("answer.wav", audio_bytes, mime_type or "audio/wav")},
-            data={"model": stt_model},
-            timeout=120,
-        )
-    except Exception as e:
-        log.error("Groq STT request error: %s", str(e))
+    r = _post(
+        "https://api.groq.com/openai/v1/audio/transcriptions",
+        files={"file": ("answer.wav", audio_bytes, mime_type or "audio/wav")},
+        data={"model": stt_model},
+    )
+    if r is None:
         return None, "Groq STT bilan bog'lanib bo'lmadi"
     if r.status_code != 200:
         log.error("Groq STT error %s: %s", r.status_code, r.text[:300])
@@ -1173,35 +1246,40 @@ def ai_score(audio_bytes, mime_type, question):
     except Exception:
         transcript = ""
 
-    # 2) Evaluate (LLM)
+    rb = RUBRICS.get(part, RUBRICS["1.1"])
     llm_model = (cfg.get("groq_llm_model", "") or "openai/gpt-oss-20b").strip()
     prompt = (
-        'You are an IELTS/CEFR speaking examiner. '
-        'The question the student answered is: "' + question + '". '
-        'Here is the student transcript: """' + transcript + '""". '
-        'Evaluate it and reply with ONLY valid JSON (no markdown) in this exact shape: '
-        '{"score": "B1|B2|C1", "fluency": "...", "vocabulary": "...", "grammar": "...", "tip": "..."}. '
-        'Keep each comment to one constructive sentence.'
+        "You are a certified Multilevel (CEFR) speaking examiner. "
+        "Assess the answer of the student for Part " + part + " (target level " + rb["level"] + "). "
+        "The question was: " + question + ". "
+        "The transcript of the student is: " + transcript + ". "
+        "OFFICIAL RUBRIC (scale " + rb["scale"] + "): " + rb["text"] + " "
+        "Assess these 5 criteria: vocabulary, grammar, fluency, pronunciation, communicative. "
+        "You only see the transcript (not audio), so infer pronunciation and pausing cautiously. "
+        "Each score (overall and each criterion) is an integer from 0 to " + str(rb["max"]) + ". "
+        "Write all comments in Uzbek. "
+        "Reply with ONLY valid JSON (no markdown), for example: "
+        '{"score": 4, "vocabulary": {"score": 4, "comment": "soz boyligi keng"}, '
+        '"grammar": {"score": 4, "comment": "grammatika aniq"}, "fluency": {"score": 3, "comment": "ravon"}, '
+        '"pronunciation": {"score": 3, "comment": "talaffuz yaxshi"}, "communicative": {"score": 4, "comment": "tushunarli"}, '
+        '"tip": "bitta aniq maslahat"}'
     )
-    try:
-        r2 = requests.post(
-            "https://api.groq.com/openai/v1/chat/completions",
-            headers={"Authorization": "Bearer " + key, "Content-Type": "application/json"},
-            json={
-                "model": llm_model,
-                "messages": [{"role": "user", "content": prompt}],
-                "temperature": 0.2,
-                "response_format": {"type": "json_object"},
-            },
-            timeout=120,
-        )
-    except Exception as e:
-        log.error("Groq LLM request error: %s", str(e))
+    r2 = _post(
+        "https://api.groq.com/openai/v1/chat/completions",
+        json={
+            "model": llm_model,
+            "messages": [{"role": "user", "content": prompt}],
+            "temperature": 0.2,
+            "response_format": {"type": "json_object"},
+            "max_tokens": 2000,
+        },
+    )
+    if r2 is None:
         return None, "Groq bilan bog'lanib bo'lmadi"
     if r2.status_code != 200:
         log.error("Groq LLM error %s: %s", r2.status_code, r2.text[:300])
         if r2.status_code == 429:
-            return None, "Groq limiti oshdi (429) — bir daqiqadan keyin qayta urinib ko'ring"
+            return None, "Groq limiti oshdi (429)"
         return None, "Groq baholash xatosi (HTTP %s)" % r2.status_code
     try:
         content = r2.json()["choices"][0]["message"]["content"]
@@ -1211,8 +1289,71 @@ def ai_score(audio_bytes, mime_type, question):
     try:
         result = json.loads(content)
     except Exception:
-        result = {"score": "", "fluency": "", "vocabulary": "", "grammar": "", "tip": "", "raw": content}
+        result = {"score": 0, "raw": content}
+    result["level"] = rb["level"]
     result["transcript"] = transcript
+    result["scale"] = rb["scale"]
+    result["max"] = rb["max"]
+    return result, None
+
+
+def _ai_score_gemini(audio_bytes, mime_type, question, part):
+    key = cfg.get("gemini_api_key", "").strip()
+    if not key:
+        return None, "Gemini API kaliti sozlanmagan"
+    import requests
+    import base64
+    rb = RUBRICS.get(part, RUBRICS["1.1"])
+    b64 = base64.b64encode(audio_bytes).decode()
+    prompt = (
+        "You are a certified Multilevel (CEFR) speaking examiner. "
+        "Listen to the audio, transcribe it, and assess the answer for Part " + part + " (target level " + rb["level"] + "). "
+        "The question was: " + question + ". "
+        "OFFICIAL RUBRIC (scale " + rb["scale"] + "): " + rb["text"] + " "
+        "Assess these 5 criteria: vocabulary, grammar, fluency, pronunciation, communicative. "
+        "Each score (overall and each criterion) is an integer from 0 to " + str(rb["max"]) + ". "
+        "Write all comments in Uzbek. "
+        "Reply with ONLY valid JSON (no markdown), for example: "
+        '{"transcript": "the transcript", "score": 4, "vocabulary": {"score": 4, "comment": "soz boyligi keng"}, '
+        '"grammar": {"score": 4, "comment": "grammatika aniq"}, "fluency": {"score": 3, "comment": "ravon"}, '
+        '"pronunciation": {"score": 3, "comment": "talaffuz yaxshi"}, "communicative": {"score": 4, "comment": "tushunarli"}, '
+        '"tip": "bitta aniq maslahat"}'
+    )
+    body = {
+        "contents": [{
+            "parts": [
+                {"text": prompt},
+                {"inline_data": {"mime_type": mime_type or "audio/wav", "data": b64}},
+            ]
+        }]
+    }
+    model = (cfg.get("gemini_model", "") or "gemini-3.6-flash").strip()
+    url = "https://generativelanguage.googleapis.com/v1beta/models/" + urllib.parse.quote(model) + ":generateContent?key=" + urllib.parse.quote(key)
+    try:
+        r = requests.post(url, json=body, timeout=120)
+    except Exception as e:
+        log.error("Gemini request error: %s", str(e))
+        return None, "Gemini bilan bog'lanib bo'lmadi"
+    if r.status_code != 200:
+        log.error("Gemini error %s: %s", r.status_code, r.text[:300])
+        return None, "Gemini xatosi (HTTP %s)" % r.status_code
+    try:
+        content = r.json()["candidates"][0]["content"]["parts"][0]["text"]
+    except Exception:
+        return None, "Gemini javobini o'qib bo'lmadi"
+    content = content.strip()
+    if content.startswith("```"):
+        content = content.strip("`")
+        if content.lower().startswith("json"):
+            content = content[4:]
+        content = content.strip()
+    try:
+        result = json.loads(content)
+    except Exception:
+        result = {"score": 0, "raw": content}
+    result["level"] = rb["level"]
+    result["scale"] = rb["scale"]
+    result["max"] = rb["max"]
     return result, None
 
 
@@ -1229,10 +1370,11 @@ def api_ai_score():
     if not question or f is None or f.filename == "":
         return api_error("Audio va savol kerak")
     data = f.read()
-    if len(data) > 5 * 1024 * 1024:
-        return api_error("Audio juda katta (max 5MB)")
+    if len(data) > 50 * 1024 * 1024:
+        return api_error("Audio juda katta (max 50MB)")
     mime = (f.content_type or "").split(";")[0].strip() or "audio/wav"
-    result, err = ai_score(data, mime, question)
+    part = (request.form.get("part") or "1.1").strip()
+    result, err = ai_score(data, mime, question, part)
     if err:
         return api_error(err, 502)
     return jsonify({"ok": True, "result": result})

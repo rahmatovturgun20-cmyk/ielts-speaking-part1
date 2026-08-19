@@ -1320,6 +1320,13 @@
         "There's a strong sense of community",
         "It has changed a lot over the years",
         "It's a peaceful place"
+      ],
+      "part3": [
+        "Living in a big city offers more job opportunities",
+        "The countryside has cleaner air and a calmer pace of life",
+        "Urban areas struggle with traffic and pollution",
+        "Village life has a stronger sense of community",
+        "It is a trade-off between convenience and peace"
       ]
     },
     "Shopping": {
@@ -1345,6 +1352,13 @@
         "I'm an impulse buyer",
         "I prefer online shopping",
         "It's good value for money"
+      ],
+      "part3": [
+        "Online shopping has changed the way we buy things",
+        "It offers greater choice and often better prices",
+        "However, local shops create jobs in the community",
+        "High-street stores give a more personal experience",
+        "The convenience of e-commerce is hard to beat"
       ]
     },
     "Colours": {
@@ -1364,6 +1378,12 @@
         "Colour affects my mood",
         "I like neutral tones",
         "It really suits me"
+      ],
+      "part3": [
+        "Colours have a strong psychological effect on people",
+        "Bright colours can boost energy and creativity",
+        "Neutral tones create a calm, focused environment",
+        "Colour preferences often reflect a person's personality"
       ]
     },
     "Weather": {
@@ -1387,6 +1407,12 @@
         "The weather affects my mood",
         "I love crisp autumn days",
         "It's sunny and bright"
+      ],
+      "part3": [
+        "Climate change is making the weather more unpredictable",
+        "Extreme weather events are becoming more frequent",
+        "The weather strongly affects people's mood and productivity",
+        "We must learn to adapt to a changing climate"
       ]
     },
     "Animals & Pets": {
@@ -1409,6 +1435,13 @@
         "It teaches responsibility",
         "I'm fascinated by wildlife",
         "It's the most popular pet"
+      ],
+      "part3": [
+        "Keeping pets teaches children responsibility",
+        "Pets provide emotional support and reduce stress",
+        "However, owning a pet is costly and time-consuming",
+        "Wildlife conservation should be a global priority",
+        "Animal testing remains a highly controversial issue"
       ]
     },
     "Food & Eating": {
@@ -1438,6 +1471,13 @@
         "I can't cook to save my life",
         "It's an acquired taste",
         "It's my comfort food"
+      ],
+      "part3": [
+        "Fast food is convenient but damages our health",
+        "Home-cooked meals are healthier and cheaper",
+        "A balanced diet is the key to a healthy life",
+        "Obesity is a growing public-health problem",
+        "Governments should encourage healthy eating habits"
       ]
     },
     "Music": {
@@ -1459,6 +1499,12 @@
         "It helps me relax",
         "I listen to it on repeat",
         "It brings back memories"
+      ],
+      "part3": [
+        "Music is a universal language that connects people",
+        "Learning an instrument builds discipline and patience",
+        "Music has proven therapeutic benefits",
+        "Streaming has transformed the whole music industry"
       ]
     },
     "Sports & Fitness": {
@@ -1484,6 +1530,13 @@
         "I'm a couch potato",
         "It clears my mind",
         "I go for a run"
+      ],
+      "part3": [
+        "Regular exercise is essential for a healthy life",
+        "Sport teaches teamwork, discipline and resilience",
+        "Governments should invest in public sports facilities",
+        "A sedentary lifestyle leads to serious health problems",
+        "Professional sport has become a huge industry"
       ]
     },
     "Books & Reading": {
@@ -1507,6 +1560,13 @@
         "It's a bestseller",
         "I can't put it down",
         "Reading helps me relax"
+      ],
+      "part3": [
+        "Reading broadens the mind and improves vocabulary",
+        "Digital books are more convenient than paper ones",
+        "However, long screen time strains the eyes",
+        "Libraries still play a vital role in society",
+        "Reading habits are declining among young people"
       ]
     },
     "Travel & Transport": {
@@ -1536,6 +1596,13 @@
         "It's off the beaten track",
         "I pack light",
         "It was a once-in-a-lifetime trip"
+      ],
+      "part3": [
+        "Travel broadens the mind and cultural awareness",
+        "Mass tourism can seriously damage the environment",
+        "Public transport should be cheap or even free",
+        "Electric vehicles are the future of transport",
+        "Travelling on a budget is easier than ever"
       ]
     },
     "Family & Friends": {
@@ -1563,6 +1630,13 @@
         "I take after my mother",
         "I'm an only child",
         "We share a lot in common"
+      ],
+      "part3": [
+        "Strong family bonds provide emotional security",
+        "Modern life leaves less and less time for family",
+        "Friendship is essential for mental well-being",
+        "Social media is changing how we keep friendships",
+        "A supportive family helps children succeed in life"
       ]
     },
     "Work & Study": {
@@ -1590,6 +1664,13 @@
         "I'm learning new skills",
         "It's a stepping stone",
         "I want to pursue a career in"
+      ],
+      "part3": [
+        "Working from home offers great flexibility",
+        "However, it blurs the line between work and rest",
+        "A university degree improves career prospects",
+        "Practical skills matter as much as qualifications",
+        "Education should prepare students for the real world"
       ]
     },
     "Free Time & Hobbies": {
@@ -1613,6 +1694,13 @@
         "It's a great way to relax",
         "I'm a big fan of",
         "It's my escape from stress"
+      ],
+      "part3": [
+        "Hobbies are essential for a balanced life",
+        "Free time is increasingly filled with screens",
+        "Creative hobbies are a great way to reduce stress",
+        "A good work-life balance is crucial",
+        "Leisure time should be used meaningfully"
       ]
     },
     "Technology": {
@@ -1641,6 +1729,14 @@
         "It saves me a lot of time",
         "I'm glued to the screen",
         "It's a real game-changer"
+      ],
+      "part3": [
+        "Technology has revolutionized every aspect of life",
+        "It is a double-edged sword with risks and benefits",
+        "Artificial intelligence will transform the job market",
+        "Screen time should be limited, especially for children",
+        "Technology connects people across the whole globe",
+        "Privacy is a growing concern in the digital age"
       ]
     },
     "Decisions & Challenges": {
@@ -1669,6 +1765,13 @@
         "I weighed the pros and cons",
         "It turned out to be a blessing in disguise",
         "I learned from my mistakes"
+      ],
+      "part3": [
+        "Making difficult decisions builds character",
+        "Weighing the pros and cons always helps",
+        "Challenges are what make us stronger",
+        "Learning from failure is part of growing",
+        "Support from others makes any challenge easier"
       ]
     },
     "Success & Achievement": {
@@ -1693,6 +1796,13 @@
         "I finally reached my goal",
         "It boosted my confidence",
         "Hard work paid off"
+      ],
+      "part3": [
+        "Success requires hard work and persistence",
+        "Talent alone is never enough",
+        "Setting clear goals leads to real achievement",
+        "Failure is just a stepping stone to success",
+        "Society often measures success too narrowly"
       ]
     },
     "People & Influence": {
@@ -1715,6 +1825,12 @@
         "I admire them because",
         "They have a great personality",
         "We share a lot in common"
+      ],
+      "part3": [
+        "A good role model can completely change a life",
+        "The people around us shape who we become",
+        "Mentors play a crucial role in development",
+        "Positive influence is far stronger than criticism"
       ]
     },
     "Skills & Learning": {
@@ -1736,6 +1852,13 @@
         "It became second nature",
         "I taught myself",
         "It improved my skills"
+      ],
+      "part3": [
+        "Learning a new skill boosts confidence",
+        "Lifelong learning is essential in a changing world",
+        "Practical skills are often seriously undervalued",
+        "Learning by doing is the most effective method",
+        "Digital literacy has become a basic skill"
       ]
     },
     "Advice & Helping": {
@@ -1757,6 +1880,12 @@
         "It made a real difference",
         "I was happy to help",
         "The best advice I received was"
+      ],
+      "part3": [
+        "Good advice can save us from costly mistakes",
+        "Helping others benefits both sides",
+        "Volunteering strengthens the whole community",
+        "Support networks are vital in difficult times"
       ]
     },
     "Memories & Emotions": {
@@ -1783,6 +1912,13 @@
         "Looking back, it was special",
         "I'll never forget it",
         "It holds a special place in my heart"
+      ],
+      "part3": [
+        "Memories are what shape our identity",
+        "Positive memories greatly boost well-being",
+        "Our emotions strongly affect our decisions",
+        "Sharing memories strengthens relationships",
+        "Photos help us preserve precious moments"
       ]
     },
     "Environment & Nature": {
@@ -1807,6 +1943,14 @@
         "Climate change is a real threat",
         "It's better for the planet",
         "We should recycle more"
+      ],
+      "part3": [
+        "Pollution is one of the biggest challenges we face",
+        "Renewable energy is the key to our future",
+        "We must all reduce our carbon footprint",
+        "Recycling should be made much easier",
+        "Governments and individuals share this responsibility",
+        "Climate change affects absolutely everyone"
       ]
     },
     "Traditions & Culture": {
@@ -1829,6 +1973,13 @@
         "We gather with relatives",
         "It has deep cultural meaning",
         "It's passed down from generation to generation"
+      ],
+      "part3": [
+        "Traditions preserve our cultural identity",
+        "Some traditions need to adapt to modern times",
+        "Globalization threatens many local cultures",
+        "Festivals bring communities closer together",
+        "Culture should be protected and promoted"
       ]
     },
     "Teamwork & Cooperation": {
@@ -1850,6 +2001,13 @@
         "Two heads are better than one",
         "It taught me to cooperate",
         "We achieved more together"
+      ],
+      "part3": [
+        "Teamwork produces far better results than working alone",
+        "Good communication is the key to cooperation",
+        "Teams benefit from a mix of different skills",
+        "Conflict is natural but must be managed well",
+        "Collaboration is essential in the modern workplace"
       ]
     }
   }

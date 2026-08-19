@@ -9493,7 +9493,7 @@ async function afterAnswer() {
 
 
     sampleText.textContent = sample;
-    renderPhrases(sample, questions[idx]);
+    renderPhrases(sample, questions[idx], partFor(idx));
 
 
 
@@ -9991,7 +9991,7 @@ async function afterAnswer() {
 
 
 
-          '<div class="result-sample hidden" id="rrev-' + absIdx + '"><b>Sample answer:</b> ' + escapeHtml(sample) + phraseChipsHtml(sample) + topicPhrasesHtml(r.question, sample) + '</div>';
+          '<div class="result-sample hidden" id="rrev-' + absIdx + '"><b>Sample answer:</b> ' + escapeHtml(sample) + phraseChipsHtml(sample) + topicPhrasesHtml(r.question, sample, partFor(absIdx)) + '</div>';
 
 
 
@@ -10974,7 +10974,7 @@ function renderResults() {
 
 
 
-          '<div class="result-sample hidden" id="rsample-' + i + '"><b>Sample answer:</b> ' + escapeHtml(sample) + phraseChipsHtml(sample) + topicPhrasesHtml(r.question, sample) + '</div>';
+          '<div class="result-sample hidden" id="rsample-' + i + '"><b>Sample answer:</b> ' + escapeHtml(sample) + phraseChipsHtml(sample) + topicPhrasesHtml(r.question, sample, partFor(i)) + '</div>';
 
 
 
@@ -11151,21 +11151,42 @@ function topicFor(q, text) {
   return best;
 }
 
-function topicPhrasesHtml(q, text) {
+function topicPhrasesHtml(q, text, part) {
   var topic = topicFor(q, text);
   if (!topic) return '';
-  var phrases = (TOPIC_PHRASES[topic] && TOPIC_PHRASES[topic].phrases) || [];
-  if (!phrases.length) return '';
-  var chips = phrases.map(function (p) { return '<span class="phrase-chip topic-chip">' + escapeHtml(p) + '</span>'; }).join('');
-  return '<div class="phrase-bank topic-bank"><div class="phrase-title">💡 ' + escapeHtml(topic) + ' — useful phrases</div><div class="phrase-chips">' + chips + '</div></div>';
+  var t = TOPIC_PHRASES[topic];
+  var out = '';
+  var phrases = (t && t.phrases) || [];
+  if (phrases.length) {
+    var chips = phrases.map(function (p) { return '<span class="phrase-chip topic-chip">' + escapeHtml(p) + '</span>'; }).join('');
+    out += '<div class="phrase-bank topic-bank"><div class="phrase-title">💡 ' + escapeHtml(topic) + ' — useful phrases</div><div class="phrase-chips">' + chips + '</div></div>';
+  }
+  if (part === '3' && t && t.part3 && t.part3.length) {
+    var chips3 = t.part3.map(function (p) { return '<span class="phrase-chip part3-chip">' + escapeHtml(p) + '</span>'; }).join('');
+    out += '<div class="phrase-bank topic-bank"><div class="phrase-title">💬 ' + escapeHtml(topic) + ' — Part 3 fikrlar</div><div class="phrase-chips">' + chips3 + '</div></div>';
+  }
+  return out;
 }
 
-function renderPhrases(text, q) {
+function renderPhrases(text, q, part) {
   var box = document.getElementById('phraseBank');
   if (!box) return;
-  var html = phraseChipsHtml(text) + topicPhrasesHtml(q, text);
+  var html = phraseChipsHtml(text) + topicPhrasesHtml(q, text, part);
   box.innerHTML = html;
   box.classList.toggle('hidden', !html);
+}
+
+function partFor(idx) {
+  if (mode === 'pic') return '1.2';
+  if (mode === 'p2') return '2';
+  if (mode === 'p3') return '3';
+  if (mode === 'mock') {
+    var p = (mockMeta && mockMeta[idx] && mockMeta[idx].part) || 0;
+    if (p === 2) return '2';
+    if (p === 3) return '3';
+    return '1.1';
+  }
+  return '1.1';
 }
 
 window.aiFeedback = function (idx) {
@@ -11178,6 +11199,7 @@ window.aiFeedback = function (idx) {
   var fd = new FormData();
   fd.append("audio", r.rec.blob, "answer.wav");
   fd.append("question", r.question || "");
+  fd.append("part", partFor(idx));
   var ctrl = new AbortController();
   var timer = setTimeout(function () { ctrl.abort(); }, 150000);
   fetch("/api/ai/score", { method: "POST", body: fd, signal: ctrl.signal }).then(function (resp) { return resp.json(); }).then(function (d) {
@@ -11191,11 +11213,16 @@ window.aiFeedback = function (idx) {
 }
 
 function renderAI(res) {
-  var h = "<div class='ai-score'>Band: <b>" + escapeHtml(res.score || "—") + "</b></div>";
+  var scale = res.max ? ('/' + res.max) : '';
+  var h = "<div class='ai-score'>" + escapeHtml(res.level || "") + " — <b>" + escapeHtml((res.score != null ? res.score : "—")) + scale + "</b></div>";
   if (res.transcript) h += "<div class='ai-line'><b>Transkript:</b> " + escapeHtml(res.transcript) + "</div>";
-  if (res.fluency) h += "<div class='ai-line'><b>Ravonlik:</b> " + escapeHtml(res.fluency) + "</div>";
-  if (res.vocabulary) h += "<div class='ai-line'><b>Lug'at:</b> " + escapeHtml(res.vocabulary) + "</div>";
-  if (res.grammar) h += "<div class='ai-line'><b>Grammatika:</b> " + escapeHtml(res.grammar) + "</div>";
+  var crits = [["vocabulary", "Lug'at"], ["grammar", "Grammatika"], ["fluency", "Ravonlik"], ["pronunciation", "Talaffuz"], ["communicative", "Kommunikativ"]];
+  crits.forEach(function (c) {
+    var item = res[c[0]];
+    if (item && typeof item === "object") {
+      h += "<div class='ai-line'><b>" + c[1] + " (" + (item.score != null ? item.score : "—") + "):</b> " + escapeHtml(item.comment || "") + "</div>";
+    }
+  });
   if (res.tip) h += "<div class='ai-line'><b>Maslahat:</b> " + escapeHtml(res.tip) + "</div>";
   return h;
 }
@@ -13070,7 +13097,7 @@ homeBtn.addEventListener('click', () => {
     '.gx-name{flex:1;font-weight:600;}' +
     '.gx-phone{color:#94a3b8;font-size:12px;}' +
     '.gx-xp{font-weight:800;color:#2563eb;}' +
-    '.gx-load{color:#94a3b8;text-align:center;padding:20px;}.gx-me{margin-bottom:10px;padding:10px;border-radius:10px;background:#f1f5f9;font-size:13px;}.gx-me-row{margin:2px 0;}.topic-chip{background:#ecfdf5;color:#059669;border-color:#a7f3d0;}html.dark .topic-chip{background:#052e1f;color:#6ee7b7;border-color:#065f46;}';
+    '.gx-load{color:#94a3b8;text-align:center;padding:20px;}.gx-me{margin-bottom:10px;padding:10px;border-radius:10px;background:#f1f5f9;font-size:13px;}.gx-me-row{margin:2px 0;}.topic-chip{background:#ecfdf5;color:#059669;border-color:#a7f3d0;}html.dark .topic-chip{background:#052e1f;color:#6ee7b7;border-color:#065f46;}.part3-chip{background:#f5f3ff;color:#6d28d9;border-color:#ddd6fe;}html.dark .part3-chip{background:#1e1b4b;color:#c4b5fd;border-color:#312e81;}';
   document.head.appendChild(style);
 
   function el(tag, cls, html) {
