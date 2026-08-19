@@ -2733,6 +2733,29 @@
 
 .sample-text { font-size: 15px; line-height: 1.65; }
 
+.phrase-bank { margin-top: 14px; padding-top: 12px; border-top: 1px dashed rgba(0,0,0,0.14); }
+.phrase-title { font-size: 12px; font-weight: 700; color: #6b7280; text-transform: uppercase; letter-spacing: .5px; margin-bottom: 8px; }
+.phrase-chips { display: flex; flex-wrap: wrap; gap: 6px; }
+.phrase-chip { display: inline-block; background: #eff6ff; color: #2563eb; border: 1px solid #bfdbfe; border-radius: 999px; padding: 3px 11px; font-size: 13px; font-weight: 600; line-height: 1.5; }
+html.dark .phrase-bank { border-top-color: rgba(255,255,255,0.14); }
+html.dark .phrase-title { color: #9ca3af; }
+html.dark .phrase-chip { background: #1e293b; color: #93c5fd; border-color: #334155; }
+
+.ai-toggle { margin-top: 8px; display: inline-block; background: #eff6ff; color: #2563eb; border: 1px solid #bfdbfe; border-radius: 8px; padding: 6px 12px; font-size: 13px; font-weight: 600; cursor: pointer; }
+.ai-toggle:hover { background: #dbeafe; }
+.ai-feedback { margin-top: 8px; background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 10px; padding: 12px; font-size: 13.5px; line-height: 1.55; }
+.ai-feedback .ai-score { font-size: 15px; margin-bottom: 6px; }
+.ai-feedback .ai-score b { color: #2563eb; font-size: 17px; }
+.ai-feedback .ai-line { margin-top: 5px; }
+.ai-feedback .ai-line b { color: #334155; }
+.ai-loading { color: #64748b; font-style: italic; }
+.ai-error { color: #dc2626; }
+html.dark .ai-toggle { background: #1e293b; color: #93c5fd; border-color: #334155; }
+html.dark .ai-toggle:hover { background: #293548; }
+html.dark .ai-feedback { background: #111827; border-color: #334155; }
+html.dark .ai-feedback .ai-line b { color: #cbd5e1; }
+html.dark .ai-loading { color: #94a3b8; }
+
 
 
 
@@ -3344,6 +3367,10 @@
 
 
 
+<link rel="manifest" href="/manifest.json">
+<meta name="theme-color" content="#2563eb">
+<link rel="icon" type="image/png" sizes="192x192" href="/icon-192.png">
+<link rel="apple-touch-icon" href="/icon-192.png">
 </head>
 
 
@@ -3953,6 +3980,7 @@
 
 
           <div class="sample-text" id="sampleText"></div>
+          <div class="phrase-bank hidden" id="phraseBank"></div>
 
 
 
@@ -4193,6 +4221,8 @@ var SAVOLLAR = [];
 
 
 var SAMPLES = {};
+var PHRASE_BANK = {};
+var TOPIC_PHRASES = {};
 
 
 
@@ -5624,6 +5654,8 @@ let results = [];
       if (!d.ok) { return; }
       SAVOLLAR = d.data.SAVOLLAR || [];
       SAMPLES = d.data.SAMPLES || {};
+      PHRASE_BANK = d.data.PHRASE_BANK || {};
+      TOPIC_PHRASES = d.data.TOPIC_PHRASES || {};
       PART12_TIMING = d.data.PART12_TIMING || [];
       PART12_SETS = d.data.PART12_SETS || [];
       PART12_SAMPLES = d.data.PART12_SAMPLES || {};
@@ -8626,6 +8658,7 @@ async function afterAnswer() {
 
 
     results.push({ question: questions[idx], rec: rec, seconds: ansSecs[idx], img: modePics[idx] });
+    awardXP();
 
 
 
@@ -8680,6 +8713,7 @@ async function afterAnswer() {
 
 
     sampleText.textContent = sample;
+    renderPhrases(sample, questions[idx]);
 
 
 
@@ -9177,7 +9211,7 @@ async function afterAnswer() {
 
 
 
-          '<div class="result-sample hidden" id="rrev-' + absIdx + '"><b>Sample answer:</b> ' + escapeHtml(sample) + '</div>';
+          '<div class="result-sample hidden" id="rrev-' + absIdx + '"><b>Sample answer:</b> ' + escapeHtml(sample) + phraseChipsHtml(sample) + topicPhrasesHtml(r.question) + '</div>';
 
 
 
@@ -9188,6 +9222,11 @@ async function afterAnswer() {
 
 
 
+
+      const aiBlock = (r.rec && r.rec.blob)
+        ? '<button class="ai-toggle" onclick="aiFeedback(' + absIdx + ')">✨ AI feedback</button>' +
+          '<div class="ai-feedback hidden" id="ai-' + absIdx + '"></div>'
+        : '';
 
       const qTitle = (mode === 'p3') ? 'Task ' + (base + absIdx + 1)
 
@@ -9219,7 +9258,7 @@ async function afterAnswer() {
 
 
 
-        '<small>' + r.seconds + ' seconds</small></div>' + picThumb + recBlock + sampleBlock;
+        '<small>' + r.seconds + ' seconds</small></div>' + picThumb + recBlock + sampleBlock + aiBlock;
 
 
 
@@ -10155,7 +10194,7 @@ function renderResults() {
 
 
 
-          '<div class="result-sample hidden" id="rsample-' + i + '"><b>Sample answer:</b> ' + escapeHtml(sample) + '</div>';
+          '<div class="result-sample hidden" id="rsample-' + i + '"><b>Sample answer:</b> ' + escapeHtml(sample) + phraseChipsHtml(sample) + topicPhrasesHtml(r.question) + '</div>';
 
 
 
@@ -10166,6 +10205,11 @@ function renderResults() {
 
 
 
+
+      const aiBlock = (r.rec && r.rec.blob)
+        ? '<button class="ai-toggle" onclick="aiFeedback(' + i + ')">✨ AI feedback</button>' +
+          '<div class="ai-feedback hidden" id="ai-' + i + '"></div>'
+        : '';
 
       const picBlock = r.img ? '<div class="pic-thumb"><img src="' + r.img + '" alt="Picture"></div>' : '';
 
@@ -10203,7 +10247,7 @@ function renderResults() {
 
 
 
-        '<small>' + r.seconds + ' seconds</small></div>' + picBlock + recBlock + sampleBlock;
+        '<small>' + r.seconds + ' seconds</small></div>' + picBlock + recBlock + sampleBlock + aiBlock;
 
 
 
@@ -10286,6 +10330,90 @@ function renderResults() {
 
 
 
+
+function phraseChipsHtml(text) {
+  if (!text) { return ''; }
+  var found = [];
+  Object.keys(PHRASE_BANK || {}).forEach(function (cat) {
+    (PHRASE_BANK[cat] || []).forEach(function (p) {
+      var lower = text.toLowerCase();
+      var needle = p.toLowerCase();
+      var idx = lower.indexOf(needle);
+      while (idx !== -1) {
+        var before = idx > 0 ? text.charAt(idx - 1) : ' ';
+        var after = idx + needle.length < text.length ? text.charAt(idx + needle.length) : ' ';
+        if (!/[a-zA-Z0-9]/.test(before) && !/[a-zA-Z0-9]/.test(after)) { found.push(p); break; }
+        idx = lower.indexOf(needle, idx + 1);
+      }
+    });
+  });
+  found = found.filter(function (v, i) { return found.indexOf(v) === i; });
+  if (!found.length) { return ''; }
+  var chips = found.map(function (p) { return '<span class="phrase-chip">' + escapeHtml(p) + '</span>'; }).join('');
+  return '<div class="phrase-bank"><div class="phrase-title">🎯 Key phrases</div><div class="phrase-chips">' + chips + '</div></div>';
+}
+
+function topicFor(q) {
+  if (!q || !TOPIC_PHRASES) return null;
+  var ql = q.toLowerCase();
+  var best = null, bestScore = 0;
+  Object.keys(TOPIC_PHRASES).forEach(function (topic) {
+    var kw = TOPIC_PHRASES[topic].keywords || [];
+    var score = 0;
+    kw.forEach(function (k) { if (ql.indexOf(k.toLowerCase()) !== -1) score += k.length; });
+    if (score > bestScore) { bestScore = score; best = topic; }
+  });
+  return best;
+}
+
+function topicPhrasesHtml(q) {
+  var topic = topicFor(q);
+  if (!topic) return '';
+  var phrases = (TOPIC_PHRASES[topic] && TOPIC_PHRASES[topic].phrases) || [];
+  if (!phrases.length) return '';
+  var chips = phrases.map(function (p) { return '<span class="phrase-chip topic-chip">' + escapeHtml(p) + '</span>'; }).join('');
+  return '<div class="phrase-bank topic-bank"><div class="phrase-title">💡 ' + escapeHtml(topic) + ' — useful phrases</div><div class="phrase-chips">' + chips + '</div></div>';
+}
+
+function renderPhrases(text, q) {
+  var box = document.getElementById('phraseBank');
+  if (!box) return;
+  var html = phraseChipsHtml(text) + topicPhrasesHtml(q);
+  box.innerHTML = html;
+  box.classList.toggle('hidden', !html);
+}
+
+window.aiFeedback = function (idx) {
+  var box = document.getElementById("ai-" + idx);
+  if (!box) return;
+  var r = results[idx];
+  if (!r || !r.rec || !r.rec.blob) { box.textContent = "Yozuv yo'q"; box.classList.remove("hidden"); return; }
+  box.classList.remove("hidden");
+  box.innerHTML = "<span class='ai-loading'>✨ Baholanyapti…</span>";
+  var fd = new FormData();
+  fd.append("audio", r.rec.blob, "answer.wav");
+  fd.append("question", r.question || "");
+  var ctrl = new AbortController();
+  var timer = setTimeout(function () { ctrl.abort(); }, 150000);
+  fetch("/api/ai/score", { method: "POST", body: fd, signal: ctrl.signal }).then(function (resp) { return resp.json(); }).then(function (d) {
+    clearTimeout(timer);
+    if (d && d.ok && d.result) { box.innerHTML = renderAI(d.result); }
+    else { box.innerHTML = "<span class='ai-error'>" + escapeHtml((d && d.error) || "Xatolik yuz berdi") + "</span>"; }
+  }).catch(function (e) {
+    clearTimeout(timer);
+    box.innerHTML = "<span class='ai-error'>" + (e && e.name === 'AbortError' ? "Juda uzoq davom etdi, qayta urinib ko'ring" : "Server bilan bog'lanishda xatolik") + "</span>";
+  });
+}
+
+function renderAI(res) {
+  var h = "<div class='ai-score'>Band: <b>" + escapeHtml(res.score || "—") + "</b></div>";
+  if (res.transcript) h += "<div class='ai-line'><b>Transkript:</b> " + escapeHtml(res.transcript) + "</div>";
+  if (res.fluency) h += "<div class='ai-line'><b>Ravonlik:</b> " + escapeHtml(res.fluency) + "</div>";
+  if (res.vocabulary) h += "<div class='ai-line'><b>Lug'at:</b> " + escapeHtml(res.vocabulary) + "</div>";
+  if (res.grammar) h += "<div class='ai-line'><b>Grammatika:</b> " + escapeHtml(res.grammar) + "</div>";
+  if (res.tip) h += "<div class='ai-line'><b>Maslahat:</b> " + escapeHtml(res.tip) + "</div>";
+  return h;
+}
 
 function escapeHtml(s) {
 
@@ -12137,6 +12265,149 @@ homeBtn.addEventListener('click', () => {
     <button class="plans-modal-close" onclick="closePlansModal()">Bekor qilish</button>
   </div>
 </div>
+<script>
+(function () {
+  var style = document.createElement('style');
+  style.textContent = '.gx-stack{position:fixed;right:10px;bottom:10px;display:flex;flex-direction:column;align-items:center;gap:6px;z-index:9999;}' +
+    '.gx-pill{background:#2563eb;color:#fff;font-weight:700;font-size:11px;padding:4px 10px;border-radius:999px;box-shadow:0 2px 8px rgba(37,99,235,.35);}' +
+    '.gx-btn{width:38px;height:38px;border-radius:50%;border:none;cursor:pointer;font-size:15px;background:#fff;box-shadow:0 2px 8px rgba(0,0,0,.15);display:flex;align-items:center;justify-content:center;}' +
+    '.gx-toast-box{position:fixed;left:16px;bottom:16px;z-index:10001;display:flex;flex-direction:column;gap:8px;}' +
+    '.gx-toast{background:#111827;color:#fff;padding:10px 16px;border-radius:12px;font-size:14px;box-shadow:0 6px 20px rgba(0,0,0,.25);opacity:0;transform:translateY(8px);transition:all .3s;}' +
+    '.gx-toast.show{opacity:1;transform:translateY(0);}' +
+    '.gx-modal{position:fixed;inset:0;background:rgba(0,0,0,.5);display:flex;align-items:center;justify-content:center;z-index:10000;}' +
+    '.gx-modal.hidden{display:none;}' +
+    '.gx-modal-card{background:#fff;border-radius:16px;width:90%;max-width:400px;max-height:80vh;overflow:auto;padding:16px;}' +
+    '.gx-modal-head{display:flex;align-items:center;justify-content:space-between;margin-bottom:12px;}' +
+    '.gx-close{background:none;border:none;font-size:18px;cursor:pointer;}' +
+    '.gx-board{display:flex;flex-direction:column;gap:6px;}' +
+    '.gx-row{display:flex;align-items:center;gap:10px;padding:8px 10px;border-radius:10px;background:#f8fafc;}' +
+    '.gx-rank{width:28px;font-weight:700;}' +
+    '.gx-name{flex:1;font-weight:600;}' +
+    '.gx-phone{color:#94a3b8;font-size:12px;}' +
+    '.gx-xp{font-weight:800;color:#2563eb;}' +
+    '.gx-load{color:#94a3b8;text-align:center;padding:20px;}.gx-me{margin-bottom:10px;padding:10px;border-radius:10px;background:#f1f5f9;font-size:13px;}.gx-me-row{margin:2px 0;}.topic-chip{background:#ecfdf5;color:#059669;border-color:#a7f3d0;}html.dark .topic-chip{background:#052e1f;color:#6ee7b7;border-color:#065f46;}';
+  document.head.appendChild(style);
+
+  function el(tag, cls, html) {
+    var e = document.createElement(tag);
+    if (cls) e.className = cls;
+    if (html != null) e.innerHTML = html;
+    return e;
+  }
+  function esc(s) {
+    return String(s == null ? '' : s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
+  }
+
+  var stack = el('div', 'gx-stack');
+  var xpPill = el('div', 'gx-pill', '⚡ <span id="gxXp">0</span> XP');
+  var bellBtn = el('button', 'gx-btn', '🔔');
+  bellBtn.title = 'Daily reminders';
+  var boardBtn = el('button', 'gx-btn', '🏆');
+  boardBtn.title = 'Leaderboard';
+  stack.appendChild(xpPill); stack.appendChild(bellBtn); stack.appendChild(boardBtn);
+  document.body.appendChild(stack);
+
+  var toastBox = el('div', 'gx-toast-box');
+  document.body.appendChild(toastBox);
+
+  var modal = el('div', 'gx-modal hidden');
+  modal.innerHTML = '<div class="gx-modal-card"><div class="gx-modal-head"><b>🏆 Leaderboard</b><button class="gx-close">✕</button></div><div id="gxMe" class="gx-me"></div><div id="gxBoard" class="gx-board"></div></div>';
+  document.body.appendChild(modal);
+  modal.querySelector('.gx-close').onclick = function () { modal.classList.add('hidden'); };
+  modal.onclick = function (e) { if (e.target === modal) modal.classList.add('hidden'); };
+
+  function toast(msg) {
+    var t = el('div', 'gx-toast', msg);
+    toastBox.appendChild(t);
+    setTimeout(function () { t.classList.add('show'); }, 10);
+    setTimeout(function () { t.classList.remove('show'); setTimeout(function () { t.remove(); }, 400); }, 3500);
+  }
+  function setXp(xp) { var x = document.getElementById('gxXp'); if (x) x.textContent = xp; }
+
+  fetch('/api/me').then(function (r) { return r.json(); }).then(function (m) {
+    if (m && m.ok && typeof m.xp === 'number') setXp(m.xp);
+  }).catch(function () {});
+
+  window.awardXP = function () {
+    fetch('/api/xp/add', { method: 'POST' }).then(function (r) { return r.json(); }).then(function (d) {
+      if (d && d.ok) {
+        setXp(d.xp);
+        if (d.new_badges && d.new_badges.length) {
+          d.new_badges.forEach(function (b) { toast(b.emoji + ' Badge earned: ' + b.name); });
+        if (d.new_sticker) { toast('🎁 Stiker: ' + d.new_sticker); }
+        }
+      }
+    }).catch(function () {});
+  };
+
+  boardBtn.onclick = function () {
+    modal.classList.remove('hidden');
+    var b = document.getElementById('gxBoard');
+    var m = document.getElementById('gxMe');
+    b.innerHTML = '<div class="gx-load">Loading…</div>';
+    m.innerHTML = '';
+    fetch('/api/me').then(function (r) { return r.json(); }).then(function (me) {
+      if (me && me.ok) {
+        var st = (me.stickers || []).join(' ');
+        m.innerHTML = '<div class="gx-me-row">🔥 ' + (me.streak || 0) + ' kunlik streak · ⚡ ' + (me.xp || 0) + ' XP</div>' + (st ? '<div class="gx-me-row">🎁 ' + esc(st) + '</div>' : '');
+      }
+    }).catch(function () {});
+    fetch('/api/leaderboard').then(function (r) { return r.json(); }).then(function (d) {
+      if (!d || !d.ok) { b.innerHTML = '<div class="gx-load">No data</div>'; return; }
+      if (!d.leaderboard.length) { b.innerHTML = '<div class="gx-load">No scores yet — be the first!</div>'; return; }
+      b.innerHTML = d.leaderboard.map(function (u) {
+        var medal = u.rank === 1 ? '🥇' : (u.rank === 2 ? '🥈' : (u.rank === 3 ? '🥉' : u.rank));
+        return '<div class="gx-row"><span class="gx-rank">' + medal + '</span><span class="gx-name">' + esc(u.name) + '</span><span class="gx-phone">' + esc(u.phone) + '</span><span class="gx-xp">' + u.xp + ' XP</span></div>';
+      }).join('');
+    }).catch(function () { b.innerHTML = '<div class="gx-load">Error</div>'; });
+  };
+
+  if ('serviceWorker' in navigator) {
+    navigator.serviceWorker.register('/sw.js').then(function (reg) {
+      if ('Notification' in window && Notification.permission === 'granted') enablePush(reg);
+    }).catch(function () {});
+  }
+
+  function urlBase64ToUint8Array(b64) {
+    var pad = '='.repeat((4 - b64.length % 4) % 4);
+    var b = (b64 + pad).replace(/-/g, '+').replace(/_/g, '/');
+    var raw = atob(b);
+    var arr = new Uint8Array(raw.length);
+    for (var i = 0; i < raw.length; i++) arr[i] = raw.charCodeAt(i);
+    return arr;
+  }
+
+  function enablePush(reg) {
+    fetch('/api/push/vapid').then(function (r) { return r.json(); }).then(function (d) {
+      if (!d || !d.public_key) return;
+      return (reg || navigator.serviceWorker.ready).then(function (r) {
+        return r.pushManager.subscribe({ userVisibleOnly: true, applicationServerKey: urlBase64ToUint8Array(d.public_key) });
+      });
+    }).then(function (sub) {
+      if (!sub) return;
+      return fetch('/api/push/subscribe', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(sub.toJSON ? sub.toJSON() : sub)
+      });
+    }).catch(function () {});
+  }
+
+  function requestNotifications() {
+    if (!('Notification' in window)) return;
+    Notification.requestPermission().then(function (p) {
+      if (p === 'granted') navigator.serviceWorker.ready.then(enablePush);
+    });
+  }
+
+  bellBtn.onclick = function () {
+    if (!('Notification' in window)) { toast('Notifications not supported'); return; }
+    if (Notification.permission === 'granted') { navigator.serviceWorker.ready.then(enablePush); toast('Reminders enabled'); }
+    else if (Notification.permission === 'denied') { toast('Notifications blocked in browser settings'); }
+    else { requestNotifications(); }
+  };
+})();
+</script>
 </body>
 
 

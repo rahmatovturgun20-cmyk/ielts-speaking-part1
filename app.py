@@ -162,6 +162,11 @@ DEFAULT_CONFIG = {
     "base_url": "https://multilevelmocktest.uz",
     "telegram_bot_token": "",
     "telegram_chat_id": "",
+    "gemini_api_key": "",
+    "gemini_model": "gemini-3.6-flash",
+    "groq_api_key": "",
+    "groq_stt_model": "whisper-large-v3-turbo",
+    "groq_llm_model": "openai/gpt-oss-20b",
     "payme": {"merchant_id": "", "merchant_key": "", "enabled": False},
     "click": {"service_id": "", "merchant_id": "", "merchant_user_id": "", "secret_key": "", "enabled": False},
     "uzum": {"shop_id": "", "service_id": "", "api_key": "", "enabled": False},
@@ -188,6 +193,29 @@ cfg = load_config()
 if not cfg["secret_key"]:
     cfg["secret_key"] = secrets.token_hex(32)
     save_config(cfg)
+
+def _b64url(b):
+    import base64
+    return base64.urlsafe_b64encode(b).rstrip(b"=").decode()
+
+def ensure_vapid():
+    priv = cfg.get("vapid_private")
+    pub = cfg.get("vapid_public")
+    if not priv or not pub:
+        from cryptography.hazmat.primitives.asymmetric import ec
+        key = ec.generate_private_key(ec.SECP256R1())
+        nums = key.private_numbers()
+        pubn = key.public_key().public_numbers()
+        priv_bytes = nums.private_value.to_bytes(32, "big")
+        pub_bytes = b"\x04" + pubn.x.to_bytes(32, "big") + pubn.y.to_bytes(32, "big")
+        priv = _b64url(priv_bytes)
+        pub = _b64url(pub_bytes)
+        cfg["vapid_private"] = priv
+        cfg["vapid_public"] = pub
+        save_config(cfg)
+    return pub, priv
+
+VAPID_PUBLIC, VAPID_PRIVATE = ensure_vapid()
 
 app = Flask(__name__)
 app.secret_key = cfg["secret_key"]
@@ -314,6 +342,20 @@ def init_db():
         conn.execute("ALTER TABLE users ADD COLUMN session_token TEXT")
     except sqlite3.OperationalError:
         pass
+    for _col in ("xp INTEGER DEFAULT 0", "streak INTEGER DEFAULT 0", "last_practice TEXT", "badges TEXT DEFAULT ''", "stickers TEXT DEFAULT ''"):
+        try:
+            conn.execute("ALTER TABLE users ADD COLUMN " + _col)
+        except sqlite3.OperationalError:
+            pass
+    conn.execute("""
+    CREATE TABLE IF NOT EXISTS push_subscriptions (
+      id INTEGER PRIMARY KEY AUTOINCREMENT,
+      user_id INTEGER,
+      endpoint TEXT UNIQUE NOT NULL,
+      keys TEXT NOT NULL,
+      created_at TEXT
+    );
+    """)
     # Mavjud jadval uchun unique index (race condition oldini olish)
     try:
         conn.execute("DELETE FROM plans WHERE id NOT IN (SELECT MIN(id) FROM plans GROUP BY name)")
@@ -451,6 +493,8 @@ def truncate_content(data):
         "PART2_CARDS": cards,
         "PART2_SAMPLES": samples2,
         "PART3_SAMPLES": samples3,
+        "PHRASE_BANK": data.get("PHRASE_BANK", {}),
+        "TOPIC_PHRASES": data.get("TOPIC_PHRASES", {}),
     }
 
 
@@ -734,6 +778,10 @@ def api_me():
         "lifetime": bool(u["lifetime"]),
         "access_until": u["access_until"],
         "mock_used": bool(u["mock_used"]),
+        "xp": u["xp"] or 0,
+        "streak": u["streak"] or 0,
+        "badges": (u["badges"] or "").split(",") if (u["badges"] or "").strip() else [],
+        "stickers": (u["stickers"] or "").split(",") if (u["stickers"] or "").strip() else [],
     })
 
 
@@ -948,6 +996,246 @@ def mark_paid(payment_id):
 
 # Webhook'lar olib tashlandi — to'lov faqat karta + admin tasdiqlash orqali.
 # (Payme/Click/Uzum webhook'lari autentifikatsiyasiz mark_paid() chaqirardi = to'lovsiz kirish teshigi)
+
+
+# ---------------- Gamification (XP / badges / leaderboard) ----------------
+
+BADGES = [
+    ("first", "🎯", "First Step", "Recorded your first answer", lambda xp, streak: xp >= 10),
+    ("xp100", "💯", "Century", "Earned 100 XP", lambda xp, streak: xp >= 100),
+    ("xp500", "🏆", "Pro Speaker", "Earned 500 XP", lambda xp, streak: xp >= 500),
+    ("xp1000", "👑", "Legend", "Earned 1000 XP", lambda xp, streak: xp >= 1000),
+    ("streak3", "🔥", "On a Roll", "3-day practice streak", lambda xp, streak: streak >= 3),
+    ("streak7", "⚡", "Unstoppable", "7-day practice streak", lambda xp, streak: streak >= 7),
+]
+
+BADGE_INFO = {b[0]: {"emoji": b[1], "name": b[2], "desc": b[3]} for b in BADGES}
+
+STICKERS = ["\U0001f989", "\U0001f31f", "\U0001f3af", "\U0001f3c5", "\U0001f381", "\U0001f680", "\U0001f525", "\u2b50", "\U0001f3c6", "\U0001f3a8", "\U0001f3a7", "\U0001f4da", "\U0001f308", "\u26a1", "\U0001f9e0", "\U0001f3ac", "\U0001f340", "\U0001f48e", "\U0001f41d", "\U0001f98b"]
+
+
+@app.route("/api/xp/add", methods=["POST"])
+@safe_api
+def api_xp_add():
+    u = current_user()
+    if u is None:
+        return api_error("Kirish kerak", 401)
+    today = datetime.date.today()
+    conn = db()
+    row = conn.execute("SELECT xp, streak, last_practice, badges, stickers FROM users WHERE id=?", (u["id"],)).fetchone()
+    xp = (row["xp"] or 0) + 10
+    streak = row["streak"] or 0
+    last = row["last_practice"]
+    new_day = (last != today.isoformat())
+    if last == today.isoformat():
+        pass
+    elif last == (today - datetime.timedelta(days=1)).isoformat():
+        streak += 1
+    else:
+        streak = 1
+    have = set((row["badges"] or "").split(",")) if (row["badges"] or "").strip() else set()
+    new_badges = []
+    for bid, emoji, name, desc, cond in BADGES:
+        if bid not in have and cond(xp, streak):
+            have.add(bid)
+            new_badges.append({"id": bid, "emoji": emoji, "name": name, "desc": desc})
+    stickers = set((row["stickers"] or "").split(",")) if (row["stickers"] or "").strip() else set()
+    new_sticker = None
+    if new_day:
+        available = [s for s in STICKERS if s not in stickers]
+        if available:
+            new_sticker = secrets.choice(available)
+            stickers.add(new_sticker)
+    conn.execute("UPDATE users SET xp=?, streak=?, last_practice=?, badges=?, stickers=? WHERE id=?",
+                 (xp, streak, today.isoformat(), ",".join(sorted(have)), ",".join(sorted(stickers)), u["id"]))
+    conn.commit()
+    conn.close()
+    return jsonify({"ok": True, "xp": xp, "streak": streak, "badges": sorted(have), "new_badges": new_badges,
+                    "stickers": sorted(stickers), "new_sticker": new_sticker})
+
+
+@app.route("/api/leaderboard")
+@safe_api
+def api_leaderboard():
+    conn = db()
+    rows = conn.execute(
+        "SELECT name, phone, xp, streak FROM users WHERE COALESCE(xp,0) > 0 AND blocked=0 ORDER BY xp DESC LIMIT 20").fetchall()
+    conn.close()
+
+    def mask(p):
+        p = p or ""
+        if len(p) > 7:
+            return p[:4] + "***" + p[-2:]
+        return (p[:2] + "***") if p else "-"
+
+    board = [{"rank": i + 1, "name": r["name"] or "Student", "phone": mask(r["phone"]),
+              "xp": r["xp"] or 0, "streak": r["streak"] or 0} for i, r in enumerate(rows)]
+    return jsonify({"ok": True, "leaderboard": board})
+
+
+# ---------------- Web Push ----------------
+
+@app.route("/api/push/vapid")
+def api_push_vapid():
+    return jsonify({"ok": True, "public_key": VAPID_PUBLIC})
+
+
+@app.route("/api/push/subscribe", methods=["POST"])
+@safe_api
+def api_push_subscribe():
+    u = current_user()
+    data = request.get_json(silent=True) or {}
+    endpoint = (data.get("endpoint") or "").strip()
+    keys = data.get("keys") or {}
+    if not endpoint or not keys.get("p256dh") or not keys.get("auth"):
+        return api_error("Noto'g'ri subscription")
+    conn = db()
+    conn.execute("DELETE FROM push_subscriptions WHERE endpoint=?", (endpoint,))
+    conn.execute("INSERT INTO push_subscriptions (user_id, endpoint, keys, created_at) VALUES (?,?,?,?)",
+                 (u["id"] if u else None, endpoint, json.dumps(keys),
+                  datetime.datetime.now().isoformat(timespec="seconds")))
+    conn.commit()
+    conn.close()
+    return jsonify({"ok": True})
+
+
+@app.route("/api/push/unsubscribe", methods=["POST"])
+@safe_api
+def api_push_unsubscribe():
+    data = request.get_json(silent=True) or {}
+    endpoint = (data.get("endpoint") or "").strip()
+    if endpoint:
+        conn = db()
+        conn.execute("DELETE FROM push_subscriptions WHERE endpoint=?", (endpoint,))
+        conn.commit()
+        conn.close()
+    return jsonify({"ok": True})
+
+
+# ---------------- AI scoring (Gemini) ----------------
+
+def _prep_audio(data, mime_type):
+    try:
+        if (mime_type or "").startswith("audio/wav") or data[:4] == b"RIFF":
+            import io
+            import wave
+            import audioop
+            w = wave.open(io.BytesIO(data), "rb")
+            sr = w.getframerate()
+            ch = w.getnchannels()
+            sw = w.getsampwidth()
+            frames = w.readframes(w.getnframes())
+            w.close()
+            if sw != 2:
+                frames = audioop.lin2lin(frames, sw, 2)
+            if ch > 1:
+                frames = audioop.tomono(frames, 2, 0.5, 0.5)
+            if sr != 16000:
+                frames, _ = audioop.ratecv(frames, 2, 1, sr, 16000, None)
+            buf = io.BytesIO()
+            w2 = wave.open(buf, "wb")
+            w2.setnchannels(1)
+            w2.setsampwidth(2)
+            w2.setframerate(16000)
+            w2.writeframes(frames)
+            w2.close()
+            return buf.getvalue(), "audio/wav"
+    except Exception:
+        pass
+    return data, mime_type
+
+
+def ai_score(audio_bytes, mime_type, question):
+    key = cfg.get("groq_api_key", "").strip()
+    if not key:
+        return None, "Groq API kaliti sozlanmagan"
+    audio_bytes, mime_type = _prep_audio(audio_bytes, mime_type)
+    import requests
+
+    # 1) Speech-to-text (Whisper)
+    stt_model = (cfg.get("groq_stt_model", "") or "whisper-large-v3-turbo").strip()
+    try:
+        r = requests.post(
+            "https://api.groq.com/openai/v1/audio/transcriptions",
+            headers={"Authorization": "Bearer " + key},
+            files={"file": ("answer.wav", audio_bytes, mime_type or "audio/wav")},
+            data={"model": stt_model},
+            timeout=120,
+        )
+    except Exception as e:
+        log.error("Groq STT request error: %s", str(e))
+        return None, "Groq STT bilan bog'lanib bo'lmadi"
+    if r.status_code != 200:
+        log.error("Groq STT error %s: %s", r.status_code, r.text[:300])
+        return None, "Groq STT xatosi (HTTP %s)" % r.status_code
+    try:
+        transcript = (r.json().get("text") or "").strip()
+    except Exception:
+        transcript = ""
+
+    # 2) Evaluate (LLM)
+    llm_model = (cfg.get("groq_llm_model", "") or "openai/gpt-oss-20b").strip()
+    prompt = (
+        'You are an IELTS/CEFR speaking examiner. '
+        'The question the student answered is: "' + question + '". '
+        'Here is the student transcript: """' + transcript + '""". '
+        'Evaluate it and reply with ONLY valid JSON (no markdown) in this exact shape: '
+        '{"score": "B1|B2|C1", "fluency": "...", "vocabulary": "...", "grammar": "...", "tip": "..."}. '
+        'Keep each comment to one constructive sentence.'
+    )
+    try:
+        r2 = requests.post(
+            "https://api.groq.com/openai/v1/chat/completions",
+            headers={"Authorization": "Bearer " + key, "Content-Type": "application/json"},
+            json={
+                "model": llm_model,
+                "messages": [{"role": "user", "content": prompt}],
+                "temperature": 0.2,
+                "response_format": {"type": "json_object"},
+            },
+            timeout=120,
+        )
+    except Exception as e:
+        log.error("Groq LLM request error: %s", str(e))
+        return None, "Groq bilan bog'lanib bo'lmadi"
+    if r2.status_code != 200:
+        log.error("Groq LLM error %s: %s", r2.status_code, r2.text[:300])
+        if r2.status_code == 429:
+            return None, "Groq limiti oshdi (429) — bir daqiqadan keyin qayta urinib ko'ring"
+        return None, "Groq baholash xatosi (HTTP %s)" % r2.status_code
+    try:
+        content = r2.json()["choices"][0]["message"]["content"]
+    except Exception:
+        content = ""
+
+    try:
+        result = json.loads(content)
+    except Exception:
+        result = {"score": "", "fluency": "", "vocabulary": "", "grammar": "", "tip": "", "raw": content}
+    result["transcript"] = transcript
+    return result, None
+
+
+@app.route("/api/ai/score", methods=["POST"])
+@safe_api
+def api_ai_score():
+    u = current_user()
+    if u is None:
+        return api_error("Kirish kerak", 401)
+    if rate_limited("ai:" + str(u["id"]), limit=10, window=86400):
+        return api_error("Kunlik AI limit tugadi (10 ta). Ertaga qayta urinib ko'ring.", 429)
+    question = (request.form.get("question") or "").strip()
+    f = request.files.get("audio")
+    if not question or f is None or f.filename == "":
+        return api_error("Audio va savol kerak")
+    data = f.read()
+    if len(data) > 5 * 1024 * 1024:
+        return api_error("Audio juda katta (max 5MB)")
+    mime = (f.content_type or "").split(";")[0].strip() or "audio/wav"
+    result, err = ai_score(data, mime, question)
+    if err:
+        return api_error(err, 502)
+    return jsonify({"ok": True, "result": result})
 
 
 # ---------------- Admin ----------------
@@ -1335,6 +1623,7 @@ def admin_backup():
 ALLOWED_PAGES = {
     "index.html", "index-mobile.html", "landing.html", "paywall.html", "admin.html",
     "cefr-speaking-part1.html", "cefr-speaking-part1-mobile.html", "signal-preview.html",
+    "manifest.json", "sw.js",
 }
 IMG_EXT = (".png", ".jpg", ".jpeg", ".webp", ".gif")
 
@@ -1345,6 +1634,8 @@ def _allowed_static(low):
     if (low.startswith("part12/") or low.startswith("part3/")) and low.endswith(IMG_EXT):
         return True
     if (low.startswith("signal") or low == "beep.wav") and low.endswith(".wav"):
+        return True
+    if low in ("icon-192.png", "icon-512.png", "icon-maskable-512.png"):
         return True
     return False
 

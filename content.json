@@ -1132,6 +1132,164 @@
       "Do you think more people will work from home in the future?": "Yes, I definitely think more people will work from home in the future. Modern technology makes it possible to do many jobs from anywhere, and after recent years people understood that it really works. Working from home saves time and money, because people do not need to travel to the office, and it gives more flexibility. However, not all jobs can be done at home, and some people feel lonely without their colleagues. So, I believe the future is a mix: many people will work from home, but offices will not disappear completely."
     }
   },
+  "PHRASE_BANK": {
+    "Opinion & Preference": [
+      "In my opinion",
+      "I think",
+      "I believe",
+      "I strongly believe",
+      "From my perspective",
+      "From my point of view",
+      "In my view",
+      "I would say",
+      "Personally",
+      "As far as I'm concerned",
+      "If you ask me",
+      "It seems to me",
+      "For me",
+      "To me",
+      "I prefer",
+      "I would rather",
+      "I am keen on",
+      "I am fond of",
+      "I am into",
+      "I am passionate about",
+      "My favourite"
+    ],
+    "Linking & Sequence": [
+      "First of all",
+      "Secondly",
+      "Thirdly",
+      "Finally",
+      "Moreover",
+      "Furthermore",
+      "In addition",
+      "What's more",
+      "Besides",
+      "However",
+      "Nevertheless",
+      "Meanwhile",
+      "In other words",
+      "At the same time"
+    ],
+    "Giving Examples": [
+      "For example",
+      "For instance",
+      "Such as",
+      "A case in point",
+      "In particular",
+      "Especially",
+      "To illustrate"
+    ],
+    "Contrast & Comparison": [
+      "On the one hand",
+      "On the other hand",
+      "Compared to",
+      "By contrast",
+      "In contrast",
+      "On the contrary",
+      "Whereas",
+      "Unlike",
+      "Similarly"
+    ],
+    "Emphasis & Stance": [
+      "What really matters",
+      "The most important",
+      "Above all",
+      "In fact",
+      "Actually",
+      "Honestly",
+      "To be honest",
+      "Definitely",
+      "Absolutely",
+      "Without a doubt",
+      "Interestingly",
+      "What surprises me"
+    ],
+    "Cause & Result": [
+      "Because of",
+      "Due to",
+      "Thanks to",
+      "For this reason",
+      "As a result",
+      "Therefore",
+      "That is why",
+      "In order to",
+      "So that"
+    ],
+    "Concession": [
+      "Even though",
+      "Although",
+      "Despite",
+      "In spite of",
+      "Admittedly",
+      "To be fair",
+      "It is true that"
+    ],
+    "Time & Experience": [
+      "When I was a child",
+      "As a child",
+      "Growing up",
+      "Since childhood",
+      "Nowadays",
+      "These days",
+      "Recently",
+      "A few years ago",
+      "In the past",
+      "In the future",
+      "In the long run",
+      "I remember"
+    ],
+    "Likes & Feelings": [
+      "I enjoy",
+      "I love",
+      "I am fascinated by",
+      "It makes me feel",
+      "makes me happy",
+      "calms me down",
+      "relaxes me",
+      "brings back memories",
+      "I am proud of"
+    ],
+    "Fluency & Fillers": [
+      "I mean",
+      "You know",
+      "Let me think",
+      "Basically",
+      "In a nutshell",
+      "To put it simply"
+    ],
+    "Hedging": [
+      "I suppose",
+      "I guess",
+      "Maybe",
+      "Perhaps",
+      "Probably",
+      "It depends",
+      "As far as I know",
+      "I am not sure"
+    ],
+    "Conclusion": [
+      "All in all",
+      "In conclusion",
+      "To sum up",
+      "Overall",
+      "All things considered",
+      "At the end of the day",
+      "In short",
+      "To cut a long story short"
+    ],
+    "Hypotheticals & Future": [
+      "If I could",
+      "If I had",
+      "I wish",
+      "In case",
+      "As long as",
+      "I would love to",
+      "Someday",
+      "One day"
+    ]
+  },
   "_counts": {
     "SAVOLLAR": 134,
     "SAMPLES": 209,
@@ -1141,5 +1299,315 @@
     "PART2_SAMPLES": 41,
     "PART3_SAMPLES": 31,
     "PART3_IMAGES": 31
+  },
+  "TOPIC_PHRASES": {
+    "Hometown": {
+      "keywords": [
+        "hometown",
+        "city",
+        "town",
+        "village",
+        "neighbourhood",
+        "born and raised"
+      ],
+      "phrases": [
+        "I was born and raised in",
+        "It's a lively place",
+        "I've lived here all my life",
+        "It holds my childhood memories",
+        "The people are really friendly",
+        "There's a strong sense of community",
+        "It has changed a lot over the years",
+        "It's a peaceful place"
+      ]
+    },
+    "Shopping": {
+      "keywords": [
+        "shopping",
+        "shop",
+        "buy",
+        "bought",
+        "bargain",
+        "store",
+        "mall",
+        "clothes",
+        "gift"
+      ],
+      "phrases": [
+        "I'm a bargain hunter",
+        "It was a real bargain",
+        "I shop around before buying",
+        "It was worth every penny",
+        "I couldn't resist it",
+        "I'm an impulse buyer",
+        "I prefer online shopping",
+        "It's good value for money"
+      ]
+    },
+    "Colours": {
+      "keywords": [
+        "colour",
+        "color",
+        "favourite colour",
+        "bright colours",
+        "light colours"
+      ],
+      "phrases": [
+        "My favourite colour is",
+        "It reminds me of",
+        "I prefer bright colours",
+        "I like pastel colours",
+        "It catches my eye",
+        "Colour affects my mood",
+        "I like neutral tones",
+        "It really suits me"
+      ]
+    },
+    "Weather": {
+      "keywords": [
+        "weather",
+        "season",
+        "rain",
+        "snow",
+        "summer",
+        "winter",
+        "autumn",
+        "spring",
+        "climate"
+      ],
+      "phrases": [
+        "It's scorching hot",
+        "It's freezing cold",
+        "It's pouring with rain",
+        "There's a heatwave",
+        "It has a mild climate",
+        "The weather affects my mood",
+        "I love crisp autumn days",
+        "It's sunny and bright"
+      ]
+    },
+    "Animals & Pets": {
+      "keywords": [
+        "animal",
+        "pet",
+        "cat",
+        "dog",
+        "bird",
+        "wild",
+        "zoo"
+      ],
+      "phrases": [
+        "I'm a huge animal lover",
+        "I've always been fond of",
+        "It's a loyal companion",
+        "I keep a pet",
+        "Cats are low-maintenance",
+        "It teaches responsibility",
+        "I'm fascinated by wildlife",
+        "It's the most popular pet"
+      ]
+    },
+    "Food & Cooking": {
+      "keywords": [
+        "food",
+        "eat",
+        "cook",
+        "cooking",
+        "breakfast",
+        "lunch",
+        "dinner",
+        "meal",
+        "dish",
+        "drink",
+        "baking"
+      ],
+      "phrases": [
+        "It's a traditional dish",
+        "It's mouth-watering",
+        "I'm a foodie",
+        "I have a sweet tooth",
+        "It's home-cooked",
+        "I can't cook to save my life",
+        "It's an acquired taste",
+        "It's my comfort food"
+      ]
+    },
+    "Music": {
+      "keywords": [
+        "music",
+        "song",
+        "sing",
+        "instrument",
+        "concert",
+        "band",
+        "listen"
+      ],
+      "phrases": [
+        "I'm into pop music",
+        "It lifts my mood",
+        "I'm tone-deaf",
+        "It's really catchy",
+        "I play an instrument",
+        "It helps me relax",
+        "I listen to it on repeat",
+        "It brings back memories"
+      ]
+    },
+    "Sports & Exercise": {
+      "keywords": [
+        "sport",
+        "exercise",
+        "gym",
+        "football",
+        "run",
+        "fitness",
+        "game",
+        "team"
+      ],
+      "phrases": [
+        "I'm not really sporty",
+        "I work out regularly",
+        "It keeps me fit",
+        "I'm a big fan of",
+        "It's a team sport",
+        "I'm a couch potato",
+        "It clears my mind",
+        "I go for a run"
+      ]
+    },
+    "Books & Reading": {
+      "keywords": [
+        "book",
+        "read",
+        "reading",
+        "magazine",
+        "newspaper",
+        "novel",
+        "author",
+        "library"
+      ],
+      "phrases": [
+        "I'm an avid reader",
+        "It's a real page-turner",
+        "I read for pleasure",
+        "It broadens my horizons",
+        "I'm into fiction",
+        "It's a bestseller",
+        "I can't put it down",
+        "Reading helps me relax"
+      ]
+    },
+    "Travel": {
+      "keywords": [
+        "travel",
+        "trip",
+        "holiday",
+        "vacation",
+        "journey",
+        "visit",
+        "tourist",
+        "abroad"
+      ],
+      "phrases": [
+        "I love exploring new places",
+        "It broadens my horizons",
+        "I'm a travel enthusiast",
+        "It's a tourist hotspot",
+        "I travel on a budget",
+        "It's off the beaten track",
+        "I pack light",
+        "It was a once-in-a-lifetime trip"
+      ]
+    },
+    "Family & Friends": {
+      "keywords": [
+        "family",
+        "friend",
+        "parents",
+        "mother",
+        "father",
+        "brother",
+        "sister",
+        "relative",
+        "grandmother",
+        "grandfather"
+      ],
+      "phrases": [
+        "I come from a close-knit family",
+        "We're very close",
+        "It runs in the family",
+        "We get on really well",
+        "Family comes first",
+        "I take after my mother",
+        "I'm an only child",
+        "We share a lot in common"
+      ]
+    },
+    "Work & Study": {
+      "keywords": [
+        "work",
+        "study",
+        "job",
+        "school",
+        "university",
+        "student",
+        "teacher",
+        "career",
+        "exam"
+      ],
+      "phrases": [
+        "I'm a student",
+        "I study hard",
+        "It's challenging but rewarding",
+        "I'm studying for a degree",
+        "It's a nine-to-five job",
+        "I'm learning new skills",
+        "It's a stepping stone",
+        "I want to pursue a career in"
+      ]
+    },
+    "Free Time & Hobbies": {
+      "keywords": [
+        "free time",
+        "hobby",
+        "leisure",
+        "weekend",
+        "relax",
+        "pastime",
+        "hobbies"
+      ],
+      "phrases": [
+        "I spend my free time",
+        "It's my favourite pastime",
+        "I'm really into",
+        "It helps me unwind",
+        "I took it up as a hobby",
+        "It's a great way to relax",
+        "I'm a big fan of",
+        "It's my escape from stress"
+      ]
+    },
+    "Technology": {
+      "keywords": [
+        "technology",
+        "phone",
+        "computer",
+        "internet",
+        "app",
+        "gadget",
+        "digital",
+        "social media"
+      ],
+      "phrases": [
+        "I'm addicted to my phone",
+        "It's a double-edged sword",
+        "I'm tech-savvy",
+        "It's user-friendly",
+        "I can't live without it",
+        "It saves me a lot of time",
+        "I'm glued to the screen",
+        "It's a real game-changer"
+      ]
+    }
   }
 }
