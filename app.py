@@ -1217,11 +1217,16 @@ def _ai_score_groq(audio_bytes, mime_type, question, part):
                 log.error("Groq request error: %s", str(e))
                 return None
             if r.status_code == 429 and _attempt < retries:
-                wait = 55.0
+                wait = 15.0
                 try:
                     ra = r.headers.get("Retry-After")
                     if ra:
-                        wait = min(float(ra) + 2.0, 60.0)
+                        wait = min(float(ra) + 1.0, 60.0)
+                    else:
+                        import re as _re
+                        m = _re.search(r"try again in ([\d.]+)s", (r.text or "").lower())
+                        if m:
+                            wait = min(float(m.group(1)) + 1.0, 60.0)
                 except Exception:
                     pass
                 log.warning("Groq 429 - retrying in %.0fs", wait)
@@ -1367,8 +1372,10 @@ def api_ai_score():
         return api_error("Kunlik AI limit tugadi (10 ta). Ertaga qayta urinib ko'ring.", 429)
     question = (request.form.get("question") or "").strip()
     f = request.files.get("audio")
-    if not question or f is None or f.filename == "":
-        return api_error("Audio va savol kerak")
+    if f is None or f.filename == "":
+        return api_error("Audio yuborilmadi")
+    if not question:
+        question = "Speaking task"
     data = f.read()
     if len(data) > 50 * 1024 * 1024:
         return api_error("Audio juda katta (max 50MB)")

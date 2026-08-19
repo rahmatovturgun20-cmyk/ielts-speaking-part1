@@ -10421,7 +10421,7 @@ window.aiFeedback = function (idx) {
   fd.append("question", r.question || "");
   fd.append("part", partFor(idx));
   var ctrl = new AbortController();
-  var timer = setTimeout(function () { ctrl.abort(); }, 150000);
+  var timer = setTimeout(function () { ctrl.abort(); }, 300000);
   fetch("/api/ai/score", { method: "POST", body: fd, signal: ctrl.signal }).then(function (resp) { return resp.json(); }).then(function (d) {
     clearTimeout(timer);
     if (d && d.ok && d.result) { box.innerHTML = renderAI(d.result); }
