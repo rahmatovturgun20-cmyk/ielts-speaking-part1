@@ -9211,7 +9211,7 @@ async function afterAnswer() {
 
 
 
-          '<div class="result-sample hidden" id="rrev-' + absIdx + '"><b>Sample answer:</b> ' + escapeHtml(sample) + phraseChipsHtml(sample) + topicPhrasesHtml(r.question) + '</div>';
+          '<div class="result-sample hidden" id="rrev-' + absIdx + '"><b>Sample answer:</b> ' + escapeHtml(sample) + phraseChipsHtml(sample) + topicPhrasesHtml(r.question, sample) + '</div>';
 
 
 
@@ -10194,7 +10194,7 @@ function renderResults() {
 
 
 
-          '<div class="result-sample hidden" id="rsample-' + i + '"><b>Sample answer:</b> ' + escapeHtml(sample) + phraseChipsHtml(sample) + topicPhrasesHtml(r.question) + '</div>';
+          '<div class="result-sample hidden" id="rsample-' + i + '"><b>Sample answer:</b> ' + escapeHtml(sample) + phraseChipsHtml(sample) + topicPhrasesHtml(r.question, sample) + '</div>';
 
 
 
@@ -10353,21 +10353,26 @@ function phraseChipsHtml(text) {
   return '<div class="phrase-bank"><div class="phrase-title">🎯 Key phrases</div><div class="phrase-chips">' + chips + '</div></div>';
 }
 
-function topicFor(q) {
-  if (!q || !TOPIC_PHRASES) return null;
-  var ql = q.toLowerCase();
+function topicFor(q, text) {
+  if (!TOPIC_PHRASES) return null;
   var best = null, bestScore = 0;
-  Object.keys(TOPIC_PHRASES).forEach(function (topic) {
-    var kw = TOPIC_PHRASES[topic].keywords || [];
-    var score = 0;
-    kw.forEach(function (k) { if (ql.indexOf(k.toLowerCase()) !== -1) score += k.length; });
-    if (score > bestScore) { bestScore = score; best = topic; }
-  });
+  function scan(source) {
+    if (!source) return;
+    var sl = source.toLowerCase();
+    Object.keys(TOPIC_PHRASES).forEach(function (topic) {
+      var kw = TOPIC_PHRASES[topic].keywords || [];
+      var score = 0;
+      kw.forEach(function (k) { if (sl.indexOf(k.toLowerCase()) !== -1) score += k.length; });
+      if (score > bestScore) { bestScore = score; best = topic; }
+    });
+  }
+  scan(q);
+  if (!best) scan(text);
   return best;
 }
 
-function topicPhrasesHtml(q) {
-  var topic = topicFor(q);
+function topicPhrasesHtml(q, text) {
+  var topic = topicFor(q, text);
   if (!topic) return '';
   var phrases = (TOPIC_PHRASES[topic] && TOPIC_PHRASES[topic].phrases) || [];
   if (!phrases.length) return '';
@@ -10378,7 +10383,7 @@ function topicPhrasesHtml(q) {
 function renderPhrases(text, q) {
   var box = document.getElementById('phraseBank');
   if (!box) return;
-  var html = phraseChipsHtml(text) + topicPhrasesHtml(q);
+  var html = phraseChipsHtml(text) + topicPhrasesHtml(q, text);
   box.innerHTML = html;
   box.classList.toggle('hidden', !html);
 }

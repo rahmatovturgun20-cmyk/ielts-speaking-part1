@@ -1308,7 +1308,8 @@
         "town",
         "village",
         "neighbourhood",
-        "born and raised"
+        "born and raised",
+        "countryside"
       ],
       "phrases": [
         "I was born and raised in",
@@ -1331,7 +1332,9 @@
         "store",
         "mall",
         "clothes",
-        "gift"
+        "gift",
+        "market",
+        "supermarket"
       ],
       "phrases": [
         "I'm a bargain hunter",
@@ -1394,7 +1397,8 @@
         "dog",
         "bird",
         "wild",
-        "zoo"
+        "zoo",
+        "wildlife"
       ],
       "phrases": [
         "I'm a huge animal lover",
@@ -1407,7 +1411,7 @@
         "It's the most popular pet"
       ]
     },
-    "Food & Cooking": {
+    "Food & Eating": {
       "keywords": [
         "food",
         "eat",
@@ -1419,7 +1423,11 @@
         "meal",
         "dish",
         "drink",
-        "baking"
+        "baking",
+        "salad",
+        "junk food",
+        "restaurant",
+        "fast food"
       ],
       "phrases": [
         "It's a traditional dish",
@@ -1453,16 +1461,19 @@
         "It brings back memories"
       ]
     },
-    "Sports & Exercise": {
+    "Sports & Fitness": {
       "keywords": [
         "sport",
         "exercise",
         "gym",
         "football",
         "run",
+        "running",
         "fitness",
         "game",
-        "team"
+        "team",
+        "healthy",
+        "health"
       ],
       "phrases": [
         "I'm not really sporty",
@@ -1484,7 +1495,8 @@
         "newspaper",
         "novel",
         "author",
-        "library"
+        "library",
+        "e-book"
       ],
       "phrases": [
         "I'm an avid reader",
@@ -1497,7 +1509,7 @@
         "Reading helps me relax"
       ]
     },
-    "Travel": {
+    "Travel & Transport": {
       "keywords": [
         "travel",
         "trip",
@@ -1506,7 +1518,14 @@
         "journey",
         "visit",
         "tourist",
-        "abroad"
+        "abroad",
+        "plane",
+        "train",
+        "transport",
+        "car",
+        "bicycle",
+        "cycling",
+        "commute"
       ],
       "phrases": [
         "I love exploring new places",
@@ -1523,6 +1542,8 @@
       "keywords": [
         "family",
         "friend",
+        "friends",
+        "friendship",
         "parents",
         "mother",
         "father",
@@ -1530,7 +1551,8 @@
         "sister",
         "relative",
         "grandmother",
-        "grandfather"
+        "grandfather",
+        "make friends"
       ],
       "phrases": [
         "I come from a close-knit family",
@@ -1553,7 +1575,11 @@
         "student",
         "teacher",
         "career",
-        "exam"
+        "exam",
+        "working from home",
+        "education",
+        "studying",
+        "work from home"
       ],
       "phrases": [
         "I'm a student",
@@ -1574,7 +1600,9 @@
         "weekend",
         "relax",
         "pastime",
-        "hobbies"
+        "hobbies",
+        "spare time",
+        "entertainment"
       ],
       "phrases": [
         "I spend my free time",
@@ -1596,7 +1624,13 @@
         "app",
         "gadget",
         "digital",
-        "social media"
+        "social media",
+        "artificial intelligence",
+        "laptop",
+        "invention",
+        "robot",
+        "cell phone",
+        "mobile phone"
       ],
       "phrases": [
         "I'm addicted to my phone",
@@ -1607,6 +1641,215 @@
         "It saves me a lot of time",
         "I'm glued to the screen",
         "It's a real game-changer"
+      ]
+    },
+    "Decisions & Challenges": {
+      "keywords": [
+        "decision",
+        "dilemma",
+        "choice",
+        "challenge",
+        "problem",
+        "conflict",
+        "risk",
+        "hardship",
+        "failure",
+        "fail",
+        "failed",
+        "disagreement",
+        "difficult",
+        "faced"
+      ],
+      "phrases": [
+        "I had to make a tough choice",
+        "It was a difficult decision",
+        "Looking back, I made the right call",
+        "It taught me a valuable lesson",
+        "At first it seemed impossible",
+        "I weighed the pros and cons",
+        "It turned out to be a blessing in disguise",
+        "I learned from my mistakes"
+      ]
+    },
+    "Success & Achievement": {
+      "keywords": [
+        "success",
+        "achieve",
+        "achievement",
+        "goal",
+        "ambitious",
+        "won",
+        "win",
+        "successful",
+        "proud",
+        "accomplish"
+      ],
+      "phrases": [
+        "It was a great achievement",
+        "I felt really proud",
+        "It took a lot of hard work",
+        "I set myself a clear goal",
+        "It was worth all the effort",
+        "I finally reached my goal",
+        "It boosted my confidence",
+        "Hard work paid off"
+      ]
+    },
+    "People & Influence": {
+      "keywords": [
+        "person who",
+        "influenced",
+        "someone",
+        "role model",
+        "admire",
+        "admired",
+        "old person",
+        "believed in"
+      ],
+      "phrases": [
+        "He/She is my role model",
+        "I really look up to",
+        "We've known each other for years",
+        "I was influenced by",
+        "We get on really well",
+        "I admire them because",
+        "They have a great personality",
+        "We share a lot in common"
+      ]
+    },
+    "Skills & Learning": {
+      "keywords": [
+        "skill",
+        "learn",
+        "learned",
+        "learning",
+        "lesson",
+        "language",
+        "second language"
+      ],
+      "phrases": [
+        "I picked it up quickly",
+        "It was challenging but rewarding",
+        "Practice makes perfect",
+        "I'm still learning",
+        "I learned a lot from",
+        "It became second nature",
+        "I taught myself",
+        "It improved my skills"
+      ]
+    },
+    "Advice & Helping": {
+      "keywords": [
+        "advice",
+        "help",
+        "helped",
+        "volunteer",
+        "support",
+        "guidance",
+        "tip"
+      ],
+      "phrases": [
+        "I got some great advice",
+        "It was really helpful",
+        "I lent a helping hand",
+        "It gave me a new perspective",
+        "I took their advice to heart",
+        "It made a real difference",
+        "I was happy to help",
+        "The best advice I received was"
+      ]
+    },
+    "Memories & Emotions": {
+      "keywords": [
+        "memory",
+        "memories",
+        "happy",
+        "afraid",
+        "fear",
+        "smile",
+        "feel",
+        "felt",
+        "excited",
+        "sad",
+        "emotion",
+        "unforgettable"
+      ],
+      "phrases": [
+        "It brings back wonderful memories",
+        "I remember it vividly",
+        "It made me smile",
+        "I felt really happy",
+        "It was an unforgettable moment",
+        "Looking back, it was special",
+        "I'll never forget it",
+        "It holds a special place in my heart"
+      ]
+    },
+    "Environment & Nature": {
+      "keywords": [
+        "environment",
+        "pollution",
+        "climate",
+        "electric car",
+        "recycling",
+        "nature",
+        "green",
+        "global warming",
+        "planet",
+        "environmental"
+      ],
+      "phrases": [
+        "It's harmful to the environment",
+        "We need to go green",
+        "It reduces pollution",
+        "It's eco-friendly",
+        "We should protect nature",
+        "Climate change is a real threat",
+        "It's better for the planet",
+        "We should recycle more"
+      ]
+    },
+    "Traditions & Culture": {
+      "keywords": [
+        "tradition",
+        "festival",
+        "cultural",
+        "holiday",
+        "celebration",
+        "custom",
+        "heritage",
+        "traditional"
+      ],
+      "phrases": [
+        "It's a long-standing tradition",
+        "We celebrate it every year",
+        "It brings families together",
+        "It's part of our culture",
+        "It's a special occasion",
+        "We gather with relatives",
+        "It has deep cultural meaning",
+        "It's passed down from generation to generation"
+      ]
+    },
+    "Teamwork & Cooperation": {
+      "keywords": [
+        "team",
+        "teamwork",
+        "group",
+        "cooperate",
+        "cooperation",
+        "together",
+        "collaborate"
+      ],
+      "phrases": [
+        "Teamwork makes the dream work",
+        "We worked as a team",
+        "We divided the tasks",
+        "It improved our communication",
+        "We supported each other",
+        "Two heads are better than one",
+        "It taught me to cooperate",
+        "We achieved more together"
       ]
     }
   }
