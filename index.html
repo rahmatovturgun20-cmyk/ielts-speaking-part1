@@ -2746,10 +2746,12 @@ html.dark .phrase-chip { background: #1e293b; color: #93c5fd; border-color: #334
 .ai-feedback { margin-top: 8px; background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 10px; padding: 12px; font-size: 13.5px; line-height: 1.55; }
 .ai-feedback .ai-score { font-size: 15px; margin-bottom: 6px; }
 .ai-feedback .ai-score b { color: #2563eb; font-size: 17px; }
+.ai-feedback .ai-score .ai-band { color: #059669; }
 .ai-feedback .ai-line { margin-top: 5px; }
 .ai-feedback .ai-line b { color: #334155; }
 .ai-loading { color: #64748b; font-style: italic; }
 .ai-error { color: #dc2626; }
+html.dark .ai-feedback .ai-score .ai-band { color: #34d399; }
 html.dark .ai-toggle { background: #1e293b; color: #93c5fd; border-color: #334155; }
 html.dark .ai-toggle:hover { background: #293548; }
 html.dark .ai-feedback { background: #111827; border-color: #334155; }
@@ -10482,7 +10484,9 @@ window.fullAiFeedback = function () {
 
 function renderAI(res) {
   var scale = res.max ? ('/' + res.max) : '';
-  var h = "<div class='ai-score'>" + escapeHtml(res.level || "") + " — <b>" + escapeHtml((res.score != null ? res.score : "—")) + scale + "</b></div>";
+  var band = res.band ? " <span class='ai-band'>— " + escapeHtml(res.band) + " daraja</span>" : '';
+  var h = "<div class='ai-score'>Umumiy ball: <b>" + escapeHtml((res.score != null ? res.score : "—")) + scale + "</b>" + band + "</div>";
+  if (res.level) h += "<div class='ai-line'><b>Shkala:</b> " + escapeHtml(res.level) + " (" + escapeHtml(res.scale || '') + ")" + (res.max ? " / " + escapeHtml(String(res.max)) : "") + "</div>";
   if (res.transcript) h += "<div class='ai-line'><b>Transkript:</b> " + escapeHtml(res.transcript) + "</div>";
   var crits = [["vocabulary", "Lug'at"], ["grammar", "Grammatika"], ["fluency", "Ravonlik"], ["pronunciation", "Talaffuz"], ["communicative", "Kommunikativ"]];
   crits.forEach(function (c) {

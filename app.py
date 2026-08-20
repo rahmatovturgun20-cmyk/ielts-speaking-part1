@@ -1211,13 +1211,29 @@ def _prep_audio(data, mime_type):
 def ai_score(audio_bytes, mime_type, question, part="1.1"):
     audio_bytes, mime_type = _prep_audio(audio_bytes, mime_type)
     result, err = _ai_score_groq(audio_bytes, mime_type, question, part)
+    if result is None:
+        log.warning("Groq AI failed (%s) - falling back to Gemini", err)
+        result, err = _ai_score_gemini(audio_bytes, mime_type, question, part)
     if result is not None:
-        return result, None
-    log.warning("Groq AI failed (%s) - falling back to Gemini", err)
-    result, err = _ai_score_gemini(audio_bytes, mime_type, question, part)
-    if result is not None:
+        _attach_band(result, part)
         return result, None
     return None, err or "Barcha AI xizmatlar hozir band. Birozdan keyin qayta urinib ko'ring."
+
+
+FULL_BAND_MAP = [(9, "C1"), (7, "B2"), (5, "B1"), (3, "A2"), (1, "A1")]
+
+
+def _attach_band(result, part):
+    if part != "full":
+        return
+    s = result.get("score")
+    if not isinstance(s, (int, float)):
+        return
+    for lo, band in FULL_BAND_MAP:
+        if s >= lo:
+            result["band"] = band
+            return
+    result["band"] = "A1"
 
 
 def _ai_score_groq(audio_bytes, mime_type, question, part):
