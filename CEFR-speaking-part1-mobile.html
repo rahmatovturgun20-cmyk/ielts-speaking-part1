@@ -14028,12 +14028,6 @@ async function phaseAnswer() {
 
 
 
-    signalSound();
-
-
-
-
-
     setPhaseUI('answer');
 
 
@@ -14041,6 +14035,18 @@ async function phaseAnswer() {
 
 
     try { await startRecording(); } catch (e) { /* ignore */ }
+
+
+
+
+
+    signalSound();
+
+
+
+
+
+    await new Promise(r => setTimeout(r, 800));
 
 
 

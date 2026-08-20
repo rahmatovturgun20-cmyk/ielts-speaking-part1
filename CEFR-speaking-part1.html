@@ -13752,12 +13752,6 @@ async function nextQuestion() {
 
 
 
-    signalSound();
-
-
-
-
-
     setPhaseUI('answer');
 
 
@@ -13765,6 +13759,18 @@ async function nextQuestion() {
 
 
     try { await startRecording(); } catch (e) { /* ignore */ }
+
+
+
+
+
+    signalSound();
+
+
+
+
+
+    await new Promise(r => setTimeout(r, 800));
 
 
 
