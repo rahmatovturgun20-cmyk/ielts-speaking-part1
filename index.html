@@ -2749,6 +2749,10 @@ html.dark .phrase-chip { background: #1e293b; color: #93c5fd; border-color: #334
 .ai-feedback .ai-score .ai-band { color: #059669; }
 .ai-feedback .ai-line { margin-top: 5px; }
 .ai-feedback .ai-line b { color: #334155; }
+.ai-feedback .ai-err { margin-top: 4px; padding: 6px 8px; background: #fff1f2; border: 1px solid #fecdd3; border-radius: 6px; }
+.ai-feedback .err-wrong { color: #dc2626; text-decoration: line-through; }
+.ai-feedback .err-right { color: #059669; font-weight: 600; }
+.ai-feedback .err-note { color: #64748b; font-size: 12px; }
 .ai-loading { color: #64748b; font-style: italic; }
 .ai-error { color: #dc2626; }
 html.dark .ai-feedback .ai-score .ai-band { color: #34d399; }
@@ -2756,6 +2760,8 @@ html.dark .ai-toggle { background: #1e293b; color: #93c5fd; border-color: #33415
 html.dark .ai-toggle:hover { background: #293548; }
 html.dark .ai-feedback { background: #111827; border-color: #334155; }
 html.dark .ai-feedback .ai-line b { color: #cbd5e1; }
+html.dark .ai-feedback .ai-err { background: #31171b; border-color: #5b2a31; }
+html.dark .ai-feedback .err-note { color: #94a3b8; }
 html.dark .ai-loading { color: #94a3b8; }
 
 
@@ -10506,6 +10512,13 @@ function renderAI(res) {
       h += "<div class='ai-line'><b>" + c[1] + " (" + (item.score != null ? item.score : "—") + "):</b> " + escapeHtml(item.comment || "") + "</div>";
     }
   });
+  if (Array.isArray(res.errors) && res.errors.length) {
+    h += "<div class='ai-line'><b>Xatolar:</b></div>";
+    res.errors.forEach(function (e) {
+      if (!e || !e.wrong) return;
+      h += "<div class='ai-err'><span class='err-wrong'>" + escapeHtml(e.wrong) + "</span> → <span class='err-right'>" + escapeHtml(e.right || "") + "</span>" + (e.note ? " <span class='err-note'>(" + escapeHtml(e.note) + ")</span>" : "") + "</div>";
+    });
+  }
   if (res.tip) h += "<div class='ai-line'><b>Maslahat:</b> " + escapeHtml(res.tip) + "</div>";
   return h;
 }

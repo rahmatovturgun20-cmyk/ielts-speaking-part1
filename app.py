@@ -1221,6 +1221,11 @@ def ai_score(audio_bytes, mime_type, question, part="1.1"):
         result, err = _ai_score_gemini(audio_bytes, mime_type, question, part)
     if result is not None:
         _attach_band(result, part)
+        errs = result.get("errors")
+        if not isinstance(errs, list):
+            result["errors"] = []
+        else:
+            result["errors"] = [e for e in errs if isinstance(e, dict) and e.get("wrong")][:5]
         return result, None
     return None, err or "Barcha AI xizmatlar hozir band. Birozdan keyin qayta urinib ko'ring."
 
@@ -1305,10 +1310,13 @@ def _ai_score_groq(audio_bytes, mime_type, question, part):
         "You only see the transcript (not audio), so infer pronunciation and pausing cautiously. " +
         ("Each score (overall and each criterion) is a multiple of 0.5 from 0 to 21. " if part == "full" else "Each score (overall and each criterion) is an integer from 0 to " + str(rb["max"]) + ". ") +
         "Write all comments in Uzbek. "
+        "Find the 3-5 most important grammar or vocabulary mistakes in the transcript and list them in an 'errors' array (empty array if there are no mistakes). "
+        "Each item must be: {\"type\": \"grammar\" or \"vocabulary\", \"wrong\": \"the exact wrong phrase as the student said it\", \"right\": \"the corrected phrase\", \"note\": \"short explanation in Uzbek, max 10 words\"}. "
         "Reply with ONLY valid JSON (no markdown), for example: "
         '{"score": 4, "vocabulary": {"score": 4, "comment": "soz boyligi keng"}, '
         '"grammar": {"score": 4, "comment": "grammatika aniq"}, "fluency": {"score": 3, "comment": "ravon"}, '
         '"pronunciation": {"score": 3, "comment": "talaffuz yaxshi"}, "communicative": {"score": 4, "comment": "tushunarli"}, '
+        '"errors": [{"type": "grammar", "wrong": "I go school", "right": "I go to school", "note": "predlog yetishmayapti"}], '
         '"tip": "bitta aniq maslahat"}'
     )
     r2 = _post(
@@ -1318,7 +1326,7 @@ def _ai_score_groq(audio_bytes, mime_type, question, part):
             "messages": [{"role": "user", "content": prompt}],
             "temperature": 0.2,
             "response_format": {"type": "json_object"},
-            "max_tokens": 2000,
+            "max_tokens": 3000,
         },
     )
     if r2 is None:
@@ -1360,10 +1368,13 @@ def _ai_score_gemini(audio_bytes, mime_type, question, part):
         "Assess these 5 criteria: vocabulary, grammar, fluency, pronunciation, communicative. " +
         ("Each score (overall and each criterion) is a multiple of 0.5 from 0 to 21. " if part == "full" else "Each score (overall and each criterion) is an integer from 0 to " + str(rb["max"]) + ". ") +
         "Write all comments in Uzbek. "
+        "Find the 3-5 most important grammar or vocabulary mistakes in the transcript and list them in an 'errors' array (empty array if there are no mistakes). "
+        "Each item must be: {\"type\": \"grammar\" or \"vocabulary\", \"wrong\": \"the exact wrong phrase as the student said it\", \"right\": \"the corrected phrase\", \"note\": \"short explanation in Uzbek, max 10 words\"}. "
         "Reply with ONLY valid JSON (no markdown), for example: "
         '{"transcript": "the transcript", "score": 4, "vocabulary": {"score": 4, "comment": "soz boyligi keng"}, '
         '"grammar": {"score": 4, "comment": "grammatika aniq"}, "fluency": {"score": 3, "comment": "ravon"}, '
         '"pronunciation": {"score": 3, "comment": "talaffuz yaxshi"}, "communicative": {"score": 4, "comment": "tushunarli"}, '
+        '"errors": [{"type": "grammar", "wrong": "I go school", "right": "I go to school", "note": "predlog yetishmayapti"}], '
         '"tip": "bitta aniq maslahat"}'
     )
     body = {
