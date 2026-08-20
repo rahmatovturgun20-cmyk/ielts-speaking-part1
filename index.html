@@ -5081,6 +5081,7 @@ let results = [];
 
 
   let fullAudioUrl = null;
+  let fullAudioBlob = null;
 
 
 
@@ -9961,6 +9962,7 @@ async function finish() {
 
 
           fullAudioUrl = URL.createObjectURL(merged);
+          fullAudioBlob = merged;
 
 
 
@@ -9979,6 +9981,7 @@ async function finish() {
 
 
         fullAudioUrl = null;
+        fullAudioBlob = null;
 
 
 
@@ -10295,7 +10298,9 @@ function renderResults() {
 
 
 
-        '<a class="download-link" href="' + fullAudioUrl + '" download="full-mock-test.wav">⬇ Download full audio</a>';
+        '<a class="download-link" href="' + fullAudioUrl + '" download="full-mock-test.wav">⬇ Download full audio</a>' +
+        '<br><button class="ai-toggle" onclick="fullAiFeedback()">✨ AI baholash — full test</button>' +
+        '<div class="ai-feedback hidden" id="fullAiBox"></div>';
 
 
 
@@ -10441,6 +10446,38 @@ window.aiFeedback = function (idx) {
     });
   }
   doAIRequest();
+}
+
+window.fullAiFeedback = function () {
+  var box = document.getElementById("fullAiBox");
+  if (!box) return;
+  if (!fullAudioBlob) { box.textContent = "Yozuv yo'q"; box.classList.remove("hidden"); return; }
+  box.classList.remove("hidden");
+  box.innerHTML = "<span class='ai-loading'>✨ To'liq test baholanmoqda…</span>";
+  var fd = new FormData();
+  fd.append("audio", fullAudioBlob, "full-mock-test.wav");
+  fd.append("question", "Full Mock Test - barcha javoblar birga (Part 1.1, 1.2, 2, 3)");
+  fd.append("part", "full");
+  var attempts = 0;
+  function doFullAI() {
+    attempts++;
+    var ctrl = new AbortController();
+    var timer = setTimeout(function () { ctrl.abort(); }, 300000);
+    fetch("/api/ai/score", { method: "POST", body: fd, signal: ctrl.signal }).then(function (resp) { return resp.json(); }).then(function (d) {
+      clearTimeout(timer);
+      if (d && d.ok && d.result) { box.innerHTML = renderAI(d.result); }
+      else { box.innerHTML = "<span class='ai-error'>" + escapeHtml((d && d.error) || "Xatolik yuz berdi") + "</span>"; }
+    }).catch(function (e) {
+      clearTimeout(timer);
+      if (attempts < 2 && e && e.name !== 'AbortError') {
+        box.innerHTML = "<span class='ai-loading'>✨ Qayta urinilmoqda…</span>";
+        setTimeout(doFullAI, 2500);
+      } else {
+        box.innerHTML = "<span class='ai-error'>" + (e && e.name === 'AbortError' ? "Juda uzoq davom etdi, qayta urinib ko'ring" : "Server bilan bog'lanishda xatolik") + "</span>";
+      }
+    });
+  }
+  doFullAI();
 }
 
 function renderAI(res) {

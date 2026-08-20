@@ -1156,6 +1156,24 @@ RUBRICS = {
                  "1 (Lower B1): reads directly from the prompts. "
                  "0: below B1."),
     },
+    "full": {
+        "level": "A1-C1", "scale": "0-10", "max": 10,
+        "text": ("10 = C1 or above: clear, fluent, coherent performance across all 4 parts (1.1, 1.2, 2, 3); wide vocabulary, complex grammar, intelligible pronunciation. "
+                 "9 (C1): strong performance in all parts; minor errors; good coherence and range. "
+                 "8 (Higher B2): good control; some complex grammar accurate; sufficient range; mostly intelligible; few pauses. "
+                 "7 (Lower B2): generally clear; some complex grammar with errors; adequate vocabulary; noticeable pauses. "
+                 "6 (Higher B1): simple grammar mostly correct; basic vocabulary adequate; intelligible but limited range; frequent pausing. "
+                 "5 (Lower B1): 2 of 4 parts on-topic; simple language; basic errors. "
+                 "4 (Higher A2): short answers; basic grammar errors impede meaning; very limited vocabulary. "
+                 "3 (Lower A2): minimal sentences; limited control. "
+                 "2 (Higher A1): single words or phrases; mostly unintelligible. "
+                 "1 (Lower A1): isolated words only. "
+                 "0: no meaningful language."),
+    },
+}
+
+PART_LABEL = {
+    "full": "the FULL Speaking mock test (all 4 parts: 1.1, 1.2, 2, 3 combined)",
 }
 
 
@@ -1255,7 +1273,7 @@ def _ai_score_groq(audio_bytes, mime_type, question, part):
     llm_model = (cfg.get("groq_llm_model", "") or "openai/gpt-oss-20b").strip()
     prompt = (
         "You are a certified Multilevel (CEFR) speaking examiner. "
-        "Assess the answer of the student for Part " + part + " (target level " + rb["level"] + "). "
+        "Assess the answer of the student for " + PART_LABEL.get(part, "Part " + part) + " (target level " + rb["level"] + "). "
         "The question was: " + question + ". "
         "The transcript of the student is: " + transcript + ". "
         "OFFICIAL RUBRIC (scale " + rb["scale"] + "): " + rb["text"] + " "
@@ -1312,7 +1330,7 @@ def _ai_score_gemini(audio_bytes, mime_type, question, part):
     b64 = base64.b64encode(audio_bytes).decode()
     prompt = (
         "You are a certified Multilevel (CEFR) speaking examiner. "
-        "Listen to the audio, transcribe it, and assess the answer for Part " + part + " (target level " + rb["level"] + "). "
+        "Listen to the audio, transcribe it, and assess the answer for " + PART_LABEL.get(part, "Part " + part) + " (target level " + rb["level"] + "). "
         "The question was: " + question + ". "
         "OFFICIAL RUBRIC (scale " + rb["scale"] + "): " + rb["text"] + " "
         "Assess these 5 criteria: vocabulary, grammar, fluency, pronunciation, communicative. "
