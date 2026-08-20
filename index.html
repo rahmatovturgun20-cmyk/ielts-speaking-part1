@@ -10485,7 +10485,12 @@ window.fullAiFeedback = function () {
 function renderAI(res) {
   var scale = res.max ? ('/' + res.max) : '';
   var band = res.band ? " <span class='ai-band'>— " + escapeHtml(res.band) + " daraja</span>" : '';
-  var h = "<div class='ai-score'>Umumiy ball: <b>" + escapeHtml((res.score != null ? res.score : "—")) + scale + "</b>" + band + "</div>";
+  var h;
+  if (res.rating != null) {
+    h = "<div class='ai-score'>Xom ball: <b>" + escapeHtml((res.score != null ? res.score : "—")) + "</b> → Rayting ball: <b>" + escapeHtml(res.rating) + "</b>" + band + "</div>";
+  } else {
+    h = "<div class='ai-score'>Umumiy ball: <b>" + escapeHtml((res.score != null ? res.score : "—")) + scale + "</b>" + band + "</div>";
+  }
   if (res.level) h += "<div class='ai-line'><b>Shkala:</b> " + escapeHtml(res.level) + " (" + escapeHtml(res.scale || '') + ")" + (res.max ? " / " + escapeHtml(String(res.max)) : "") + "</div>";
   if (res.transcript) h += "<div class='ai-line'><b>Transkript:</b> " + escapeHtml(res.transcript) + "</div>";
   var crits = [["vocabulary", "Lug'at"], ["grammar", "Grammatika"], ["fluency", "Ravonlik"], ["pronunciation", "Talaffuz"], ["communicative", "Kommunikativ"]];

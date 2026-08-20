@@ -1157,23 +1157,28 @@ RUBRICS = {
                  "0: below B1."),
     },
     "full": {
-        "level": "A1-C1", "scale": "0-10", "max": 10,
-        "text": ("10 = C1 or above: clear, fluent, coherent performance across all 4 parts (1.1, 1.2, 2, 3); wide vocabulary, complex grammar, intelligible pronunciation. "
-                 "9 (C1): strong performance in all parts; minor errors; good coherence and range. "
-                 "8 (Higher B2): good control; some complex grammar accurate; sufficient range; mostly intelligible; few pauses. "
-                 "7 (Lower B2): generally clear; some complex grammar with errors; adequate vocabulary; noticeable pauses. "
-                 "6 (Higher B1): simple grammar mostly correct; basic vocabulary adequate; intelligible but limited range; frequent pausing. "
-                 "5 (Lower B1): 2 of 4 parts on-topic; simple language; basic errors. "
-                 "4 (Higher A2): short answers; basic grammar errors impede meaning; very limited vocabulary. "
-                 "3 (Lower A2): minimal sentences; limited control. "
-                 "2 (Higher A1): single words or phrases; mostly unintelligible. "
-                 "1 (Lower A1): isolated words only. "
-                 "0: no meaningful language."),
+        "level": "A1-C1", "scale": "0-21", "max": 21,
+        "text": ("21 = C1 or above: clear, fluent, coherent performance across all 4 parts (1.1, 1.2, 2, 3); wide vocabulary, complex grammar, intelligible pronunciation. "
+                 "17-18 (C1): strong performance in all parts; minor errors; good coherence and range. "
+                 "13-14 (B2): good control; some complex grammar accurate; sufficient range; mostly intelligible; few pauses. "
+                 "9-10 (B1): simple grammar mostly correct; basic vocabulary adequate; intelligible but limited range; frequent pausing. "
+                 "5-6 (A2): short simple answers; basic grammar errors; very limited vocabulary. "
+                 "2-3 (A1): single words or phrases; mostly unintelligible. "
+                 "0: no meaningful language. Use 0.5 steps for borderline performances."),
     },
 }
 
 PART_LABEL = {
     "full": "the FULL Speaking mock test (all 4 parts: 1.1, 1.2, 2, 3 combined)",
+}
+
+RATING_TABLE = {
+    21.0: 75, 20.5: 73, 20.0: 71, 19.5: 69, 19.0: 67, 18.5: 65, 18.0: 64,
+    17.5: 63, 17.0: 61, 16.5: 59, 16.0: 57, 15.5: 56, 15.0: 54, 14.5: 52,
+    14.0: 51, 13.5: 50, 13.0: 49, 12.5: 47, 12.0: 46, 11.5: 45, 11.0: 43,
+    10.5: 42, 10.0: 40, 9.5: 39, 9.0: 38, 8.5: 37, 8.0: 35, 7.5: 33,
+    7.0: 32, 6.5: 30, 6.0: 29, 5.5: 27, 5.0: 26, 4.5: 24, 4.0: 23,
+    3.5: 21, 3.0: 19, 2.5: 17, 2.0: 15, 1.5: 13, 1.0: 11, 0.5: 10, 0.0: 0,
 }
 
 
@@ -1220,7 +1225,7 @@ def ai_score(audio_bytes, mime_type, question, part="1.1"):
     return None, err or "Barcha AI xizmatlar hozir band. Birozdan keyin qayta urinib ko'ring."
 
 
-FULL_BAND_MAP = [(9, "C1"), (7, "B2"), (5, "B1"), (3, "A2"), (1, "A1")]
+FULL_BAND_MAP = [(17.5, "C1"), (13.5, "B2"), (9.5, "B1"), (5, "A2"), (1, "A1")]
 
 
 def _attach_band(result, part):
@@ -1229,8 +1234,11 @@ def _attach_band(result, part):
     s = result.get("score")
     if not isinstance(s, (int, float)):
         return
+    raw = min(21.0, max(0.0, round(s * 2) / 2.0))
+    result["score"] = raw
+    result["rating"] = RATING_TABLE.get(raw, 0)
     for lo, band in FULL_BAND_MAP:
-        if s >= lo:
+        if raw >= lo:
             result["band"] = band
             return
     result["band"] = "A1"
@@ -1294,8 +1302,8 @@ def _ai_score_groq(audio_bytes, mime_type, question, part):
         "The transcript of the student is: " + transcript + ". "
         "OFFICIAL RUBRIC (scale " + rb["scale"] + "): " + rb["text"] + " "
         "Assess these 5 criteria: vocabulary, grammar, fluency, pronunciation, communicative. "
-        "You only see the transcript (not audio), so infer pronunciation and pausing cautiously. "
-        "Each score (overall and each criterion) is an integer from 0 to " + str(rb["max"]) + ". "
+        "You only see the transcript (not audio), so infer pronunciation and pausing cautiously. " +
+        ("Each score (overall and each criterion) is a multiple of 0.5 from 0 to 21. " if part == "full" else "Each score (overall and each criterion) is an integer from 0 to " + str(rb["max"]) + ". ") +
         "Write all comments in Uzbek. "
         "Reply with ONLY valid JSON (no markdown), for example: "
         '{"score": 4, "vocabulary": {"score": 4, "comment": "soz boyligi keng"}, '
@@ -1349,8 +1357,8 @@ def _ai_score_gemini(audio_bytes, mime_type, question, part):
         "Listen to the audio, transcribe it, and assess the answer for " + PART_LABEL.get(part, "Part " + part) + " (target level " + rb["level"] + "). "
         "The question was: " + question + ". "
         "OFFICIAL RUBRIC (scale " + rb["scale"] + "): " + rb["text"] + " "
-        "Assess these 5 criteria: vocabulary, grammar, fluency, pronunciation, communicative. "
-        "Each score (overall and each criterion) is an integer from 0 to " + str(rb["max"]) + ". "
+        "Assess these 5 criteria: vocabulary, grammar, fluency, pronunciation, communicative. " +
+        ("Each score (overall and each criterion) is a multiple of 0.5 from 0 to 21. " if part == "full" else "Each score (overall and each criterion) is an integer from 0 to " + str(rb["max"]) + ". ") +
         "Write all comments in Uzbek. "
         "Reply with ONLY valid JSON (no markdown), for example: "
         '{"transcript": "the transcript", "score": 4, "vocabulary": {"score": 4, "comment": "soz boyligi keng"}, '
