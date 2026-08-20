@@ -9437,7 +9437,7 @@ async function afterAnswer() {
 
 
 
-    results.push({ question: questions[idx], rec: rec, seconds: ansSecs[idx], img: modePics[idx] });
+    results.push({ question: questions[idx], rec: rec, seconds: ansSecs[idx], img: modePics[idx], part: partFor(idx) });
     awardXP();
 
 
@@ -9991,7 +9991,7 @@ async function afterAnswer() {
 
 
 
-          '<div class="result-sample hidden" id="rrev-' + absIdx + '"><b>Sample answer:</b> ' + escapeHtml(sample) + phraseChipsHtml(sample) + topicPhrasesHtml(r.question, sample, partFor(absIdx)) + '</div>';
+          '<div class="result-sample hidden" id="rrev-' + absIdx + '"><b>Sample answer:</b> ' + escapeHtml(sample) + phraseChipsHtml(sample) + topicPhrasesHtml(r.question, sample, r.part || partFor(absIdx)) + '</div>';
 
 
 
@@ -10974,7 +10974,7 @@ function renderResults() {
 
 
 
-          '<div class="result-sample hidden" id="rsample-' + i + '"><b>Sample answer:</b> ' + escapeHtml(sample) + phraseChipsHtml(sample) + topicPhrasesHtml(r.question, sample, partFor(i)) + '</div>';
+          '<div class="result-sample hidden" id="rsample-' + i + '"><b>Sample answer:</b> ' + escapeHtml(sample) + phraseChipsHtml(sample) + topicPhrasesHtml(r.question, sample, r.part || partFor(i)) + '</div>';
 
 
 
@@ -11184,6 +11184,7 @@ function partFor(idx) {
     var p = (mockMeta && mockMeta[idx] && mockMeta[idx].part) || 0;
     if (p === 2) return '2';
     if (p === 3) return '3';
+    if (p === 12) return '1.2';
     return '1.1';
   }
   return '1.1';
@@ -11199,7 +11200,7 @@ window.aiFeedback = function (idx) {
   var fd = new FormData();
   fd.append("audio", r.rec.blob, "answer.wav");
   fd.append("question", r.question || "");
-  fd.append("part", partFor(idx));
+  fd.append("part", r.part || partFor(idx));
   var attempts = 0;
   function doAIRequest() {
     attempts++;
