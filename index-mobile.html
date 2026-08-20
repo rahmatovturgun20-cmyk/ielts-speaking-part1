@@ -11200,16 +11200,26 @@ window.aiFeedback = function (idx) {
   fd.append("audio", r.rec.blob, "answer.wav");
   fd.append("question", r.question || "");
   fd.append("part", partFor(idx));
-  var ctrl = new AbortController();
-  var timer = setTimeout(function () { ctrl.abort(); }, 300000);
-  fetch("/api/ai/score", { method: "POST", body: fd, signal: ctrl.signal }).then(function (resp) { return resp.json(); }).then(function (d) {
-    clearTimeout(timer);
-    if (d && d.ok && d.result) { box.innerHTML = renderAI(d.result); }
-    else { box.innerHTML = "<span class='ai-error'>" + escapeHtml((d && d.error) || "Xatolik yuz berdi") + "</span>"; }
-  }).catch(function (e) {
-    clearTimeout(timer);
-    box.innerHTML = "<span class='ai-error'>" + (e && e.name === 'AbortError' ? "Juda uzoq davom etdi, qayta urinib ko'ring" : "Server bilan bog'lanishda xatolik") + "</span>";
-  });
+  var attempts = 0;
+  function doAIRequest() {
+    attempts++;
+    var ctrl = new AbortController();
+    var timer = setTimeout(function () { ctrl.abort(); }, 300000);
+    fetch("/api/ai/score", { method: "POST", body: fd, signal: ctrl.signal }).then(function (resp) { return resp.json(); }).then(function (d) {
+      clearTimeout(timer);
+      if (d && d.ok && d.result) { box.innerHTML = renderAI(d.result); }
+      else { box.innerHTML = "<span class='ai-error'>" + escapeHtml((d && d.error) || "Xatolik yuz berdi") + "</span>"; }
+    }).catch(function (e) {
+      clearTimeout(timer);
+      if (attempts < 2 && e && e.name !== 'AbortError') {
+        box.innerHTML = "<span class='ai-loading'>✨ Qayta urinilmoqda…</span>";
+        setTimeout(doAIRequest, 2500);
+      } else {
+        box.innerHTML = "<span class='ai-error'>" + (e && e.name === 'AbortError' ? "Juda uzoq davom etdi, qayta urinib ko'ring" : "Server bilan bog'lanishda xatolik") + "</span>";
+      }
+    });
+  }
+  doAIRequest();
 }
 
 function renderAI(res) {
@@ -11233,7 +11243,7 @@ function escapeHtml(s) {
 
 
 
-    return s.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
+    return String(s == null ? '' : s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
 
 
 
