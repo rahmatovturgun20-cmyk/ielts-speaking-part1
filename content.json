@@ -7,13 +7,9 @@
     "Where is your hometown?",
     "Tell me about your hometown.",
     "Do you work or are you a student?",
-    "Why did you choose that job?",
-    "What do you enjoy most about your job?",
-    "What subject did you choose and why?",
     "Do you enjoy your studies?",
     "What is your favourite subject?",
     "What subject do you find most difficult?",
-    "Do you have any plans for after graduation?",
     "Tell me about your dream job.",
     "What foreign languages have you studied?",
     "Tell me about your school.",
@@ -114,9 +110,7 @@
     "What is your favorite animal?",
     "Do you like parks?",
     "How often do you visit parks?",
-    "Do you like trees?",
     "Do you like flowers?",
-    "What flowers do you have in your home?",
     "Do you like taking photos?",
     "Do you prefer taking photos yourself or having them taken?",
     "Do you take photographs of yourself? (selfies)",
@@ -141,13 +135,9 @@
     "Has your hometown changed much over the years?": "Yes, quite a lot, actually. When I was a child, the streets were mostly quiet, but now there are new roads, shops and modern buildings everywhere. Public transport has improved too. I like the new development, and at the same time, I am glad the old, friendly spirit of the town is still there. That balance between growth and tradition is exactly what makes it special.",
     "Would you like to live in your hometown in the future?": "I think so, after I finish my studies. My family and closest friends live there, and that is something I do not want to lose. Work, though, can be limited there, so it depends on the job market. Ideally, I would live close by, often visiting, rather than far away. So, once my career is stable, I will gladly return to roots.",
     "Do you work or are you a student?": "Right now I am a full-time student, but I also work part-time as an English tutor. It is a nice balance, because tutoring gives me some income and practical experience, while my studies keep me focused on my degree. During exam periods, though, I reduce my lessons to concentrate on university. This rhythm works fine for me, and I plan to keep it until graduation.",
-    "Why did you choose that job?": "Mainly because I love working with people. Teaching lets me explain ideas, help someone improve, and see real progress, which gives me genuine satisfaction. It also fits my schedule perfectly, since I can arrange lessons around my lectures. On top of that, it sharpens my own English every single day. In short, tutoring gives me money, experience and energy all at once.",
-    "What do you enjoy most about your job?": "The best moment is when a student finally understands something difficult. Their face lights up, and I know I played a part in that small victory. I also enjoy the variety, because every learner is different, so no two lessons are ever the same. At the end of each month, I look back and realise how much I have learned, which keeps me motivated.",
-    "What subject did you choose and why?": "I chose English philology, mainly because languages have always fascinated me. As a kid, I loved learning English songs, and later I discovered how useful the language is for travel and work. Studying it lets me turn that childhood interest into a profession, which feels very natural to me. So far, it has been the right choice for me in every way.",
     "Do you enjoy your studies?": "Yes, for the most part. The topics are engaging, and my lecturers are really supportive, which makes a huge difference. It is demanding sometimes, especially around deadlines, but I genuinely look forward to most of my classes. Honestly, I think I chose the right path. All in all, I can say that I am happy with my university years.",
     "What is your favourite subject?": "I would say phonetics. Learning exactly how sounds are produced, and why we pronounce things differently, feels like solving a puzzle. I also love practising pronunciation during class and seeing quick improvement. It is technical, but to me that is exactly what makes it interesting. If I ever get to teach, I would love to specialise in this area.",
     "What subject do you find most difficult?": "Academic writing is the most challenging for me. It demands very clear structure, careful planning and precise language, which do not come naturally. I often rewrite the same paragraph several times. Still, I keep practising, because I know these skills will be useful in my future career. Little by little, I notice progress, and that keeps me going.",
-    "Do you have any plans for after graduation?": "Yes, I already have a rough plan. First, I want to work as a teacher or interpreter for a couple of years to gain hands-on experience. Then, if everything goes well, I would like to continue studying abroad for a master's degree. Ideally, that would open the door to a more international career. Having a direction makes my current studies feel purposeful.",
     "Do you live in a house or a flat?": "I live in a flat, in a quiet building in the city. It is a comfortable two-bedroom apartment on the third floor, with a balcony facing the courtyard. Everything I need, like shops and public transport, is close by, which makes daily life really convenient. For a student, it really does not get more practical than this.",
     "Which is your favourite room in your home?": "Without hesitation, my bedroom. I turned it into a cosy corner where I study, read and relax, with warm lighting and lots of pillows. It is the first place I see in the morning and the last one at night. Honestly, it is my little sanctuary in the city. Every evening, I am happy to close the door of my room and just breathe.",
     "What do you like about your home?": "I love how bright and peaceful it is. We get plenty of sunlight, which instantly lifts the mood, and the flat is quiet because our street is not busy. It may not be huge, but it feels comfortable and safe, which helps me concentrate and rest properly. After a noisy day outside, coming back home literally feels like a relief.",
@@ -218,9 +208,7 @@
     "What is the most popular pet in your country?": "Cats and dogs are clearly the most popular here. In cities, cats are easier to keep, because they adapt well to small apartments. Dogs, however, are loved for loyalty and guarding. In rural areas, dogs are especially common, while cats quietly dominate the urban balconies. Both animals bring real joy, so the choice is just a matter of lifestyle.",
     "Do you like parks?": "Definitely, parks are my favourite places in the city. They provide fresh air, green scenery and peace away from traffic and noise. Walking there is my simplest way to clear my mind and recharge. I honestly believe every neighbourhood needs more parks, because people need nature. Every time I travel, the first thing I check is the city map of parks.",
     "How often do you visit parks?": "I usually visit one of our city parks about twice a week. I go for a walk, sit with a book, or sometimes just enjoy people watching. On weekends, the parks become social places, full of families and friends. For me, they are free therapy, basically. Rain or sunshine, a short park visit always improves my day.",
-    "Do you like trees?": "Yes, I genuinely like trees. They give us shade in summer, cleaner air and a sense of calm in crowded cities. I love watching huge old trees, imagining how many generations have sat under them. Honestly, a street without trees feels empty and unpleasant to me. I even take photos of beautiful trees whenever I travel.",
     "Do you like flowers?": "I definitely like flowers, especially their colours and their smell. They can instantly change the mood of a room, and giving flowers is a beautiful way to show care. I am not an expert gardener, but I always enjoy flowers during spring and holidays. Later in life, I want a garden full of them, that is for sure.",
-    "What flowers do you have in your home?": "At home we have a few potted plants, mostly on the windowsills. There are geraniums, which bloom almost all year, and some decorative green plants. My mother cares for them daily, and their presence makes the flat feel alive. We also put fresh tulips in vases every spring. Even though I take care of them too, plants are officially my mother's project.",
     "Do you like taking photos?": "I love photography, though I am clearly an amateur. Taking photos helps me see ordinary things through a new lens and capture moments that fade fast. I especially love shooting sunsets and street moments. Honestly, my phone gallery is a diary of my life. Photos make memories last forever, and that is why I love this hobby.",
     "What was the last photo you took?": "The very last one I took was a photo of the sunset. I love those evenings when the sky behind the city silhouettes is painted in warm orange and pink. I didn't plan the shot, but something about the frame just felt complete, so I saved it immediately.",
     "Do you prefer taking photos yourself or having them taken?": "I definitely prefer taking photos myself. Behind the camera, I feel free and in control of the frame. When I am the model, I get nervous and do not know how to pose. So I enjoy capturing others, sure, but I rarely appear in the pictures. My friends tease me about always being behind the camera, and honestly, they are right.",
@@ -973,6 +961,166 @@
         "Tell me something about your family.",
         "Do you think more people will work from home in the future?"
       ]
+    },
+    {
+      "img": "part12/set32.png",
+      "q": [
+        "What do you see in these pictures?",
+        "What is the difference between living in the city and in the countryside?",
+        "Where do you prefer to live, in the city or village?"
+      ]
+    },
+    {
+      "img": "part12/set33.png",
+      "q": [
+        "What are the people in these photos doing?",
+        "What are the benefits of doing sport?",
+        "What sports are popular in your country?"
+      ]
+    },
+    {
+      "img": "part12/set34.png",
+      "q": [
+        "Who can you see in these pictures?",
+        "What difficulties do they face?",
+        "What is the difference between the jobs in the pictures?"
+      ]
+    },
+    {
+      "img": "part12/set35.png",
+      "q": [
+        "Describe these holiday locations in the pictures.",
+        "Which of these places is better to spend a holiday?",
+        "Is it important to have holidays?"
+      ]
+    },
+    {
+      "img": "part12/set36.png",
+      "q": [
+        "What can you see in these pictures?",
+        "What is the difference between eating at home and eating out?",
+        "What are the advantages of eating out?"
+      ]
+    },
+    {
+      "img": "part12/set37.png",
+      "q": [
+        "Describe what you see in the pictures.",
+        "What are the differences between remote working and working at workplaces?",
+        "Why do many people today want remote working?"
+      ]
+    },
+    {
+      "img": "part12/set38.png",
+      "q": [
+        "What can you see in the pictures?",
+        "Do you prefer public or private transport for commuting?",
+        "How can traffic jams be solved?"
+      ]
+    },
+    {
+      "img": "part12/set39.png",
+      "q": [
+        "What can you see in the pictures?",
+        "Why do some prefer to watch at home while others in cinema?",
+        "What sorts of movies do you often watch?"
+      ]
+    },
+    {
+      "img": "part12/set40.png",
+      "q": [
+        "Compare these pictures.",
+        "In which picture is the person facing a more difficult choice?",
+        "Do you like shopping?"
+      ]
+    },
+    {
+      "img": "part12/set41.png",
+      "q": [
+        "Describe the pictures.",
+        "Where do you usually buy groceries?",
+        "What is the difference between shopping at supermarkets and at markets?"
+      ]
+    },
+    {
+      "img": "part12/set42.png",
+      "q": [
+        "Compare the first picture to the second.",
+        "How do you usually spend your free time?",
+        "What are the pluses and minuses of spending free time in these ways?"
+      ]
+    },
+    {
+      "img": "part12/set43.png",
+      "q": [
+        "Compare the way people ride bikes in the pictures.",
+        "What are the benefits of biking?",
+        "Why do many people want to ride bikes today?"
+      ]
+    },
+    {
+      "img": "part12/set44.png",
+      "q": [
+        "What can you see in these pictures?",
+        "What are the difficulties of these jobs?",
+        "What are the benefits of these jobs?"
+      ]
+    },
+    {
+      "img": "part12/set45.png",
+      "q": [
+        "Compare the pictures and say what you can see.",
+        "What are the advantages and disadvantages of cooking for yourself and eating out?",
+        "Do you often cook for yourself?"
+      ]
+    },
+    {
+      "img": "part12/set46.png",
+      "q": [
+        "Describe the animals in the pictures.",
+        "What are the advantages and disadvantages of keeping animals in captivity?",
+        "Do you support zoos which keep animals captive?"
+      ]
+    },
+    {
+      "img": "part12/set47.png",
+      "q": [
+        "What can you see in these pictures?",
+        "Which transportation do you prefer?",
+        "What are the advantages of road transport and air transport?"
+      ]
+    },
+    {
+      "img": "part12/set48.png",
+      "q": [
+        "What can you see in the pictures?",
+        "Do you prefer to live in a house or in a flat?",
+        "Why do many people like to stay in a house?"
+      ]
+    },
+    {
+      "img": "part12/set49.png",
+      "q": [
+        "Describe the pictures.",
+        "Do you like marine life?",
+        "Do you keep a pet?"
+      ]
+    },
+    {
+      "img": "part12/set50.png",
+      "q": [
+        "What can you see in the pictures?",
+        "Can you play music?",
+        "Do you like live concerts?"
+      ]
+    },
+    {
+      "img": "part12/set51.png",
+      "q": [
+        "Can you describe these pictures?",
+        "What are the advantages and disadvantages of online studying?",
+        "Why do many students prefer studying online than face-to-face?"
+      ]
     }
   ],
   "PART12_SAMPLES": {
@@ -1022,7 +1170,7 @@
       "Which one is comfortable travelling by plane or by train?": "In my opinion, travelling by train is more comfortable, because you have much more space to move and you can walk around, eat and even sleep in a bed. On a plane, the seats are quite narrow and you have to stay in one position for the whole flight. However, the plane is much faster, so for long distances I would choose it despite the comfort. For short trips, I definitely prefer the train, because it is cosier and more relaxed."
     },
     "part12/set10.png": {
-      "What can you see in these pictures?": "Both pictures illustrate people celebrating a holiday, but each one in a different atmosphere. In the first picture, I can see a big family around a festive table full of traditional dishes, and an older woman in the middle is serving sumalak from a large bowl, while everyone is smiling and greeting each other. By contrast, the second picture shows children outside in the courtyard, playing with balloons and small flags, and the whole street looks decorated and bright. One similarity is that both pictures are about celebrating a traditional holiday together. However, the main difference is that the first picture shows the adults' table and the old traditions, whereas the second picture highlights the children's joy and the festive mood outside. Overall, I think the pictures show that a holiday brings all generations together.",
+      "What can you see in these pictures?": "Both pictures show birthday parties, but they have a very different atmosphere. In the first picture, a group of young friends is celebrating at a fun party. The room is a bit dark, and colorful confetti is falling everywhere. A young woman is smiling and blowing out the candles on her birthday cake, while her friends are watching happily. In contrast, the second picture shows a family having a birthday party together at home. The room is bright and clean. We can see children, parents, and grandparents sitting at a dining table with a big present, and a woman is bringing a chocolate cake to the grandfather. One similarity is that both pictures are about celebrating someone's birthday with a cake. However, the main difference is that the first picture shows an exciting party with friends, whereas the second picture shows a sweet, quiet moment with family. Overall, I think the pictures show that birthdays can be celebrated in two ways — with lively friends or with a loving family.",
       "Why holidays are meaningful in our lifes?": "Holidays are meaningful because they bring people together and create happy memories. During holidays, families and friends gather, share meals and gifts, and forget about their everyday problems for a while. Holidays also help us remember our traditions and history, which keeps our culture alive. Moreover, they give us a break from work and study, so we can rest and start the new period with fresh energy.",
       "Do you traditional holidays in your country?": "Yes, of course, in my country we celebrate many traditional holidays. The most important ones are the New Year and the spring holiday Navruz, when families get together and prepare special dishes. During these holidays we visit our relatives, give gifts and enjoy national music and dances. I love these traditions, because they connect me with my culture and remind me of my childhood, when the whole family was together."
     },
@@ -1130,6 +1278,106 @@
       "What do you see in these pictures?": "Both pictures are about family life, but the situations are different. In the first picture, I can see a family having dinner together at a table, and everyone is smiling and talking, so the atmosphere is warm and happy. By contrast, the second picture shows a person working on a laptop at home, and the family is nearby, doing their own activities. One similarity is that both pictures show people at home with their family. However, the main difference is that the first picture shows a traditional family moment together, whereas the second picture shows how people combine work and home life. Overall, I would say the pictures show both old and modern ways of family life.",
       "Tell me something about your family.": "My family is not very big: there are four of us, my parents, my younger brother and me. My father works as an engineer, and my mother is a teacher, and they are both very hardworking. My brother is still at school, and we get along very well, although sometimes we argue about small things like every brothers and sisters. We always try to have dinner together and talk about our day, and on holidays we visit our grandparents. I love my family very much, because they always support me.",
       "Do you think more people will work from home in the future?": "Yes, I definitely think more people will work from home in the future. Modern technology makes it possible to do many jobs from anywhere, and after recent years people understood that it really works. Working from home saves time and money, because people do not need to travel to the office, and it gives more flexibility. However, not all jobs can be done at home, and some people feel lonely without their colleagues. So, I believe the future is a mix: many people will work from home, but offices will not disappear completely."
+    },
+    "part12/set32.png": {
+      "What do you see in these pictures?": "In the first picture we can see a quiet village surrounded by green fields, where people seem to live a slow-paced life. The second picture, on the contrary, shows a modern city with skyscrapers, busy roads and crowds of pedestrians. So basically, one image represents rural life while the other reflects urban lifestyle.",
+      "What is the difference between living in the city and in the countryside?": "Well, the main difference lies in the pace of life and available facilities. City dwellers have better access to education, healthcare and entertainment, but they constantly deal with noise, traffic congestion and air pollution. Rural life, on the other hand, offers fresh air, peace and closer community ties, although job opportunities there are quite limited.",
+      "Where do you prefer to live, in the city or village?": "Personally, I would choose the city because everything is within walking distance and there are far more career prospects for young people. However, I must admit that city life can be exhausting, so ideally I would live in the city on weekdays and escape to the countryside at weekends to recharge my batteries."
+    },
+    "part12/set33.png": {
+      "What are the people in these photos doing?": "In the first photo, some people are working out in a gym, lifting weights and running on treadmills. In the second one, a group of people seems to be playing an outdoor game, probably football or basketball. Generally speaking, both pictures show people doing physical activities in order to stay fit and healthy.",
+      "What are the benefits of doing sport?": "There are countless benefits, actually. First of all, regular exercise strengthens our muscles and immune system, so we fall ill less often. Secondly, when we work out, our brain releases endorphins, the so-called happy hormones, which reduce stress and anxiety. Besides, team sports teach us discipline, cooperation and time management skills.",
+      "What sports are popular in your country?": "In Uzbekistan, football is definitely the most popular sport; almost every boy grows up playing it in the neighbourhood. Wrestling is also part of our national culture, and traditional kurash competitions attract huge audiences. Nowadays fitness and volleyball are becoming increasingly popular among young people as well, especially in big cities like Tashkent."
+    },
+    "part12/set34.png": {
+      "Who can you see in these pictures?": "In the first picture I can see an office worker, most likely sitting in front of a computer and dealing with paperwork. The second picture shows a manual worker who seems to be doing some kind of physical labour, perhaps at a construction site. They represent two completely different types of occupations.",
+      "What difficulties do they face?": "Each job has its own challenges, I suppose. Office workers often suffer from stress, tight deadlines and sitting for long hours, which damages their eyesight and posture. Manual workers, meanwhile, risk their health and safety since their jobs involve heavy lifting, dangerous tools and harsh weather conditions. Both require either mental or physical endurance.",
+      "What is the difference between the jobs in the pictures?": "The key difference is mental versus physical work. The office job requires qualifications, computer skills and concentration, but it offers a comfortable environment and a stable salary. The manual job, by contrast, demands strength and practical skills, usually pays less and involves more risks. However, honestly speaking, both are essential for our society."
+    },
+    "part12/set35.png": {
+      "Describe these holiday locations in the pictures.": "In the first picture there appears to be a seaside resort with golden beaches, palm trees and tourists sunbathing. The second one looks like a mountain area covered with forests, which seems perfect for hiking and camping. In other words, one location offers relaxation by the water, while the other is ideal for active holidays in nature.",
+      "Which of these places is better to spend a holiday?": "It really depends on what you expect from your vacation. If someone wants to simply unwind, sunbathe and forget about work, the beach is the obvious choice. But if you are keen on adventure, breathtaking views and fresh air, then mountains would suit you better. As for me, I prefer the sea because swimming helps me truly relax.",
+      "Is it important to have holidays?": "Absolutely, holidays are essential rather than a luxury. We live in a fast-moving world where people face stress and burnout almost every day, so taking regular breaks allows both our body and mind to recover. Moreover, holidays give us precious time to spend with family and friends, which strengthens our relationships."
+    },
+    "part12/set36.png": {
+      "What can you see in these pictures?": "In the first picture, I can see a family having a home-cooked meal around the table. The second picture shows people eating out, probably in a restaurant or cafe. So the images basically illustrate two different ways of having food: homemade meals versus dining out.",
+      "What is the difference between eating at home and eating out?": "Eating at home is definitely cheaper and healthier, because you control the ingredients and hygiene yourself. Eating out, on the other hand, saves time and gives you a chance to try exotic dishes that you cannot cook. However, restaurant food tends to contain more fat, salt and sugar, plus the service always adds extra cost.",
+      "What are the advantages of eating out?": "The main advantage is convenience; there is no shopping, cooking or washing up afterwards, which is perfect for busy people. In addition, restaurants offer a wide variety of cuisines, so you can taste Italian, Korean or Turkish dishes whenever you want. And of course, eating out is a social activity that brings friends and relatives together."
+    },
+    "part12/set37.png": {
+      "Describe what you see in the pictures.": "In the first picture we can see employees working remotely, probably from home, communicating through laptops and video calls. The second picture shows a traditional office environment where colleagues work side by side. Essentially, the images compare remote working with the conventional workplace.",
+      "What are the differences between remote working and working at workplaces?": "Remote working offers flexibility: you save commuting time and can organise your day as you wish. Working in an office, however, provides direct communication with colleagues, instant support from managers and a clear boundary between work and private life. So the former gives freedom while the latter gives structure and team spirit.",
+      "Why do many people today want remote working?": "I believe the main reason is convenience. People waste hours stuck in traffic every day, and working from home eliminates that completely. Besides, employees can balance work with family responsibilities and even relocate to quieter, cheaper areas. After the pandemic proved that remote jobs can be productive, this trend has only grown stronger worldwide."
+    },
+    "part12/set38.png": {
+      "What can you see in the pictures?": "Both pictures apparently show rush hour in a big city. In the first one, crowds of people are standing in an overcrowded bus or metro carriage, while in the second, cars are stuck in a long traffic jam with drivers looking stressed. It is a typical scene during morning and evening peak times.",
+      "Do you prefer public or private transport for commuting?": "Although travelling by my own car would be more comfortable, I generally prefer public transport for daily commuting. First, it is much cheaper if you consider fuel and parking prices. Second, I can read or listen to podcasts instead of concentrating on the road. The only downside is overcrowding during rush hours, but the advantages outweigh it.",
+      "How can traffic jams be solved?": "This problem requires several measures at once. Governments should invest in affordable and efficient public transport so that fewer people use private cars. Building ring roads, bridges and developing cycling infrastructure would also help. Additionally, encouraging carpooling and introducing flexible working hours could reduce the number of vehicles on the road at peak times."
+    },
+    "part12/set39.png": {
+      "What can you see in the pictures?": "In the first picture, a group of friends seems to be watching a film at home, comfortably lying on a sofa. The second picture shows people in a cinema hall in front of a huge screen. So both images are about watching movies, just in different settings.",
+      "Why do some prefer to watch at home while others in cinema?": "Watching films at home is cheap and comfortable; you can pause whenever you want and eat whatever you like. Cinema fans, on the other hand, argue that nothing compares to the giant screen, powerful sound effects and special atmosphere. For many people, going to the movies is also a social event, not just entertainment.",
+      "What sorts of movies do you often watch?": "To be honest, I am really into science fiction and detective stories because they keep me on the edge of my seat from start to finish. Occasionally I watch comedies with friends just to lift our mood after a stressful week. I rarely choose horror films, though, as they affect my sleep badly."
+    },
+    "part12/set40.png": {
+      "Compare these pictures.": "The pictures show two different shopping experiences. In the first one, a person appears to be shopping online using a smartphone or laptop, while in the second, someone is choosing goods in a physical store. One image represents e-commerce, and the other traditional brick-and-mortar shopping.",
+      "In which picture is the person facing a more difficult choice?": "I would say the person in the actual shop faces a more difficult choice. When you shop online, filters and customer reviews help narrow down the options quickly. In a real store, however, you are surrounded by attractive products, sales assistants offering help and eye-catching displays, which makes resisting temptation and deciding much harder.",
+      "Do you like shopping?": "It depends on what I am buying, to tell the truth. Shopping for gadgets or clothes can be quite enjoyable, especially with friends. But grocery shopping feels like a boring routine to me, so I usually do it online. All in all, I would describe myself as a moderate shopper, not a shopaholic at all."
+    },
+    "part12/set41.png": {
+      "Describe the pictures.": "In the first picture, a customer seems to be buying fresh fruit and vegetables at an open market directly from sellers. The second picture shows shelves full of packaged products in a supermarket. Basically, the images contrast traditional marketplaces with modern self-service stores.",
+      "Where do you usually buy groceries?": "Mostly at the supermarket near my house, because it is convenient: everything from bread to cleaning products is under one roof, and the prices are clearly labelled. But when it comes to fruit and vegetables, I prefer the local bazaar, since produce there is fresher, tastier and often cheaper than the packaged equivalents.",
+      "What is the difference between shopping at supermarkets and at markets?": "Supermarkets win in terms of comfort and choice; they have fixed prices, receipts and everything in one place. Markets, on the other hand, offer fresher seasonal produce and a chance to bargain, which makes shopping there more interactive. Besides, at markets you can actually talk to the growers themselves, which builds trust."
+    },
+    "part12/set42.png": {
+      "Compare the first picture to the second.": "The first picture shows someone spending leisure time actively, doing some kind of outdoor activity or sport, whereas in the second picture a person is relaxing indoors, probably surfing the internet or watching TV. In short, one way of spending free time is active and the other is passive.",
+      "How do you usually spend your free time?": "It varies depending on my mood and the weather. On weekdays I only have a couple of free hours, so I mostly read books or watch educational videos. At weekends, however, I try to meet friends, play football or go for a bike ride. Sometimes I also help my parents around the house.",
+      "What are the pluses and minuses of spending free time in these ways?": "Active leisure obviously keeps you fit and energised, but it can leave you physically tired. Passive activities like scrolling through feeds or binge-watching help you unwind quickly, yet they do not really recharge you; ironically, you often end up feeling even lazier and less motivated. That is why experts recommend combining both sensibly."
+    },
+    "part12/set43.png": {
+      "Compare the way people ride bikes in the pictures.": "In the first picture, cyclists appear to be riding in a park or on a special bike lane, enjoying a casual ride. In the second one, a cyclist seems to be riding in heavy traffic or competing in a race. So one image shows cycling as recreation, while the other presents it as transport or sport.",
+      "What are the benefits of biking?": "Cycling benefits both individuals and society. It is a brilliant cardio workout that strengthens the heart and leg muscles without putting pressure on the joints. Environmentally, bicycles produce zero emissions, reducing air pollution and noise. Economically, cycling saves money on fuel and parking, and it often gets you through congested streets faster than cars.",
+      "Why do many people want to ride bikes today?": "I think health consciousness plays the biggest role; people finally understand how harmful a sedentary lifestyle is. Rising fuel prices matter too, as cycling is virtually free. Plus, many cities are building dedicated bike lanes nowadays, making roads safer for cyclists, and electric bikes have made riding accessible even for older people."
+    },
+    "part12/set44.png": {
+      "What can you see in these pictures?": "In the first picture I can see builders or construction workers performing physically demanding tasks, possibly laying bricks. The second picture shows another type of manual worker, maybe a farmer or a mechanic, busy with hands-on labour. Both images depict hard physical work done by ordinary people.",
+      "What are the difficulties of these jobs?": "Such jobs are extremely tough, no question about it. Workers have to operate in freezing winters and scorching summers, lift heavy loads and stand all day, which leads to back problems and injuries over time. What is more, despite the exhausting nature of the work, manual labourers are often underpaid and undervalued by society.",
+      "What are the benefits of these jobs?": "Surprisingly, there are some. Physical work keeps the body strong and active compared to sitting at a desk all day. These jobs also provide a stable income without requiring expensive university degrees, and there is genuine satisfaction in seeing tangible results of your effort, such as a built house or a harvested field. Skilled tradespeople are always in demand, too."
+    },
+    "part12/set45.png": {
+      "Compare the pictures and say what you can see.": "As far as I can see, in the first picture a person is cooking a meal at home in the kitchen, while in the second, people appear to be eating at a restaurant served by waiters. So the pictures illustrate preparing your own food versus dining out.",
+      "What are the advantages and disadvantages of cooking for yourself and eating out?": "Cooking yourself is economical and healthy, because you know exactly what goes into your dish. Its main drawback is the time and effort involved. Eating out saves that time and offers variety, but it costs significantly more, and you can never be completely sure about the quality of the ingredients used behind the kitchen doors.",
+      "Do you often cook for yourself?": "Yes, quite regularly, actually; I would say five or six days a week. My signature dishes are simple things like fried rice and pasta, and plov on special occasions. Cooking helps me switch off after a long day, and frankly speaking, homemade food always tastes better. I usually order delivery only when I am pressed for time."
+    },
+    "part12/set46.png": {
+      "Describe the animals in the pictures.": "In the first picture, wild animals can be seen walking around an enclosure, probably in a zoo or safari park. The second picture shows similar animals living freely in their natural habitat. So the images essentially contrast animals kept in captivity with those living in the wild.",
+      "What are the advantages and disadvantages of keeping animals in captivity?": "On the positive side, zoos protect endangered species from poachers, conduct important research and educate visitors, especially children. On the negative side, cages and small enclosures deprive animals of freedom and natural behaviour, causing them stress and suffering. Ideally, modern zoos should recreate habitats as spacious and natural as possible.",
+      "Do you support zoos which keep animals captive?": "I have mixed feelings, to be honest. Well-managed zoos that focus on conservation and breeding programmes genuinely save species from extinction. However, roadside menageries that keep animals purely for profit in terrible conditions should definitely be banned. Overall, I support only those facilities where animal welfare clearly comes before entertainment."
+    },
+    "part12/set47.png": {
+      "What can you see in these pictures?": "In the first picture there is a plane or a train, judging by the setting, while the second shows cars moving along a highway. Generally speaking, the images represent different means of transport, probably air or rail travel versus road transport.",
+      "Which transportation do you prefer?": "For long distances I would certainly pick the train, because you can walk around, enjoy the scenery and sleep comfortably, unlike in cramped planes. Within the city, though, the metro works best for me since it is fast and immune to traffic jams. Cars are convenient for families, but parking and petrol make them expensive these days.",
+      "What are the advantages of road transport and air transport?": "Road transport offers door-to-door delivery and total flexibility; you can set off whenever you like without following timetables. Air travel, on the other hand, is unbeatable in speed: a journey that takes days by car takes merely hours by plane. Essentially, roads win on short trips, while aviation dominates long-distance travel."
+    },
+    "part12/set48.png": {
+      "What can you see in the pictures?": "The first picture appears to show a private house with a garden and a yard, while the second depicts blocks of flats in a residential area. In other words, the images compare suburban or village housing with typical urban apartment living.",
+      "Do you prefer to live in a house or in a flat?": "At this stage of my life, a flat suits me better because it is easier to maintain, safer when I travel, and usually located closer to work and university. Still, my dream is to build a house someday, with a garden where I could grow vegetables and invite friends for barbecues.",
+      "Why do many people like to stay in a house?": "Mainly for space and privacy, I suppose. House owners do not share walls with noisy neighbours, have their own parking and enjoy outdoor areas for children and pets. A house is also a long-term investment that can be extended or redesigned freely. Plus, for many people it symbolises independence and stability in life."
+    },
+    "part12/set49.png": {
+      "Describe the pictures.": "The pictures show underwater life, as far as I can tell: colourful fish swimming among coral reefs and other marine creatures. The scenes look absolutely fascinating, capturing the beauty of the ocean world that we rarely get to observe in everyday life.",
+      "Do you like marine life?": "Definitely, I find it mesmerising. The ocean hides creatures that look almost alien, such as glowing fish, giant octopuses and coral reefs teeming with life. I never miss documentaries about the deep sea. Sadly, plastic pollution is threatening this amazing world, so I try to reduce single-use plastics in my daily life.",
+      "Do you keep a pet?": "Yes, I have a cat that practically rules the whole house, honestly speaking. Looking after her has taught me responsibility and routine, including feeding, grooming and playing with her every day. Pets also reduce stress remarkably; stroking a cat after a hard day works better than any medicine, in my experience."
+    },
+    "part12/set50.png": {
+      "What can you see in the pictures?": "In the first picture, musicians appear to be performing live on stage with instruments, surrounded by an excited crowd. The second picture shows someone listening to music alone through headphones. So the images contrast live concerts with personal listening experiences.",
+      "Can you play music?": "A little, yes. I learned basic guitar chords at school and can play a few popular songs, though far from professionally. I am planning to take proper lessons soon, because playing an instrument, as research shows, improves memory, coordination and even mathematical thinking. It is also a wonderful way to entertain friends.",
+      "Do you like live concerts?": "I absolutely love them! Nothing compares to the electrifying atmosphere of a stadium: thousands of voices singing along, incredible sound energy and that special connection with the artist. Recordings cannot reproduce that feeling, no matter how good your headphones are. The only downsides are ticket prices and crowds, but the experience is totally worth it."
+    },
+    "part12/set51.png": {
+      "Can you describe these pictures?": "In the first picture, students are attending a lesson online; each of them is sitting in front of a screen, probably at home. The second picture shows a traditional classroom where a teacher is explaining the topic at the blackboard. The images compare distance learning with face-to-face education.",
+      "What are the advantages and disadvantages of online studying?": "Online learning is flexible and accessible: you can study from anywhere, rewatch recorded lectures and often pay lower fees. Its drawbacks, however, include weak motivation, technical issues and the lack of real communication, which many students find demotivating. Practical subjects such as chemistry or medicine are also extremely hard to master remotely.",
+      "Why do many students prefer studying online than face-to-face?": "Firstly, it saves enormous amounts of time and money on commuting and accommodation. Secondly, shy students participate more actively in chat discussions than they ever would in a real classroom. Finally, digital platforms allow learners to combine studies with work and pause lessons whenever needed, and that level of control is simply impossible offline."
     }
   },
   "PHRASE_BANK": {
@@ -1293,8 +1541,8 @@
   "_counts": {
     "SAVOLLAR": 134,
     "SAMPLES": 209,
-    "PART12_SETS": 31,
-    "PART12_SAMPLES": 31,
+    "PART12_SETS": 51,
+    "PART12_SAMPLES": 51,
     "PART2_CARDS": 41,
     "PART2_SAMPLES": 41,
     "PART3_SAMPLES": 31,
