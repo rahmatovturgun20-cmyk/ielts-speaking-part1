@@ -38,6 +38,9 @@
   .btn.outline{background:none;border:1.5px solid var(--border);color:var(--text)}
   .alert{padding:12px 14px;border-radius:12px;font-size:13px;font-weight:700;margin-bottom:16px}
   .alert.error{background:#7f1d1d20;border:1.5px solid #7f1d1d;color:var(--red)}
+  .alert.success{background:#065f4620;border:1.5px solid #059669;color:#10b981}
+  .evict-box{margin-top:14px;padding-top:12px;border-top:1px dashed var(--line)}
+  .evict-box .hint{font-size:13px;color:var(--muted);margin-bottom:8px}
   .alert.info{background:#1e3a5f20;border:1.5px solid #1e3a5f;color:var(--accent2)}
   .alert.success{background:#064e3b20;border:1.5px solid #064e3b;color:var(--green)}
   .plans-title{font-size:18px;font-weight:800;margin:28px 0 6px}
@@ -87,6 +90,9 @@
     {% if error == 'blocked' %}<div class="alert error">Hisobingiz bloklangan. Admin bilan bog'laning.</div>{% endif %}
     {% if error == 'exists' %}<div class="alert error">Bu telefon allaqachon ro'yxatdan o'tgan.</div>{% endif %}
     {% if error == 'register' %}<div class="alert error">{{ msg or 'Telefon va 4+ belgili parol kiriting.' }}</div>{% endif %}
+    {% if error == 'activesession' %}<div class="alert error">Hisobingiz boshqa qurilmada allaqachon ochiq. Xavfsizlik uchun yangi kirish rad etildi. Quyidagi «Barcha qurilmalardan chiqish» tugmasidan foydalanib, eski sessiyani yopib qayta kiring.</div>{% endif %}
+    {% if error == 'evict' %}<div class="alert error">Telefon yoki parol noto'g'ri. Qayta urinib ko'ring.</div>{% endif %}
+    {% if msg == 'evicted' %}<div class="alert success">Barcha qurilmalardan chiqarildi. Endi qaytadan kirishingiz mumkin.</div>{% endif %}
 
     <div class="tabs">
       <button class="tab active" id="tabLogin" onclick="switchTab('login')">Kirish</button>
@@ -98,6 +104,14 @@
         <div class="field"><label>Parol</label><input type="password" name="password" placeholder="••••••••" required></div>
         <button class="btn" type="submit">Kirish</button>
       </form>
+      <div class="evict-box">
+        <div class="hint">Boshqa qurilmada kirilgan bo'lsa, bu yerdan barcha sessiyalarni yopib qo'ying:</div>
+        <form method="POST" action="/auth/evict">
+          <div class="field"><label>Telefon raqam</label><input type="text" name="phone" value="+998 " oninput="phonePrefix(this)" placeholder="+998 90 123 45 67" required></div>
+          <div class="field"><label>Parol</label><input type="password" name="password" placeholder="••••••••" required></div>
+          <button class="btn" type="submit" style="background:var(--muted)">Barcha qurilmalardan chiqish</button>
+        </form>
+      </div>
     </div>
     <div class="panel" id="panelReg">
       <form method="POST" action="/auth/register">

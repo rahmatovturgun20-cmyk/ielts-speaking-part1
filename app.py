@@ -587,8 +587,45 @@ def landing():
 
 @app.route("/logout")
 def logout():
+    uid = session.get("uid")
+    if uid:
+        try:
+            conn = db()
+            conn.execute("UPDATE users SET session_token=NULL WHERE id=?", (uid,))
+            conn.commit()
+            conn.close()
+        except Exception:
+            pass
     session.clear()
     return redirect("/")
+
+
+@app.route("/auth/evict", methods=["POST"])
+def auth_evict():
+    # O'z hisobidan barcha qurilmalarni chiqarish (parol bilan). Egasi bosqinchini
+    # haydab chiqarib, keyin qayta kirishi uchun. Kirish talab qilinmaydi.
+    try:
+        phone = validate_phone(request.form.get("phone", ""))
+        pw = request.form.get("password", "").strip()
+    except ValueError:
+        return redirect("/paywall?error=evict")
+    try:
+        conn = db()
+        u = conn.execute("SELECT * FROM users WHERE phone=?", (phone,)).fetchone()
+        conn.close()
+    except sqlite3.Error:
+        return redirect("/paywall?error=evict")
+    if u is None or not verify_password(pw, u["password_hash"]):
+        return redirect("/paywall?error=evict")
+    try:
+        conn = db()
+        conn.execute("UPDATE users SET session_token=NULL WHERE id=?", (u["id"],))
+        conn.commit()
+        conn.close()
+    except sqlite3.Error:
+        return redirect("/paywall?error=evict")
+    log.info("EVICT ALL DEVICES: uid=%s phone=%s", u["id"], phone)
+    return redirect("/paywall?msg=evicted")
 
 
 @app.route("/auth/login", methods=["GET", "POST"])
@@ -621,6 +658,11 @@ def auth_login():
     if u["blocked"]:
         log.warning("LOGIN BLOCKED: phone=%s", phone)
         return redirect("/paywall?error=blocked")
+    # Faqat bitta faol sessiya: hisob boshqa qurilmada allaqachon ochiq bo'lsa,
+    # yangi kirish rad etiladi (parolni bilgan boshqa kishi kira olmaydi).
+    if u["session_token"] and u["session_token"] != session.get("token"):
+        log.warning("LOGIN BLOCKED (already active elsewhere): phone=%s id=%s", phone, u["id"])
+        return redirect("/paywall?error=activesession")
     token = secrets.token_hex(16)
     conn = db()
     conn.execute("UPDATE users SET session_token=? WHERE id=?", (token, u["id"]))
