@@ -1215,10 +1215,12 @@ def _prep_audio(data, mime_type):
 
 def ai_score(audio_bytes, mime_type, question, part="1.1"):
     audio_bytes, mime_type = _prep_audio(audio_bytes, mime_type)
-    result, err = _ai_score_groq(audio_bytes, mime_type, question, part)
+    # Gemini is the primary AI path: it transcribes audio natively (no separate
+    # STT call) and is currently the working provider. Groq is used as fallback.
+    result, err = _ai_score_gemini(audio_bytes, mime_type, question, part)
     if result is None:
-        log.warning("Groq AI failed (%s) - falling back to Gemini", err)
-        result, err = _ai_score_gemini(audio_bytes, mime_type, question, part)
+        log.warning("Gemini AI failed (%s) - falling back to Groq", err)
+        result, err = _ai_score_groq(audio_bytes, mime_type, question, part)
     if result is not None:
         _attach_band(result, part)
         errs = result.get("errors")
