@@ -12505,9 +12505,7 @@ homeBtn.addEventListener('click', () => {
 
   var stack = el('div', 'gx-stack');
   var xpPill = el('div', 'gx-pill', '⚡ <span id="gxXp">0</span> XP');
-  var bellBtn = el('button', 'gx-btn', '🔔');
-  bellBtn.title = 'Daily reminders';
-  stack.appendChild(xpPill); stack.appendChild(bellBtn);
+  stack.appendChild(xpPill);
   document.body.appendChild(stack);
 
   var toastBox = el('div', 'gx-toast-box');
@@ -12603,19 +12601,6 @@ homeBtn.addEventListener('click', () => {
     }).catch(function () {});
   }
 
-  function requestNotifications() {
-    if (!('Notification' in window)) return;
-    Notification.requestPermission().then(function (p) {
-      if (p === 'granted') navigator.serviceWorker.ready.then(enablePush);
-    });
-  }
-
-  bellBtn.onclick = function () {
-    if (!('Notification' in window)) { toast('Notifications not supported'); return; }
-    if (Notification.permission === 'granted') { navigator.serviceWorker.ready.then(enablePush); toast('Reminders enabled'); }
-    else if (Notification.permission === 'denied') { toast('Notifications blocked in browser settings'); }
-    else { requestNotifications(); }
-  };
 })();
 </script>
 </body>
