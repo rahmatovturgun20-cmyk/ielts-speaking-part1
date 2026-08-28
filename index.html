@@ -3331,13 +3331,75 @@ html.dark .ai-loading { color: #94a3b8; }
 
 
 
-
     #themeToggle .tm-txt { font-size: 11.5px; }
 
 
 
 
 
+
+  }
+
+  /* ============ ⚙️ Settings button ============ */
+
+  #settingsBtn {
+    position: fixed; top: 12px; right: 12px; z-index: 10000;
+    width: 44px; height: 44px; border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 20px; line-height: 1;
+    border: 1.5px solid var(--border); background: var(--card); color: var(--text);
+    cursor: pointer; box-shadow: 0 10px 24px -12px rgba(30, 41, 59, .4);
+    transition: transform .2s, border-color .2s, box-shadow .2s;
+  }
+  #settingsBtn:hover { border-color: var(--primary); transform: rotate(25deg); }
+
+  #settingsPanel {
+    position: fixed; top: 64px; right: 12px; z-index: 10000;
+    width: 264px; max-width: calc(100vw - 24px);
+    background: var(--card); color: var(--text);
+    border: 1.5px solid var(--border); border-radius: 16px;
+    box-shadow: 0 22px 44px -18px rgba(30, 41, 59, .5);
+    padding: 6px;
+  }
+  #settingsPanel.hidden { display: none; }
+  #settingsPanel .sp-title {
+    font-size: 11px; font-weight: 800; text-transform: uppercase; letter-spacing: .05em;
+    color: #64748b; padding: 9px 10px 5px;
+  }
+  html.dark #settingsPanel .sp-title { color: #94a3b8; }
+  .sp-row {
+    display: flex; align-items: center; gap: 10px; width: 100%;
+    border: none; background: transparent; color: var(--text);
+    font-family: inherit; font-size: 14px; font-weight: 600;
+    padding: 11px 10px; border-radius: 11px; cursor: pointer; text-align: left;
+    transition: background .15s;
+  }
+  .sp-row:hover { background: #f1f5f9; }
+  html.dark .sp-row:hover { background: #22304f; }
+  .sp-ico { font-size: 16px; width: 20px; text-align: center; flex: none; }
+  .sp-label { flex: 1; }
+  .sp-value { font-size: 12.5px; color: #64748b; font-weight: 700; }
+  html.dark .sp-value { color: #94a3b8; }
+
+  #modeToggle .tm-icon { display: inline-flex; align-items: center; justify-content: center; gap: 3px; font-size: 15px; line-height: 1; width: 20px; flex: none; }
+  #modeToggle .tm-icon span { opacity: .35; transition: opacity .2s, transform .2s; }
+  #modeToggle .tm-icon span.on { opacity: 1; transform: scale(1.2); }
+  #modeToggle .tm-txt { font-size: 12.5px; }
+
+  .sp-voice { flex-direction: column; align-items: stretch; gap: 8px; cursor: default; }
+  .sp-voice:hover { background: transparent; }
+  html.dark .sp-voice:hover { background: transparent; }
+  .sp-voice-head { display: flex; align-items: center; gap: 10px; font-size: 14px; font-weight: 600; }
+  .sp-voice select {
+    width: 100%; padding: 8px 10px; border-radius: 9px;
+    border: 1.5px solid var(--border); background: #f8fafc; color: var(--text);
+    font-family: inherit; font-size: 13px;
+  }
+  html.dark .sp-voice select { background: #0f172a; }
+  .sp-voice select:focus { border-color: var(--primary); outline: none; }
+
+  @media (max-width: 480px) {
+    #settingsPanel { width: 244px; }
   }
 
 
@@ -3391,7 +3453,15 @@ html.dark .ai-loading { color: #94a3b8; }
 
 
 
-<button type="button" id="themeToggle" aria-label="Day / Night mode">
+<button type="button" id="settingsBtn" aria-label="Settings" aria-expanded="false" aria-haspopup="true">
+  <span class="gear">⚙️</span>
+</button>
+
+<div id="settingsPanel" class="settings-panel hidden" role="menu" aria-label="Settings">
+
+  <div class="sp-title">Sozlamalar</div>
+
+  <button type="button" id="modeToggle" class="sp-row" role="menuitem">
 
 
 
@@ -3403,13 +3473,31 @@ html.dark .ai-loading { color: #94a3b8; }
 
 
 
-  <span class="tm-txt">Day Mode</span>
+    <span class="sp-label">Ko'rinish</span>
+    <span class="tm-txt sp-value">Day Mode</span>
 
 
 
 
+  </button>
 
-</button>
+  <button type="button" id="spLeaderboard" class="sp-row" role="menuitem">
+    <span class="sp-ico">🏆</span>
+    <span class="sp-label">Reyting (Leaderboard)</span>
+  </button>
+
+  <div class="sp-row sp-voice">
+    <div class="sp-voice-head">
+      <span class="sp-ico">&#127897;</span>
+      <span class="sp-label">Examiner ovozi</span>
+    </div>
+    <select id="voiceSelect" aria-label="Examiner voice">
+      <option value="auto">Auto (recommended)</option>
+    </select>
+  </div>
+
+</div>
+
 
 
 
@@ -3783,14 +3871,6 @@ html.dark .ai-loading { color: #94a3b8; }
 
 
 
-
-    <div class="group-panel">
-      <div class="group-title">Voice settings</div>
-      <label class="voice-label" for="voiceSelect">Examiner voice (reads the questions aloud)</label>
-      <select id="voiceSelect">
-        <option value="auto">Auto (recommended)</option>
-      </select>
-    </div>
 
     <div class="btn-wrap">
 
@@ -12157,12 +12237,29 @@ homeBtn.addEventListener('click', () => {
 
 
 
-
   });
 
-
-
-
+  var settingsBtn = document.getElementById('settingsBtn');
+  var settingsPanel = document.getElementById('settingsPanel');
+  function closeSettings() {
+    if (settingsPanel) settingsPanel.classList.add('hidden');
+    if (settingsBtn) settingsBtn.setAttribute('aria-expanded', 'false');
+  }
+  if (settingsBtn && settingsPanel) {
+    settingsBtn.addEventListener('click', function (e) {
+      e.stopPropagation();
+      var willOpen = settingsPanel.classList.contains('hidden');
+      settingsPanel.classList.toggle('hidden', !willOpen);
+      settingsBtn.setAttribute('aria-expanded', willOpen ? 'true' : 'false');
+    });
+    settingsPanel.addEventListener('click', function (e) { e.stopPropagation(); });
+    document.addEventListener('click', function (e) {
+      if (!settingsPanel.classList.contains('hidden') &&
+          !settingsPanel.contains(e.target) && e.target !== settingsBtn) {
+        closeSettings();
+      }
+    });
+  }
 
 })();
 
@@ -12194,7 +12291,7 @@ homeBtn.addEventListener('click', () => {
 
 
 
-  var btn = document.getElementById('themeToggle');
+  var btn = document.getElementById('modeToggle');
 
 
 
@@ -12410,9 +12507,7 @@ homeBtn.addEventListener('click', () => {
   var xpPill = el('div', 'gx-pill', '⚡ <span id="gxXp">0</span> XP');
   var bellBtn = el('button', 'gx-btn', '🔔');
   bellBtn.title = 'Daily reminders';
-  var boardBtn = el('button', 'gx-btn', '🏆');
-  boardBtn.title = 'Leaderboard';
-  stack.appendChild(xpPill); stack.appendChild(bellBtn); stack.appendChild(boardBtn);
+  stack.appendChild(xpPill); stack.appendChild(bellBtn);
   document.body.appendChild(stack);
 
   var toastBox = el('div', 'gx-toast-box');
@@ -12448,7 +12543,7 @@ homeBtn.addEventListener('click', () => {
     }).catch(function () {});
   };
 
-  boardBtn.onclick = function () {
+  function openLeaderboard() {
     modal.classList.remove('hidden');
     var b = document.getElementById('gxBoard');
     var m = document.getElementById('gxMe');
@@ -12468,6 +12563,13 @@ homeBtn.addEventListener('click', () => {
         return '<div class="gx-row"><span class="gx-rank">' + medal + '</span><span class="gx-name">' + esc(u.name) + '</span><span class="gx-phone">' + esc(u.phone) + '</span><span class="gx-xp">' + u.xp + ' XP</span></div>';
       }).join('');
     }).catch(function () { b.innerHTML = '<div class="gx-load">Error</div>'; });
+  };
+
+  var spLeaderboard = document.getElementById('spLeaderboard');
+  if (spLeaderboard) spLeaderboard.onclick = function () {
+    var p = document.getElementById('settingsPanel');
+    if (p) p.classList.add('hidden');
+    openLeaderboard();
   };
 
   if ('serviceWorker' in navigator) {
