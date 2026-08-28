@@ -4209,6 +4209,11 @@ html.dark .ai-loading { color: #94a3b8; }
   .sp-profile-name { font-size: 14px; font-weight: 700; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
   .sp-profile-phone { font-size: 12px; color: #64748b; }
   html.dark .sp-profile-phone { color: #94a3b8; }
+  .sp-profile-stats { font-size: 11.5px; color: #2563eb; font-weight: 600; }
+  html.dark .sp-profile-stats { color: #60a5fa; }
+  .sp-sub { display: flex; align-items: center; gap: 10px; padding: 11px 10px; border-top: 1px solid var(--border); }
+  .sp-sub-meta { display: flex; flex-direction: column; min-width: 0; flex: 1; }
+  .sp-sub-value { font-size: 13px; font-weight: 600; color: inherit; }
   .sp-logout {
     display: flex; align-items: center; gap: 10px; width: 100%;
     border: none; background: transparent; color: #dc2626;
@@ -4337,6 +4342,14 @@ html.dark .ai-loading { color: #94a3b8; }
     <div class="sp-profile-meta">
       <span class="sp-profile-name" id="spProfileName">Yuklanmoqda…</span>
       <span class="sp-profile-phone" id="spProfilePhone"></span>
+      <span class="sp-profile-stats" id="spProfileStats">🔥 0 kun · ⚡ 0 XP</span>
+    </div>
+  </div>
+
+  <div class="sp-sub" id="spSubRow">
+    <span class="sp-ico">💳</span>
+    <div class="sp-sub-meta">
+      <span class="sp-sub-value" id="spSubValue">Yuklanmoqda…</span>
     </div>
   </div>
 
@@ -13328,12 +13341,24 @@ homeBtn.addEventListener('click', () => {
   var pAv = document.getElementById('spProfileAvatar');
   var pNm = document.getElementById('spProfileName');
   var pPh = document.getElementById('spProfilePhone');
-  if (pNm || pPh) {
+  var pSt = document.getElementById('spProfileStats');
+  var subVal = document.getElementById('spSubValue');
+  if (pNm || pPh || pSt || subVal) {
     fetch('/api/me').then(function (r) { return r.json(); }).then(function (m) {
       if (m && m.ok) {
         if (pNm) pNm.textContent = m.name || m.phone || '—';
         if (pPh) pPh.textContent = m.phone || '';
         if (pAv) pAv.textContent = (m.name || '?').charAt(0).toUpperCase();
+        if (pSt) pSt.textContent = '🔥 ' + (m.streak || 0) + ' kun · ⚡ ' + (m.xp || 0) + ' XP';
+        if (subVal) {
+          if (m.lifetime) subVal.textContent = '💫 Umrbod obuna';
+          else if (m.access && m.access_until) {
+            var dd = String(m.access_until).slice(0, 10).split('-');
+            subVal.textContent = '📅 Obuna ' + (dd[2] || '') + '.' + (dd[1] || '') + '.' + (dd[0] || '') + ' gacha';
+          }
+          else if (m.access) subVal.textContent = '✅ Obuna faol';
+          else subVal.textContent = '🔒 Obuna tugagan';
+        }
       }
     }).catch(function () {});
   }
