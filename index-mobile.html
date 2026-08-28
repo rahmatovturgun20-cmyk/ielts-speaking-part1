@@ -4182,6 +4182,48 @@ html.dark .ai-loading { color: #94a3b8; }
     #settingsPanel { width: 244px; }
   }
 
+  .sp-opt { flex-direction: column; align-items: stretch; gap: 8px; cursor: default; }
+  .sp-opt:hover { background: transparent; }
+  html.dark .sp-opt:hover { background: transparent; }
+  .sp-opt-head { display: flex; align-items: center; gap: 10px; font-size: 14px; font-weight: 600; }
+  .sp-seg { display: flex; gap: 6px; }
+  .sp-seg button {
+    flex: 1; padding: 7px 6px; border-radius: 9px; cursor: pointer;
+    border: 1.5px solid var(--border); background: #f8fafc; color: var(--text);
+    font-family: inherit; font-size: 13px; font-weight: 700;
+    transition: background .15s, border-color .15s, color .15s;
+  }
+  html.dark .sp-seg button { background: #0f172a; }
+  .sp-seg button.active { background: var(--primary); border-color: var(--primary); color: #fff; }
+  html.dark .sp-seg button.active { color: #1f2937; }
+  .sp-sep { border: none; border-top: 1.5px solid var(--border); margin: 6px 10px; }
+  .sp-profile { display: flex; align-items: center; gap: 10px; padding: 11px 10px; cursor: default; }
+  .sp-profile:hover { background: transparent; }
+  html.dark .sp-profile:hover { background: transparent; }
+  .sp-avatar {
+    width: 36px; height: 36px; border-radius: 50%; flex: none;
+    display: flex; align-items: center; justify-content: center;
+    background: var(--primary); color: #fff; font-size: 15px; font-weight: 800;
+  }
+  .sp-profile-meta { display: flex; flex-direction: column; min-width: 0; flex: 1; }
+  .sp-profile-name { font-size: 14px; font-weight: 700; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .sp-profile-phone { font-size: 12px; color: #64748b; }
+  html.dark .sp-profile-phone { color: #94a3b8; }
+  .sp-logout {
+    display: flex; align-items: center; gap: 10px; width: 100%;
+    border: none; background: transparent; color: #dc2626;
+    font-family: inherit; font-size: 14px; font-weight: 700;
+    padding: 11px 10px; border-radius: 11px; cursor: pointer; text-align: left; text-decoration: none;
+    transition: background .15s;
+  }
+  .sp-logout:hover { background: rgba(220,38,38,.08); }
+  html.dark .sp-logout:hover { background: rgba(248,113,113,.12); }
+  .sp-load { font-size: 12.5px; color: #64748b; padding: 11px 10px; }
+  html.dark .sp-load { color: #94a3b8; }
+
+  html[data-fsize="s"] { zoom: 0.9; }
+  html[data-fsize="l"] { zoom: 1.1; }
+
 
 
 
@@ -4261,6 +4303,18 @@ html.dark .ai-loading { color: #94a3b8; }
 
   </button>
 
+  <div class="sp-row sp-opt">
+    <div class="sp-opt-head">
+      <span class="sp-ico">🔠</span>
+      <span class="sp-label">Matn hajmi</span>
+    </div>
+    <div class="sp-seg" id="fontSeg" role="group" aria-label="Text size">
+      <button type="button" data-fs="1">Kichik</button>
+      <button type="button" data-fs="2" class="active">O'rta</button>
+      <button type="button" data-fs="3">Katta</button>
+    </div>
+  </div>
+
   <button type="button" id="spLeaderboard" class="sp-row" role="menuitem">
     <span class="sp-ico">🏆</span>
     <span class="sp-label">Reyting (Leaderboard)</span>
@@ -4275,6 +4329,21 @@ html.dark .ai-loading { color: #94a3b8; }
       <option value="auto">Auto (recommended)</option>
     </select>
   </div>
+
+  <hr class="sp-sep">
+
+  <div class="sp-profile" id="spProfile">
+    <div class="sp-avatar" id="spProfileAvatar">👤</div>
+    <div class="sp-profile-meta">
+      <span class="sp-profile-name" id="spProfileName">Yuklanmoqda…</span>
+      <span class="sp-profile-phone" id="spProfilePhone"></span>
+    </div>
+  </div>
+
+  <a class="sp-logout" href="/logout" id="spLogout">
+    <span class="sp-ico">🚪</span>
+    <span>Profildan chiqish</span>
+  </a>
 
 </div>
 
@@ -13223,6 +13292,58 @@ homeBtn.addEventListener('click', () => {
       if (!settingsPanel.classList.contains('hidden') &&
           !settingsPanel.contains(e.target) && e.target !== settingsBtn) {
         closeSettings();
+      }
+    });
+  }
+
+  function applyFsize(v) {
+    var html = document.documentElement;
+    if (v === 1) html.setAttribute('data-fsize', 's');
+    else if (v === 3) html.setAttribute('data-fsize', 'l');
+    else html.removeAttribute('data-fsize');
+    var seg = document.getElementById('fontSeg');
+    if (seg) {
+      seg.querySelectorAll('[data-fs]').forEach(function (b) {
+        b.classList.toggle('active', b.getAttribute('data-fs') === String(v));
+      });
+    }
+  }
+  (function () {
+    var v = 2;
+    try { v = parseInt(localStorage.getItem('ui-fsize') || '2', 10) || 2; } catch (e) {}
+    if (v !== 1 && v !== 2 && v !== 3) v = 2;
+    applyFsize(v);
+    var seg = document.getElementById('fontSeg');
+    if (seg) {
+      seg.addEventListener('click', function (e) {
+        var b = e.target.closest('[data-fs]');
+        if (!b) return;
+        var n = parseInt(b.getAttribute('data-fs'), 10) || 2;
+        try { localStorage.setItem('ui-fsize', String(n)); } catch (err) {}
+        applyFsize(n);
+      });
+    }
+  })();
+
+  var pAv = document.getElementById('spProfileAvatar');
+  var pNm = document.getElementById('spProfileName');
+  var pPh = document.getElementById('spProfilePhone');
+  if (pNm || pPh) {
+    fetch('/api/me').then(function (r) { return r.json(); }).then(function (m) {
+      if (m && m.ok) {
+        if (pNm) pNm.textContent = m.name || m.phone || '—';
+        if (pPh) pPh.textContent = m.phone || '';
+        if (pAv) pAv.textContent = (m.name || '?').charAt(0).toUpperCase();
+      }
+    }).catch(function () {});
+  }
+
+  var spLogout = document.getElementById('spLogout');
+  if (spLogout) {
+    spLogout.addEventListener('click', function (e) {
+      e.preventDefault();
+      if (confirm("Profildan chiqishni xohlaysizmi?")) {
+        window.location.href = '/logout';
       }
     });
   }
