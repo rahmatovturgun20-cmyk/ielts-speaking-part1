@@ -1232,7 +1232,7 @@ def ai_score(audio_bytes, mime_type, question, part="1.1"):
     return None, err or "Barcha AI xizmatlar hozir band. Birozdan keyin qayta urinib ko'ring."
 
 
-FULL_BAND_MAP = [(17.5, "C1"), (13.5, "B2"), (9.5, "B1"), (5, "A2"), (1, "A1")]
+BAND_BY_RATING = [(65, "C1"), (51, "B2"), (1, "B1")]
 
 
 def _attach_band(result, part):
@@ -1244,11 +1244,12 @@ def _attach_band(result, part):
     raw = min(21.0, max(0.0, round(s * 2) / 2.0))
     result["score"] = raw
     result["rating"] = RATING_TABLE.get(raw, 0)
-    for lo, band in FULL_BAND_MAP:
-        if raw >= lo:
+    rating = result["rating"]
+    for lo, band in BAND_BY_RATING:
+        if rating >= lo:
             result["band"] = band
             return
-    result["band"] = "A1"
+    result["band"] = "B1"
 
 
 def _ai_score_groq(audio_bytes, mime_type, question, part):
