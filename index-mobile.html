@@ -12409,15 +12409,140 @@ practiceCard.classList.remove('hidden'); homeBtn.classList.remove('hidden');
 
 
 
-
-
     nextQuestion();
 
 
 
 
 
+
   });
+
+  async function beginRealExam(examDate, slotIdx) {
+
+    try { const mc = await fetch('/api/mock/start', { method: 'POST' }); const md = await mc.json(); if (!md.ok) { window.open('https://t.me/rahmatovturgun?text=' + encodeURIComponent('Assalomu alaykum! Men sizning veb-saytingizdagi Premium paketni sotib olmoqchiman.'), '_blank'); return; } } catch (e) {}
+
+    let exams = [];
+    try {
+      const r = await fetch('/api/real-exams');
+      const d = await r.json();
+      exams = (d && d.ok) ? d.exams : [];
+    } catch (e) { exams = []; }
+    const exam = exams.find(function (e) { return e.date === examDate || e.label === examDate; });
+    if (!exam) { alert('Real imtihon topilmadi.'); return; }
+    const slot = (exam.slots || [])[slotIdx];
+    if (!slot) { alert('Real imtihon joyi topilmadi.'); return; }
+
+    stopSpeech();
+    questions = [];
+    modePics = [];
+    cuePointsList = [];
+    prepSecs = [];
+    ansSecs = [];
+    mockMeta = [];
+
+    questions.push("Let's start with your name. What's your full name?");
+    modePics.push(null);
+    cuePointsList.push([]);
+    prepSecs.push(0);
+    ansSecs.push(10);
+    mockMeta.push({ label: 'Introduction · Your name', short: 'Introduction', speak: "Let's start with your name. What's your full name?", part: 0 });
+
+    questions.push("The Speaking Test has 3 parts. In each part, instructions will be given.");
+    modePics.push(null);
+    cuePointsList.push([]);
+    prepSecs.push(0);
+    ansSecs.push(0);
+    mockMeta.push({ label: 'Test Overview · Instructions', short: 'Overview', speak: "The Speaking Test has 3 parts. In each part, instructions will be given.", part: 0, intro: true });
+
+    questions.push("Now we'll turn to Part 1.1. In this part, I'll give 3 questions. You have 30 seconds to answer questions.");
+    modePics.push(null);
+    cuePointsList.push([]);
+    prepSecs.push(0);
+    ansSecs.push(0);
+    mockMeta.push({ label: 'Part 1.1 · Instructions', short: 'Part 1.1', speak: "Now we'll turn to Part 1.1. In this part, I'll give 3 questions. You have 30 seconds to answer questions.", part: 11, intro: true });
+
+    (slot.part1 || []).forEach(function (q, n) {
+      questions.push(q);
+      modePics.push(null);
+      cuePointsList.push([]);
+      prepSecs.push(PREP_SEC);
+      ansSecs.push(ANSWER_SEC);
+      mockMeta.push({ label: 'Part 1.1 · Q' + (n + 1) + ' / ' + (slot.part1 || []).length, short: 'Part 1.1 Q' + (n + 1), speak: q, part: 11 });
+    });
+
+    questions.push("We'll move on with Part 1.2 now. In this part, I'll give you two pictures and 3 questions related to them.");
+    modePics.push(null);
+    cuePointsList.push([]);
+    prepSecs.push(0);
+    ansSecs.push(0);
+    mockMeta.push({ label: 'Part 1.2 · Instructions', short: 'Part 1.2', speak: "We'll move on with Part 1.2 now. In this part, I'll give you two pictures and 3 questions related to them.", part: 12, intro: true });
+
+    var p12 = slot.part12 || { img: null, q: [] };
+    (p12.q || []).forEach(function (qq, n) {
+      questions.push(qq);
+      modePics.push(p12.img);
+      cuePointsList.push([]);
+      prepSecs.push((PART12_TIMING[n] || { prep: 10, ans: 30 }).prep);
+      ansSecs.push((PART12_TIMING[n] || { prep: 10, ans: 30 }).ans);
+      mockMeta.push({ label: 'Part 1.2 · Picture Q' + (n + 1) + ' / ' + (p12.q || []).length, short: 'Part 1.2 Q' + (n + 1), speak: qq, part: 12 });
+    });
+
+    questions.push("Now we'll turn to Part 2. In this part, I'll give three questions with a picture at once. You'll be given 1 minute to prepare. After that, you'll have 2 minutes to answer all three questions. You don't have to describe the picture.");
+    modePics.push(null);
+    cuePointsList.push([]);
+    prepSecs.push(0);
+    ansSecs.push(0);
+    mockMeta.push({ label: 'Part 2 · Instructions', short: 'Part 2', speak: "Now we'll turn to Part 2. In this part, I'll give three questions with a picture at once. You'll be given 1 minute to prepare. After that, you'll have 2 minutes to answer all three questions. You don't have to describe the picture.", part: 2, intro: true });
+
+    var card = slot.part2 || { q: '', p: [] };
+    questions.push(card.q);
+    modePics.push(null);
+    cuePointsList.push(card.p || []);
+    prepSecs.push(PART2_PREP);
+    ansSecs.push(PART2_ANS);
+    mockMeta.push({ label: 'Part 2 · Cue card', short: 'Part 2 · Cue card', speak: card.q + ' ' + (card.p || []).join(' '), part: 2 });
+
+    questions.push("In Part 3, I'll give you an argument with both for and against ideas. You should discuss both sides. You'll have 1 minute to prepare; then 2 minutes to speak.");
+    modePics.push(null);
+    cuePointsList.push([]);
+    prepSecs.push(0);
+    ansSecs.push(0);
+    mockMeta.push({ label: 'Part 3 · Instructions', short: 'Part 3', speak: "In Part 3, I'll give you an argument with both for and against ideas. You should discuss both sides. You'll have 1 minute to prepare; then 2 minutes to speak.", part: 3, intro: true });
+
+    questions.push('Speaking Part 3 — task card');
+    modePics.push(slot.part3 || null);
+    cuePointsList.push([]);
+    prepSecs.push(PART3_PREP);
+    ansSecs.push(PART3_ANS);
+    mockMeta.push({ label: 'Part 3 · Task card', short: 'Part 3 · Task card', speak: 'Speaking Part 3. Look at the task card and speak about the topic.', part: 3 });
+
+    mode = 'mock';
+    showSamples = false;
+
+    try {
+      stream = await navigator.mediaDevices.getUserMedia({ audio: true });
+    } catch (e) {
+      alert('Microphone access was denied or no microphone was found. Allow access in your browser settings.');
+      return;
+    }
+
+    var now = new Date();
+    var today = now.getFullYear() + '-' + String(now.getMonth() + 1).padStart(2, '0') + '-' + String(now.getDate()).padStart(2, '0');
+    mockMeta.forEach(function (m) {
+      if (m && typeof m === 'object') { m.exam = exam.label; m.slot = slot.joy; m.when = today; }
+    });
+
+    idx = 0; results = [];
+    questionsCard.classList.add('hidden');
+    setupCard.classList.add('hidden');
+    resultCard.classList.add('hidden');
+    reviewCard.classList.add('hidden');
+    practiceCard.classList.remove('hidden');
+    homeBtn.classList.remove('hidden');
+    nextQuestion();
+  }
+
 
 
 
@@ -13352,6 +13477,36 @@ homeBtn.addEventListener('click', () => {
       });
     }).catch(function () {});
   }
+
+  (function () {
+    var qp = new URLSearchParams(window.location.search);
+    var rexam = qp.get('real_exam');
+    var rslot = qp.get('slot');
+    if (rexam != null && rslot != null) {
+      var slotN = parseInt(rslot, 10);
+      if (!isNaN(slotN) && slotN >= 0) {
+        fetch('/api/real-exams').then(function (r) { return r.json(); }).then(function (d) {
+          var exams = (d && d.ok) ? (d.exams || []) : [];
+          var exam = exams.find(function (e) { return e.date === rexam || e.label === rexam; });
+          if (!exam) { return; }
+          var slot = (exam.slots || [])[slotN];
+          if (!slot) { return; }
+          var banner = document.createElement('div');
+          banner.className = 'real-exam-banner';
+          banner.style.cssText = 'background:linear-gradient(135deg,#059669,#10b981);color:#fff;border-radius:14px;padding:18px 20px;margin-bottom:18px;box-shadow:0 12px 26px -12px rgba(16,185,129,.65);';
+          banner.innerHTML = '<div style="font-size:13px;font-weight:700;text-transform:uppercase;letter-spacing:.4px;opacity:.9;">🎯 Real Past Exam</div>'
+            + '<div style="font-size:19px;font-weight:800;margin-top:4px;">' + (exam.label || exam.date) + ' · ' + (slot.joy || '') + '</div>'
+            + '<div style="font-size:13px;opacity:.95;margin-top:4px;">Haqiqiy imtihonda tushgan savollar · to\'liq mock test rejimi</div>'
+            + '<button class="btn real-exam-start" style="margin-top:14px;background:#fff;color:#059669;border:none;box-shadow:none;">🎙️ Start Real Exam</button>';
+          var intro = setupCard.querySelector('.intro-header');
+          if (intro) { setupCard.insertBefore(banner, intro.nextSibling ? intro.nextSibling : setupCard.firstChild); }
+          else { setupCard.insertBefore(banner, setupCard.firstChild); }
+          var btn = banner.querySelector('.real-exam-start');
+          btn.addEventListener('click', function () { beginRealExam(rexam, slotN); });
+        }).catch(function () {});
+      }
+    }
+  })();
 
 })();
 </script>

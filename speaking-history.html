@@ -51,6 +51,9 @@
   .part-img { margin-top: 6px; }
   .part-img img { max-width: 200px; border-radius: var(--radius-xs); border: 1px solid var(--border); display: block; }
   .part-p .cue { margin-left: 14px; font-size: 12.5px; color: var(--muted); margin-top: 2px; }
+  .slot-start { margin-top: 14px; text-align: right; }
+  .slot-start a { background: linear-gradient(135deg, #059669, #10b981); color: #fff; text-decoration: none; display: inline-flex; align-items: center; gap: 8px; border-radius: 12px; padding: 11px 22px; font-size: 14.5px; font-weight: 700; font-family: inherit; box-shadow: 0 12px 26px -12px rgba(16,185,129,.65); transition: transform .15s, filter .2s; }
+  .slot-start a:hover { transform: translateY(-1px); filter: brightness(1.05); }
   .loading, .empty { text-align: center; padding: 60px 20px; color: var(--muted); }
   .spinner { width: 40px; height: 40px; border: 4px solid var(--primary-bg); border-top-color: var(--primary); border-radius: 50%; margin: 0 auto 16px; animation: spin .8s linear infinite; }
   @keyframes spin { to { transform: rotate(360deg); } }
@@ -93,7 +96,7 @@
     return names[parseInt(mm, 10) - 1] || '';
   }
 
-  function slotHtml(s) {
+  function slotHtml(s, date, slotIdx) {
     var html = '<div class="slot"><div class="slot-title">🎟️ ' + esc(s.joy) + '</div>';
 
     if (s.part1 && s.part1.length) {
@@ -125,6 +128,9 @@
     }
 
     html += '</div>';
+
+    html += '<div class="slot-start"><a href="/?real_exam=' + encodeURIComponent(date) + '&amp;slot=' + slotIdx + '">🎙️ Start practice</a></div>';
+    html += '</div>';
     return html;
   }
 
@@ -136,7 +142,7 @@
     var slots = (e.slots || []).length;
 
     var body = '';
-    (e.slots || []).forEach(function (s) { body += slotHtml(s); });
+    (e.slots || []).forEach(function (s, i) { body += slotHtml(s, e.date || e.label, i); });
 
     return '<div class="exam" onclick="this.classList.toggle(\'open\')">'
       + '<div class="exam-head">'
