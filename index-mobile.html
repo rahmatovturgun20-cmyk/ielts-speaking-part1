@@ -4474,16 +4474,9 @@ html.dark .ai-loading { color: #94a3b8; }
   </button>
 
   <div class="sp-row sp-voice">
-    <label style="display:flex;align-items:center;gap:8px;font-size:13px;cursor:pointer">
-      <input type="checkbox" id="naturalTTSChk" checked>
-      <span>Tabiiy AI ovoz (multilevelmocktest.uz dagi)</span>
-    </label>
-  </div>
-
-  <div class="sp-row sp-voice">
     <div class="sp-voice-head">
       <span class="sp-ico">&#127897;</span>
-      <span class="sp-label">Browser ovoz (qo'shimcha)</span>
+      <span class="sp-label">Examiner ovozi</span>
     </div>
     <select id="voiceSelect" aria-label="Examiner voice">
       <option value="auto">Auto (recommended)</option>
@@ -6896,10 +6889,6 @@ function selectPart(part) {
 
   function previewVoice() {
     try { window.speechSynthesis.cancel(); } catch (e) { /* ignore */ }
-    if (naturalVoiceEnabled()) {
-      playAIVoiceOnce('Hello, this is your examiner voice. This is the natural AI voice.', getTTSVoiceName());
-      return;
-    }
     const v = getSelectedVoice();
     const u = new SpeechSynthesisUtterance('Hello, this is your examiner voice.');
     u.lang = v ? v.lang : 'en-US';
@@ -6913,33 +6902,6 @@ function selectPart(part) {
     const sel = document.getElementById('voiceSelect');
     if (!sel) return;
     populateVoiceSelect();
-    const ttsChk = document.getElementById('naturalTTSChk');
-    if (ttsChk) {
-      try { ttsChk.checked = naturalVoiceEnabled(); } catch (e) { /* ignore */ }
-      if (!ttsChk.__wired) {
-        ttsChk.__wired = true;
-        ttsChk.addEventListener('change', function () {
-          try { localStorage.setItem('naturalTTS', ttsChk.checked ? '1' : '0'); } catch (e) { /* ignore */ }
-          stopSpeech();
-        });
-      }
-    }
-    const aiSel = document.getElementById('ttsVoiceSelect');
-    if (aiSel) {
-      populateTTSVoiceSelect();
-      if (!aiSel.__wired) {
-        aiSel.__wired = true;
-        aiSel.addEventListener('change', function () {
-          try { localStorage.setItem('ttsVoice', aiSel.value); } catch (e) { /* ignore */ }
-          previewVoice();
-        });
-      }
-    }
-    const pvBtn = document.getElementById('aiVoicePreviewBtn');
-    if (pvBtn && !pvBtn.__wired) {
-      pvBtn.__wired = true;
-      pvBtn.addEventListener('click', function () { previewVoice(); });
-    }
     if (_voiceSelectWired) return;
     _voiceSelectWired = true;
     sel.addEventListener('change', function () {
@@ -6952,8 +6914,6 @@ function selectPart(part) {
     });
   }
 
-  var TTS_VOICE_NAMES = ['Kore', 'Aoede', 'Leda', 'Puck', 'Charon', 'Fenrir', 'Zephyr', 'Orus'];
-  var _aiAudios = [];
   initVoiceSelect();
 
   function waitVoices() {
@@ -7293,11 +7253,6 @@ function selectPart(part) {
 
   async function speakQuestion(text, onDone) {
     try {
-      if (naturalVoiceEnabled()) {
-        const aiRes = await speakAIVoice(text, getTTSVoiceName());
-        if (aiRes === true) { if (onDone) { onDone(); } return; }
-        if (aiRes === 'stopped') { return; }
-      }
       await speechReadyForSpeak();
       speakChainToken++;
       const chunks = splitIntoChunks(text);
@@ -7312,105 +7267,8 @@ function selectPart(part) {
 
 function stopSpeech() {
     speakChainToken++;
-    stopAIVoice();
     try { window.speechSynthesis.cancel(); } catch (e) { /* ignore */ }
   }
-
-  /* ---------------- Tabiiy AI ovoz (server-side TTS) ---------------- */
-
-  var TTS_VOICE_NAMES = ['Kore', 'Aoede', 'Leda', 'Puck', 'Charon', 'Fenrir', 'Zephyr', 'Orus'];
-  var _aiAudios = [];
-
-  function naturalVoiceEnabled() {
-    return true;
-  }
-
-  function getTTSVoiceName() {
-    var n = null;
-    try { n = localStorage.getItem('ttsVoice') || null; } catch (e) { n = null; }
-    if (TTS_VOICE_NAMES.indexOf(n) === -1) { n = 'Fenrir'; }
-    return n;
-  }
-
-  function populateTTSVoiceSelect() {
-    var sel = document.getElementById('ttsVoiceSelect');
-    if (!sel) return;
-    var cur = getTTSVoiceName();
-    sel.innerHTML = '';
-    TTS_VOICE_NAMES.forEach(function (n) {
-      var o = document.createElement('option');
-      o.value = n; o.textContent = n;
-      sel.appendChild(o);
-    });
-    sel.value = cur;
-  }
-
-  function stopAIVoice() {
-    for (var i = 0; i < _aiAudios.length; i++) {
-      try { _aiAudios[i].pause(); } catch (e) { /* ignore */ }
-    }
-    _aiAudios = [];
-  }
-
-  function playAudioURL(url) {
-    return new Promise(function (resolve, reject) {
-      const a = new Audio(url);
-      let settled = false;
-      const timer = setTimeout(function () { done(new Error('timeout')); }, 60000);
-      function done(err) {
-        if (settled) return;
-        settled = true;
-        clearTimeout(timer);
-        try { a.pause(); } catch (e) { /* ignore */ }
-        const __i = _aiAudios.indexOf(a);
-        if (__i !== -1) { _aiAudios.splice(__i, 1); }
-        if (err) { reject(err); } else { resolve(true); }
-      }
-      _aiAudios.push(a);
-      a.onended = function () { done(null); };
-      a.onerror = function () { done(new Error('audio error')); };
-      try { a.play().catch(function (e) { done(e); }); } catch (e) { done(e); }
-    });
-  }
-
-  function playAIVoiceOnce(text, voiceName) {
-    const url = '/api/tts?voice=' + encodeURIComponent(voiceName) + '&text=' + encodeURIComponent(text);
-    stopAIVoice();
-    playAudioURL(url).catch(function () { /* AI ovozi olinsa - jim turish */ });
-  }
-
-  function prewarmTTS(text, voiceName) {
-    try {
-      const t = String(text || '').trim();
-      if (!t) return;
-      const url = '/api/tts?voice=' + encodeURIComponent(voiceName) + '&text=' + encodeURIComponent(t.slice(0, 380));
-      const a = new Audio();
-      a.volume = 0;
-      a.preload = 'auto';
-      a.src = url;
-    } catch (e) { /* ignore */ }
-  }
-
-  async function speakAIVoice(text, voiceName) {
-    const chunks = splitIntoChunks(text);
-    if (!chunks.length) return true;
-    const token = ++speakChainToken;
-    for (let i = 0; i < chunks.length; i++) {
-      if (token !== speakChainToken) { stopAIVoice(); return 'stopped'; }
-      const url = '/api/tts?voice=' + encodeURIComponent(voiceName) + '&text=' + encodeURIComponent(chunks[i]);
-      try {
-        await playAudioURL(url);
-      } catch (e) {
-        stopAIVoice();
-        return false;
-      }
-    }
-    return true;
-  }
-
-
-
-
 
   /* ---------------- TTS (sample answer — another speaker) ---------------- */
 
@@ -7423,11 +7281,6 @@ function stopSpeech() {
       const base = basePos || 0;
       const full = String(text);
       const chunkText = base > 0 ? full.slice(base) : full;
-      if (naturalVoiceEnabled() && chunkText) {
-        const aiRes = await speakAIVoice(chunkText, 'Aoede');
-        if (aiRes === true) { if (onDone) { onDone(); } return; }
-        if (aiRes === 'stopped') return;
-      }
       await speechReadyForSpeak();
       speakChainToken++;
       const chunks = splitIntoChunks(chunkText);
@@ -8901,7 +8754,7 @@ async function nextQuestion() {
 
 
         qText.textContent = meta.speak;
-        if (mode === 'mock' && mockMeta[idx + 1] && mockMeta[idx + 1].speak) { prewarmTTS(mockMeta[idx + 1].speak, getTTSVoiceName()); }
+        
 
 
 
@@ -9480,7 +9333,6 @@ async function afterAnswer() {
 
   function showSamplePhase(sample) {
     stopSpeech();
-    prewarmTTS(sample, 'Aoede');
 
 
 
