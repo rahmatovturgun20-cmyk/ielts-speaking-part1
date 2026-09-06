@@ -3615,6 +3615,22 @@ html.dark .ai-loading { color: #94a3b8; }
   #questionsCard .intro-header { margin: 2px 0 14px; }
   #questionsCard .app-title { font-size: clamp(18px, 3.5vw, 24px); margin: 0; }
 
+  /* Part kartochkalar — katta, markazda, ixcham */
+  #setupCard .group-panel:first-of-type .group-list {
+    display: grid; grid-template-columns: repeat(2, 1fr); gap: 12px;
+    max-width: 580px; margin: 0 auto;
+  }
+  #setupCard .group-panel:first-of-type .part-btn {
+    width: 100%; justify-content: center; text-align: center;
+    min-height: 76px; padding: 16px 14px; font-size: 15px;
+    border-radius: 15px; white-space: normal; line-height: 1.35;
+  }
+  #setupCard .group-panel:first-of-type .part-btn small { font-size: 11.5px; margin-top: 3px; }
+  @media (max-width: 420px) {
+    #setupCard .group-panel:first-of-type .group-list { gap: 8px; }
+    #setupCard .group-panel:first-of-type .part-btn { min-height: 64px; padding: 12px 10px; font-size: 13.5px; }
+  }
+
   .wave-canvas { display: block; width: 100%; height: 70px; margin-top: 8px; border-radius: 10px; background: var(--bg); border: 1px solid var(--border); }
 
   @media (max-width: 480px) { .home-btn { top: 10px; left: 10px; padding: 7px 12px; font-size: 12px; } }
