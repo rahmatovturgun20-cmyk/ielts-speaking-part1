@@ -4402,23 +4402,36 @@ html.dark .ai-loading { color: #94a3b8; }
   .container { justify-content: center; justify-content: safe center; }
   #setupCard, #questionsCard { width: 100%; }
 
+  /* main page full screen */
+  #setupCard {
+    min-height: calc(100vh - 24px);
+    display: flex; flex-direction: column;
+    justify-content: center; align-items: center;
+    text-align: center; gap: 14px;
+  }
+  #setupCard .intro-header { margin: 0; }
+  #setupCard .intro-tg { margin-top: 6px; }
+  #setupCard .group-panel { flex: 1 1 auto; width: 100%; max-width: 980px; margin: 0 auto; display: flex; flex-direction: column; justify-content: center; }
+
   /* Part kartochkalar — katta, markazda, 2x2 */
   #setupCard .group-panel:first-of-type .group-list {
-    display: grid; grid-template-columns: repeat(2, 1fr); gap: 16px;
-    max-width: 720px; margin: 0 auto;
+    display: grid; grid-template-columns: repeat(2, 1fr); grid-template-rows: repeat(2, 1fr);
+    gap: 18px; margin: 0 auto; height: 100%; min-height: 340px;
   }
   #setupCard .group-panel:first-of-type .part-btn {
     width: 100%; justify-content: center; text-align: center;
-    min-height: 96px; padding: 18px 14px; font-size: 16px;
-    border-radius: 16px; white-space: normal; line-height: 1.35;
-    box-shadow: 0 10px 22px -14px rgba(30, 41, 59, .35);
+    padding: 22px 16px; font-size: 19px;
+    border-radius: 18px; white-space: normal; line-height: 1.3;
+    box-shadow: 0 12px 26px -14px rgba(30, 41, 59, .35);
   }
-  #setupCard .group-panel:first-of-type .part-btn small { font-size: 12px; margin-top: 4px; }
+  #setupCard .group-panel:first-of-type .part-btn .pm { align-items: center; }
+  #setupCard .group-panel:first-of-type .part-btn small { font-size: 13px; margin-top: 6px; }
   #setupCard > .btn-wrap { margin-top: 20px; justify-content: center; width: 100%; }
   #setupCard > .btn-wrap .btn { font-size: 18px; padding: 19px 52px; border-radius: 18px; min-height: 62px; }
   @media (max-width: 420px) {
-    #setupCard .group-panel:first-of-type .group-list { gap: 10px; }
-    #setupCard .group-panel:first-of-type .part-btn { min-height: 72px; padding: 14px 10px; font-size: 14px; }
+    #setupCard .group-panel:first-of-type .group-list { gap: 10px; min-height: 280px; }
+    #setupCard .group-panel:first-of-type .part-btn { padding: 14px 10px; font-size: 14.5px; }
+    #setupCard .group-panel:first-of-type .part-btn small { font-size: 11px; margin-top: 4px; }
   }
 
   .wave-canvas { display: block; width: 100%; height: 70px; margin-top: 8px; border-radius: 10px; background: var(--bg); border: 1px solid var(--border); }
