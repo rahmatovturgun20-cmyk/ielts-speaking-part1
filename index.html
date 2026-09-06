@@ -3655,6 +3655,40 @@ html.dark .ai-loading { color: #94a3b8; }
     #setupCard .group-panel:first-of-type .part-btn small { font-size: 10.5px; }
   }
 
+  /* NEW setup design: 2x2 part cards + two action buttons */
+  #setupCard { max-width: 880px; gap: 14px; }
+  #setupCard .intro-header { margin: 0; }
+  #setupCard .title { font-size: clamp(26px, 5vw, 32px); color: #1e3a8a; font-weight: bold; margin: 0; }
+  #setupCard .parts-grid {
+    display: grid; grid-template-columns: repeat(2, 1fr); gap: 16px;
+    width: 100%; margin: 6px 0 8px;
+  }
+  #setupCard .part-card {
+    display: flex; flex-direction: column; align-items: flex-start; justify-content: center;
+    width: 100%; min-height: 96px; padding: 20px 18px; gap: 6px;
+    background: #f1f5f9; border: 2px solid #e2e8f0; border-radius: 12px;
+    cursor: pointer; text-align: left; font-family: inherit; font-size: 14px;
+    transition: background .3s ease, color .3s ease, border-color .3s ease, transform .3s ease, box-shadow .3s ease;
+  }
+  #setupCard .part-card:hover { transform: translateY(-3px); box-shadow: 0 5px 15px rgba(0, 0, 0, .05); }
+  #setupCard .part-card.active { background: #2563eb; color: #fff; border-color: #2563eb; }
+  #setupCard .part-title { font-size: 20px; font-weight: bold; line-height: 1.2; }
+  #setupCard .part-desc { font-size: 14px; opacity: .8; }
+  #setupCard .part-card.active .part-desc { opacity: .9; }
+  #setupCard .action-buttons { display: flex; justify-content: center; gap: 18px; flex-wrap: wrap; margin-top: 6px; }
+  #setupCard .action-buttons .btn { min-height: 48px; }
+  #setupCard .action-buttons .btn-full { background: #2563eb; box-shadow: 0 12px 26px -12px rgba(37, 99, 235, .6); }
+  #setupCard .action-buttons .btn-past { background: #10b981; box-shadow: 0 12px 26px -12px rgba(16, 185, 129, .65); }
+  @media (max-width: 460px) {
+    #setupCard .parts-grid { gap: 10px; }
+    #setupCard .part-card { min-height: 74px; padding: 14px 12px; }
+    #setupCard .part-title { font-size: 16px; }
+    #setupCard .part-desc { font-size: 12.5px; }
+    #setupCard .title { font-size: 24px; }
+    #setupCard .action-buttons { gap: 12px; }
+    #setupCard .action-buttons .btn { padding: 12px 18px; font-size: 14px; }
+  }
+
   .wave-canvas { display: block; width: 100%; height: 70px; margin-top: 8px; border-radius: 10px; background: var(--bg); border: 1px solid var(--border); }
 
   @media (max-width: 480px) { .home-btn { top: 10px; left: 10px; padding: 7px 12px; font-size: 12px; } }
@@ -3791,151 +3825,42 @@ html.dark .ai-loading { color: #94a3b8; }
 
 <div class="card" id="setupCard">
 
-
-
-
-
-    <div class="intro-header">
-
-
-
-
-
-      <h1 class="app-title">Multilevel Mock Test</h1>
-    <p class="app-sub">CEFR Speaking — professional tayyorgarlik</p>
-
-
-
-
-
-    </div>
-
-
-
-
-
-    <a class="intro-tg" href="https://t.me/language_hub01" target="_blank" rel="noopener"><svg class="tg-ico" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M9.04 15.5l-.37 5.62c.54 0 .77-.23 1.05-.52l2.53-2.42 5.25 3.85c.97.54 1.66.26 1.92-.9L22.9 3.84c.31-1.43-.53-2-1.46-1.66L2.73 10.09c-1.4.53-1.39 1.32-.23 1.7l5.03 1.57 11.66-7.32c.55-.37 1.06-.16.64.2L9.04 15.5z"/></svg> Telegram kanal</a>
-
-
-
-
-
-    <p class="made-by">Multilevel Mock Test</p>
-
-
-
-
-
-    <div class="group-panel">
-
-
-
-
-
-      <div class="group-title">🗂️ Choose the exam part</div>
-
-
-
-
-
-      <div class="group-list">
-
-
-
-
-
-        <button type="button" class="group-btn part-btn active" id="part1Btn">
-
-
-
-
-
-          <span class="pm">🗣️ Speaking Part 1.1<small>Questions on the topic · 5s + 30s</small></span>
-
-
-
-
-
-        </button>
-
-
-
-
-
-        <button type="button" class="group-btn part-btn" id="part2Btn">
-
-
-
-
-
-          <span class="pm">🖼️ Speaking Part 1.2<small>Pictures with questions · 10s + 45s, 5s + 30s</small></span>
-
-
-
-
-
-        </button>
-
-
-
-
-
-        <button type="button" class="group-btn part-btn" id="part3Btn">
-
-
-
-
-
-          <span class="pm">🗒️ Speaking Part 2<small>Cue card · 60s prep + 120s speaking</small></span>
-
-
-
-
-
-        </button>
-
-
-
-
-
-        <button type="button" class="group-btn part-btn" id="part4Btn">
-
-
-
-
-
-          <span class="pm">🖼️ Speaking Part 3<small>Task card (picture) · 60s prep + 120s speaking</small></span>
-
-
-
-
-
-        </button>
-
-
-
-
-
-      </div>
-
-
-
-
-
-    </div>
-
-
-
-
-
-  <div class="btn-wrap">
-    <button class="btn" id="mockBtn">🎯 Start Full Mock Test</button>
-    <a class="btn" href="/speaking/history" style="text-decoration:none;background:linear-gradient(135deg,#059669,#10b981);box-shadow:0 12px 26px -12px rgba(16,185,129,.65);">📋 Real Past Exams</a>
+  <div class="intro-header">
+    <h1 class="app-title title">Multilevel Mock Test</h1>
   </div>
 
-    </div>
+  <div class="parts-grid">
 
-  <div class="card hidden" id="questionsCard">
+    <button type="button" class="part-card active" id="part1Btn">
+      <span class="part-title">🗣️ Speaking Part 1.1</span>
+      <span class="part-desc">Questions on the topic · 5s + 30s</span>
+    </button>
+
+    <button type="button" class="part-card" id="part2Btn">
+      <span class="part-title">🖼️ Speaking Part 1.2</span>
+      <span class="part-desc">Pictures with questions · 10s + 45s</span>
+    </button>
+
+    <button type="button" class="part-card" id="part3Btn">
+      <span class="part-title">📝 Speaking Part 2</span>
+      <span class="part-desc">Cue card · 60s prep + 120s speaking</span>
+    </button>
+
+    <button type="button" class="part-card" id="part4Btn">
+      <span class="part-title">📊 Speaking Part 3</span>
+      <span class="part-desc">Task card (picture) · 60s prep + 120s speaking</span>
+    </button>
+
+  </div>
+
+  <div class="action-buttons">
+    <button class="btn btn-full" id="mockBtn">🎯 Start Full Mock Test</button>
+    <a class="btn btn-past" href="/speaking/history" style="text-decoration:none;">📚 Real Past Exams</a>
+  </div>
+
+</div>
+
+<div class="card hidden" id="questionsCard">
 
     <div class="intro-header">
       <h1 class="app-title" id="questionsTitle">Savollar</h1>
