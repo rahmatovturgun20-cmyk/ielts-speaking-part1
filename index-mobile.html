@@ -16,6 +16,12 @@
 
 
 
+<meta name="google" content="notranslate">
+
+
+
+
+
 <meta charset="UTF-8">
 
 
@@ -1581,6 +1587,28 @@
 
   .part-btn .pm { display: flex; flex-direction: column; align-items: flex-start; }
 
+  .gacc { flex: 1 1 100%; border: 1.5px solid #bfdbfe; background: var(--surface); border-radius: 12px; overflow: hidden; }
+  .gacc-head { width: 100%; display: flex; align-items: center; gap: 8px; padding: 10px 12px; background: transparent; border: 0; cursor: pointer; font-family: inherit; text-align: left; color: var(--primary); font-weight: 700; font-size: 13.5px; transition: background .15s; }
+  .gacc-head:hover { background: #eff6ff; }
+  .gacc-main { flex: 1 1 auto; }
+  .gacc-count { font-size: 11.5px; font-weight: 700; color: var(--primary); background: #eff6ff; border-radius: 999px; padding: 2px 9px; white-space: nowrap; }
+  .gacc-chev { font-size: 12px; color: #94a3b8; transition: transform .18s; }
+  .gacc.open .gacc-chev { transform: rotate(90deg); }
+  .gacc-body { display: none; padding: 4px 12px 12px; border-top: 1px dashed rgba(0,0,0,.08); }
+  .gacc.open .gacc-body { display: block; }
+  .gacc-q { display: flex; gap: 8px; padding: 5px 2px; font-size: 13px; line-height: 1.45; color: #0f172a; }
+  .gacc-q b { color: var(--primary); min-width: 20px; font-size: 12px; }
+  .gacc-point { display: flex; gap: 8px; padding: 4px 2px; font-size: 12.5px; color: #475569; line-height: 1.45; }
+  .gacc-point b { color: #94a3b8; min-width: 14px; font-weight: 700; }
+  .gacc-img { width: 100%; border-radius: 10px; margin: 4px 0 6px; object-fit: cover; max-height: 140px; }
+  .gacc.active { border-color: var(--primary); box-shadow: 0 6px 16px -8px rgba(79,70,229,.55); }
+  .gacc.premium { border-color: rgba(245,158,11,.55) !important; }
+  .gacc.premium .gacc-head { color: var(--amber) !important; }
+  .gacc.free { border-color: rgba(34,197,94,.45) !important; }
+  .prem-badge { color: var(--amber); font-size: 11px; font-weight: 800; }
+  .free-badge { color: #16a34a; font-size: 11px; font-weight: 800; }
+
+
 
 
 
@@ -2719,25 +2747,137 @@ html.dark .phrase-chip { background: #1e293b; color: #93c5fd; border-color: #334
 
 .ai-toggle { margin-top: 8px; display: inline-block; background: #eff6ff; color: #2563eb; border: 1px solid #bfdbfe; border-radius: 8px; padding: 6px 12px; font-size: 13px; font-weight: 600; cursor: pointer; }
 .ai-toggle:hover { background: #dbeafe; }
-.ai-feedback { margin-top: 8px; background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 10px; padding: 12px; font-size: 13.5px; line-height: 1.55; }
-.ai-feedback .ai-score { font-size: 15px; margin-bottom: 6px; }
-.ai-feedback .ai-score b { color: #2563eb; font-size: 17px; }
-.ai-feedback .ai-score .ai-band { color: #059669; }
-.ai-feedback .ai-line { margin-top: 5px; }
-.ai-feedback .ai-line b { color: #334155; }
-.ai-feedback .ai-err { margin-top: 4px; padding: 6px 8px; background: #fff1f2; border: 1px solid #fecdd3; border-radius: 6px; }
-.ai-feedback .err-wrong { color: #dc2626; text-decoration: line-through; }
-.ai-feedback .err-right { color: #059669; font-weight: 600; }
-.ai-feedback .err-note { color: #64748b; font-size: 12px; }
+.ai-feedback { margin-top: 8px; font-size: 13.5px; line-height: 1.55; }
 .ai-loading { color: #64748b; font-style: italic; }
 .ai-error { color: #dc2626; }
-html.dark .ai-feedback .ai-score .ai-band { color: #34d399; }
+
+/* ---- Spiko-style AI assessment result ---- */
+.ai-result { display: flex; flex-direction: column; gap: 12px; }
+
+.ai-head {
+  background: #E8F5E9;
+  border: 1px solid #C8E6C9;
+  border-radius: 16px;
+  padding: 18px 18px 16px;
+  text-align: center;
+  color: #1f2937;
+}
+.ai-head-top { display: flex; align-items: center; justify-content: center; gap: 10px; flex-wrap: wrap; }
+.ai-head-label {
+  font-size: 12px; font-weight: 800; letter-spacing: .5px;
+  color: #2E7D32;
+}
+.ai-num {
+  font-size: 52px; line-height: 1.05; font-weight: 900;
+  color: #2E7D32;
+  font-variant-numeric: tabular-nums;
+}
+.ai-sub { font-size: 14px; font-weight: 600; color: #4d7c54; margin-top: 2px; }
+.ai-level { margin-top: 8px; font-size: 12.5px; color: #556b5c; }
+.ai-level b { color: #2E7D32; }
+.ai-tip {
+  margin-top: 10px; padding: 10px 12px; background: #F1F8E9;
+  border: 1px solid #DCEDC8; border-radius: 10px;
+  font-size: 13px; color: #33691E; text-align: left;
+}
+
+.ai-cefr {
+  display: inline-block; border-radius: 999px;
+  padding: 5px 12px; font-size: 12.5px; font-weight: 800;
+  color: #fff;
+}
+.ai-cefr.cefr-a1, .ai-cefr.cefr-a2 { background: #C62828; }
+.ai-cefr.cefr-b1 { background: #FF5722; }
+.ai-cefr.cefr-b2 { background: #2E7D32; }
+.ai-cefr.cefr-c1 { background: #2196F3; }
+.ai-cefr.cefr-c2 { background: #9C27B0; }
+
+.ai-tabs { display: flex; gap: 6px; background: #edf0f5; padding: 4px; border-radius: 12px; }
+.ai-tab {
+  flex: 1 1 auto; border: 0; background: transparent; cursor: pointer;
+  font-family: inherit; font-size: 13px; font-weight: 700; color: #64748b;
+  padding: 8px 10px; border-radius: 9px; transition: background .15s, color .15s;
+}
+.ai-tab.active {
+  background: #fff; color: #1565C0;
+  box-shadow: 0 1px 4px rgba(21, 66, 139, .18);
+}
+
+.ai-panel { display: block; }
+
+.ai-crits { display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 8px; }
+.ai-crit {
+  background: #fff; border: 1px solid #E3F2FD; border-radius: 12px;
+  padding: 10px 12px;
+}
+.ai-crit-top {
+  display: flex; align-items: center; justify-content: space-between; gap: 6px;
+  font-size: 13px; font-weight: 700; color: #1565C0;
+}
+.ai-crit-score {
+  background: #E3F2FD; color: #1565C0; border-radius: 999px;
+  padding: 3px 10px; font-size: 12.5px; font-weight: 800;
+  white-space: nowrap;
+}
+.ai-crit-com { margin-top: 6px; font-size: 12.5px; color: #475569; line-height: 1.5; }
+
+.ai-block { margin-top: 4px; }
+.ai-block-title {
+  font-size: 12px; font-weight: 800; letter-spacing: .5px;
+  color: #64748b; text-transform: uppercase; margin: 11px 0 6px;
+}
+.ai-err {
+  background: #FFF1F2; border: 1px solid #FECDD3; border-radius: 10px;
+  padding: 9px 11px; margin-bottom: 6px;
+}
+.err-left { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; }
+.err-wrong { color: #DC2626; text-decoration: line-through; font-weight: 600; }
+.err-right { color: #059669; font-weight: 700; }
+.err-right::before { content: "→ "; color: #94a3b8; }
+.err-note { margin-top: 5px; color: #64748b; font-size: 12px; }
+
+.ai-up-info { font-size: 13px; color: #64748b; margin-bottom: 8px; }
+.ai-up-card {
+  background: #fff; border: 1px solid #E3F2FD; border-radius: 12px;
+  padding: 11px 13px; margin-bottom: 8px;
+}
+.ai-up-label { font-size: 12px; font-weight: 800; color: #1565C0; margin-bottom: 5px; }
+.ai-up-text { font-size: 13px; color: #334155; line-height: 1.55; }
+
+.ai-tr-label {
+  font-size: 12px; font-weight: 800; letter-spacing: .5px;
+  color: #64748b; text-transform: uppercase; margin-bottom: 8px;
+}
+.ai-tr-bubble {
+  background: #E3F2FD; border-radius: 14px; padding: 12px 14px;
+  font-size: 13px; color: #0d3c66; line-height: 1.6;
+  border-top-left-radius: 4px;
+}
+
+html.dark .ai-head { background: #1d3322; border-color: #2f4a38; color: #e5e7eb; }
+html.dark .ai-head-label { color: #4ade80; }
+html.dark .ai-num { color: #4ade80; }
+html.dark .ai-sub { color: #86efac; }
+html.dark .ai-level { color: #a3b8a8; }
+html.dark .ai-level b { color: #4ade80; }
+html.dark .ai-tip { background: #2a3a21; border-color: #46613a; color: #bef264; }
+html.dark .ai-tabs { background: #1e293b; }
+html.dark .ai-tab { color: #94a3b8; }
+html.dark .ai-tab.active { background: #334155; color: #93c5fd; box-shadow: none; }
+html.dark .ai-crit { background: #16233d; border-color: #26395c; }
+html.dark .ai-crit-top { color: #93c5fd; }
+html.dark .ai-crit-score { background: #1f3a5f; color: #93c5fd; }
+html.dark .ai-crit-com { color: #9fb1c9; }
+html.dark .ai-block-title { color: #8aa0ba; }
+html.dark .ai-err { background: #31171b; border-color: #5b2a31; }
+html.dark .ai-up-card { background: #16233d; border-color: #26395c; }
+html.dark .ai-up-label { color: #93c5fd; }
+html.dark .ai-up-text { color: #cbd5e1; }
+html.dark .ai-up-info { color: #94a3b8; }
+html.dark .ai-tr-label { color: #8aa0ba; }
+html.dark .ai-tr-bubble { background: #1f3a5f; color: #bfdbfe; }
 html.dark .ai-toggle { background: #1e293b; color: #93c5fd; border-color: #334155; }
 html.dark .ai-toggle:hover { background: #293548; }
-html.dark .ai-feedback { background: #111827; border-color: #334155; }
-html.dark .ai-feedback .ai-line b { color: #cbd5e1; }
-html.dark .ai-feedback .ai-err { background: #31171b; border-color: #5b2a31; }
-html.dark .ai-feedback .err-note { color: #94a3b8; }
 html.dark .ai-loading { color: #94a3b8; }
 
 
@@ -3868,6 +4008,14 @@ html.dark .ai-loading { color: #94a3b8; }
 
   html.dark .group-btn { background: #1c2740; border-color: #3b4d70; }
 
+  html.dark .gacc { background: #1c2740; border-color: #3b4d70; }
+  html.dark .gacc-head:hover { background: #22304f; }
+  html.dark .gacc-count { background: #22304f; color: #93c5fd; }
+  html.dark .gacc-body { border-top-color: rgba(255,255,255,.1); }
+  html.dark .gacc-q { color: #cbd5e1; }
+  html.dark .gacc-point { color: #94a3b8; }
+
+
 
 
 
@@ -4326,9 +4474,16 @@ html.dark .ai-loading { color: #94a3b8; }
   </button>
 
   <div class="sp-row sp-voice">
+    <label style="display:flex;align-items:center;gap:8px;font-size:13px;cursor:pointer">
+      <input type="checkbox" id="naturalTTSChk" checked>
+      <span>Tabiiy AI ovoz (multilevelmocktest.uz dagi)</span>
+    </label>
+  </div>
+
+  <div class="sp-row sp-voice">
     <div class="sp-voice-head">
       <span class="sp-ico">&#127897;</span>
-      <span class="sp-label">Examiner ovozi</span>
+      <span class="sp-label">Browser ovoz (qo'shimcha)</span>
     </div>
     <select id="voiceSelect" aria-label="Examiner voice">
       <option value="auto">Auto (recommended)</option>
@@ -6043,144 +6198,65 @@ let results = [];
 
 
 
-  function renderGroupButtons() {
 
-
-
-
-
-    const gl = $('groupList');
-
-
-
-
-
-    if (!gl) { return; }
-
-
-
-
-
-    const n = CONTENT_TOTALS.part1 || SAVOLLAR.length;
-
-
-
-
-
-    const groups = [{ from: 0, to: n, label: 'All (' + 1 + '–' + n + ')', all: true }];
-
-
-
-
-
-    for (let f = 0; f < n; f += 3) {
-
-
-
-
-
-      const t = Math.min(f + 3, n);
-
-
-
-
-
-      if (t - f === n) { continue; }
-
-
-
-
-
-      groups.push({ from: f, to: t, label: (f + 1) + '–' + t });
-
-
-
-
-
-    }
-
-
-
-
-
-    groups.forEach((g) => {
-
-
-
-
-
-      const btn = document.createElement('button');
-
-
-
-
-
-      btn.type = 'button';
-
-
-
-
-
-      btn.className = 'group-btn' + (g.all ? ' active' : '');
-
-
-
-
-
-      btn.textContent = g.label;
-
-
-
-
-
-      btn.addEventListener('click', () => {
-
-
-
-
-
-        selGroupStart = g.from;
-
-
-
-
-
-        selGroupEnd = g.all ? 0 : g.to;
-
-
-
-
-
-        gl.querySelectorAll('.group-btn').forEach(b => b.classList.remove('active'));
-
-
-
-
-
-        btn.classList.add('active');
-
-
-
-
-
-      });
-
-
-
-
-
-      gl.appendChild(btn);
-
-
-
-
-
+  function makeGroupAcc(def) {
+    var card = document.createElement('div');
+    card.className = 'gacc' + (def.active ? ' active' : '') + (def.open ? ' open' : '');
+    var head = document.createElement('button');
+    head.type = 'button';
+    head.className = 'gacc-head';
+    head.innerHTML = '<span class="gacc-main">' + def.head + '</span>' + (def.count ? '<span class="gacc-count">' + def.count + '</span>' : '') + '<span class="gacc-chev">\u25B6</span>';
+    var body = document.createElement('div');
+    body.className = 'gacc-body';
+    body.innerHTML = def.body;
+    head.addEventListener('click', function () {
+      if (card.classList.contains('premium')) { openPlansModal(); return; }
+      var wasOpen = card.classList.contains('open');
+      if (def.accordion) {
+        def.accordion.forEach(function (c) { c.classList.remove('open'); });
+      }
+      def.onSelect(card);
+      if (!wasOpen) { card.classList.add('open'); } else { card.classList.remove('open'); }
     });
+    card.appendChild(head);
+    card.appendChild(body);
+    return card;
+  }
 
-
-
-
-
+  function renderGroupButtons() {
+      const gl = $('groupList');
+      if (!gl) { return; }
+      const n = CONTENT_TOTALS.part1 || SAVOLLAR.length;
+      const groups = [{ from: 0, to: n, label: 'All questions (1-' + n + ')', all: true }];
+      for (let f = 0; f < n; f += 3) {
+        const t = Math.min(f + 3, n);
+        if (t - f === n) { continue; }
+        groups.push({ from: f, to: t, label: 'Savollar ' + (f + 1) + '-' + t });
+      }
+      const cards = [];
+      groups.forEach((g) => {
+        const qs = SAVOLLAR.slice(g.from, g.to);
+        let body = '';
+        qs.forEach((q, i) => {
+          body += '<div class="gacc-q"><b>' + (g.from + i + 1) + '.</b> <span>' + escapeHtml(q) + '</span></div>';
+        });
+        const card = makeGroupAcc({
+          head: (g.all ? '\uD83D\uDCDA ' : '\uD83D\uDCC1 ') + escapeHtml(g.label),
+          count: (g.to - g.from) + ' savol',
+          body: body,
+          active: g.all,
+          open: (g.from === 0 && !g.all),
+          accordion: cards,
+          onSelect: function (co) {
+            selGroupStart = g.from;
+            selGroupEnd = g.all ? 0 : g.to;
+            cards.forEach((x) => { x.classList.remove('active'); });
+            co.classList.add('active');
+          }
+        });
+        cards.push(card);
+        gl.appendChild(card);
+      });
   }
 
 
@@ -6193,131 +6269,39 @@ let results = [];
 
 
   function renderPicGroupButtons() {
-
-
-
-
-
-    if (!picGroupList) { return; }
-
-
-
-
-
-    const n = CONTENT_TOTALS.part12 || PART12_SETS.length;
-
-
-
-
-
-    const groups = [{ from: 0, to: n, label: 'All pictures (1–' + n + ')', all: true }];
-
-
-
-
-
-    for (let f = 0; f < n; f++) {
-
-
-
-
-
-      groups.push({ from: f, to: f + 1, label: 'Picture ' + (f + 1) });
-
-
-
-
-
-    }
-
-
-
-
-
-    groups.forEach((g) => {
-
-
-
-
-
-      const btn = document.createElement('button');
-
-
-
-
-
-      btn.type = 'button';
-
-
-
-
-
-      btn.title = '3 questions for this picture';
-
-
-
-
-
-      btn.className = 'group-btn' + (g.all ? ' active' : '');
-
-
-
-
-
-      btn.textContent = g.label;
-
-
-
-
-
-      btn.addEventListener('click', () => {
-
-
-
-
-
-        picSelStart = g.from;
-
-
-
-
-
-        picTotal = (g.all ? n : g.to) - g.from;
-
-
-
-
-
-        picGroupList.querySelectorAll('.group-btn').forEach(b => b.classList.remove('active'));
-
-
-
-
-
-        btn.classList.add('active');
-
-
-
-
-
+      if (!picGroupList) { return; }
+      const n = CONTENT_TOTALS.part12 || PART12_SETS.length;
+      const groups = [{ from: 0, to: n, label: 'All pictures (1-' + n + ')', all: true }];
+      for (let f = 0; f < n; f++) {
+        groups.push({ from: f, to: f + 1, label: 'Rasm ' + (f + 1) });
+      }
+      const cards = [];
+      groups.forEach((g) => {
+        const s = PART12_SETS[g.from];
+        let body = '';
+        if (s) {
+          body += '<img class="gacc-img" src="' + escapeHtml(s.img) + '" alt="Rasm ' + (g.from + 1) + '">';
+          (s.q || []).forEach((qq, qi) => {
+            body += '<div class="gacc-q"><b>' + (qi + 1) + '.</b> <span>' + escapeHtml(qq) + '</span></div>';
+          });
+        }
+        const card = makeGroupAcc({
+          head: '\uD83D\uDDBC\uFE0F ' + escapeHtml(g.label),
+          count: (g.all ? n + ' ta rasm' : '3 savol'),
+          body: body,
+          active: g.all,
+          open: (g.from === 0 && !g.all),
+          accordion: cards,
+          onSelect: function (co) {
+            picSelStart = g.from;
+            picTotal = (g.all ? n : g.to) - g.from;
+            cards.forEach((x) => { x.classList.remove('active'); });
+            co.classList.add('active');
+          }
+        });
+        cards.push(card);
+        picGroupList.appendChild(card);
       });
-
-
-
-
-
-      picGroupList.appendChild(btn);
-
-
-
-
-
-    });
-
-
-
-
-
   }
 
 
@@ -6330,131 +6314,39 @@ let results = [];
 
 
   function renderPart2GroupButtons() {
-
-
-
-
-
-    if (!part2GroupList) { return; }
-
-
-
-
-
-    const n = CONTENT_TOTALS.part2 || PART2_CARDS.length;
-
-
-
-
-
-    const groups = [{ from: 0, to: n, label: 'All cards (1–' + n + ')', all: true }];
-
-
-
-
-
-    for (let f = 0; f < n; f++) {
-
-
-
-
-
-      groups.push({ from: f, to: f + 1, label: String(f + 1) });
-
-
-
-
-
-    }
-
-
-
-
-
-    groups.forEach((g) => {
-
-
-
-
-
-      const btn = document.createElement('button');
-
-
-
-
-
-      btn.type = 'button';
-
-
-
-
-
-      btn.title = 'Cue card ' + (g.from + 1);
-
-
-
-
-
-      btn.className = 'group-btn' + (g.all ? ' active' : '');
-
-
-
-
-
-      btn.textContent = g.label;
-
-
-
-
-
-      btn.addEventListener('click', () => {
-
-
-
-
-
-        p2SelStart = g.from;
-
-
-
-
-
-        p2SelEnd = g.all ? 0 : g.to;
-
-
-
-
-
-        part2GroupList.querySelectorAll('.group-btn').forEach(b => b.classList.remove('active'));
-
-
-
-
-
-        btn.classList.add('active');
-
-
-
-
-
+      if (!part2GroupList) { return; }
+      const n = CONTENT_TOTALS.part2 || PART2_CARDS.length;
+      const groups = [{ from: 0, to: n, label: 'All cards (1-' + n + ')', all: true }];
+      for (let f = 0; f < n; f++) {
+        groups.push({ from: f, to: f + 1, label: 'Cue card ' + (f + 1) });
+      }
+      const cards = [];
+      groups.forEach((g) => {
+        const c = PART2_CARDS[g.from];
+        let body = '';
+        if (c) {
+          body += '<div class="gacc-q"><b>\u2022</b> <span>' + escapeHtml(c.q) + '</span></div>';
+          (c.p || []).forEach((pt) => {
+            body += '<div class="gacc-point"><b>\u00B7</b> <span>' + escapeHtml(pt) + '</span></div>';
+          });
+        }
+        const card = makeGroupAcc({
+          head: '\uD83D\uDDD2\uFE0F ' + escapeHtml(g.label),
+          count: (g.to - g.from) + ' ta',
+          body: body,
+          active: g.all,
+          open: (g.from === 0 && !g.all),
+          accordion: cards,
+          onSelect: function (co) {
+            p2SelStart = g.from;
+            p2SelEnd = g.all ? 0 : g.to;
+            cards.forEach((x) => { x.classList.remove('active'); });
+            co.classList.add('active');
+          }
+        });
+        cards.push(card);
+        part2GroupList.appendChild(card);
       });
-
-
-
-
-
-      part2GroupList.appendChild(btn);
-
-
-
-
-
-    });
-
-
-
-
-
   }
 
 
@@ -6467,131 +6359,34 @@ let results = [];
 
 
   function renderPart3GroupButtons() {
-
-
-
-
-
-    if (!part3GroupList) { return; }
-
-
-
-
-
-    const n = CONTENT_TOTALS.part3 || PART3_IMAGES.length;
-
-
-
-
-
-    const groups = [{ from: 0, to: n, label: 'All tasks (1–' + n + ')', all: true }];
-
-
-
-
-
-    for (let f = 0; f < n; f++) {
-
-
-
-
-
-      groups.push({ from: f, to: f + 1, label: String(f + 1) });
-
-
-
-
-
-    }
-
-
-
-
-
-    groups.forEach((g) => {
-
-
-
-
-
-      const btn = document.createElement('button');
-
-
-
-
-
-      btn.type = 'button';
-
-
-
-
-
-      btn.title = 'Task card ' + (g.from + 1);
-
-
-
-
-
-      btn.className = 'group-btn' + (g.all ? ' active' : '');
-
-
-
-
-
-      btn.textContent = g.label;
-
-
-
-
-
-      btn.addEventListener('click', () => {
-
-
-
-
-
-        p3SelStart = g.from;
-
-
-
-
-
-        p3Total = g.all ? n : g.to - g.from;
-
-
-
-
-
-        part3GroupList.querySelectorAll('.group-btn').forEach(b => b.classList.remove('active'));
-
-
-
-
-
-        btn.classList.add('active');
-
-
-
-
-
+      if (!part3GroupList) { return; }
+      const n = CONTENT_TOTALS.part3 || PART3_IMAGES.length;
+      const groups = [{ from: 0, to: n, label: 'All tasks (1-' + n + ')', all: true }];
+      for (let f = 0; f < n; f++) {
+        groups.push({ from: f, to: f + 1, label: 'Task ' + (f + 1) });
+      }
+      const cards = [];
+      groups.forEach((g) => {
+        const img = PART3_IMAGES[g.from];
+        let body = '';
+        if (img) { body += '<img class="gacc-img" src="' + escapeHtml(img) + '" alt="Task ' + (g.from + 1) + '">'; }
+        const card = makeGroupAcc({
+          head: '\uD83D\uDDBC\uFE0F ' + escapeHtml(g.label),
+          count: (g.to - g.from) + ' ta',
+          body: body,
+          active: g.all,
+          open: (g.from === 0 && !g.all),
+          accordion: cards,
+          onSelect: function (co) {
+            p3SelStart = g.from;
+            p3Total = g.all ? n : g.to - g.from;
+            cards.forEach((x) => { x.classList.remove('active'); });
+            co.classList.add('active');
+          }
+        });
+        cards.push(card);
+        part3GroupList.appendChild(card);
       });
-
-
-
-
-
-      part3GroupList.appendChild(btn);
-
-
-
-
-
-    });
-
-
-
-
-
   }
 
 
@@ -6663,29 +6458,36 @@ function applyFreemium() {
   markFree('part3GroupList', 2, function(){ p3SelStart = 0; p3Total = 1; });
 }
 function markFree(id, freeCount, setDefault) {
-  var gl = document.getElementById(id);
-  if (!gl) { return; }
-  var btns = gl.querySelectorAll('.group-btn');
-  var firstFree = null;
-  btns.forEach(function(btn, i) {
-    if (i === 0 || i > freeCount) {
-      var clone = btn.cloneNode(true);
-      clone.classList.remove('active');
-      btn.parentNode.replaceChild(clone, btn);
-      clone.classList.add('premium');
-      clone.innerHTML = clone.textContent + ' <span class="prem-badge">🔒 Premium</span>';
-      clone.addEventListener('click', function() { openPlansModal(); });
-    } else {
-      btn.classList.add('free');
-      btn.innerHTML = btn.textContent + ' <span class="free-badge">🆓 Bepul</span>';
-      if (!firstFree) { firstFree = btn; }
+    var gl = document.getElementById(id);
+    if (!gl) { return; }
+    var cards = gl.querySelectorAll('.gacc');
+    var firstFree = null;
+    cards.forEach(function (card, i) {
+      var main = card.querySelector('.gacc-main');
+      var label = main ? main.textContent : '';
+      if (i === 0 || i > freeCount) {
+        card.classList.remove('active', 'open');
+        card.classList.add('premium');
+        card.classList.remove('free');
+        if (label.indexOf('\uD83D\uDD12') === -1 && main) {
+          main.innerHTML = label + ' <span class="prem-badge">\uD83D\uDD12 Premium</span>';
+        }
+      } else {
+        card.classList.add('free');
+        card.classList.remove('premium');
+        if (label.indexOf('\uD83C\uDD93') === -1 && main) {
+          main.innerHTML = label + ' <span class="free-badge">\uD83C\uDD93 Bepul</span>';
+        }
+        if (!firstFree) { firstFree = card; }
+      }
+    });
+    if (firstFree) {
+      cards.forEach(function (b) { b.classList.remove('active'); });
+      firstFree.classList.add('active');
+      cards.forEach(function (c) { c.classList.remove('open'); });
+      firstFree.classList.add('open');
+      setDefault();
     }
-  });
-  if (firstFree) {
-    gl.querySelectorAll('.group-btn').forEach(function(b) { b.classList.remove('active'); });
-    firstFree.classList.add('active');
-    setDefault();
-  }
 }
 function selectPart(part) {
 
@@ -7022,7 +6824,9 @@ function selectPart(part) {
 
 
 
-    return _ttsVoices.find(v => /en(-|_)/i.test(v.lang) && pref.test(v.name))
+    const official = /google|microsoft|apple|natural|aria|jenny|guy|george|harriet|david|zira|samantha|daniel|karen|susan|victoria|hazel|emma|ryan|libby|sonia|ava|oliver/i;
+    return _ttsVoices.find(v => /en(-|_)/i.test(v.lang) && official.test(v.name))
+      || _ttsVoices.find(v => /en(-|_)/i.test(v.lang) && pref.test(v.name))
 
 
 
@@ -7073,7 +6877,15 @@ function selectPart(part) {
     refreshVoices();
     loadVoicePref();
     const en = _ttsVoices.filter(v => /en/i.test(v.lang));
-    let html = '<option value="auto">Auto (recommended)</option>';
+    function voiceRank(v) {
+      const n = v.name || '';
+      const l = (v.lang || '').toLowerCase();
+      let r = /^en(-|_)gb/i.test(l) ? 1 : (/^en(-|_)us/i.test(l) ? 2 : 3);
+      if (/google|microsoft|apple|natural|aria|jenny|guy|george|harriet|david|zira|samantha|daniel|karen|susan|victoria|hazel|emma|ryan|libby|sonia|ava|oliver/i.test(n)) r -= 0.5;
+      return r;
+    }
+    en.sort(function (a, b) { return voiceRank(a) - voiceRank(b); });
+    let html = '<option value="auto">Auto (official British/American)</option>';
     for (const v of en) {
       html += '<option value="' + v.voiceURI + '">' + v.name + ' · ' + (v.lang || 'en') + '</option>';
     }
@@ -7084,6 +6896,10 @@ function selectPart(part) {
 
   function previewVoice() {
     try { window.speechSynthesis.cancel(); } catch (e) { /* ignore */ }
+    if (naturalVoiceEnabled()) {
+      playAIVoiceOnce('Hello, this is your examiner voice. This is the natural AI voice.', getTTSVoiceName());
+      return;
+    }
     const v = getSelectedVoice();
     const u = new SpeechSynthesisUtterance('Hello, this is your examiner voice.');
     u.lang = v ? v.lang : 'en-US';
@@ -7097,6 +6913,33 @@ function selectPart(part) {
     const sel = document.getElementById('voiceSelect');
     if (!sel) return;
     populateVoiceSelect();
+    const ttsChk = document.getElementById('naturalTTSChk');
+    if (ttsChk) {
+      try { ttsChk.checked = naturalVoiceEnabled(); } catch (e) { /* ignore */ }
+      if (!ttsChk.__wired) {
+        ttsChk.__wired = true;
+        ttsChk.addEventListener('change', function () {
+          try { localStorage.setItem('naturalTTS', ttsChk.checked ? '1' : '0'); } catch (e) { /* ignore */ }
+          stopSpeech();
+        });
+      }
+    }
+    const aiSel = document.getElementById('ttsVoiceSelect');
+    if (aiSel) {
+      populateTTSVoiceSelect();
+      if (!aiSel.__wired) {
+        aiSel.__wired = true;
+        aiSel.addEventListener('change', function () {
+          try { localStorage.setItem('ttsVoice', aiSel.value); } catch (e) { /* ignore */ }
+          previewVoice();
+        });
+      }
+    }
+    const pvBtn = document.getElementById('aiVoicePreviewBtn');
+    if (pvBtn && !pvBtn.__wired) {
+      pvBtn.__wired = true;
+      pvBtn.addEventListener('click', function () { previewVoice(); });
+    }
     if (_voiceSelectWired) return;
     _voiceSelectWired = true;
     sel.addEventListener('change', function () {
@@ -7109,6 +6952,8 @@ function selectPart(part) {
     });
   }
 
+  var TTS_VOICE_NAMES = ['Kore', 'Aoede', 'Leda', 'Puck', 'Charon', 'Fenrir', 'Zephyr', 'Orus'];
+  var _aiAudios = [];
   initVoiceSelect();
 
   function waitVoices() {
@@ -7254,7 +7099,7 @@ function selectPart(part) {
 
 
 
-      if (cur && (cur + ' ' + part).length > 200) { chunks.push(cur); cur = part; }
+      if (cur && (cur + ' ' + part).length > 380) { chunks.push(cur); cur = part; }
 
 
 
@@ -7447,53 +7292,18 @@ function selectPart(part) {
 
 
   async function speakQuestion(text, onDone) {
-
-
-
-
-
     try {
-
-
-
-
-
+      if (naturalVoiceEnabled()) {
+        const aiRes = await speakAIVoice(text, getTTSVoiceName());
+        if (aiRes === true) { if (onDone) { onDone(); } return; }
+        if (aiRes === 'stopped') { return; }
+      }
       await speechReadyForSpeak();
-
-
-
-
-
       speakChainToken++;
-
-
-
-
-
       const chunks = splitIntoChunks(text);
-
-
-
-
-
       const voice = getSelectedVoice() || pickEnglishVoice(/samantha|karen|zira|jenny|aria|hazel|susan|victoria|google|natural|microsoft|female|en-us/i);
-
-
-
-
-
       speakChunked(chunks, onDone, { rate: 0.95, pitch: 1, voice: voice }, 0, 0);
-
-
-
-
-
     } catch (e) { if (onDone) { onDone(); } }
-
-
-
-
-
   }
 
 
@@ -7501,23 +7311,101 @@ function selectPart(part) {
 
 
 function stopSpeech() {
-
-
-
-
-
     speakChainToken++;
-
-
-
-
-
+    stopAIVoice();
     try { window.speechSynthesis.cancel(); } catch (e) { /* ignore */ }
+  }
 
+  /* ---------------- Tabiiy AI ovoz (server-side TTS) ---------------- */
 
+  var TTS_VOICE_NAMES = ['Kore', 'Aoede', 'Leda', 'Puck', 'Charon', 'Fenrir', 'Zephyr', 'Orus'];
+  var _aiAudios = [];
 
+  function naturalVoiceEnabled() {
+    return true;
+  }
 
+  function getTTSVoiceName() {
+    var n = null;
+    try { n = localStorage.getItem('ttsVoice') || null; } catch (e) { n = null; }
+    if (TTS_VOICE_NAMES.indexOf(n) === -1) { n = 'Fenrir'; }
+    return n;
+  }
 
+  function populateTTSVoiceSelect() {
+    var sel = document.getElementById('ttsVoiceSelect');
+    if (!sel) return;
+    var cur = getTTSVoiceName();
+    sel.innerHTML = '';
+    TTS_VOICE_NAMES.forEach(function (n) {
+      var o = document.createElement('option');
+      o.value = n; o.textContent = n;
+      sel.appendChild(o);
+    });
+    sel.value = cur;
+  }
+
+  function stopAIVoice() {
+    for (var i = 0; i < _aiAudios.length; i++) {
+      try { _aiAudios[i].pause(); } catch (e) { /* ignore */ }
+    }
+    _aiAudios = [];
+  }
+
+  function playAudioURL(url) {
+    return new Promise(function (resolve, reject) {
+      const a = new Audio(url);
+      let settled = false;
+      const timer = setTimeout(function () { done(new Error('timeout')); }, 60000);
+      function done(err) {
+        if (settled) return;
+        settled = true;
+        clearTimeout(timer);
+        try { a.pause(); } catch (e) { /* ignore */ }
+        const __i = _aiAudios.indexOf(a);
+        if (__i !== -1) { _aiAudios.splice(__i, 1); }
+        if (err) { reject(err); } else { resolve(true); }
+      }
+      _aiAudios.push(a);
+      a.onended = function () { done(null); };
+      a.onerror = function () { done(new Error('audio error')); };
+      try { a.play().catch(function (e) { done(e); }); } catch (e) { done(e); }
+    });
+  }
+
+  function playAIVoiceOnce(text, voiceName) {
+    const url = '/api/tts?voice=' + encodeURIComponent(voiceName) + '&text=' + encodeURIComponent(text);
+    stopAIVoice();
+    playAudioURL(url).catch(function () { /* AI ovozi olinsa - jim turish */ });
+  }
+
+  function prewarmTTS(text, voiceName) {
+    try {
+      const t = String(text || '').trim();
+      if (!t) return;
+      const url = '/api/tts?voice=' + encodeURIComponent(voiceName) + '&text=' + encodeURIComponent(t.slice(0, 380));
+      const a = new Audio();
+      a.volume = 0;
+      a.preload = 'auto';
+      a.src = url;
+    } catch (e) { /* ignore */ }
+  }
+
+  async function speakAIVoice(text, voiceName) {
+    const chunks = splitIntoChunks(text);
+    if (!chunks.length) return true;
+    const token = ++speakChainToken;
+    for (let i = 0; i < chunks.length; i++) {
+      if (token !== speakChainToken) { stopAIVoice(); return 'stopped'; }
+      const url = '/api/tts?voice=' + encodeURIComponent(voiceName) + '&text=' + encodeURIComponent(chunks[i]);
+      try {
+        await playAudioURL(url);
+      } catch (e) {
+        stopAIVoice();
+        return false;
+      }
+    }
+    return true;
   }
 
 
@@ -7531,101 +7419,26 @@ function stopSpeech() {
 
 
   async function speakSample(text, onDone, basePos) {
-
-
-
-
-
     try {
-
-
-
-
-
-      await speechReadyForSpeak();
-
-
-
-
-
-      speakChainToken++;
-
-
-
-
-
       const base = basePos || 0;
-
-
-
-
-
       const full = String(text);
-
-
-
-
-
       const chunkText = base > 0 ? full.slice(base) : full;
-
-
-
-
-
+      if (naturalVoiceEnabled() && chunkText) {
+        const aiRes = await speakAIVoice(chunkText, 'Aoede');
+        if (aiRes === true) { if (onDone) { onDone(); } return; }
+        if (aiRes === 'stopped') return;
+      }
+      await speechReadyForSpeak();
+      speakChainToken++;
       const chunks = splitIntoChunks(chunkText);
-
-
-
-
-
       const voice = pickEnglishVoice(/david|daniel|george|guy|mark|alex|james|ryan|tom|thomas|oliver|matthew|anthony|sean|aaron|fred|lee|microsoft|male/i);
-
-
-
-
-
       speakChunked(chunks, onDone, {
-
-
-
-
-
         rate: 0.92,
-
-
-
-
-
         pitch: 1,
-
-
-
-
-
         voice: voice,
-
-
-
-
-
         onBoundary: (pos) => { sampleStartPos = pos; }
-
-
-
-
-
       }, 0, base);
-
-
-
-
-
     } catch (e) { if (onDone) { onDone(); } }
-
-
-
-
-
   }
 
 
@@ -8902,6 +8715,7 @@ micStatus.classList.remove('rec');
 
 async function nextQuestion() {
 
+    stopSpeech();
 
 
 
@@ -9087,6 +8901,7 @@ async function nextQuestion() {
 
 
         qText.textContent = meta.speak;
+        if (mode === 'mock' && mockMeta[idx + 1] && mockMeta[idx + 1].speak) { prewarmTTS(mockMeta[idx + 1].speak, getTTSVoiceName()); }
 
 
 
@@ -9664,6 +9479,8 @@ async function afterAnswer() {
 
 
   function showSamplePhase(sample) {
+    stopSpeech();
+    prewarmTTS(sample, 'Aoede');
 
 
 
@@ -9774,6 +9591,7 @@ async function afterAnswer() {
 
   async function advanceAfterAnswer() {
 
+    stopSpeech();
 
 
 
@@ -11377,7 +11195,7 @@ window.aiFeedback = function (idx) {
   var r = results[idx];
   if (!r || !r.rec || !r.rec.blob) { box.textContent = "Yozuv yo'q"; box.classList.remove("hidden"); return; }
   box.classList.remove("hidden");
-  box.innerHTML = "<span class='ai-loading'>✨ Baholanyapti…</span>";
+  box.innerHTML = "<span class='ai-loading'>⏳ Baholash davom etmoqda…</span>";
   var fd = new FormData();
   fd.append("audio", r.rec.blob, "answer.wav");
   fd.append("question", r.question || "");
@@ -11409,7 +11227,7 @@ window.fullAiFeedback = function () {
   if (!box) return;
   if (!fullAudioBlob) { box.textContent = "Yozuv yo'q"; box.classList.remove("hidden"); return; }
   box.classList.remove("hidden");
-  box.innerHTML = "<span class='ai-loading'>✨ To'liq test baholanmoqda…</span>";
+  box.innerHTML = "<span class='ai-loading'>⏳ To'liq test baholanmoqda…</span>";
   var fd = new FormData();
   fd.append("audio", fullAudioBlob, "full-mock-test.wav");
   fd.append("question", "Full Mock Test - barcha javoblar birga (Part 1.1, 1.2, 2, 3)");
@@ -11437,31 +11255,87 @@ window.fullAiFeedback = function () {
 }
 
 function renderAI(res) {
-  var scale = res.max ? ('/' + res.max) : '';
-  var band = res.band ? " <span class='ai-band'>— " + escapeHtml(res.band) + " daraja</span>" : '';
-  var h;
-  if (res.rating != null) {
-    h = "<div class='ai-score'>Xom ball: <b>" + escapeHtml((res.score != null ? res.score : "—")) + "</b> → Rayting ball: <b>" + escapeHtml(res.rating) + "</b>" + band + "</div>";
+  var h = "<div class='ai-result'>";
+
+  /* ---- Score header card ---- */
+  var isFull = (res.rating != null);
+  var cefr = (res.cefr || res.band || "").toString().toUpperCase().trim();
+  var slug = (cefr || "x").toLowerCase().replace(/[^a-z0-9]/g, "");
+  h += "<div class='ai-head'>";
+  h += "<div class='ai-head-top'><span class='ai-head-label'>" + (isFull ? "OVERALL" : "PART SCORE") + "</span>";
+  if (cefr) h += "<span class='ai-cefr cefr-" + slug + "'>" + escapeHtml(cefr) + " · CEFR</span>";
+  h += "</div>";
+  if (isFull) {
+    h += "<div class='ai-num'>" + escapeHtml(res.rating) + "</div>";
+    h += "<div class='ai-sub'>Xom ball: " + escapeHtml((res.score != null ? res.score : "—")) + " / " + escapeHtml(String(res.max || "—")) + "</div>";
   } else {
-    h = "<div class='ai-score'>Umumiy ball: <b>" + escapeHtml((res.score != null ? res.score : "—")) + scale + "</b>" + band + "</div>";
+    h += "<div class='ai-num'>" + escapeHtml((res.score != null ? res.score : "—")) + "</div>";
+    if (res.max) h += "<div class='ai-sub'>maksimal " + escapeHtml(String(res.max)) + " ball</div>";
   }
-  if (res.level) h += "<div class='ai-line'><b>Shkala:</b> " + escapeHtml(res.level) + " (" + escapeHtml(res.scale || '') + ")" + (res.max ? " / " + escapeHtml(String(res.max)) : "") + "</div>";
-  if (res.transcript) h += "<div class='ai-line'><b>Transkript:</b> " + escapeHtml(res.transcript) + "</div>";
+  if (res.level) h += "<div class='ai-level'><b>Shkala:</b> " + escapeHtml(res.level) + " (" + escapeHtml(res.scale || "") + ")</div>";
+  if (res.tip) h += "<div class='ai-tip'>💡 " + escapeHtml(res.tip) + "</div>";
+  h += "</div>";
+
+  var hasRewrites = res.rewrites && (res.rewrites.b1 || res.rewrites.b2 || res.rewrites.c1);
+  var hasTranscript = res.transcript;
+
+  /* ---- Tabs ---- */
+  h += "<div class='ai-tabs'>";
+  h += "<button type='button' class='ai-tab active' data-aipanel='fb'>AI Feedback</button>";
+  if (hasRewrites) h += "<button type='button' class='ai-tab' data-aipanel='up'>Level Up</button>";
+  if (hasTranscript) h += "<button type='button' class='ai-tab' data-aipanel='tr'>Transkript</button>";
+  h += "</div>";
+
+  /* ---- AI Feedback panel ---- */
+  h += "<div class='ai-panel' data-aipanel='fb'>";
   var crits = [["vocabulary", "Lug'at"], ["grammar", "Grammatika"], ["fluency", "Ravonlik"], ["pronunciation", "Talaffuz"], ["communicative", "Kommunikativ"]];
+  var crithtml = "";
+  var hasCrit = false;
   crits.forEach(function (c) {
     var item = res[c[0]];
     if (item && typeof item === "object") {
-      h += "<div class='ai-line'><b>" + c[1] + " (" + (item.score != null ? item.score : "—") + "):</b> " + escapeHtml(item.comment || "") + "</div>";
+      hasCrit = true;
+      crithtml += "<div class='ai-crit'><div class='ai-crit-top'><span>" + c[1] + "</span><span class='ai-crit-score'>" + escapeHtml((item.score != null ? item.score : "—")) + (res.max ? "/" + escapeHtml(String(res.max)) : "") + "</span></div>";
+      if (item.comment) crithtml += "<div class='ai-crit-com'>" + escapeHtml(item.comment) + "</div>";
+      crithtml += "</div>";
     }
   });
+  if (hasCrit) { h += "<div class='ai-crits'>" + crithtml + "</div>"; }
+
   if (Array.isArray(res.errors) && res.errors.length) {
-    h += "<div class='ai-line'><b>Xatolar:</b></div>";
+    h += "<div class='ai-block'><div class='ai-block-title'>Xatolar</div>";
     res.errors.forEach(function (e) {
       if (!e || !e.wrong) return;
-      h += "<div class='ai-err'><span class='err-wrong'>" + escapeHtml(e.wrong) + "</span> → <span class='err-right'>" + escapeHtml(e.right || "") + "</span>" + (e.note ? " <span class='err-note'>(" + escapeHtml(e.note) + ")</span>" : "") + "</div>";
+      h += "<div class='ai-err'><div class='err-left'><span class='err-wrong'>" + escapeHtml(e.wrong) + "</span><span class='err-right'>" + escapeHtml(e.right || "") + "</span></div>" + (e.note ? "<div class='err-note'>" + escapeHtml(e.note) + "</div>" : "") + "</div>";
     });
+    h += "</div>";
   }
-  if (res.tip) h += "<div class='ai-line'><b>Maslahat:</b> " + escapeHtml(res.tip) + "</div>";
+  h += "</div>";
+
+  /* ---- Level Up panel ---- */
+  if (hasRewrites) {
+    h += "<div class='ai-panel hidden' data-aipanel='up'>";
+    h += "<div class='ai-up-info'>O'zingizning javobingizni yuqori darajadagi variantlar bilan solishtiring.</div>";
+    if (res.transcript) {
+      h += "<div class='ai-up-card'><div class='ai-up-label'>Your answer:</div><div class='ai-up-text'>" + escapeHtml(res.transcript) + "</div></div>";
+    }
+    var lvls = [["b1", "B1 version"], ["b2", "B2 version"], ["c1", "C1 version"]];
+    lvls.forEach(function (lvl) {
+      var v = res.rewrites[lvl[0]];
+      if (v) h += "<div class='ai-up-card'><div class='ai-up-label'>🚀 " + lvl[1] + ":</div><div class='ai-up-text'>" + escapeHtml(v) + "</div></div>";
+    });
+    h += "</div>";
+  }
+
+  /* ---- Transkript panel ---- */
+  if (hasTranscript) {
+    h += "<div class='ai-panel hidden' data-aipanel='tr'>";
+    h += "<div class='ai-tr-label'>TRANSCRIPT</div>";
+    h += "<div class='ai-tr-bubble'>" + escapeHtml(res.transcript) + "</div>";
+    h += "</div>";
+  }
+
+  h += "</div>";
   return h;
 }
 
@@ -11480,6 +11354,19 @@ function escapeHtml(s) {
   }
 
 
+
+
+
+  /* AI result tab switching (delegated — content is injected via innerHTML) */
+  document.addEventListener('click', function aiTabToggle(e) {
+    const tab = e.target.closest('.ai-tab');
+    if (!tab) return;
+    const root = tab.closest('.ai-result');
+    if (!root) return;
+    const panel = tab.getAttribute('data-aipanel');
+    root.querySelectorAll('.ai-tab').forEach(t => t.classList.toggle('active', t === tab));
+    root.querySelectorAll('.ai-panel').forEach(p => p.classList.toggle('hidden', p.getAttribute('data-aipanel') !== panel));
+  });
 
 
 

@@ -2,6 +2,7 @@
 <html lang="uz">
 <head>
 <meta charset="UTF-8">
+<meta name="google" content="notranslate">
 <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
 <meta http-equiv="Pragma" content="no-cache">
 <meta http-equiv="Expires" content="0">
@@ -36,6 +37,11 @@
   .btn:disabled{opacity:.5;cursor:not-allowed}
   .btn.green{background:linear-gradient(135deg,#16a34a,var(--green))}
   .btn.outline{background:none;border:1.5px solid var(--border);color:var(--text)}
+  .g-divider{display:flex;align-items:center;gap:10px;margin:20px 0 14px;color:var(--muted);font-size:12px}
+  .g-divider:before,.g-divider:after{content:'';flex:1;height:1px;background:var(--border)}
+  .btn.google{display:flex;align-items:center;justify-content:center;gap:10px;background:#fff;color:#1f2937;border:1.5px solid #d1d5db}
+  .btn.google:hover{background:#f9fafb;opacity:1}
+  .btn.google svg{width:20px;height:20px}
   .alert{padding:12px 14px;border-radius:12px;font-size:13px;font-weight:700;margin-bottom:16px}
   .alert.error{background:#7f1d1d20;border:1.5px solid #7f1d1d;color:var(--red)}
   .alert.info{background:#1e3a5f20;border:1.5px solid #1e3a5f;color:var(--accent2)}
@@ -82,31 +88,20 @@
   <div class="card" id="authCard">
     <div class="logo"><h1>Multilevel Mock Test</h1><p>CEFR — professional tayyorgarlik</p></div>
 
-    {% if error == 'login' %}<div class="alert error">Telefon yoki parol noto'g'ri.</div>{% endif %}
+    {% if error == 'login' %}<div class="alert error">Email/Telefon yoki parol noto'g'ri.</div>{% endif %}
+    {% if error == 'register' %}<div class="alert error">{{ msg or "Ro'yxatdan o'tishda xatolik." }}</div>{% endif %}
+    {% if error == 'exists' %}<div class="alert error">Bu email allaqachon ro'yxatdan o'tgan. Iltimos kiring.</div>{% endif %}
     {% if error == 'kicked' %}<div class="alert error">Siz boshqa qurilmadan tizimga kirdingiz — shu qurilmadagi sessiya yopildi. Iltimos qayta kiring.</div>{% endif %}
     {% if error == 'blocked' %}<div class="alert error">Hisobingiz bloklangan. Admin bilan bog'laning.</div>{% endif %}
-    {% if error == 'exists' %}<div class="alert error">Bu telefon allaqachon ro'yxatdan o'tgan.</div>{% endif %}
-    {% if error == 'register' %}<div class="alert error">{{ msg or 'Telefon va 4+ belgili parol kiriting.' }}</div>{% endif %}
+    {% if error == 'google' %}<div class="alert error">{{ msg or 'Google orqali kirishda xatolik.' }}</div>{% endif %}
 
-    <div class="tabs">
-      <button class="tab active" id="tabLogin" onclick="switchTab('login')">Kirish</button>
-      <button class="tab" id="tabReg" onclick="switchTab('reg')">Ro'yxatdan o'tish</button>
-    </div>
-    <div class="panel active" id="panelLogin">
-      <form method="POST" action="/auth/login">
-        <div class="field"><label>Telefon raqam</label><input type="text" name="phone" value="+998 " oninput="phonePrefix(this)" placeholder="+998 90 123 45 67" required></div>
-        <div class="field"><label>Parol</label><input type="password" name="password" placeholder="••••••••" required></div>
-        <button class="btn" type="submit">Kirish</button>
-      </form>
-    </div>
-    <div class="panel" id="panelReg">
-      <form method="POST" action="/auth/register">
-        <div class="field"><label>Ism (ixtiyoriy)</label><input type="text" name="name" placeholder="Ismingiz"></div>
-        <div class="field"><label>Telefon raqam</label><input type="text" name="phone" value="+998 " oninput="phonePrefix(this)" placeholder="+998 90 123 45 67" required></div>
-        <div class="field"><label>Parol (kamida 4 belgi)</label><input type="password" name="password" placeholder="••••••••" required></div>
-        <button class="btn" type="submit">Ro'yxatdan o'tish</button>
-      </form>
-    </div>
+    <p style="text-align:center;color:var(--muted);font-size:14px;margin-bottom:20px">Kirish uchun Google accountingizdan foydalaning — ism, telefon, parol kerak emas.</p>
+
+    <a class="btn google" href="/auth/google" style="display:flex">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 48 48"><path fill="#EA4335" d="M24 9.5c3.54 0 6.71 1.22 9.21 3.6l6.85-6.85C35.9 2.38 30.47 0 24 0 14.62 0 6.51 5.38 2.56 13.22l7.98 6.19C12.43 13.72 17.74 9.5 24 9.5z"/><path fill="#4285F4" d="M46.98 24.55c0-1.57-.15-3.09-.38-4.55H24v9.02h12.94c-.58 2.96-2.26 5.48-4.78 7.18l7.73 6c4.51-4.18 7.09-10.36 7.09-17.65z"/><path fill="#FBBC05" d="M10.53 28.59c-.48-1.45-.76-2.99-.76-4.59s.27-3.14.76-4.59l-7.98-6.19C.92 16.46 0 20.12 0 24c0 3.88.92 7.54 2.56 10.78l7.97-6.19z"/><path fill="#34A853" d="M24 48c6.48 0 11.93-2.13 15.89-5.81l-7.73-6c-2.15 1.45-4.92 2.3-8.16 2.3-6.26 0-11.57-4.22-13.47-9.91l-7.98 6.19C6.51 42.62 14.62 48 24 48z"/></svg>
+      Google account bilan kirish
+    </a>
+    <div class="hint" style="margin-top:14px">Yangi hisob — avtomatik ro'yxatdan o'tadi. Mavjud hisob — darhol kiradi. Keyingi safar bitta bosish kifoya.</div>
   </div>
 
   <div id="rightsWrap" style="display:none;">
@@ -136,15 +131,6 @@
 </div>
 
 <script>
-function phonePrefix(el){
-  var v = el.value;
-  if (v.indexOf('+998') !== 0) {
-    var digits = v.replace(/[^0-9]/g, '').replace(/^998/, '');
-    el.value = '+998 ' + digits.slice(0, 9);
-  }
-}
-
-function switchTab(t){document.getElementById('tabLogin').classList.toggle('active',t==='login');document.getElementById('tabReg').classList.toggle('active',t==='reg');document.getElementById('panelLogin').classList.toggle('active',t==='login');document.getElementById('panelReg').classList.toggle('active',t==='reg')}
 var plans=[], selPlan=null;
 var TG_BASE_MSG='Assalomu alaykum! Men sizning veb-saytingizdagi Premium paketni sotib olmoqchiman.';
 function tgLink(){var m=TG_BASE_MSG;if(selPlan){m+=' Tanlangan obuna: '+selPlan.name+' ('+selPlan.price_fmt+').'}return 'https://t.me/rahmatovturgun?text='+encodeURIComponent(m)}
@@ -171,11 +157,6 @@ fetch('/api/me').then(function(r){return r.json()}).then(function(me){
 fetch('/api/config-public').then(function(r){return r.json()}).then(function(c){
   if(c.ok){document.getElementById('cardNum').textContent=c.card_number||'—';document.getElementById('cardHolder').textContent=c.card_holder||'—'}
 }).catch(function(){})
-</script>
-<script>
-{% if error == 'register' or error == 'exists' %}
-switchTab('reg');
-{% endif %}
 </script>
 </body>
 </html>

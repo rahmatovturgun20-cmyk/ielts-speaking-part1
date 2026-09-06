@@ -12171,26 +12171,7 @@ function pickEnglishVoice(pref) {
 
   async function speechReadyForSpeak() {
     await waitVoices();
-    let needCancel = false;
-    try { needCancel = window.speechSynthesis.speaking || window.speechSynthesis.pending; } catch (e) { needCancel = true; }
-    if (needCancel) {
-      try { window.speechSynthesis.cancel(); } catch (e) { /* ignore */ }
-      const t0 = Date.now();
-      let busy = true;
-      while (Date.now() - t0 < 600 && busy) {
-        try { busy = window.speechSynthesis.speaking || window.speechSynthesis.pending; } catch (e) { busy = false; }
-        await new Promise(r => setTimeout(r, 40));
-      }
-      await new Promise(r => setTimeout(r, 250));
-      try { window.speechSynthesis.cancel(); } catch (e) { /* ignore */ }
-      try {
-        const resetU = new SpeechSynthesisUtterance('\u00A0');
-        resetU.volume = 0;
-        window.speechSynthesis.speak(resetU);
-        await new Promise(r => setTimeout(r, 80));
-      } catch (e) { /* ignore */ }
-      try { window.speechSynthesis.cancel(); } catch (e) { /* ignore */ }
-    }
+    try { window.speechSynthesis.cancel(); } catch (e) { /* ignore */ }
     try { window.speechSynthesis.resume(); } catch (e) { /* ignore */ }
   }
 
@@ -12408,7 +12389,10 @@ function pickEnglishVoice(pref) {
 
 
 
-      try { window.speechSynthesis.speak(u); } catch (e) { next(); }
+      try {
+        if (window.speechSynthesis.paused) { window.speechSynthesis.resume(); }
+        window.speechSynthesis.speak(u);
+      } catch (e) { next(); }
 
 
 

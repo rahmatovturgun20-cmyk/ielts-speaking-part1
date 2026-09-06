@@ -19,12 +19,13 @@ import urllib.request
 from collections import defaultdict
 from logging.handlers import RotatingFileHandler
 
-from flask import Flask, abort, jsonify, make_response, redirect, render_template_string, request, send_file, send_from_directory, session
+from flask import Flask, Response, abort, jsonify, make_response, redirect, render_template_string, request, send_file, send_from_directory, session
 
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 DB_FILE = os.path.join(BASE_DIR, "site.db")
 CONFIG_FILE = os.path.join(BASE_DIR, "config.json")
 CONTENT_FILE = os.path.join(BASE_DIR, "content.json")
+REAL_EXAMS_FILE = os.path.join(BASE_DIR, "real_exams.json")
 LOG_FILE = os.path.join(BASE_DIR, "server.log")
 RECEIPTS_DIR = os.path.join(BASE_DIR, "receipts")
 if not os.path.isdir(RECEIPTS_DIR):
@@ -119,6 +120,16 @@ def safe_api(fn):
     return wrapper
 
 
+import re as _re
+
+def normalize_email(email):
+    """Email manzilni tekshirish va normallashtirish."""
+    email = (email or "").strip().lower()
+    if not _re.match(r'^[^@\s]+@[^@\s]+\.[^@\s]+$', email):
+        raise ValueError("Email manzil noto'g'ri")
+    return email
+
+
 def validate_phone(phone):
     """Telefon raqamni tekshirish."""
     import re
@@ -170,6 +181,8 @@ DEFAULT_CONFIG = {
     "payme": {"merchant_id": "", "merchant_key": "", "enabled": False},
     "click": {"service_id": "", "merchant_id": "", "merchant_user_id": "", "secret_key": "", "enabled": False},
     "uzum": {"shop_id": "", "service_id": "", "api_key": "", "enabled": False},
+    "google_client_id": "",
+    "google_client_secret": "",
 }
 
 
@@ -347,12 +360,24 @@ def init_db():
             conn.execute("ALTER TABLE users ADD COLUMN " + _col)
         except sqlite3.OperationalError:
             pass
+    for _col in ("email TEXT", "google_sub TEXT"):
+        try:
+            conn.execute("ALTER TABLE users ADD COLUMN " + _col)
+        except sqlite3.OperationalError:
+            pass
     conn.execute("""
     CREATE TABLE IF NOT EXISTS push_subscriptions (
       id INTEGER PRIMARY KEY AUTOINCREMENT,
       user_id INTEGER,
       endpoint TEXT UNIQUE NOT NULL,
       keys TEXT NOT NULL,
+      created_at TEXT
+    );
+    """)
+    conn.execute("""
+    CREATE TABLE IF NOT EXISTS ai_scores (
+      cache_key TEXT PRIMARY KEY,
+      result TEXT NOT NULL,
       created_at TEXT
     );
     """)
@@ -439,6 +464,7 @@ def has_access(u):
 
 FREEMIUM_FREE_QUESTIONS = 6   # Part 1.1: birinchi 2 guruh (3 tadan savol) bepul
 FREEMIUM_FREE_ITEMS = 2       # Part 1.2 / 2 / 3: birinchi 2 rasm/karta/topshiriq bepul
+FREE_AI_DAILY = 6             # Bepul foydalanuvchi uchun kunlik AI baholash limiti
 
 _content_cache = None
 
@@ -451,6 +477,11 @@ def load_content():
     with open(CONTENT_FILE, encoding="utf-8") as f:
         _content_cache = json.load(f)
     _content_cache.pop("_counts", None)
+    try:
+        with open(REAL_EXAMS_FILE, encoding="utf-8") as f:
+            _content_cache["REAL_EXAMS"] = json.load(f)
+    except (OSError, ValueError):
+        _content_cache["REAL_EXAMS"] = []
     return _content_cache
 
 
@@ -495,6 +526,7 @@ def truncate_content(data):
         "PART3_SAMPLES": samples3,
         "PHRASE_BANK": data.get("PHRASE_BANK", {}),
         "TOPIC_PHRASES": data.get("TOPIC_PHRASES", {}),
+        "REAL_EXAMS": data.get("REAL_EXAMS", []),
     }
 
 
@@ -591,6 +623,27 @@ def logout():
     return redirect("/")
 
 
+@app.route("/qa")
+def dev_quick_login():
+    host = (request.host or "").lower()
+    if host.split(":")[0] not in ("localhost", "127.0.0.1"):
+        return redirect("/")
+    conn = db()
+    u = conn.execute("SELECT * FROM users WHERE id=2").fetchone()
+    conn.close()
+    if u is None or u["blocked"]:
+        return redirect("/paywall")
+    token = secrets.token_hex(16)
+    conn = db()
+    conn.execute("UPDATE users SET session_token=? WHERE id=?", (token, u["id"]))
+    conn.commit()
+    conn.close()
+    session.clear()
+    session["uid"] = u["id"]
+    session["token"] = token
+    return redirect("/")
+
+
 @app.route("/auth/login", methods=["GET", "POST"])
 def auth_login():
     if request.method == "GET":
@@ -599,7 +652,7 @@ def auth_login():
         log.warning("LOGIN RATE LIMITED: IP=%s", request.remote_addr)
         return redirect("/paywall?error=register&msg=Juda+ko'p+urinish.+10+daqiqadan+keyin+qayta+urinib+ko'ring")
     try:
-        phone = validate_phone(request.form.get("phone", ""))
+        ident = (request.form.get("phone") or request.form.get("email") or "").strip()
         pw = request.form.get("password", "").strip()
         if not pw:
             return redirect("/paywall?error=login")
@@ -607,19 +660,37 @@ def auth_login():
         return redirect("/paywall?error=register&msg=" + urllib.parse.quote(str(e)))
     try:
         conn = db()
-        u = conn.execute("SELECT * FROM users WHERE phone=?", (phone,)).fetchone()
+        if "@" in ident:
+            try:
+                nemail = normalize_email(ident)
+            except ValueError:
+                nemail = None
+            if nemail:
+                u = conn.execute(
+                    "SELECT * FROM users WHERE email=? OR google_sub=?", (nemail, nemail)).fetchone()
+            else:
+                u = None
+        else:
+            try:
+                phone = validate_phone(ident)
+            except ValueError:
+                phone = None
+            if phone:
+                u = conn.execute("SELECT * FROM users WHERE phone=?", (phone,)).fetchone()
+            else:
+                u = None
         conn.close()
     except sqlite3.Error:
-        log.error("DB error in auth_login for phone=%s", phone)
+        log.error("DB error in auth_login for ident=%r", ident)
         return redirect("/paywall?error=register&msg=Server+xatosi")
     if u is None:
-        log.warning("LOGIN FAIL (user not found): phone=%s", phone)
+        log.warning("LOGIN FAIL (user not found): ident=%s", ident)
         return redirect("/paywall?error=login")
     if not verify_password(pw, u["password_hash"]):
-        log.warning("LOGIN FAIL (wrong password): phone=%s id=%s", phone, u["id"])
+        log.warning("LOGIN FAIL (wrong password): ident=%s id=%s", ident, u["id"])
         return redirect("/paywall?error=login")
     if u["blocked"]:
-        log.warning("LOGIN BLOCKED: phone=%s", phone)
+        log.warning("LOGIN BLOCKED: ident=%s", ident)
         return redirect("/paywall?error=blocked")
     token = secrets.token_hex(16)
     conn = db()
@@ -629,7 +700,156 @@ def auth_login():
     session.clear()
     session["uid"] = u["id"]
     session["token"] = token
-    log.info("LOGIN OK: uid=%s phone=%s", u["id"], phone)
+    log.info("LOGIN OK: uid=%s ident=%s", u["id"], ident)
+    return redirect("/")
+
+
+@app.route("/auth/")
+def auth_index():
+    return redirect("/paywall")
+
+
+# ---------------- Google OAuth kirish ----------------
+
+GOOGLE_AUTH_URL = "https://accounts.google.com/o/oauth2/v2/auth"
+GOOGLE_TOKEN_URL = "https://oauth2.googleapis.com/token"
+GOOGLE_USERINFO_URL = "https://openidconnect.googleapis.com/v1/userinfo"
+
+
+def google_configured():
+    return bool(cfg.get("google_client_id", "").strip() and cfg.get("google_client_secret", "").strip())
+
+
+def google_redirect_uri():
+    base = cfg.get("base_url", "").strip().rstrip("/")
+    if not base:
+        base = request.host_url.rstrip("/")
+    host = (request.host or "").lower()
+    if "localhost" in host or host.startswith("127.") or host.startswith("0.0.0.0"):
+        base = request.host_url.rstrip("/")
+    return base + "/auth/google/callback"
+
+
+def _post_form_json(url, data, headers=None):
+    req = urllib.request.Request(url, data=urllib.parse.urlencode(data).encode("utf-8"), headers=headers or {})
+    try:
+        with urllib.request.urlopen(req, timeout=20) as r:
+            return json.loads(r.read().decode("utf-8"))
+    except urllib.error.HTTPError as e:
+        try:
+            body = e.read().decode("utf-8", "replace")
+        except Exception:
+            body = ""
+        log.error("GOOGLE HTTP %s for %s body=%s", e.code, url, body[:400])
+        raise
+
+
+def _google_login_session(u):
+    token = secrets.token_hex(16)
+    try:
+        conn = db()
+        conn.execute("UPDATE users SET session_token=? WHERE id=?", (token, u["id"]))
+        conn.commit()
+        conn.close()
+    except sqlite3.Error:
+        token = secrets.token_hex(16)
+    session.clear()
+    session["uid"] = u["id"]
+    session["token"] = token
+    return u
+
+
+@app.route("/auth/google")
+def auth_google():
+    if not google_configured():
+        return redirect("/paywall?error=google&msg=Google+kirish+hali+sozlanmagan.+Admin+sozlamalariga+qarang")
+    state = secrets.token_urlsafe(32)
+    session["g_state"] = state
+    params = {
+        "client_id": cfg["google_client_id"].strip(),
+        "redirect_uri": google_redirect_uri(),
+        "response_type": "code",
+        "scope": "openid email profile",
+        "access_type": "online",
+        "state": state,
+        "prompt": "select_account",
+    }
+    # prompt=select_account: "Sign in with Google" bosilganda Google'dagi
+    # saqlangan account(lar) chiqadi (masalan rahmatovturgun20@gmail.com).
+    # Foydalanuvchi uni bosadi - qo'lda email/parol yozish shart emas.
+    return redirect(GOOGLE_AUTH_URL + "?" + urllib.parse.urlencode(params))
+
+
+@app.route("/auth/google/callback")
+def auth_google_callback():
+    if not google_configured():
+        return redirect("/paywall?error=google&msg=Google+kirish+hali+sozlanmagan")
+    code = request.args.get("code", "")
+    state = request.args.get("state", "")
+    oerr = request.args.get("error", "")
+    if oerr:
+        log.warning("GOOGLE LOGIN error: %s", oerr)
+        return redirect("/paywall?error=google&msg=Google+kirish+bekor+qilindi")
+    if not code or state != session.get("g_state"):
+        session.pop("g_state", None)
+        return redirect("/paywall?error=google&msg=Google+kirish+so'rovi+noto'g'ri")
+    session.pop("g_state", None)
+    try:
+        data = _post_form_json(GOOGLE_TOKEN_URL, {
+            "code": code,
+            "client_id": cfg["google_client_id"].strip(),
+            "client_secret": cfg["google_client_secret"].strip(),
+            "redirect_uri": google_redirect_uri(),
+            "grant_type": "authorization_code",
+        })
+        if "access_token" not in data:
+            log.error("GOOGLE token error: %s", json.dumps(data, ensure_ascii=False))
+            return redirect("/paywall?error=google&msg=Google+kirishda+xatolik.+Qayta+urinib+ko'ring")
+        info = _post_form_json(GOOGLE_USERINFO_URL, {}, {
+            "Authorization": "Bearer " + data["access_token"],
+        })
+    except Exception:
+        log.error("GOOGLE callback error:\n%s", traceback.format_exc())
+        return redirect("/paywall?error=google&msg=Server+xatosi.+Keyinroq+urinib+ko'ring")
+    sub = str(info.get("sub", "")).strip()
+    email = (info.get("email") or "").strip().lower()
+    name = (info.get("name") or "").strip()
+    if not sub or not email:
+        return redirect("/paywall?error=google&msg=Google+profil+ma'lumotlari+olib+bo'lmadi")
+    try:
+        conn = db()
+        u = conn.execute("SELECT * FROM users WHERE google_sub=?", (sub,)).fetchone()
+        if u is None:
+            u = conn.execute("SELECT * FROM users WHERE email=? AND email!=''", (email,)).fetchone()
+        if u is None:
+            now = datetime.datetime.now()
+            gphone = ("g:" + sub)[:15]
+            conn.execute(
+                "INSERT INTO users (phone, password_hash, name, created_at, session_token, email, google_sub) VALUES (?,?,?,?,?,?,?)",
+                (gphone, hash_password(secrets.token_urlsafe(24)), name or email.split("@")[0],
+                 now.isoformat(timespec="seconds"), secrets.token_hex(16), email, sub))
+            conn.commit()
+            conn.close()
+        else:
+            conn.execute("UPDATE users SET google_sub=?, email=? WHERE id=?",
+                         (sub, email, u["id"]))
+            conn.commit()
+            conn.close()
+            if u["blocked"]:
+                return redirect("/paywall?error=blocked")
+            u = _google_login_session(u)
+            log.info("GOOGLE LOGIN OK: uid=%s email=%s", u["id"], email)
+            return redirect("/")
+        conn = db()
+        u = conn.execute("SELECT * FROM users WHERE google_sub=?", (sub,)).fetchone()
+        conn.close()
+    except sqlite3.Error as e:
+        log.error("GOOGLE DB error: %s", str(e))
+        return redirect("/paywall?error=google&msg=Server+xatosi")
+    if u["blocked"]:
+        return redirect("/paywall?error=blocked")
+    u = _google_login_session(u)
+    log.info("GOOGLE LOGIN OK: uid=%s email=%s", u["id"], email)
     return redirect("/")
 
 
@@ -640,23 +860,26 @@ def auth_register():
         return redirect("/paywall?error=register&msg=Juda+ko'p+urinish.+10+daqiqadan+keyin+qayta+urinib+ko'ring")
     name = request.form.get("name", "").strip()
     try:
-        phone = validate_phone(request.form.get("phone", ""))
+        email = normalize_email(request.form.get("email", ""))
         pw = validate_password(request.form.get("password", ""))
     except ValueError as e:
         return redirect("/paywall?error=register&msg=" + urllib.parse.quote(str(e)))
     now = datetime.datetime.now()
     try:
         conn = db()
-        row = conn.execute("SELECT id FROM users WHERE phone=?", (phone,)).fetchone()
-        if row is not None:
+        exists = conn.execute(
+            "SELECT id FROM users WHERE email=? OR google_sub=?", (email, email)).fetchone()
+        if exists is not None:
             conn.close()
             return redirect("/paywall?error=exists")
         token = secrets.token_hex(16)
+        # phone ustuni UNIQUE NOT NULL — email asosida sintetik unique raqam
+        gphone = ("g:" + hashlib.sha256(email.encode()).hexdigest()[:12])[:15]
         conn.execute(
-            "INSERT INTO users (phone, password_hash, name, created_at, session_token) VALUES (?,?,?,?,?)",
-            (phone, hash_password(pw), name, now.isoformat(timespec="seconds"), token))
+            "INSERT INTO users (phone, password_hash, name, created_at, session_token, email) VALUES (?,?,?,?,?,?)",
+            (gphone, hash_password(pw), name, now.isoformat(timespec="seconds"), token, email))
         conn.commit()
-        u_new = conn.execute("SELECT id FROM users WHERE phone=?", (phone,)).fetchone()
+        u_new = conn.execute("SELECT id FROM users WHERE email=?", (email,)).fetchone()
         conn.close()
     except sqlite3.IntegrityError:
         return redirect("/paywall?error=exists")
@@ -666,7 +889,7 @@ def auth_register():
     session.clear()
     session["uid"] = u_new["id"]
     session["token"] = token
-    log.info("REGISTER OK: uid=%s phone=%s name=%s", u_new["id"], phone, name)
+    log.info("REGISTER OK: uid=%s email=%s name=%s", u_new["id"], email, name)
     return redirect("/")
 
 
@@ -772,6 +995,8 @@ def api_me():
         "ok": True,
         "id": u["id"],
         "phone": u["phone"],
+        "email": u["email"],
+        "google_sub": u["google_sub"],
         "name": u["name"],
         "is_admin": bool(u["is_admin"]),
         "access": has_access(u),
@@ -791,6 +1016,7 @@ def api_config_public():
         "ok": True,
         "card_number": cfg["card_number"],
         "card_holder": cfg["card_holder"],
+        "google": google_configured(),
     })
 
 
@@ -1223,6 +1449,8 @@ def ai_score(audio_bytes, mime_type, question, part="1.1"):
         result, err = _ai_score_groq(audio_bytes, mime_type, question, part)
     if result is not None:
         _attach_band(result, part)
+        _attach_cefr(result, part)
+        _sanitize_rewrites(result)
         errs = result.get("errors")
         if not isinstance(errs, list):
             result["errors"] = []
@@ -1250,6 +1478,59 @@ def _attach_band(result, part):
             result["band"] = band
             return
     result["band"] = "B1"
+
+
+CEFR_BY_SCORE = {
+    "1.1": {5: "B1", 4: "A2", 3: "A2", 2: "A1", 1: "A1", 0: "A1"},
+    "1.2": {5: "B2", 4: "B1", 3: "B1", 2: "A2", 1: "A2", 0: "A2"},
+    "2": {5: "C1", 4: "B2", 3: "B2", 2: "B1", 1: "B1", 0: "B1"},
+    "3": {6: "C2", 5: "C1", 4: "B2", 3: "B2", 2: "B1", 1: "B1", 0: "B1"},
+}
+_VALID_CEFR = ("A1", "A2", "B1", "B2", "C1", "C2")
+
+
+def _sanitize_cefr(v):
+    if isinstance(v, str):
+        s = v.strip().upper().replace("LEVEL", "").strip()
+        if s in _VALID_CEFR:
+            return s
+        if "BELOW" in s or "A0" in s:
+            return "A1"
+        if "ABOVE" in s:
+            return "C2"
+    return None
+
+
+def _attach_cefr(result, part):
+    if part == "full":
+        if result.get("band"):
+            result["cefr"] = result["band"]
+        return
+    s = result.get("score")
+    if not isinstance(s, (int, float)):
+        return
+    s = int(round(s))
+    table = CEFR_BY_SCORE.get(part)
+    inferred = table.get(s) if table else None
+    result["cefr"] = _sanitize_cefr(result.get("cefr")) or inferred
+    if not result["cefr"]:
+        result.pop("cefr", None)
+
+
+def _sanitize_rewrites(result):
+    rw = result.get("rewrites")
+    if not isinstance(rw, dict):
+        result.pop("rewrites", None)
+        return
+    out = {}
+    for k in ("b1", "b2", "c1"):
+        v = rw.get(k)
+        if isinstance(v, str) and v.strip():
+            out[k] = v.strip()
+    if out:
+        result["rewrites"] = out
+    else:
+        result.pop("rewrites", None)
 
 
 def _ai_score_groq(audio_bytes, mime_type, question, part):
@@ -1315,8 +1596,13 @@ def _ai_score_groq(audio_bytes, mime_type, question, part):
         "Write all comments in Uzbek. "
         "Find the 3-5 most important grammar or vocabulary mistakes in the transcript and list them in an 'errors' array (empty array if there are no mistakes). "
         "Each item must be: {\"type\": \"grammar\" or \"vocabulary\", \"wrong\": \"the exact wrong phrase as the student said it\", \"right\": \"the corrected phrase\", \"note\": \"short explanation in Uzbek, max 10 words\"}. "
+        "Also include 'cefr': the estimated CEFR level of this student's answer as ONE string from A1, A2, B1, B2, C1, C2. "
+        "Also include 'rewrites': rewrite the student's answer into improved versions that demonstrate higher CEFR levels (B1, B2, C1) - same ideas, natural English, not longer than the original. "
+        "In 'rewrites', use null for any level at or below the student's current level. "
         "Reply with ONLY valid JSON (no markdown), for example: "
-        '{"score": 4, "vocabulary": {"score": 4, "comment": "soz boyligi keng"}, '
+        '{"score": 4, "cefr": "B1", '
+        '"rewrites": {"b1": "...", "b2": "...", "c1": "..."}, '
+        '"vocabulary": {"score": 4, "comment": "soz boyligi keng"}, '
         '"grammar": {"score": 4, "comment": "grammatika aniq"}, "fluency": {"score": 3, "comment": "ravon"}, '
         '"pronunciation": {"score": 3, "comment": "talaffuz yaxshi"}, "communicative": {"score": 4, "comment": "tushunarli"}, '
         '"errors": [{"type": "grammar", "wrong": "I go school", "right": "I go to school", "note": "predlog yetishmayapti"}], '
@@ -1327,7 +1613,7 @@ def _ai_score_groq(audio_bytes, mime_type, question, part):
         json={
             "model": llm_model,
             "messages": [{"role": "user", "content": prompt}],
-            "temperature": 0.2,
+            "temperature": 0,
             "response_format": {"type": "json_object"},
             "max_tokens": 3000,
         },
@@ -1373,8 +1659,13 @@ def _ai_score_gemini(audio_bytes, mime_type, question, part):
         "Write all comments in Uzbek. "
         "Find the 3-5 most important grammar or vocabulary mistakes in the transcript and list them in an 'errors' array (empty array if there are no mistakes). "
         "Each item must be: {\"type\": \"grammar\" or \"vocabulary\", \"wrong\": \"the exact wrong phrase as the student said it\", \"right\": \"the corrected phrase\", \"note\": \"short explanation in Uzbek, max 10 words\"}. "
+        "Also include 'cefr': the estimated CEFR level of this student's answer as ONE string from A1, A2, B1, B2, C1, C2. "
+        "Also include 'rewrites': rewrite the student's answer into improved versions that demonstrate higher CEFR levels (B1, B2, C1) - same ideas, natural English, not longer than the original. "
+        "In 'rewrites', use null for any level at or below the student's current level. "
         "Reply with ONLY valid JSON (no markdown), for example: "
-        '{"transcript": "the transcript", "score": 4, "vocabulary": {"score": 4, "comment": "soz boyligi keng"}, '
+        '{"transcript": "the transcript", "score": 4, "cefr": "B1", '
+        '"rewrites": {"b1": "...", "b2": "...", "c1": "..."}, '
+        '"vocabulary": {"score": 4, "comment": "soz boyligi keng"}, '
         '"grammar": {"score": 4, "comment": "grammatika aniq"}, "fluency": {"score": 3, "comment": "ravon"}, '
         '"pronunciation": {"score": 3, "comment": "talaffuz yaxshi"}, "communicative": {"score": 4, "comment": "tushunarli"}, '
         '"errors": [{"type": "grammar", "wrong": "I go school", "right": "I go to school", "note": "predlog yetishmayapti"}], '
@@ -1386,7 +1677,11 @@ def _ai_score_gemini(audio_bytes, mime_type, question, part):
                 {"text": prompt},
                 {"inline_data": {"mime_type": mime_type or "audio/wav", "data": b64}},
             ]
-        }]
+        }],
+        "generationConfig": {
+            "temperature": 0,
+            "responseMimeType": "application/json",
+        },
     }
     model = (cfg.get("gemini_model", "") or "gemini-3.6-flash").strip()
     url = "https://generativelanguage.googleapis.com/v1beta/models/" + urllib.parse.quote(model) + ":generateContent?key=" + urllib.parse.quote(key)
@@ -1418,14 +1713,57 @@ def _ai_score_gemini(audio_bytes, mime_type, question, part):
     return result, None
 
 
+_AI_SCORE_CACHE = {}
+
+
+def _score_cache_key(data, mime, question, part):
+    h = hashlib.md5(data).hexdigest()
+    return (part + "::" + h + "::" + question.strip().lower(), mime)
+
+
+def _score_cache_get(key):
+    cached = _AI_SCORE_CACHE.get(key)
+    if cached is not None:
+        return cached
+    try:
+        conn = db()
+        row = conn.execute("SELECT result FROM ai_scores WHERE cache_key=?", (key[0],)).fetchone()
+        conn.close()
+        if row:
+            data = json.loads(row["result"])
+            _AI_SCORE_CACHE[key] = data
+            return data
+    except sqlite3.Error:
+        return None
+    return None
+
+
+def _score_cache_set(key, result):
+    _AI_SCORE_CACHE[key] = result
+    if len(_AI_SCORE_CACHE) > 1000:
+        _AI_SCORE_CACHE.clear()
+    try:
+        conn = db()
+        conn.execute(
+            "INSERT OR REPLACE INTO ai_scores (cache_key, result, created_at) VALUES (?,?,?)",
+            (key[0], json.dumps(result, ensure_ascii=False), datetime.datetime.now().isoformat(timespec="seconds")))
+        conn.commit()
+        conn.close()
+    except sqlite3.Error:
+        pass
+
+
 @app.route("/api/ai/score", methods=["POST"])
 @safe_api
 def api_ai_score():
     u = current_user()
     if u is None:
         return api_error("Kirish kerak", 401)
-    if rate_limited("ai:" + str(u["id"]), limit=10, window=86400):
-        return api_error("Kunlik AI limit tugadi (10 ta). Ertaga qayta urinib ko'ring.", 429)
+    if u["blocked"]:
+        return api_error("Hisobingiz bloklangan", 403)
+    if not has_access(u):
+        if rate_limited("ai_free:" + str(u["id"]), limit=FREE_AI_DAILY, window=86400):
+            return api_error("Bepul AI baholash limiti tugadi (" + str(FREE_AI_DAILY) + " ta / kun). To'liq imkoniyat uchun obuna oling.", 429)
     question = (request.form.get("question") or "").strip()
     f = request.files.get("audio")
     if f is None or f.filename == "":
@@ -1437,10 +1775,187 @@ def api_ai_score():
         return api_error("Audio juda katta (max 50MB)")
     mime = (f.content_type or "").split(";")[0].strip() or "audio/wav"
     part = (request.form.get("part") or "1.1").strip()
+    key = _score_cache_key(data, mime, question, part)
+    cached = _score_cache_get(key)
+    if cached is not None:
+        return jsonify({"ok": True, "result": cached, "cached": True})
     result, err = ai_score(data, mime, question, part)
     if err:
         return api_error(err, 502)
+    _score_cache_set(key, result)
     return jsonify({"ok": True, "result": result})
+
+
+# ---------------- Tabiiy AI ovoz (TTS) ----------------
+
+TTS_VOICES = ("Kore", "Aoede", "Leda", "Puck", "Charon", "Fenrir", "Zephyr", "Orus")
+_TTS_MODELS = ("gemini-3.1-flash-tts-preview", "gemini-2.5-pro-preview-tts", "gemini-2.5-flash-preview-tts")
+_TTS_CACHE = {}
+
+
+def _l16_to_wav(raw, rate, channels):
+    import struct
+    block_align = channels * 2
+    byte_rate = rate * block_align
+    data_size = len(raw)
+    header = struct.pack(
+        "<4sI4s4sIHHIIHH4sI",
+        b"RIFF", 36 + data_size, b"WAVE",
+        b"fmt ", 16, 1, channels, rate, byte_rate, block_align, 16,
+        b"data", data_size,
+    )
+    return header + raw
+
+
+def _gemini_tts(text, voice):
+    import base64
+    import re
+    import time as _time
+    import requests
+    key = cfg.get("gemini_api_key", "").strip()
+    if not key:
+        return None, None, "Gemini kaliti sozlanmagan"
+    last_err = "TTS xizmati ishlamayapti"
+    max_attempts = 4
+    for model in _TTS_MODELS:
+        url = ("https://generativelanguage.googleapis.com/v1beta/models/" +
+               urllib.parse.quote(model) + ":generateContent?key=" + urllib.parse.quote(key))
+        body = {
+            "contents": [{"parts": [{"text": text}]}],
+            "generationConfig": {
+                "response_modalities": ["AUDIO"],
+                "speechConfig": {"voiceConfig": {"prebuiltVoiceConfig": {"voiceName": voice}}},
+            },
+        }
+        for attempt in range(1, max_attempts + 1):
+            try:
+                r = requests.post(url, json=body, timeout=90)
+            except Exception as e:
+                last_err = "TTS bog'lanish xatosi"
+                if attempt < max_attempts:
+                    _time.sleep(1.5 * attempt)
+                    continue
+                break
+            if r.status_code == 429 or r.status_code >= 500:
+                last_err = "TTS xatosi (HTTP %s)" % r.status_code
+                if r.status_code == 429 and attempt == 1:
+                    break
+                if attempt < max_attempts:
+                    _time.sleep(1.0 * attempt)
+                    continue
+                break
+            if r.status_code != 200:
+                last_err = "TTS xatosi (HTTP %s)" % r.status_code
+                break
+            try:
+                j = r.json()
+            except Exception:
+                last_err = "TTS javobini o'qib bo'lmadi"
+                if attempt < max_attempts:
+                    _time.sleep(1.0 * attempt)
+                    continue
+                break
+            if "error" in j:
+                last_err = "Gemini: " + str(j["error"].get("message", "xatolik"))
+                if attempt < max_attempts:
+                    _time.sleep(2.0 * attempt)
+                    continue
+                break
+            try:
+                parts = j["candidates"][0]["content"]["parts"]
+            except Exception:
+                last_err = "TTS javobida ovoz yo'q"
+                if attempt < max_attempts:
+                    _time.sleep(1.5 * attempt)
+                    continue
+                break
+            for p in parts:
+                d = p.get("inlineData") or {}
+                if not d.get("data"):
+                    continue
+                mime = d.get("mimeType") or "audio/wav"
+                data64 = d["data"]
+                if mime.lower().startswith("audio/l16"):
+                    m = re.search(r"rate=(\d+)", mime)
+                    rate = int(m.group(1)) if m else 24000
+                    m = re.search(r"channels=(\d+)", mime)
+                    channels = int(m.group(1)) if m else 1
+                    data64 = base64.b64encode(_l16_to_wav(base64.b64decode(data64), rate, channels)).decode()
+                    mime = "audio/wav"
+                return mime, data64, None
+            last_err = "TTS javobida ovoz topilmadi"
+            break
+    return None, None, last_err
+
+
+@app.route("/api/tts")
+@safe_api
+def api_tts():
+    import base64
+    u = current_user()
+    if u is None:
+        return api_error("Kirish kerak", 401)
+    if u["blocked"]:
+        return api_error("Hisobingiz bloklangan", 403)
+    voice = (request.args.get("voice") or "").strip()
+    if voice not in TTS_VOICES:
+        voice = "Kore"
+    text = (request.args.get("text") or "").strip()
+    if not text:
+        return api_error("text kerak", 400)
+    if len(text) > 400:
+        return api_error("text juda uzun (max 400 belgi)", 413)
+    ip = request.remote_addr or "?"
+    if rate_limited("tts:" + ip, limit=240, window=600):
+        return api_error("Ovoz so'rovlari soni oshib ketdi. Birozdan keyin qayta urinib ko'ring.", 429)
+    key = (voice + "::" + text).encode("utf-8")
+    h = hashlib.md5(key).hexdigest()
+    cached = _TTS_CACHE.get(h)
+    if cached:
+        mime, b64 = cached
+    else:
+        mime, b64, err = _gemini_tts(text, voice)
+        if err or not b64:
+            return api_error(err or "Audio yaratilmadi", 502)
+        if len(_TTS_CACHE) > 500:
+            _TTS_CACHE.clear()
+        _TTS_CACHE[h] = (mime, b64)
+    data = base64.b64decode(b64)
+    return Response(data, content_type=mime, headers={
+        "Cache-Control": "public, max-age=86400",
+        "Content-Length": str(len(data)),
+    })
+
+
+# ---------------- Legal pages ----------------
+
+@app.route("/terms")
+def terms_page():
+    body = open(os.path.join(BASE_DIR, "terms.html"), encoding="utf-8").read()
+    return body
+
+
+@app.route("/privacy")
+def privacy_page():
+    body = open(os.path.join(BASE_DIR, "privacy.html"), encoding="utf-8").read()
+    return body
+
+
+@app.route("/api/account/delete", methods=["POST"])
+@safe_api
+def api_account_delete():
+    u = current_user()
+    if u is None:
+        return api_error("Avval tizimga kiring", 401)
+    uid = u["id"]
+    is_admin = bool(u["is_admin"])
+    conn = db()
+    conn.execute("DELETE FROM users WHERE id=?", (uid,))
+    conn.commit()
+    conn.close()
+    log.info("ACCOUNT DELETED: id=%s is_admin=%s", uid, is_admin)
+    session.clear()
+    return jsonify({"ok": True})
 
 
 # ---------------- Admin ----------------
@@ -1449,13 +1964,13 @@ def api_ai_score():
 def admin_page():
     u = current_user()
     error = request.args.get("error", "")
-    phone = request.args.get("phone", "")
+    email = request.args.get("email", "")
     body = open(os.path.join(BASE_DIR, "admin.html"), encoding="utf-8").read()
     if u is None or not u["is_admin"]:
         if not error and session.get("kicked"):
             session.pop("kicked", None)
             error = "kicked"
-        return render_template_string(body, is_admin=False, error=error, phone=phone, stats={})
+        return render_template_string(body, is_admin=False, error=error, email=email, stats={})
     now = datetime.datetime.now()
     in7 = (now + datetime.timedelta(days=7)).isoformat()
     conn = db()
@@ -1469,7 +1984,7 @@ def admin_page():
     revenue = conn.execute(
         "SELECT COALESCE(SUM(amount),0) s FROM payments WHERE status='paid'").fetchone()["s"]
     conn.close()
-    return render_template_string(body, is_admin=True, error="", phone="", stats={
+    return render_template_string(body, is_admin=True, error="", email="", stats={
         "total_users": total_users,
         "active": active,
         "expiring": expiring,
@@ -1482,30 +1997,34 @@ def admin_login():
     if rate_limited(client_key("admin_login"), limit=5, window=600):
         log.warning("ADMIN LOGIN RATE LIMITED: IP=%s", request.remote_addr)
         return redirect("/admin?error=login&msg=too-many")
-    raw_phone = request.form.get("phone", "")
+    raw_email = request.form.get("email", "").strip().lower()
     raw_pw = request.form.get("password", "")
     try:
-        phone = validate_phone(raw_phone)
+        email = raw_email or ""
         pw = (raw_pw or "").strip()
-    except ValueError as e:
-        log.warning("ADMIN LOGIN VALIDATION FAIL: raw_phone=%r reason=%s IP=%s",
-                    raw_phone, str(e), request.remote_addr)
+    except Exception:
+        log.warning("ADMIN LOGIN VALIDATION FAIL: raw_email=%r IP=%s",
+                    raw_email, request.remote_addr)
         return redirect("/admin?error=login")
-    if not phone or not pw:
-        log.warning("ADMIN LOGIN EMPTY FIELD: phone=%r pw_empty=%s IP=%s",
-                    phone, not pw, request.remote_addr)
-        return redirect("/admin?error=login&phone=" + urllib.parse.quote(phone))
+    if not email or not pw:
+        log.warning("ADMIN LOGIN EMPTY FIELD: email=%r pw_empty=%s IP=%s",
+                    email, not pw, request.remote_addr)
+        return redirect("/admin?error=login&email=" + urllib.parse.quote(email))
     conn = db()
-    u = conn.execute("SELECT * FROM users WHERE phone=? AND is_admin=1", (phone,)).fetchone()
+    u = conn.execute("SELECT * FROM users WHERE lower(email)=? AND is_admin=1", (email,)).fetchone()
     conn.close()
     if u is None:
-        log.warning("ADMIN LOGIN FAIL (admin not found): phone=%s IP=%s",
-                    phone, request.remote_addr)
-        return redirect("/admin?error=login&phone=" + urllib.parse.quote(phone))
+        log.warning("ADMIN LOGIN FAIL (admin not found): email=%s IP=%s",
+                    email, request.remote_addr)
+        return redirect("/admin?error=login&email=" + urllib.parse.quote(email))
+    if u["blocked"]:
+        log.warning("ADMIN LOGIN FAIL (blocked): email=%s id=%s IP=%s",
+                    email, u["id"], request.remote_addr)
+        return redirect("/admin?error=login&email=" + urllib.parse.quote(email))
     if not verify_password(pw, u["password_hash"]):
-        log.warning("ADMIN LOGIN FAIL (wrong password): phone=%s id=%s IP=%s",
-                    phone, u["id"], request.remote_addr)
-        return redirect("/admin?error=login&phone=" + urllib.parse.quote(phone))
+        log.warning("ADMIN LOGIN FAIL (wrong password): email=%s id=%s IP=%s",
+                    email, u["id"], request.remote_addr)
+        return redirect("/admin?error=login&email=" + urllib.parse.quote(email))
     token = secrets.token_hex(16)
     conn = db()
     conn.execute("UPDATE users SET session_token=? WHERE id=?", (token, u["id"]))
@@ -1515,7 +2034,7 @@ def admin_login():
     session["uid"] = u["id"]
     session["token"] = token
     session.permanent = True
-    log.info("ADMIN LOGIN OK: id=%s phone=%s IP=%s", u["id"], phone, request.remote_addr)
+    log.info("ADMIN LOGIN OK: id=%s email=%s IP=%s", u["id"], email, request.remote_addr)
     return redirect("/admin")
 
 
@@ -1557,11 +2076,11 @@ def admin_users():
     conn = db()
     if q:
         rows = conn.execute(
-            "SELECT id, phone, name, is_admin, blocked, lifetime, access_until, usage_seconds, last_seen, created_at FROM users WHERE phone LIKE ? OR name LIKE ? ORDER BY id DESC LIMIT 500",
-            ("%" + q + "%", "%" + q + "%")).fetchall()
+            "SELECT id, phone, email, google_sub, name, is_admin, blocked, lifetime, access_until, usage_seconds, last_seen, created_at FROM users WHERE phone LIKE ? OR name LIKE ? OR email LIKE ? ORDER BY id DESC LIMIT 500",
+            ("%" + q + "%", "%" + q + "%", "%" + q + "%")).fetchall()
     else:
         rows = conn.execute(
-            "SELECT id, phone, name, is_admin, blocked, lifetime, access_until, usage_seconds, last_seen, created_at FROM users ORDER BY id DESC LIMIT 500").fetchall()
+            "SELECT id, phone, email, google_sub, name, is_admin, blocked, lifetime, access_until, usage_seconds, last_seen, created_at FROM users ORDER BY id DESC LIMIT 500").fetchall()
     conn.close()
     return jsonify({"ok": True, "users": [dict(r) for r in rows]})
 
@@ -1789,6 +2308,8 @@ def admin_config():
         base_url = request.form.get("base_url", "").strip()
         tg_token = request.form.get("telegram_bot_token", "").strip()
         tg_chat = request.form.get("telegram_chat_id", "").strip()
+        g_cid = request.form.get("google_client_id", "").strip()
+        g_csec = request.form.get("google_client_secret", "").strip()
         cfg["card_number"] = card or cfg["card_number"]
         cfg["card_holder"] = holder or cfg["card_holder"]
         if base_url:
@@ -1797,6 +2318,10 @@ def admin_config():
             cfg["telegram_bot_token"] = tg_token
         if tg_chat:
             cfg["telegram_chat_id"] = tg_chat
+        if g_cid:
+            cfg["google_client_id"] = g_cid
+        if g_csec:
+            cfg["google_client_secret"] = g_csec
         save_config(cfg)
         return jsonify({"ok": True})
     return jsonify({
@@ -1806,6 +2331,8 @@ def admin_config():
         "base_url": cfg["base_url"],
         "telegram_bot_token": cfg.get("telegram_bot_token", ""),
         "telegram_chat_id": cfg.get("telegram_chat_id", ""),
+        "google_client_id": cfg.get("google_client_id", ""),
+        "google_redirect_uri": google_redirect_uri(),
     })
 
 

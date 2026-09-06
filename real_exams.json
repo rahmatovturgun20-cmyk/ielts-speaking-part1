@@ -1,0 +1,666 @@
+[
+  {
+    "date": "2024-05-25",
+    "label": "25.05.2024",
+    "slots": [
+      {
+        "joy": "1-joy",
+        "part1": [
+          "What do you do at the weekends?",
+          "Do you like cooking?",
+          "Which is your favourite room in your home?"
+        ],
+        "part12": {
+          "img": "part12/set20.png",
+          "q": [
+            "Describe these pictures.",
+            "Which one do you prefer studying online or offline?",
+            "What are advantages of studying offline?"
+          ]
+        },
+        "part2": {
+          "q": "Describe a time when you shared your secret with someone.",
+          "p": [
+            "How did you feel after sharing it?",
+            "Do you think secrets should be shared or kept private?"
+          ]
+        },
+        "part3": "part3/1.jpg"
+      },
+      {
+        "joy": "2-joy",
+        "part1": [
+          "Did you enjoy reading when you were a child?",
+          "Do you like shopping online?",
+          "What kind of films do you like?"
+        ],
+        "part12": {
+          "img": "part12/set35.png",
+          "q": [
+            "Describe these holiday locations in the pictures.",
+            "Which of these places is better to spend a holiday?",
+            "Is it important to have holidays?"
+          ]
+        },
+        "part2": {
+          "q": "Describe your achievement in your childhood.",
+          "p": [
+            "What skills did you develop from this achievement?",
+            "How did your family or friends react to your success?"
+          ]
+        },
+        "part3": "part3/2.jpg"
+      }
+    ]
+  },
+  {
+    "date": "2024-06-22",
+    "label": "22.06.2024",
+    "slots": [
+      {
+        "joy": "1-joy",
+        "part1": [
+          "Would you like to live in your hometown in the future?",
+          "What is the most popular pet in your country?",
+          "What is your favorite outdoor activity?"
+        ],
+        "part12": {
+          "img": "part12/set02.png",
+          "q": [
+            "Describe these pictures.",
+            "What are the advantages of studying in a group?",
+            "Which one do you prefer studying online or offline?"
+          ]
+        },
+        "part2": {
+          "q": "Describe a rewarding volunteer experience that was meaningful.",
+          "p": [
+            "What did you learn by volunteering?",
+            "Why is volunteering important for communities?"
+          ]
+        },
+        "part3": "part3/3.jpg"
+      },
+      {
+        "joy": "2-joy",
+        "part1": [
+          "Do you prefer hot or cold weather?",
+          "Did you play any sports as a child?",
+          "Do you like your hometown?"
+        ],
+        "part12": {
+          "img": "part12/set40.png",
+          "q": [
+            "Compare these pictures.",
+            "In which picture is the person facing a more difficult choice?",
+            "Do you like shopping?"
+          ]
+        },
+        "part2": {
+          "q": "Describe a place where you would like to go to relax.",
+          "p": [
+            "Where this place is",
+            "Why you find this location unusual",
+            "How you want to spend your time there"
+          ]
+        },
+        "part3": "part3/4.jpg"
+      },
+      {
+        "joy": "3-joy",
+        "part1": [
+          "Do you like watching movies?",
+          "What types of books do you like to read?",
+          "What is your favorite type of weather?"
+        ],
+        "part12": {
+          "img": "part12/set24.png",
+          "q": [
+            "What do you see in these pictures?",
+            "Would you prefer to stay alone or with other people?",
+            "Do you remember a time when you needed to cooperate with others?"
+          ]
+        },
+        "part2": {
+          "q": "Describe a cultural or family tradition/festival.",
+          "p": [
+            "Why is this tradition meaningful to you?",
+            "Why are cultural traditions important in society?"
+          ]
+        },
+        "part3": "part3/5.jpg"
+      }
+    ]
+  },
+  {
+    "date": "2024-09-14",
+    "label": "14.09.2024",
+    "slots": [
+      {
+        "joy": "1-joy",
+        "part1": [
+          "What season do you like the most?",
+          "Do you spend too much time on your phone?",
+          "Do you like rainy weather?"
+        ],
+        "part12": {
+          "img": "part12/set13.png",
+          "q": [
+            "Describe these two images.",
+            "What are the advantages of riding a bicycle?",
+            "Are transportations harmful for the environment?"
+          ]
+        },
+        "part2": {
+          "q": "Describe an invention that has changed how people live.",
+          "p": [
+            "What it is",
+            "How has it changed people's lives",
+            "What benefits did it bring"
+          ]
+        },
+        "part3": "part3/6.jpg"
+      },
+      {
+        "joy": "2-joy",
+        "part1": [
+          "What sports are popular in your country?",
+          "What do you like most about your hometown?",
+          "What apps do you use most often?"
+        ],
+        "part12": {
+          "img": "part12/set04.png",
+          "q": [
+            "Describe these images?",
+            "Which is convenient for you reading e-books or traditional ones?",
+            "What are the disadvantages of e-books?"
+          ]
+        },
+        "part2": {
+          "q": "Describe an interesting conversation you had with a very old person.",
+          "p": [
+            "Who this person is",
+            "Where you had the conversation",
+            "What you talked about",
+            "How you felt about this experience"
+          ]
+        },
+        "part3": "part3/7.jpg"
+      }
+    ]
+  },
+  {
+    "date": "2024-10-12",
+    "label": "12.10.2024",
+    "slots": [
+      {
+        "joy": "1-joy",
+        "part1": [
+          "What sport do you enjoy watching?",
+          "Did you have hobbies when you were a child?",
+          "Do you like travelling?"
+        ],
+        "part12": {
+          "img": "part12/set07.png",
+          "q": [
+            "What can you see in these pictures?",
+            "What are the advantages of going to the fitness?",
+            "How does running can help to improve our health?"
+          ]
+        },
+        "part2": {
+          "q": "Describe an unfair time.",
+          "p": [
+            "How did that unfair situation affect you?",
+            "Why do unfair situations happen to people?"
+          ]
+        },
+        "part3": "part3/8.jpg"
+      },
+      {
+        "joy": "2-joy",
+        "part1": [
+          "Do you prefer taking photos yourself or having them taken?",
+          "What do you do on weekends?",
+          "Do you think you could be a teacher?"
+        ],
+        "part12": {
+          "img": "part12/set41.png",
+          "q": [
+            "Describe the pictures.",
+            "Where do you usually buy groceries?",
+            "What is the difference between shopping at supermarkets and at markets?"
+          ]
+        },
+        "part2": {
+          "q": "Describe a time when you faced challenges.",
+          "p": [
+            "What was the biggest challenge you faced, and how did you overcome it?",
+            "Did this experience change your approach to handling difficult situations?"
+          ]
+        },
+        "part3": "part3/9.jpg"
+      },
+      {
+        "joy": "3-joy",
+        "part1": [
+          "Who is your best friend?",
+          "Who is your favorite sportsperson?",
+          "How often do you visit parks?"
+        ],
+        "part12": {
+          "img": "part12/set21.png",
+          "q": [
+            "What can you observe in these pictures?",
+            "How we can become healthy by doing fitness?",
+            "Do you do any sporting activities?"
+          ]
+        },
+        "part2": {
+          "q": "Describe a time when you took a leadership role.",
+          "p": [
+            "What did you learn from leading others?",
+            "What qualities make a good leader?"
+          ]
+        },
+        "part3": "part3/10.jpg"
+      }
+    ]
+  },
+  {
+    "date": "2024-11-09",
+    "label": "09.11.2024",
+    "slots": [
+      {
+        "joy": "1-joy",
+        "part1": [
+          "What kind of music do you like?",
+          "Tell me about your room.",
+          "What is the last thing you bought?"
+        ],
+        "part12": {
+          "img": "part12/set45.png",
+          "q": [
+            "Compare the pictures and say what you can see.",
+            "What are the advantages and disadvantages of cooking for yourself and eating out?",
+            "Do you often cook for yourself?"
+          ]
+        },
+        "part2": {
+          "q": "Describe a time when you took a risk.",
+          "p": [
+            "What made you decide to take this risk?",
+            "How did this experience affect your confidence or outlook?"
+          ]
+        },
+        "part3": "part3/11.jpg"
+      },
+      {
+        "joy": "2-joy",
+        "part1": [
+          "Where do you live?",
+          "Can you play a musical instrument?",
+          "Has your hometown changed much over the years?"
+        ],
+        "part12": {
+          "img": "part12/set46.png",
+          "q": [
+            "Describe the animals in the pictures.",
+            "What are the advantages and disadvantages of keeping animals in captivity?",
+            "Do you support zoos which keep animals captive?"
+          ]
+        },
+        "part2": {
+          "q": "Describe a person who influenced you.",
+          "p": [
+            "How did this person inspire or motivate you?",
+            "In what ways has this person's influence shaped your goals or values?"
+          ]
+        },
+        "part3": "part3/12.jpg"
+      }
+    ]
+  },
+  {
+    "date": "2025-02-15",
+    "label": "15.02.2025",
+    "slots": [
+      {
+        "joy": "1-joy",
+        "part1": [
+          "Did you plan anything recently?",
+          "Do you take photographs of yourself? (selfies)",
+          "What kind of clothes do you like to wear?"
+        ],
+        "part12": {
+          "img": "part12/set37.png",
+          "q": [
+            "Describe what you see in the pictures.",
+            "What are the differences between remote working and working at workplaces?",
+            "Why do many people today want remote working?"
+          ]
+        },
+        "part2": {
+          "q": "Describe a time when you tried something but failed.",
+          "p": [
+            "How did this situation impact your life?",
+            "What should people do to overcome failure?"
+          ]
+        },
+        "part3": "part3/13.jpg"
+      },
+      {
+        "joy": "2-joy",
+        "part1": [
+          "Have you ever been to a concert?",
+          "Tell me about your dream job.",
+          "Do you have a good memory?"
+        ],
+        "part12": {
+          "img": "part12/set17.png",
+          "q": [
+            "What can you observe in these two pictures?",
+            "What are the advantages of supermarkets?",
+            "Why do a lot of people prefer to do shopping in open stores?"
+          ]
+        },
+        "part2": {
+          "q": "Describe a time when you made an important decision.",
+          "p": [
+            "What factors influenced your choice?",
+            "How did you feel after making the decision?"
+          ]
+        },
+        "part3": "part3/14.jpg"
+      },
+      {
+        "joy": "3-joy",
+        "part1": [
+          "What is your favorite hobby?",
+          "Do you like to be near the beach or sea?",
+          "Do you like taking photos?"
+        ],
+        "part12": {
+          "img": "part12/set03.png",
+          "q": [
+            "What can you see in these images?",
+            "Why the junk food is unhealthy?",
+            "Do you prefer eating salads?"
+          ]
+        },
+        "part2": {
+          "q": "Describe a time when you felt truly free.",
+          "p": [
+            "What made you feel this way?",
+            "What helps people feel a sense of freedom?"
+          ]
+        },
+        "part3": "part3/15.jpg"
+      }
+    ]
+  },
+  {
+    "date": "2025-04-12",
+    "label": "12.04.2025",
+    "slots": [
+      {
+        "joy": "1-joy",
+        "part1": [
+          "What's your favorite way to spend your evenings?",
+          "What is the weather like in your country?",
+          "Did you try any new food recently?"
+        ],
+        "part12": {
+          "img": "part12/set47.png",
+          "q": [
+            "What can you see in these pictures?",
+            "Which transportation do you prefer?",
+            "What are the advantages of road transport and air transport?"
+          ]
+        },
+        "part2": {
+          "q": "Describe a time when you felt happy.",
+          "p": [
+            "What was the source of your happiness during that time?",
+            "How did this happiness impact your interactions with others?"
+          ]
+        },
+        "part3": "part3/16.jpg"
+      },
+      {
+        "joy": "2-joy",
+        "part1": [
+          "Do you have a favourite number?",
+          "What do you like to do at home?",
+          "What did you do last weekend?"
+        ],
+        "part12": {
+          "img": "part12/set49.png",
+          "q": [
+            "Describe the pictures.",
+            "Do you like marine life?",
+            "Do you keep a pet?"
+          ]
+        },
+        "part2": {
+          "q": "Describe a successful moment in your life.",
+          "p": [
+            "Why was this moment important to you?",
+            "What factors usually help people achieve success?"
+          ]
+        },
+        "part3": "part3/17.jpg"
+      }
+    ]
+  },
+  {
+    "date": "2025-06-14",
+    "label": "14.06.2025",
+    "slots": [
+      {
+        "joy": "1-joy",
+        "part1": [
+          "How do you relax?",
+          "Do you read books often or watch movies?",
+          "What is your typical daily routine?"
+        ],
+        "part12": {
+          "img": "part12/set39.png",
+          "q": [
+            "What can you see in the pictures?",
+            "Why do some prefer to watch at home while others in cinema?",
+            "What sorts of movies do you often watch?"
+          ]
+        },
+        "part2": {
+          "q": "Describe a time when you experienced a failure.",
+          "p": [
+            "How did you handle the feelings associated with this failure?",
+            "What advice would you give to someone going through a similar experience?"
+          ]
+        },
+        "part3": "part3/18.jpg"
+      },
+      {
+        "joy": "2-joy",
+        "part1": [
+          "Do you prefer to eat at home or eat out?",
+          "What was the last book you read?",
+          "Do you enjoy going to the gym?"
+        ],
+        "part12": {
+          "img": "part12/set14.png",
+          "q": [
+            "What can you see in these two pictures?",
+            "What are the advantages of working as a group?",
+            "Which one do you prefer working with a group or alone?"
+          ]
+        },
+        "part2": {
+          "q": "Describe a meaningful friendship.",
+          "p": [
+            "How has this friendship impacted your life?",
+            "What makes friendships long-lasting?"
+          ]
+        },
+        "part3": "part3/19.jpg"
+      },
+      {
+        "joy": "3-joy",
+        "part1": [
+          "Do you prefer team sports or individual sports?",
+          "Do you keep photographs of the past?",
+          "What do you eat for breakfast?"
+        ],
+        "part12": {
+          "img": "part12/set31.png",
+          "q": [
+            "What do you see in these pictures?",
+            "Tell me something about your family.",
+            "Do you think more people will work from home in the future?"
+          ]
+        },
+        "part2": {
+          "q": "Describe a hardship in your life.",
+          "p": [
+            "How did you cope with that hardship?",
+            "What helps people stay strong during difficult times?"
+          ]
+        },
+        "part3": "part3/20.jpg"
+      }
+    ]
+  },
+  {
+    "date": "2025-08-16",
+    "label": "16.08.2025",
+    "slots": [
+      {
+        "joy": "1-joy",
+        "part1": [
+          "Do you like public transport?",
+          "Do you like meeting new people?",
+          "What is the newest electronic device you have bought?"
+        ],
+        "part12": {
+          "img": "part12/set38.png",
+          "q": [
+            "What can you see in the pictures?",
+            "Do you prefer public or private transport for commuting?",
+            "How can traffic jams be solved?"
+          ]
+        },
+        "part2": {
+          "q": "Describe a problem that affects the environment in the area where you live.",
+          "p": [
+            "Do people in your country care about the environment",
+            "What do you think can be done to improve the situation"
+          ]
+        },
+        "part3": "part3/21.jpg"
+      },
+      {
+        "joy": "2-joy",
+        "part1": [
+          "Who is your favorite singer?",
+          "Do you like reading? What do you usually read?",
+          "Do you get up early or late?"
+        ],
+        "part12": {
+          "img": "part12/set34.png",
+          "q": [
+            "Who can you see in these pictures?",
+            "What difficulties do they face?",
+            "What is the difference between the jobs in the pictures?"
+          ]
+        },
+        "part2": {
+          "q": "Describe a memory that brings a smile to your face.",
+          "p": [
+            "Why do you think this memory stayed with you?",
+            "What helps people create happy memories?"
+          ]
+        },
+        "part3": "part3/22.jpg"
+      }
+    ]
+  },
+  {
+    "date": "2025-10-11",
+    "label": "11.10.2025",
+    "slots": [
+      {
+        "joy": "1-joy",
+        "part1": [
+          "Do you like animals?",
+          "Do you prefer to read a written book or electronic one?",
+          "What do you do in your free time?"
+        ],
+        "part12": {
+          "img": "part12/set42.png",
+          "q": [
+            "Compare the first picture to the second.",
+            "How do you usually spend your free time?",
+            "What are the pluses and minuses of spending free time in these ways?"
+          ]
+        },
+        "part2": {
+          "q": "Describe a situation when you faced a dilemma.",
+          "p": [
+            "What were the options available to you, and why was it hard to choose?",
+            "How did you feel once you resolved the dilemma?"
+          ]
+        },
+        "part3": "part3/23.jpg"
+      },
+      {
+        "joy": "2-joy",
+        "part1": [
+          "How often do you go shopping?",
+          "What is your favorite animal?",
+          "Have you ever kept a pet?"
+        ],
+        "part12": {
+          "img": "part12/set33.png",
+          "q": [
+            "What are the people in these photos doing?",
+            "What are the benefits of doing sport?",
+            "What sports are popular in your country?"
+          ]
+        },
+        "part2": {
+          "q": "Describe a time when you were afraid of something.",
+          "p": [
+            "How did this experience impact you?",
+            "How can people overcome their fears?"
+          ]
+        },
+        "part3": "part3/24.jpg"
+      },
+      {
+        "joy": "3-joy",
+        "part1": [
+          "Are you good at managing time?",
+          "Do you play any sports?",
+          "Can you describe your family?"
+        ],
+        "part12": {
+          "img": "part12/set19.png",
+          "q": [
+            "What can you see in these pictures?",
+            "Why do some people prefer reading e-books?",
+            "Do you often read books?"
+          ]
+        },
+        "part2": {
+          "q": "Describe a memorable experience you had during a team activity.",
+          "p": [
+            "What role did you play in the team, and how did it contribute to the activity?",
+            "What was the outcome of the team effort, and how did it make you feel?"
+          ]
+        },
+        "part3": "part3/25.jpg"
+      }
+    ]
+  }
+]

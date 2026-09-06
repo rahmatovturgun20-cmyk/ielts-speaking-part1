@@ -32,21 +32,7 @@ let speakChainToken = 0
 
 async function speechReadyForSpeak() {
   await waitVoices()
-  let needCancel = false
-  try { needCancel = window.speechSynthesis.speaking || window.speechSynthesis.pending } catch (e) { needCancel = true }
-  if (needCancel) {
-    try { window.speechSynthesis.cancel() } catch (e) {}
-    const t0 = Date.now()
-    let busy = true
-    while (Date.now() - t0 < 600 && busy) {
-      try { busy = window.speechSynthesis.speaking || window.speechSynthesis.pending } catch (e) { busy = false }
-      await new Promise(r => setTimeout(r, 40))
-    }
-    await new Promise(r => setTimeout(r, 250))
-    try { window.speechSynthesis.cancel() } catch (e) {}
-    try { const ru = new SpeechSynthesisUtterance('\u00A0'); ru.volume = 0; window.speechSynthesis.speak(ru); await new Promise(r => setTimeout(r, 80)) } catch (e) {}
-    try { window.speechSynthesis.cancel() } catch (e) {}
-  }
+  try { window.speechSynthesis.cancel() } catch (e) {}
   try { window.speechSynthesis.resume() } catch (e) {}
 }
 
@@ -84,7 +70,7 @@ function speakChunked(chunks, onDone, opts) {
     u.onend = () => setTimeout(next, 40)
     u.onerror = () => { if (token === speakChainToken) setTimeout(next, 60) }
     i++
-    try { window.speechSynthesis.speak(u) } catch (e) { next() }
+    try { if (window.speechSynthesis.paused) { window.speechSynthesis.resume(); } window.speechSynthesis.speak(u) } catch (e) { next() }
   }
   next()
 }
