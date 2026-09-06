@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html lang="uz">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Real Past Exams — Speaking</title>
+<style>
+  :root {
+      --primary: #2563eb; --primary-light: #3b82f6; --primary-bg: #dbeafe;
+      --primary-glow: rgba(37,99,235,.12); --violet: #1d4ed8;
+      --text: #1f2937; --text-light: #4b5563; --muted: #6b7280;
+      --surface: #ffffff; --surface2: #f9fafb; --border: #e5e7eb;
+      --bg: #f9fafb; --bg-alt: #f3f4f6; --card: #ffffff;
+      --shadow: 0 1px 3px rgba(0,0,0,.08); --shadow-lg: 0 10px 25px rgba(0,0,0,.12);
+      --red: #dc2626; --red-bg: #fee2e2; --green: #10b981; --green-bg: #d1fae5;
+      --amber: #f59e0b; --amber-bg: #fef3c7;
+      --radius: 14px; --radius-sm: 10px; --radius-xs: 7px;
+    }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body { font-family: 'Segoe UI', system-ui, -apple-system, sans-serif; background: var(--bg); color: var(--text); min-height: 100vh; }
+  .app { max-width: 860px; margin: 0 auto; padding: 24px 16px 48px; }
+  .topbar { display: flex; align-items: center; justify-content: space-between; margin-bottom: 20px; gap: 12px; }
+  .back { background: var(--surface); border: 1.5px solid var(--border); color: var(--text); border-radius: var(--radius-sm); padding: 10px 16px; font-size: 14px; font-weight: 700; cursor: pointer; text-decoration: none; display: inline-flex; align-items: center; gap: 8px; font-family: inherit; transition: .15s; }
+  .back:hover { border-color: var(--primary); color: var(--primary); }
+  .count { background: var(--primary-bg); color: var(--primary); padding: 8px 14px; border-radius: var(--radius-sm); font-size: 13px; font-weight: 700; }
+  .hero { text-align: center; margin-bottom: 26px; }
+  .hero h1 { font-size: 26px; font-weight: 800; letter-spacing: -.3px; margin-bottom: 8px; }
+  .hero h1 span { background: linear-gradient(135deg, var(--primary), var(--violet)); -webkit-background-clip: text; background-clip: text; -webkit-text-fill-color: transparent; }
+  .hero p { color: var(--muted); font-size: 14.5px; line-height: 1.6; max-width: 560px; margin: 0 auto; }
+  .exam { background: var(--card); border: 1px solid var(--border); border-radius: var(--radius); box-shadow: var(--shadow); margin-bottom: 16px; overflow: hidden; }
+  .exam-head { display: flex; align-items: center; justify-content: space-between; gap: 12px; padding: 16px 18px; cursor: pointer; user-select: none; }
+  .exam-head:hover { background: var(--surface2); }
+  .exam-date { display: flex; align-items: center; gap: 12px; }
+  .date-badge { width: 48px; height: 48px; border-radius: var(--radius-sm); background: linear-gradient(135deg, var(--primary), var(--violet)); color: #fff; display: flex; flex-direction: column; align-items: center; justify-content: center; font-weight: 800; line-height: 1.05; }
+  .date-badge .d { font-size: 15px; }
+  .date-badge .m { font-size: 9px; text-transform: uppercase; opacity: .85; letter-spacing: .5px; }
+  .exam-date .txt { font-size: 15.5px; font-weight: 700; }
+  .exam-date .sub { font-size: 12.5px; color: var(--muted); margin-top: 2px; }
+  .chevron { color: var(--muted); font-size: 13px; transition: transform .2s; }
+  .exam.open .chevron { transform: rotate(180deg); }
+  .exam-body { display: none; border-top: 1px solid var(--border); padding: 18px; }
+  .exam.open .exam-body { display: block; }
+  .slot { background: var(--surface2); border: 1px solid var(--border); border-radius: var(--radius-sm); padding: 14px 16px; margin-bottom: 12px; }
+  .slot:last-child { margin-bottom: 0; }
+  .slot-title { font-size: 13px; font-weight: 800; color: var(--primary); text-transform: uppercase; letter-spacing: .4px; margin-bottom: 12px; display: flex; align-items: center; gap: 8px; }
+  .part { margin-bottom: 12px; }
+  .part:last-child { margin-bottom: 0; }
+  .part-label { font-size: 12px; font-weight: 800; color: var(--muted); text-transform: uppercase; letter-spacing: .4px; margin-bottom: 6px; }
+  .part .q { font-size: 14px; color: var(--text); line-height: 1.5; margin-bottom: 4px; }
+  .part .q::before { content: "•"; color: var(--primary); margin-right: 6px; }
+  .part-img { margin-top: 6px; }
+  .part-img img { max-width: 200px; border-radius: var(--radius-xs); border: 1px solid var(--border); display: block; }
+  .part-p .cue { margin-left: 14px; font-size: 12.5px; color: var(--muted); margin-top: 2px; }
+  .loading, .empty { text-align: center; padding: 60px 20px; color: var(--muted); }
+  .spinner { width: 40px; height: 40px; border: 4px solid var(--primary-bg); border-top-color: var(--primary); border-radius: 50%; margin: 0 auto 16px; animation: spin .8s linear infinite; }
+  @keyframes spin { to { transform: rotate(360deg); } }
+  .err { color: var(--red); background: var(--red-bg); border-radius: var(--radius-sm); padding: 14px 16px; }
+  .footer { text-align: center; margin-top: 30px; font-size: 13px; color: var(--muted); }
+</style>
+</head>
+<body>
+<div class="app">
+  <div class="topbar">
+    <a class="back" href="/">← Bosh sahifa</a>
+    <span class="count" id="examCount">Real imtihonlar</span>
+  </div>
+
+  <div class="hero">
+    <h1>🎯 <span>Real Past Exams</span></h1>
+    <p>Haqiqiy speaking imtihonlarida tushgan savollar arxivi. Sanani bosib oching va barcha partlar bo'yicha real savollarni ko'ring.</p>
+  </div>
+
+  <div id="list">
+    <div class="loading"><div class="spinner"></div>Yuklanmoqda...</div>
+  </div>
+
+  <div class="footer">SPIKO · Speaking real imtihonlar arxivi</div>
+</div>
+
+<script>
+(function () {
+  var listEl = document.getElementById('list');
+  var countEl = document.getElementById('examCount');
+
+  function esc(s) {
+    return String(s == null ? '' : s)
+      .replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;')
+      .replace(/"/g, '&quot;').replace(/'/g, '&#39;');
+  }
+
+  function monthName(mm) {
+    var names = ['Yan', 'Fev', 'Mar', 'Apr', 'May', 'Iyn', 'Iyl', 'Avg', 'Sen', 'Okt', 'Noy', 'Dek'];
+    return names[parseInt(mm, 10) - 1] || '';
+  }
+
+  function slotHtml(s) {
+    var html = '<div class="slot"><div class="slot-title">🎟️ ' + esc(s.joy) + '</div>';
+
+    if (s.part1 && s.part1.length) {
+      html += '<div class="part"><div class="part-label">Part 1.1 — Savollar</div>';
+      s.part1.forEach(function (q) { html += '<div class="q">' + esc(q) + '</div>'; });
+      html += '</div>';
+    }
+
+    if (s.part12) {
+      html += '<div class="part"><div class="part-label">Part 1.2 — Rasmlar</div>';
+      if (s.part12.img) {
+        html += '<div class="part-img"><img src="' + esc(s.part12.img) + '" alt="pictures"></div>';
+      }
+      (s.part12.q || []).forEach(function (q) { html += '<div class="q">' + esc(q) + '</div>'; });
+      html += '</div>';
+    }
+
+    if (s.part2) {
+      html += '<div class="part"><div class="part-label">Part 2 — Cue card</div>';
+      html += '<div class="q">' + esc(s.part2.q) + '</div>';
+      (s.part2.p || []).forEach(function (p) { html += '<div class="part-p"><div class="cue">▸ ' + esc(p) + '</div></div>'; });
+      html += '</div>';
+    }
+
+    if (s.part3) {
+      html += '<div class="part"><div class="part-label">Part 3 — Task card (rasm)</div>';
+      html += '<div class="part-img"><img src="' + esc(s.part3) + '" alt="task card"></div>';
+      html += '</div>';
+    }
+
+    html += '</div>';
+    return html;
+  }
+
+  function examHtml(e) {
+    var date = esc(e.label || e.date || '');
+    var d = date.split('.');
+    var day = d[0] || '--';
+    var mon = d[1] ? monthName(d[1]) : '';
+    var slots = (e.slots || []).length;
+
+    var body = '';
+    (e.slots || []).forEach(function (s) { body += slotHtml(s); });
+
+    return '<div class="exam" onclick="this.classList.toggle(\'open\')">'
+      + '<div class="exam-head">'
+      + '<div class="exam-date">'
+      + '<div class="date-badge"><span class="d">' + esc(day) + '</span><span class="m">' + esc(mon) + '</span></div>'
+      + '<div><div class="txt">' + date + '</div><div class="sub">' + slots + (slots === 1 ? ' joy' : ' joy') + '</div></div>'
+      + '</div>'
+      + '<span class="chevron">▼</span>'
+      + '</div>'
+      + '<div class="exam-body">' + body + '</div>'
+      + '</div>';
+  }
+
+  fetch('/api/real-exams')
+    .then(function (r) { return r.json(); })
+    .then(function (data) {
+      if (!data.ok) throw new Error('ok false');
+      var exams = data.exams || [];
+      countEl.textContent = exams.length + ' ta imtihon';
+      if (!exams.length) {
+        listEl.innerHTML = '<div class="empty">Hozircha real imtihonlar mavjud emas.</div>';
+        return;
+      }
+      listEl.innerHTML = exams.map(examHtml).join('');
+    })
+    .catch(function () {
+      listEl.innerHTML = '<div class="err">Real imtihonlarni yuklashda xatolik yuz berdi. Iltimos, qayta urinib ko\'ring.</div>';
+    });
+})();
+</script>
+</body>
+</html>

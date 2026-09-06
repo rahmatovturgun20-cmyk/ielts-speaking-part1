@@ -162,6 +162,7 @@ APP_PAGES = [
     "index-mobile.html",
     "CEFR-speaking-part1.html",
     "CEFR-speaking-part1-mobile.html",
+    "speaking-history.html",
     "landing.html",
 ]
 
@@ -933,6 +934,11 @@ def page_cefr_mobile():
     return gate_page("CEFR-speaking-part1-mobile.html")
 
 
+@app.route("/speaking/history")
+def page_speaking_history():
+    return gate_page("speaking-history.html")
+
+
 def gate_page(fn):
     u = current_user()
     if u is None:
@@ -1041,6 +1047,19 @@ def api_content():
     if access:
         return jsonify({"ok": True, "access": True, "totals": totals, "data": data})
     return jsonify({"ok": True, "access": False, "totals": totals, "data": truncate_content(data)})
+
+
+@app.route("/api/real-exams")
+def api_real_exams():
+    """Real past speaking imtihonlari arxivini qaytaradi (kirgan foydalanuvchilar uchun)."""
+    if current_user() is None:
+        return jsonify({"ok": False, "error": "auth"}), 401
+    try:
+        with open(REAL_EXAMS_FILE, encoding="utf-8") as f:
+            exams = json.load(f)
+    except (OSError, ValueError):
+        exams = []
+    return jsonify({"ok": True, "exams": exams})
 
 
 @app.route("/api/heartbeat", methods=["POST"])
@@ -2213,7 +2232,8 @@ def admin_backup():
 # Blacklist (qora ro'yxat) xavfli edi: yangi fayl qo'shilsa (.bat/.vbs/.exe/.pdf va h.k.) oshkor bo'lardi.
 ALLOWED_PAGES = {
     "index.html", "index-mobile.html", "landing.html", "paywall.html", "admin.html",
-    "cefr-speaking-part1.html", "cefr-speaking-part1-mobile.html", "signal-preview.html",
+    "cefr-speaking-part1.html", "cefr-speaking-part1-mobile.html", "speaking-history.html",
+    "signal-preview.html",
     "manifest.json", "sw.js",
 }
 IMG_EXT = (".png", ".jpg", ".jpeg", ".webp", ".gif")
