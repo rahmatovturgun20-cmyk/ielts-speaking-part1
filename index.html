@@ -1596,8 +1596,11 @@
   .gacc.open .gacc-chev { transform: rotate(90deg); }
   .gacc-body { display: none; padding: 4px 12px 12px; border-top: 1px dashed rgba(0,0,0,.08); }
   .gacc.open .gacc-body { display: block; }
-  .gacc-q { display: flex; gap: 8px; padding: 5px 2px; font-size: 13px; line-height: 1.45; color: #0f172a; }
+  .gacc-q { display: flex; align-items: center; gap: 8px; padding: 5px 2px; font-size: 13px; line-height: 1.45; color: #0f172a; }
   .gacc-q b { color: var(--primary); min-width: 20px; font-size: 12px; }
+  .qstart { margin-left: auto; flex: none; align-self: center; background: linear-gradient(135deg, #34d399, #059669); color: #fff; border: 0; border-radius: 999px; padding: 7px 14px; font-size: 12px; font-weight: 700; cursor: pointer; white-space: nowrap; box-shadow: 0 6px 14px -6px rgba(16, 185, 129, .55); transition: transform .12s, box-shadow .12s; }
+  .qstart:hover { transform: translateY(-1px); box-shadow: 0 8px 18px -6px rgba(16, 185, 129, .65); }
+  .qstart:active { transform: translateY(0); }
   .gacc-point { display: flex; gap: 8px; padding: 4px 2px; font-size: 12.5px; color: #475569; line-height: 1.45; }
   .gacc-point b { color: #94a3b8; min-width: 14px; font-weight: 700; }
   .gacc-img { width: 100%; height: auto; border-radius: 10px; margin: 4px 0 6px; object-fit: contain; }
@@ -5452,6 +5455,10 @@ let results = [];
     return card;
   }
 
+  function qstartBtn(part, from, to) {
+    return '<button type="button" class="qstart" data-part="' + part + '" data-from="' + from + '" data-to="' + (to === undefined ? (from + 1) : to) + '">\u25B6 Start practice</button>';
+  }
+
   function renderGroupButtons() {
       const gl = $('groupList');
       if (!gl) { return; }
@@ -5467,7 +5474,7 @@ let results = [];
         const qs = SAVOLLAR.slice(g.from, g.to);
         let body = '';
         qs.forEach((q, i) => {
-          body += '<div class="gacc-q"><b>' + (g.from + i + 1) + '.</b> <span>' + escapeHtml(q) + '</span></div>';
+          body += '<div class="gacc-q"><b>' + (g.from + i + 1) + '.</b> <span>' + escapeHtml(q) + '</span>' + qstartBtn('p1', g.from + i) + '</div>';
         });
         const card = makeGroupAcc({
           head: (g.all ? '\uD83D\uDCDA ' : '\uD83D\uDCC1 ') + escapeHtml(g.label),
@@ -5511,7 +5518,7 @@ let results = [];
         if (s) {
           body += '<img class="gacc-img" src="' + escapeHtml(s.img) + '" alt="Rasm ' + (g.from + 1) + '">';
           (s.q || []).forEach((qq, qi) => {
-            body += '<div class="gacc-q"><b>' + (qi + 1) + '.</b> <span>' + escapeHtml(qq) + '</span></div>';
+            body += '<div class="gacc-q"><b>' + (qi + 1) + '.</b> <span>' + escapeHtml(qq) + '</span>' + qstartBtn('p12', g.from) + '</div>';
           });
         }
         const card = makeGroupAcc({
@@ -5554,7 +5561,7 @@ let results = [];
         const c = PART2_CARDS[g.from];
         let body = '';
         if (c) {
-          body += '<div class="gacc-q"><b>\u2022</b> <span>' + escapeHtml(c.q) + '</span></div>';
+          body += '<div class="gacc-q"><b>\u2022</b> <span>' + escapeHtml(c.q) + '</span>' + qstartBtn('p2', g.from) + '</div>';
           (c.p || []).forEach((pt) => {
             body += '<div class="gacc-point"><b>\u00B7</b> <span>' + escapeHtml(pt) + '</span></div>';
           });
@@ -5598,7 +5605,7 @@ let results = [];
       groups.forEach((g) => {
         const img = PART3_IMAGES[g.from];
         let body = '';
-        if (img) { body += '<img class="gacc-img" src="' + escapeHtml(img) + '" alt="Task ' + (g.from + 1) + '">'; }
+        if (img) { body += '<img class="gacc-img" src="' + escapeHtml(img) + '" alt="Task ' + (g.from + 1) + '"><div class="gacc-q">' + qstartBtn('p3', g.from) + '</div>'; }
         const card = makeGroupAcc({
           head: '\uD83D\uDDBC\uFE0F ' + escapeHtml(g.label),
           count: (g.to - g.from) + ' ta',
@@ -10534,7 +10541,7 @@ function escapeHtml(s) {
 
 
 
-startBtn.addEventListener('click', async () => {
+async function beginPractice() {
 
 
 
@@ -11005,6 +11012,24 @@ idx = 0; results = [];
 
 
 
+  }
+  startBtn.addEventListener('click', beginPractice);
+
+  function startPracticeAt(part, from, to) {
+    if (part === 'p1') { selectedPart = 'p1'; selGroupStart = from; selGroupEnd = to || (from + 1); }
+    else if (part === 'p12') { selectedPart = 'p2'; picSelStart = from; picTotal = 1; }
+    else if (part === 'p2') { selectedPart = 'p3'; p2SelStart = from; p2SelEnd = to || (from + 1); }
+    else if (part === 'p3') { selectedPart = 'p4'; p3SelStart = from; p3Total = 1; }
+    stopSpeech();
+    beginPractice();
+  }
+
+  document.addEventListener('click', function (ev) {
+    var btn = ev.target && ev.target.closest ? ev.target.closest('.qstart') : null;
+    if (!btn) { return; }
+    var acc = btn.closest('.gacc');
+    if (acc && acc.classList.contains('premium') && !hasAccess) { openPlansModal(); return; }
+    startPracticeAt(btn.dataset.part, parseInt(btn.dataset.from, 10) || 0, parseInt(btn.dataset.to, 10) || 0);
   });
 
 
