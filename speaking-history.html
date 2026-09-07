@@ -108,7 +108,7 @@
     if (s.part12) {
       html += '<div class="part"><div class="part-label">Part 1.2 — Rasmlar</div>';
       if (s.part12.img) {
-        html += '<div class="part-img"><img src="' + esc(s.part12.img) + '" alt="pictures"></div>';
+        html += '<div class="part-img"><img src="/' + esc(s.part12.img) + '" alt="pictures"></div>';
       }
       (s.part12.q || []).forEach(function (q) { html += '<div class="q">' + esc(q) + '</div>'; });
       html += '</div>';
@@ -123,7 +123,7 @@
 
     if (s.part3) {
       html += '<div class="part"><div class="part-label">Part 3 — Task card (rasm)</div>';
-      html += '<div class="part-img"><img src="' + esc(s.part3) + '" alt="task card"></div>';
+      html += '<div class="part-img"><img src="/' + esc(s.part3) + '" alt="task card"></div>';
       html += '</div>';
     }
 

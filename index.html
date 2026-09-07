@@ -11554,6 +11554,8 @@ nextQuestion();
 
   });
 
+  window.beginRealExam = beginRealExam;
+
   async function beginRealExam(examDate, slotIdx) {
 
     try { const mc = await fetch('/api/mock/start', { method: 'POST' }); const md = await mc.json(); if (!md.ok) { window.open('https://t.me/rahmatovturgun?text=' + encodeURIComponent('Assalomu alaykum! Men sizning veb-saytingizdagi Premium paketni sotib olmoqchiman.'), '_blank'); return; } } catch (e) {}
