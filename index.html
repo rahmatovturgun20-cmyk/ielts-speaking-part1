@@ -3618,11 +3618,14 @@ html.dark .ai-loading { color: #94a3b8; }
   #questionsCard .intro-header { margin: 2px 0 14px; }
   #questionsCard .app-title { font-size: clamp(18px, 3.5vw, 24px); margin: 0; }
 
-  /* main content vertically centered */
-  .container { justify-content: center; justify-content: safe center; align-items: center; }
-  #setupCard, #questionsCard { width: 100%; }
+  /* main content vertically centered — safe fullscreen centering */
+  .container {
+    display: flex; flex-direction: column;
+    align-items: center;
+  }
+  #setupCard, #questionsCard { width: 100%; margin: auto 0; }
 
-  /* main page — compact and centered */
+  /* main page — compact, centered, fullscreen-friendly */
   #setupCard {
     width: 100%; max-width: 780px;
     display: flex; flex-direction: column;
