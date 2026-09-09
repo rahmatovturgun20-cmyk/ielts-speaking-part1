@@ -5632,9 +5632,12 @@ function openPlansModal() {
 }
 function closePlansModal() { var m = document.getElementById('plansModal'); if (m) { m.classList.add('hidden'); } }
 function selectPlan(p) {
-  var msg = 'Assalomu alaykum! Men sizning veb-saytingizdagi Premium paketni sotib olmoqchiman. Tanlangan obuna: ' + p.name + ' (' + p.price_fmt + ').';
-  window.open('https://t.me/rahmatovturgun?text=' + encodeURIComponent(msg), '_blank');
-  closePlansModal();
+  function openTg(msg) { window.open('https://t.me/rahmatovturgun?text=' + encodeURIComponent(msg), '_blank'); closePlansModal(); }
+  var base = 'Assalomu alaykum! Men sizning veb-saytingizdagi Premium paketni sotib olmoqchiman. Tanlangan obuna: ' + p.name + ' (' + p.price_fmt + ').';
+  fetch('/api/me').then(function(r){ return r.json(); }).then(function(m){
+    var msg = base + (m && m.ok && m.email ? ' Google account: ' + m.email : '');
+    openTg(msg);
+  }).catch(function(){ openTg(base); });
 }
 function applyFreemium() {
   markFree('groupList', 2, function(){ selGroupStart = 0; selGroupEnd = 3; });
