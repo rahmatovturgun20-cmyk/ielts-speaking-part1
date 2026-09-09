@@ -131,13 +131,13 @@
 </div>
 
 <script>
-var plans=[], selPlan=null;
+var plans=[], selPlan=null, meEmail='';
 var TG_BASE_MSG='Assalomu alaykum! Men sizning veb-saytingizdagi Premium paketni sotib olmoqchiman.';
-function tgLink(){var m=TG_BASE_MSG;if(selPlan){m+=' Tanlangan obuna: '+selPlan.name+' ('+selPlan.price_fmt+').'}return 'https://t.me/rahmatovturgun?text='+encodeURIComponent(m)}
+function tgLink(){var m=TG_BASE_MSG;if(selPlan){m+=' Tanlangan obuna: '+selPlan.name+' ('+selPlan.price_fmt+').'}if(meEmail){m+=' Google account: '+meEmail}return 'https://t.me/rahmatovturgun?text='+encodeURIComponent(m)}
 function updateTgBtn(){var a=document.getElementById('tgBuyBtn');if(a)a.href=tgLink()}
 
 fetch('/api/me').then(function(r){return r.json()}).then(function(me){
-  if(me.ok){document.getElementById('authCard').style.display='none';document.getElementById('rightsWrap').style.display='block';
+  if(me.ok){meEmail=me.email||'';document.getElementById('authCard').style.display='none';document.getElementById('rightsWrap').style.display='block';
     var s=document.getElementById('statusLine');
     if(me.lifetime) s.innerHTML='<span class="dot active"></span> Umrbod kirish faol — uzaytirishingiz mumkin';
     else if(me.access_until && me.access) s.innerHTML='<span class="dot active"></span> Obuna faol: <b>'+me.access_until.slice(0,10)+'</b> — uzaytirishingiz mumkin';
