@@ -10319,7 +10319,7 @@ function renderAI(res) {
   var slug = (cefr || "x").toLowerCase().replace(/[^a-z0-9]/g, "");
   h += "<div class='ai-head'>";
   h += "<div class='ai-head-top'><span class='ai-head-label'>" + (isFull ? "OVERALL" : "PART SCORE") + "</span>";
-  if (cefr) h += "<span class='ai-cefr cefr-" + slug + "'>" + escapeHtml(cefr) + " · CEFR</span>";
+  if (cefr) h += "<span class='ai-cefr cefr-" + slug + "'>" + escapeHtml(cefr) + (isFull && res.rating != null ? " (" + escapeHtml(res.rating) + ")" : "") + (isFull ? "" : " · CEFR") + "</span>";
   h += "</div>";
   if (isFull) {
     h += "<div class='ai-num'>" + escapeHtml(res.rating) + "</div>";

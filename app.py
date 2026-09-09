@@ -1479,7 +1479,7 @@ def ai_score(audio_bytes, mime_type, question, part="1.1"):
     return None, err or "Barcha AI xizmatlar hozir band. Birozdan keyin qayta urinib ko'ring."
 
 
-BAND_BY_RATING = [(65, "C1"), (51, "B2"), (1, "B1")]
+BAND_BY_RATING = [(65, "C1"), (51, "B2"), (37, "B1"), (21, "A2"), (10, "A1")]
 
 
 def _attach_band(result, part):
@@ -1496,7 +1496,7 @@ def _attach_band(result, part):
         if rating >= lo:
             result["band"] = band
             return
-    result["band"] = "B1"
+    result["band"] = "A1"
 
 
 CEFR_BY_SCORE = {
