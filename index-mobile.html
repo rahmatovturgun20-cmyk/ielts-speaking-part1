@@ -4446,19 +4446,24 @@ html.dark .ai-loading { color: #94a3b8; }
   #setupCard .part-card {
     display: flex; flex-direction: column; align-items: flex-start; justify-content: center;
     width: 100%; min-height: 96px; padding: 20px 18px; gap: 6px;
-    background: #f1f5f9; border: 2px solid #e2e8f0; border-radius: 12px;
+    background: #f1f5f9; border: 2px solid #e2e8f0; border-radius: 14px;
     cursor: pointer; text-align: left; font-family: inherit; font-size: 14px;
+    box-shadow: 0 4px 14px rgba(0, 0, 0, .06);
     transition: background .3s ease, color .3s ease, border-color .3s ease, transform .3s ease, box-shadow .3s ease;
   }
-  #setupCard .part-card:hover { transform: translateY(-3px); box-shadow: 0 5px 15px rgba(0, 0, 0, .05); }
-  #setupCard .part-card.active { background: #2563eb; color: #fff; border-color: #2563eb; }
+  #setupCard .part-card:hover { transform: translateY(-8px); box-shadow: 0 12px 40px rgba(0, 0, 0, .12); border-color: #e5e7eb; }
+  #setupCard .part-card.active { background: #2563eb; color: #fff; border-color: #2563eb; box-shadow: 0 12px 28px -8px rgba(37, 99, 235, .55); }
+  #setupCard .part-card.active:hover { border-color: #2563eb; box-shadow: 0 18px 42px -10px rgba(37, 99, 235, .65); }
   #setupCard .part-title { font-size: 20px; font-weight: bold; line-height: 1.2; }
   #setupCard .part-desc { font-size: 14px; opacity: .8; }
   #setupCard .part-card.active .part-desc { opacity: .9; }
   #setupCard .action-buttons { display: flex; justify-content: center; gap: 18px; flex-wrap: wrap; margin-top: 6px; }
-  #setupCard .action-buttons .btn { min-height: 48px; }
-  #setupCard .action-buttons .btn-full { background: #2563eb; box-shadow: 0 12px 26px -12px rgba(37, 99, 235, .6); }
-  #setupCard .action-buttons .btn-past { background: #10b981; box-shadow: 0 12px 26px -12px rgba(16, 185, 129, .65); }
+  #setupCard .action-buttons .btn { min-height: 48px; transition: transform .3s ease, box-shadow .3s ease; }
+  #setupCard .action-buttons .btn:hover { transform: translateY(-4px); }
+  #setupCard .action-buttons .btn-full { background: #2563eb; box-shadow: 0 14px 30px -12px rgba(37, 99, 235, .6); }
+  #setupCard .action-buttons .btn-full:hover { box-shadow: 0 20px 44px -12px rgba(37, 99, 235, .7); }
+  #setupCard .action-buttons .btn-past { background: #10b981; box-shadow: 0 14px 30px -12px rgba(16, 185, 129, .65); }
+  #setupCard .action-buttons .btn-past:hover { box-shadow: 0 20px 44px -12px rgba(16, 185, 129, .75); }
   @media (max-width: 460px) {
     #setupCard .parts-grid { gap: 10px; }
     #setupCard .part-card { min-height: 74px; padding: 14px 12px; }
