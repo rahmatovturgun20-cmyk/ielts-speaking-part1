@@ -30,6 +30,9 @@ LOG_FILE = os.path.join(BASE_DIR, "server.log")
 RECEIPTS_DIR = os.path.join(BASE_DIR, "receipts")
 if not os.path.isdir(RECEIPTS_DIR):
     os.makedirs(RECEIPTS_DIR)
+RECORDINGS_DIR = os.path.join(BASE_DIR, "recordings")
+if not os.path.isdir(RECORDINGS_DIR):
+    os.makedirs(RECORDINGS_DIR)
 
 
 # ---- Logging ----
@@ -390,6 +393,20 @@ def init_db():
       cache_key TEXT PRIMARY KEY,
       result TEXT NOT NULL,
       created_at TEXT
+    );
+    """)
+    conn.execute("""
+    CREATE TABLE IF NOT EXISTS recordings (
+      id INTEGER PRIMARY KEY AUTOINCREMENT,
+      user_id INTEGER NOT NULL,
+      filename TEXT NOT NULL,
+      part TEXT NOT NULL,
+      question TEXT DEFAULT '',
+      mime TEXT DEFAULT 'audio/wav',
+      size INTEGER DEFAULT 0,
+      sha1 TEXT,
+      created_at TEXT,
+      result TEXT
     );
     """)
     # Mavjud jadval uchun unique index (race condition oldini olish)
@@ -1886,6 +1903,51 @@ def _score_cache_set(key, result):
         pass
 
 
+def _ext_for_mime(mime):
+    m = (mime or "").lower()
+    if "webm" in m:
+        return "webm"
+    if "mp4" in m or "m4a" in m:
+        return "m4a"
+    if "mp3" in m:
+        return "mp3"
+    if "ogg" in m or "opus" in m:
+        return "ogg"
+    return "wav"
+
+
+def _save_recording(uid, data, mime, part, question, result=None):
+    """AI baholovchi jo'natgan audioni diskka + DB ga saqlaydi (takror yozilmaydi)."""
+    h = hashlib.sha1(data).hexdigest()
+    conn = db()
+    existing = conn.execute(
+        "SELECT id FROM recordings WHERE user_id=? AND sha1=? AND part=?",
+        (uid, h, part)).fetchone()
+    if existing:
+        if result is not None:
+            conn.execute("UPDATE recordings SET result=? WHERE id=?",
+                         (json.dumps(result, ensure_ascii=False), existing["id"]))
+            conn.commit()
+        conn.close()
+        return existing["id"]
+    base = ("record-%s-%s-%s.%s" % (
+        uid, datetime.datetime.now().strftime("%Y%m%d_%H%M%S"),
+        secrets.token_hex(3), _ext_for_mime(mime)))
+    path = os.path.join(RECORDINGS_DIR, base)
+    with open(path, "wb") as fh:
+        fh.write(data)
+    now = datetime.datetime.now().isoformat(timespec="seconds")
+    cur = conn.execute(
+        "INSERT INTO recordings (user_id, filename, part, question, mime, size, sha1, created_at, result) VALUES (?,?,?,?,?,?,?,?,?)",
+        (uid, base, part, question or "", mime or "audio/wav", len(data), h, now,
+         json.dumps(result, ensure_ascii=False) if result is not None else None))
+    conn.commit()
+    rid = cur.lastrowid
+    conn.close()
+    log.info("RECORDING saved id=%s uid=%s part=%s size=%s", rid, uid, part, len(data))
+    return rid
+
+
 @app.route("/api/ai/score", methods=["POST"])
 @safe_api
 def api_ai_score():
@@ -1911,12 +1973,128 @@ def api_ai_score():
     key = _score_cache_key(data, mime, question, part)
     cached = _score_cache_get(key)
     if cached is not None:
-        return jsonify({"ok": True, "result": cached, "cached": True})
+        rid = _save_recording(u["id"], data, mime, part, question, cached)
+        return jsonify({"ok": True, "result": cached, "cached": True, "rid": rid})
     result, err = ai_score(data, mime, question, part)
+    rid = _save_recording(u["id"], data, mime, part, question, result)
     if err:
         return api_error(err, 502)
     _score_cache_set(key, result)
+    return jsonify({"ok": True, "result": result, "rid": rid})
+
+
+def _recording_row(user, rid):
+    conn = db()
+    row = conn.execute(
+        "SELECT * FROM recordings WHERE id=? AND user_id=?", (rid, user["id"])).fetchone()
+    conn.close()
+    return row
+
+
+@app.route("/api/recordings", methods=["GET"])
+@safe_api
+def api_recordings_list():
+    u = current_user(allow_revive=True)
+    if u is None:
+        return api_error("Avval tizimga kiring, so'ng qayta urinib ko'ring.", 401)
+    if u["blocked"]:
+        return api_error("Hisobingiz bloklangan", 403)
+    conn = db()
+    rows = conn.execute(
+        "SELECT id, part, question, mime, size, created_at, result FROM recordings "
+        "WHERE user_id=? ORDER BY id DESC LIMIT 200", (u["id"],)).fetchall()
+    conn.close()
+    out = []
+    for r in rows:
+        res = None
+        if r["result"]:
+            try:
+                res = json.loads(r["result"])
+            except Exception:
+                res = None
+        out.append({
+            "id": r["id"],
+            "part": r["part"],
+            "question": r["question"],
+            "mime": r["mime"],
+            "size": r["size"],
+            "created_at": r["created_at"],
+            "has_result": res is not None,
+            "score": (res or {}).get("score"),
+            "band": (res or {}).get("band"),
+            "cefr": (res or {}).get("cefr"),
+        })
+    return jsonify({"ok": True, "recordings": out})
+
+
+@app.route("/api/recordings/<int:rid>/evaluate", methods=["POST"])
+@safe_api
+def api_recording_evaluate(rid):
+    u = current_user(allow_revive=True)
+    if u is None:
+        return api_error("Avval tizimga kiring, so'ng qayta urinib ko'ring.", 401)
+    if u["blocked"]:
+        return api_error("Hisobingiz bloklangan", 403)
+    row = _recording_row(u, rid)
+    if row is None:
+        return api_error("Yozuv topilmadi", 404)
+    path = os.path.join(RECORDINGS_DIR, row["filename"])
+    if not os.path.exists(path):
+        return api_error("Audio fayl topilmadi", 404)
+    with open(path, "rb") as fh:
+        data = fh.read()
+    question = row["question"] or "Speaking task"
+    part = row["part"] or "1.1"
+    result, err = ai_score(data, row["mime"] or "audio/wav", question, part)
+    if err:
+        return api_error(err, 502)
+    conn = db()
+    conn.execute("UPDATE recordings SET result=? WHERE id=?",
+                 (json.dumps(result, ensure_ascii=False), rid))
+    conn.commit()
+    conn.close()
+    log.info("RECORDING re-evaluated id=%s uid=%s", rid, u["id"])
     return jsonify({"ok": True, "result": result})
+
+
+@app.route("/api/recordings/<int:rid>/download")
+@safe_api
+def api_recording_download(rid):
+    u = current_user(allow_revive=True)
+    if u is None:
+        return api_error("Avval tizimga kiring, so'ng qayta urinib ko'ring.", 401)
+    row = _recording_row(u, rid)
+    if row is None:
+        return api_error("Yozuv topilmadi", 404)
+    path = os.path.join(RECORDINGS_DIR, row["filename"])
+    if not os.path.exists(path):
+        return api_error("Audio fayl topilmadi", 404)
+    name = "speaking-%s-%s.%s" % (row["part"].replace("/", "-"), rid, _ext_for_mime(row["mime"]))
+    resp = send_file(path, as_attachment=True, download_name=name,
+                     mimetype="audio/wav" if "audio/" in (row["mime"] or "") else row["mime"])
+    return resp
+
+
+@app.route("/api/recordings/<int:rid>", methods=["DELETE"])
+@safe_api
+def api_recording_delete(rid):
+    u = current_user(allow_revive=True)
+    if u is None:
+        return api_error("Avval tizimga kiring, so'ng qayta urinib ko'ring.", 401)
+    row = _recording_row(u, rid)
+    if row is None:
+        return api_error("Yozuv topilmadi", 404)
+    try:
+        p = os.path.join(RECORDINGS_DIR, row["filename"])
+        if os.path.exists(p):
+            os.remove(p)
+    except OSError as e:
+        log.warning("Failed to remove recording file %s: %s", row["filename"], str(e))
+    conn = db()
+    conn.execute("DELETE FROM recordings WHERE id=?", (rid,))
+    conn.commit()
+    conn.close()
+    return jsonify({"ok": True})
 
 
 # ---------------- Legal pages ----------------
