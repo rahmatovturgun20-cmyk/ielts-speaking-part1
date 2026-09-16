@@ -2023,6 +2023,7 @@ def api_recordings_list():
             "score": (res or {}).get("score"),
             "band": (res or {}).get("band"),
             "cefr": (res or {}).get("cefr"),
+            "result": res,
         })
     return jsonify({"ok": True, "recordings": out})
 

@@ -13585,11 +13585,7 @@ var btn = banner.querySelector('.real-exam-start');
           + (q ? '<div style="font-size:12px;color:#555;margin-top:4px">' + q + '</div>' : '')
           + '<div style="margin-top:8px;display:flex;align-items:center;gap:8px;flex-wrap:wrap">';
         recBlock += '<a href="/api/recordings/'+r.id+'/download" style="font-size:13px;color:#2563eb;text-decoration:underline;white-space:nowrap">⬇ Yuklab olish</a>';
-        if (r.has_result){
-          recBlock += '<button onclick="window._reEval('+r.id+')" style="font-size:12px;padding:3px 10px;border:1px solid #d1d5db;background:#fff;border-radius:8px;cursor:pointer">🔄 Qayta baholash</button>';
-        } else {
-          recBlock += '<button onclick="window._reEval('+r.id+')" style="font-size:12px;padding:3px 10px;border:1px solid #2563eb;background:#2563eb;color:#fff;border-radius:8px;cursor:pointer">✨ Baholash</button>';
-        }
+        recBlock += '<button onclick="window._aiFb('+r.id+','+(r.has_result?'1':'0')+')" style="font-size:12px;padding:3px 10px;border:1px solid #2563eb;background:#2563eb;color:#fff;border-radius:8px;cursor:pointer">🤖 AI feedback</button>';
         recBlock += '<button onclick="window._delRec('+r.id+')" style="font-size:12px;padding:3px 8px;border:1px solid #fecaca;background:#fff;color:#dc2626;border-radius:8px;cursor:pointer">🗑️</button>';
         recBlock += '<span class="dl-status" id="dlst-'+r.id+'" style="font-size:12px;color:#888"></span>';
         recBlock += '</div></div>';
@@ -13599,14 +13595,120 @@ var btn = banner.querySelector('.real-exam-start');
       content.innerHTML = html;
     });
   }
+  var cached = {};
+  function _fetchRec(rid, cb){
+    if (cached[rid]) return cb(cached[rid]);
+    fetch('/api/recordings').then(function(r){ return r.json(); }).then(function(d){
+      var item = null;
+      if (d.ok && d.recordings){
+        for (var i=0;i<d.recordings.length;i++){
+          if (d.recordings[i].id === rid) item = d.recordings[i];
+        }
+      }
+      if (item) cached[rid] = item;
+      cb(item);
+    }).catch(function(){ cb(null); });
+  }
+  function renderFeedback(item){
+    var res = item.result || {};
+    var score = res.score; var band = res.band || res.cefr || '—';
+    var scale = (item.part === 'full') ? 21 : 5;
+    var html = '<div style="background:#fff;border-radius:12px;padding:14px">'
+      + '<div style="display:flex;align-items:center;gap:10px;flex-wrap:wrap;padding-bottom:10px;border-bottom:1px solid #e5e7eb">'
+      + '<div style="width:56px;height:56px;border-radius:50%;background:' + (band && band.charAt(2)==='2' ? '#dcfce7' : '#fef3c7') + ';color:' + (band && band.charAt(2)==='2' ? '#059669' : '#b45309') + ';display:flex;flex-direction:column;align-items:center;justify-content:center;font-weight:800;font-size:15px;line-height:1.1">' + esc(band) + '<span style="font-size:10px;font-weight:600;opacity:.75">CEFR</span></div>'
+      + '<div style="flex:1;min-width:120px">'
+      + '<div style="font-size:13px;color:#111827;font-weight:700">' + fmtPart(item.part) + '</div>'
+      + '<div style="font-size:12px;color:#64748b">Baho: <b style="color:#111827">' + (score!=null ? score : '?') + '</b> <span style="color:#94a3b8">/ ' + scale + '</span></div>'
+      + '</div>'
+      + '<a href="/api/recordings/'+item.id+'/download" style="font-size:12px;color:#2563eb;text-decoration:underline;white-space:nowrap">⬇ Download</a>'
+      + '</div>';
+    var cats = [
+      ['Grammatika', res.grammar], ['Leksika', res.vocabulary],
+      ['Ravonlik', res.fluency], ['Talaffuz', res.pronunciation], ['Muloqot', res.communicative]
+    ];
+    var anyCat = false;
+    var catHtml = '';
+    for (var i=0;i<cats.length;i++){
+      var c = cats[i][1];
+      if (!c || typeof c !== 'object') continue;
+      anyCat = true;
+      var cs = c.score != null ? c.score : 0;
+      var pct = Math.max(0, Math.min(100, cs / scale * 100));
+      catHtml += '<div style="margin-top:10px">'
+        + '<div style="display:flex;justify-content:space-between;font-size:12px;font-weight:600;color:#374151"><span>' + cats[i][0] + '</span><span>' + cs + ' / ' + scale + '</span></div>'
+        + '<div style="height:6px;background:#e2e8f0;border-radius:4px;margin-top:4px;overflow:hidden"><div style="height:100%;width:' + pct + '%;background:#2563eb;border-radius:4px"></div></div>'
+        + (c.comment ? '<div style="font-size:11px;color:#64748b;margin-top:3px">' + esc(c.comment) + '</div>' : '')
+        + '</div>';
+    }
+    if (anyCat) html += catHtml;
+    var errors = Array.isArray(res.errors) ? res.errors.filter(function(e){ return e && (e.wrong||e.note||e.right); }) : [];
+    if (errors.length){
+      html += '<div style="margin-top:14px;padding-top:10px;border-top:1px solid #e5e7eb">'
+        + '<div style="font-size:12px;font-weight:800;color:#dc2626;margin-bottom:6px">✏️ Xatolar (' + errors.length + ')</div>';
+      for (var j=0;j<errors.length;j++){
+        var e = errors[j] || {};
+        html += '<div style="display:flex;flex-direction:column;gap:2px;font-size:12px;padding:7px 9px;background:#fef2f2;border:1px solid #fecaca;border-radius:8px;margin-bottom:6px">'
+          + (e.wrong ? '<div><span style="color:#dc2626;text-decoration:line-through">' + esc(e.wrong) + '</span></div>' : '')
+          + (e.right ? '<div style="color:#059669"><b>' + esc(e.right) + '</b></div>' : '')
+          + (e.note ? '<div style="color:#78716c;font-size:11px">' + esc(e.note) + '</div>' : '')
+          + '</div>';
+      }
+      html += '</div>';
+    }
+    var rw = res.rewrites;
+    if (rw && typeof rw === 'object'){
+      var hasRw = false; var rwHtml = '';
+      var levels = [['B1','b1'],['B2','b2'],['C1','c1']];
+      for (var k=0;k<levels.length;k++){
+        var txt = rw[levels[k][1]];
+        if (!txt) continue;
+        hasRw = true;
+        rwHtml += '<div style="margin-bottom:8px;padding:8px 10px;background:#eff6ff;border:1px solid #bfdbfe;border-radius:8px;font-size:12px"><div style="font-weight:800;color:#1d4ed8;margin-bottom:3px">✅ ' + levels[k][0] + ' daraja</div><div style="color:#1e293b;line-height:1.5">' + esc(txt) + '</div></div>';
+      }
+      if (hasRw) html += '<div style="margin-top:14px;padding-top:10px;border-top:1px solid #e5e7eb"><div style="font-size:12px;font-weight:800;color:#2563eb;margin-bottom:6px">🚀 Yaxshilangan versiyalar</div>' + rwHtml + '</div>';
+    }
+    if (res.transcript){
+      html += '<div style="margin-top:14px;padding-top:10px;border-top:1px solid #e5e7eb"><div style="font-size:12px;font-weight:800;color:#6d28d9;margin-bottom:5px">🎙️ Sizning javobingiz (transkript)</div><div style="font-size:12px;color:#334155;background:#f8fafc;border:1px solid #e2e8f0;border-radius:8px;padding:8px 10px;line-height:1.5">' + esc(res.transcript) + '</div></div>';
+    }
+    html += '<div style="margin-top:16px;display:flex;gap:8px"><button onclick="window._aiFbBack()" style="font-size:13px;padding:7px 14px;border:1px solid #d1d5db;background:#fff;color:#374151;border-radius:9px;cursor:pointer">← Orqaga</button>'
+      + '<button onclick="window._reEval('+item.id+')" style="font-size:13px;padding:7px 14px;border:1px solid #2563eb;background:#2563eb;color:#fff;border-radius:9px;cursor:pointer">🔄 Qayta baholash</button></div>'
+      + '</div>';
+    content.innerHTML = html;
+  }
+  window._aiFb = function(rid, has){
+    _fetchRec(rid, function(item){
+      if (!item){ content.innerHTML = '<div style="padding:24px;color:red;text-align:center">Ma\'lumot topilmadi</div>'; return; }
+      if (has && item.result){
+        renderFeedback(item);
+        return;
+      }
+      var st = content;
+      st.innerHTML = '<div style="padding:40px 20px;text-align:center;color:#999"><div style="font-size:40px;margin-bottom:10px">🤖</div><div style="font-size:14px;font-weight:600;color:#333">AI baholanmoqda…</div><div style="font-size:12px;margin-top:6px">Bu bir necha soniya oladi</div></div>';
+      fetch('/api/recordings/'+rid+'/evaluate',{method:'POST'}).then(function(r){ return r.json(); }).then(function(d){
+        if (d.ok && d.result){
+          cached[rid] = cached[rid] || {};
+          cached[rid].result = d.result;
+          renderFeedback(cached[rid]);
+        } else {
+          content.innerHTML = '<div style="padding:24px;color:red;text-align:center">' + esc(d.error||'Xato yuz berdi') + '</div>';
+        }
+      }).catch(function(){
+        content.innerHTML = '<div style="padding:24px;color:red;text-align:center">Xato: serverga ulanib bo\'lmadi</div>';
+      });
+    });
+  };
+  window._aiFbBack = function(){
+    loadRecordings();
+  };
   window._reEval = function(rid){
     var st = document.getElementById('dlst-'+rid);
     if (st) st.textContent = '⏳ Baholash jarayonda…';
     fetch('/api/recordings/'+rid+'/evaluate',{method:'POST'}).then(function(r){ return r.json(); }).then(function(d){
       if (d.ok && d.result){
-        var res = d.result;
-        var lbl = res.band ? (res.band + ' (' + (res.score||'-') + ')') : ('Score: ' + (res.score!=null ? res.score : '?'));
-        if (st) st.innerHTML = '✅ ' + esc(lbl);
+        cached[rid] = cached[rid] || {};
+        cached[rid].result = d.result;
+        if (st) st.innerHTML = '✅ Baholandi';
+        renderFeedback(cached[rid]);
       } else {
         if (st) st.innerHTML = '<span style="color:red">❌ ' + esc(d.error||'Xato') + '</span>';
       }
