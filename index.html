@@ -2967,6 +2967,28 @@ html.dark .ai-loading { color: #94a3b8; }
 
   .cue-card.reveal { animation: sampleIn .5s ease; }
 
+  .question-box:has(#cueCard:not(.hidden)) {
+    flex-direction: column;
+    align-items: stretch;
+    justify-content: center;
+    text-align: left;
+  }
+  .question-box:has(#cueCard:not(.hidden)) .q { display: none; }
+  .question-box #cueCard {
+    background: transparent;
+    border: 0;
+    box-shadow: none;
+    color: #ffffff;
+    padding: 0;
+    margin: 14px 0 0;
+    width: 100%;
+  }
+  .question-box #cueCard .cue-q { color: #ffffff; font-size: 22px; font-weight: 800; margin-bottom: 12px; text-align: center; }
+  .question-box #cueCard .cue-points li { color: #ffffff; border-top: 1px dashed rgba(255,255,255,.35); }
+  .question-box #cueCard .cue-points li:before { color: #ffffff; }
+  html.dark .question-box #cueCard .cue-q,
+  html.dark .question-box #cueCard .cue-points li { color: #ffffff; }
+
 
 
 
@@ -4223,37 +4245,19 @@ html.dark .ai-loading { color: #94a3b8; }
 
 
 
-        <div class="question-box" id="qBox11"><div class="q" id="qText">Question</div></div>
-
-
-
-
-
-        <div class="cue-card hidden" id="cueCard">
-
-
-
-
-
-          <div class="sample-label">🗒️ Cue card — Speaking Part 2</div>
-
-
-
-
-
-          <div class="cue-q" id="cueQ"></div>
-
-
-
-
-
-          <ul class="cue-points" id="cuePoints"></ul>
-
-
-
-
-
+        <div class="question-box" id="qBox11">
+          <div class="q" id="qText">Question</div>
+          <div class="cue-card hidden" id="cueCard">
+            <div class="cue-q" id="cueQ"></div>
+            <ul class="cue-points" id="cuePoints"></ul>
+          </div>
         </div>
+
+
+
+
+
+        
 
 
 
