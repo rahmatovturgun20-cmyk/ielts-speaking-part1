@@ -1,5 +1,7 @@
 # Sensitive / local files
 site.db
+site.db.*
+*.bak
 config.json
 receipts/
 *.pem

@@ -1,0 +1,4 @@
+root "Trusted Root Certification Authorities"
+Signature matches Public Key
+Certificate "localhost" added to store.
+CertUtil: -addstore command completed successfully.

@@ -1,5 +1,515 @@
 [
   {
+    "date": "2023-01-14",
+    "label": "14.01.2023",
+    "slots": [
+      {
+        "joy": "1-joy",
+        "part1": [
+          "What activities do you like doing with your family?",
+          "Do you prefer to travel alone or with others?",
+          "What sports did you do when you were young?"
+        ],
+        "part12": {
+          "img": "part12/set52.jpg",
+          "q": [
+            "What do you see in these pictures?",
+            "Which type of clothing is more convenient?",
+            "Do you prefer wearing formal clothes or casual clothes?"
+          ]
+        },
+        "part2": {
+          "q": "Describe a film that you watched recently",
+          "p": [
+            "Where and when did you watch it?",
+            "What kind of movies are popular in your country?"
+          ]
+        },
+        "part3": "part3/32.jpg"
+      }
+    ]
+  },
+  {
+    "date": "2023-02-11",
+    "label": "11.02.2023",
+    "slots": [
+      {
+        "joy": "1-joy",
+        "part1": [
+          "Do you get up early or late?",
+          "What is your favorite number?",
+          "What is your favorite type of transport?"
+        ],
+        "part12": {
+          "img": "part12/set53.jpg",
+          "q": [
+            "What do you see in these pictures?",
+            "What are the advantages of doing shopping with friends?",
+            "Do you usually shop alone or with others?"
+          ]
+        },
+        "part2": {
+          "q": "Describe a time when you felt happy",
+          "p": [
+            "Why is it important to have a good mood?",
+            "Can money make people happy?"
+          ]
+        },
+        "part3": "part3/33.jpg"
+      }
+    ]
+  },
+  {
+    "date": "2023-03-18",
+    "label": "18.03.2023",
+    "slots": [
+      {
+        "joy": "1-joy",
+        "part1": [
+          "How do you spend your weekends?",
+          "How often do you use a computer?",
+          "Do you enjoy cooking?"
+        ],
+        "part12": {
+          "img": "part12/set54.jpg",
+          "q": [
+            "What do you see in these pictures?",
+            "What are the advantages of playing outdoor games?",
+            "Why do some people prefer playing video games?"
+          ]
+        },
+        "part2": {
+          "q": "Describe a time when you experienced a failure.",
+          "p": [
+            "How did you feel when that happened?",
+            "What's the advantage of failing to do something?"
+          ]
+        },
+        "part3": "part3/34.jpg"
+      }
+    ]
+  },
+  {
+    "date": "2023-04-22",
+    "label": "22.04.2023",
+    "slots": [
+      {
+        "joy": "1-joy",
+        "part1": [
+          "Tell me about your school.",
+          "What is your favourite drink?",
+          "What kind of weather do you dislike?"
+        ],
+        "part12": {
+          "img": "part12/set55.jpg",
+          "q": [
+            "What do you see in these pictures?",
+            "Why do some people prefer private cars?",
+            "Why do other people prefer public transport?"
+          ]
+        },
+        "part2": {
+          "q": "What are your thoughts on learning a second language?",
+          "p": [
+            "Do you think it is essential for everyone to learn a second language? Why or why not?",
+            "How can schools encourage students to learn a new language?"
+          ]
+        },
+        "part3": "part3/35.jpg"
+      }
+    ]
+  },
+  {
+    "date": "2023-05-27",
+    "label": "27.05.2023",
+    "slots": [
+      {
+        "joy": "1-joy",
+        "part1": [
+          "Do you like watching TV?",
+          "When do you usually go to bed?",
+          "How often do you read books?"
+        ],
+        "part12": {
+          "img": "part12/set56.jpg",
+          "q": [
+            "What do you see in these pictures?",
+            "Do you prefer travelling by taxi or bus?",
+            "Why do some people use buses rather than taxis?"
+          ]
+        },
+        "part2": {
+          "q": "Talk about a problem you faced.",
+          "p": [
+            "How did you solve it?",
+            "What problems do people usually come across?"
+          ]
+        },
+        "part3": "part3/36.jpg"
+      }
+    ]
+  },
+  {
+    "date": "2023-06-24",
+    "label": "24.06.2023",
+    "slots": [
+      {
+        "joy": "1-joy",
+        "part1": [
+          "What's the weather like in your country?",
+          "Tell me about your hobbies.",
+          "What do you do when you feel happy?"
+        ],
+        "part12": {
+          "img": "part12/set57.jpg",
+          "q": [
+            "What do you see in these pictures?",
+            "Do you prefer taking selfies or taking pictures with a camera?",
+            "Why do some people take pictures with a camera?"
+          ]
+        },
+        "part2": {
+          "q": "Describe a sport which you have played or saw on TV.",
+          "p": [
+            "Do you prefer playing sports or watching sports?",
+            "What sports are popular in your country?"
+          ]
+        },
+        "part3": "part3/37.jpg"
+      }
+    ]
+  },
+  {
+    "date": "2023-07-29",
+    "label": "29.07.2023",
+    "slots": [
+      {
+        "joy": "1-joy",
+        "part1": [
+          "Do you prefer studying in groups or alone?",
+          "Can you describe your hometown?",
+          "What is your favorite wild animal?"
+        ],
+        "part12": {
+          "img": "part12/set58.jpg",
+          "q": [
+            "What do you see in these pictures?",
+            "What are the problems related to eating fast food?",
+            "Why do some people choose to eat fast food instead of healthy food?"
+          ]
+        },
+        "part2": {
+          "q": "Talk about a skill you learnt.",
+          "p": [
+            "Explain how this skill is useful to you.",
+            "What skills do the most people want to learn nowadays?"
+          ]
+        },
+        "part3": "part3/38.jpg"
+      }
+    ]
+  },
+  {
+    "date": "2023-08-26",
+    "label": "26.08.2023",
+    "slots": [
+      {
+        "joy": "1-joy",
+        "part1": [
+          "Do you prefer big bags or small bags?",
+          "Do you like keeping plants in your room?",
+          "Do you prefer eating at home or eating out?"
+        ],
+        "part12": {
+          "img": "part12/set59.jpg",
+          "q": [
+            "What do you see in these pictures?",
+            "Do you prefer to work alone or in a group?",
+            "Why do some people prefer working alone?"
+          ]
+        },
+        "part2": {
+          "q": "Describe a piece of career advice you recently received.",
+          "p": [
+            "When this happened, who gave you the advice?",
+            "What the advice was and explain how you felt about it."
+          ]
+        },
+        "part3": "part3/39.jpg"
+      }
+    ]
+  },
+  {
+    "date": "2023-09-23",
+    "label": "23.09.2023",
+    "slots": [
+      {
+        "joy": "1-joy",
+        "part1": [
+          "Do you like going outdoors?",
+          "How often do you meet your friends?",
+          "How often do you go shopping?"
+        ],
+        "part12": {
+          "img": "part12/set60.jpg",
+          "q": [
+            "What do you see in these pictures?",
+            "Why do you think traffic congestion has become a big problem in many cities?",
+            "What can be done to reduce traffic congestion?"
+          ]
+        },
+        "part2": {
+          "q": "Describe a time when you first used your phone.",
+          "p": [
+            "Is having a cell phone a good or bad thing?",
+            "Do most people in your country use mobile phones?"
+          ]
+        },
+        "part3": "part3/40.jpg"
+      }
+    ]
+  },
+  {
+    "date": "2023-10-28",
+    "label": "28.10.2023",
+    "slots": [
+      {
+        "joy": "1-joy",
+        "part1": [
+          "Are museums popular in your country?",
+          "How do you go to school?",
+          "Have you ever given someone a flower?"
+        ],
+        "part12": {
+          "img": "part12/set61.jpg",
+          "q": [
+            "What do you see in these pictures?",
+            "What are the benefits of playing toys?",
+            "Why do some people like playing computer games?"
+          ]
+        },
+        "part2": {
+          "q": "Describe a time when you had a leadership role.",
+          "p": [
+            "What were your responsibilities?",
+            "How you managed the team and explain how you felt about it."
+          ]
+        },
+        "part3": "part3/41.jpg"
+      }
+    ]
+  },
+  {
+    "date": "2023-11-25",
+    "label": "25.11.2023",
+    "slots": [
+      {
+        "joy": "1-joy",
+        "part1": [
+          "Describe your best friend.",
+          "What is your favorite season?",
+          "Do you prefer a paper dictionary or a dictionary on your phone?"
+        ],
+        "part12": {
+          "img": "part12/set62.jpg",
+          "q": [
+            "What do you see in these pictures?",
+            "What are the benefits of driving?",
+            "Why do some people prefer walking instead of driving?"
+          ]
+        },
+        "part2": {
+          "q": "Describe a rewarding volunteer experience that was meaningful.",
+          "p": [
+            "What did you learn by volunteering?",
+            "Why is volunteering important for communities?"
+          ]
+        },
+        "part3": "part3/42.jpg"
+      }
+    ]
+  },
+  {
+    "date": "2023-12-23",
+    "label": "23.12.2023",
+    "slots": [
+      {
+        "joy": "1-joy",
+        "part1": [
+          "Do you prefer spending time alone or with friends? Why?",
+          "Do you have any brothers or sisters?",
+          "What is your favourite day of the week? Why?"
+        ],
+        "part12": {
+          "img": "part12/set63.jpg",
+          "q": [
+            "What do you see in these pictures?",
+            "Which activities can people do in cold weather?",
+            "Do you like cold or hot days?"
+          ]
+        },
+        "part2": {
+          "q": "Discuss a personal goal you have set for yourself.",
+          "p": [
+            "What steps are you taking to achieve this goal?",
+            "Why is setting goals important for personal development?"
+          ]
+        },
+        "part3": "part3/43.jpg"
+      }
+    ]
+  },
+  {
+    "date": "2024-01-20",
+    "label": "20.01.2024",
+    "slots": [
+      {
+        "joy": "1-joy",
+        "part1": [
+          "What do you do at weekends?",
+          "Describe your hometown.",
+          "What is your favorite colour?"
+        ],
+        "part12": {
+          "img": "part12/set64.jpg",
+          "q": [
+            "What do you see in these pictures?",
+            "Is it cheaper to celebrate birthdays at home or outside?",
+            "How did you celebrate your last birthday?"
+          ]
+        },
+        "part2": {
+          "q": "Describe a successful moment in your life.",
+          "p": [
+            "Why was this moment important to you?",
+            "What factors usually help people achieve success?"
+          ]
+        },
+        "part3": "part3/44.jpg"
+      }
+    ]
+  },
+  {
+    "date": "2024-02-17",
+    "label": "17.02.2024",
+    "slots": [
+      {
+        "joy": "1-joy",
+        "part1": [
+          "Do you prefer studying alone or with others?",
+          "Can you describe your favorite place to relax?",
+          "What kind of music do you like?"
+        ],
+        "part12": {
+          "img": "part12/set65.jpg",
+          "q": [
+            "What do you see in these pictures?",
+            "What are the advantages of shopping in a supermarket?",
+            "Why do some people prefer shopping in a local market?"
+          ]
+        },
+        "part2": {
+          "q": "Describe a time you learned a new technology skill.",
+          "p": [
+            "How did it improve your critical thinking?",
+            "Why is learning new skills important in today's world?"
+          ]
+        },
+        "part3": "part3/45.jpg"
+      }
+    ]
+  },
+  {
+    "date": "2024-03-16",
+    "label": "16.03.2024",
+    "slots": [
+      {
+        "joy": "1-joy",
+        "part1": [
+          "Tell me about yourself.",
+          "Are you living in a flat or house?",
+          "Who is your favorite singer?"
+        ],
+        "part12": {
+          "img": "part12/set66.jpg",
+          "q": [
+            "What do you see in these pictures?",
+            "What are the advantages of living in the city?",
+            "What are the disadvantages of living in the village?"
+          ]
+        },
+        "part2": {
+          "q": "Describe a person who has been an important influence in your life.",
+          "p": [
+            "How has he or she made an impact on you?",
+            "Why is it important to have role models in our life?"
+          ]
+        },
+        "part3": "part3/46.jpg"
+      }
+    ]
+  },
+  {
+    "date": "2024-04-13",
+    "label": "13.04.2024",
+    "slots": [
+      {
+        "joy": "1-joy",
+        "part1": [
+          "Do you like to take photos?",
+          "Do you prefer formal or informal clothes?",
+          "What is your dream country to live in?"
+        ],
+        "part12": {
+          "img": "part12/set67.jpg",
+          "q": [
+            "What do you see in these pictures?",
+            "Do you think uniform is important at school?",
+            "Did you wear a uniform at school in your childhood?"
+          ]
+        },
+        "part2": {
+          "q": "Describe a time when you gave someone advice.",
+          "p": [
+            "How did the person react to your advice?",
+            "Why is giving and receiving advice important in life?"
+          ]
+        },
+        "part3": "part3/47.jpg"
+      }
+    ]
+  },
+  {
+    "date": "2024-05-11",
+    "label": "11.05.2024",
+    "slots": [
+      {
+        "joy": "1-joy",
+        "part1": [
+          "Do you like drinking tea?",
+          "Do you like receiving gifts?",
+          "Do you often have dinner with your family or friends?"
+        ],
+        "part12": {
+          "img": "part12/set68.jpg",
+          "q": [
+            "What do you see in these pictures?",
+            "What are the advantages of studying alone and with a group?",
+            "Why do many people prefer studying alone?"
+          ]
+        },
+        "part2": {
+          "q": "Describe a time when you felt proud of yourself.",
+          "p": [
+            "What exactly did you do and how did you feel before and after it?",
+            "What did you learn from this experience?"
+          ]
+        },
+        "part3": "part3/48.jpg"
+      }
+    ]
+  },
+  {
     "date": "2024-05-25",
     "label": "25.05.2024",
     "slots": [
@@ -129,6 +639,66 @@
           ]
         },
         "part3": "part3/5.jpg"
+      }
+    ]
+  },
+  {
+    "date": "2024-07-13",
+    "label": "13.07.2024",
+    "slots": [
+      {
+        "joy": "1-joy",
+        "part1": [
+          "Please tell me about your family.",
+          "Do you like taking photos?",
+          "Do you like watching comedies on TV?"
+        ],
+        "part12": {
+          "img": "part12/set69.jpg",
+          "q": [
+            "What do you see in these pictures?",
+            "Where do you usually shop?",
+            "What are the disadvantages of buying things from online shops?"
+          ]
+        },
+        "part2": {
+          "q": "Describe a time when you took a big risk.",
+          "p": [
+            "How did you feel about it?",
+            "Do you prefer taking risks or playing it safe?"
+          ]
+        },
+        "part3": "part3/49.jpg"
+      }
+    ]
+  },
+  {
+    "date": "2024-08-10",
+    "label": "10.08.2024",
+    "slots": [
+      {
+        "joy": "1-joy",
+        "part1": [
+          "When do you usually go to bed?",
+          "Do you like art?",
+          "What is the most popular means of transport in your country?"
+        ],
+        "part12": {
+          "img": "part12/set70.jpg",
+          "q": [
+            "What do you see in these pictures?",
+            "What are the advantages of indoor activities?",
+            "What are the benefits of outdoor activities?"
+          ]
+        },
+        "part2": {
+          "q": "Describe a hard decision you made.",
+          "p": [
+            "What factors helped you to make a decision?",
+            "Why is it hard to decide for some people?"
+          ]
+        },
+        "part3": "part3/50.jpg"
       }
     ]
   },
@@ -322,6 +892,66 @@
     ]
   },
   {
+    "date": "2024-12-07",
+    "label": "07.12.2024",
+    "slots": [
+      {
+        "joy": "1-joy",
+        "part1": [
+          "Can you describe your house?",
+          "How often do you listen to music?",
+          "What do you do as a hobby?"
+        ],
+        "part12": {
+          "img": "part12/set71.jpg",
+          "q": [
+            "What do you see in these pictures?",
+            "Do you prefer working in a team or working alone?",
+            "Do you like being a leader in a group? Why or why not?"
+          ]
+        },
+        "part2": {
+          "q": "Describe a time when you forgave someone, what they did, why you forgave them, and how you felt after forgiving them.",
+          "p": [
+            "Why do some people find it difficult to forgive others?",
+            "Do you think it is always necessary to forgive someone? Why or why not?"
+          ]
+        },
+        "part3": "part3/51.jpg"
+      }
+    ]
+  },
+  {
+    "date": "2025-01-11",
+    "label": "11.01.2025",
+    "slots": [
+      {
+        "joy": "1-joy",
+        "part1": [
+          "What is your favourite colour?",
+          "Have you ever bought clothes online?",
+          "Tell me about your first teacher."
+        ],
+        "part12": {
+          "img": "part12/set72.jpg",
+          "q": [
+            "What do you see in these pictures?",
+            "What are the advantages of relaxing in a tent?",
+            "Why do some people like relaxing in a restaurant?"
+          ]
+        },
+        "part2": {
+          "q": "Describe a major chance in your life, why it happened, and explain how you felt about it.",
+          "p": [
+            "How do you usually decide which chances to take in life?",
+            "Do you think it is better to take risks or play safe when big opportunities appear?"
+          ]
+        },
+        "part3": "part3/52.jpg"
+      }
+    ]
+  },
+  {
     "date": "2025-02-15",
     "label": "15.02.2025",
     "slots": [
@@ -400,6 +1030,36 @@
     ]
   },
   {
+    "date": "2025-03-15",
+    "label": "15.03.2025",
+    "slots": [
+      {
+        "joy": "1-joy",
+        "part1": [
+          "Do you have a large family or a small family?",
+          "Do you have a healthy diet?",
+          "Do you like travelling?"
+        ],
+        "part12": {
+          "img": "part12/set73.jpg",
+          "q": [
+            "What do you see in these pictures?",
+            "What are the advantages of reading a book over watching TV?",
+            "Do you agree that people read books less now than in the past?"
+          ]
+        },
+        "part2": {
+          "q": "Tell me about a difficult task you had to do.",
+          "p": [
+            "How did you handle the task?",
+            "What are some common challenges that people face in their daily lives?"
+          ]
+        },
+        "part3": "part3/53.jpg"
+      }
+    ]
+  },
+  {
     "date": "2025-04-12",
     "label": "12.04.2025",
     "slots": [
@@ -450,6 +1110,36 @@
           ]
         },
         "part3": "part3/17.jpg"
+      }
+    ]
+  },
+  {
+    "date": "2025-05-10",
+    "label": "10.05.2025",
+    "slots": [
+      {
+        "joy": "1-joy",
+        "part1": [
+          "What is your favorite TV show?",
+          "What kind of clothes do you like to wear?",
+          "What kind of books do you like to read?"
+        ],
+        "part12": {
+          "img": "part12/set74.jpg",
+          "q": [
+            "What do you see in these pictures?",
+            "What are the advantages of traveling by plane over train?",
+            "Which of these transports do you prefer to use while traveling?"
+          ]
+        },
+        "part2": {
+          "q": "Tell me about a time when you received a piece of advice.",
+          "p": [
+            "How did this advice help you?",
+            "Do you think it is better to take advice from family or from friends?"
+          ]
+        },
+        "part3": "part3/54.jpg"
       }
     ]
   },
@@ -532,6 +1222,36 @@
     ]
   },
   {
+    "date": "2025-07-12",
+    "label": "12.07.2025",
+    "slots": [
+      {
+        "joy": "1-joy",
+        "part1": [
+          "Do you work or study?",
+          "What is your hometown?",
+          "Where do you go in your free time?"
+        ],
+        "part12": {
+          "img": "part12/set75.jpg",
+          "q": [
+            "What do you see in these pictures?",
+            "Do you usually celebrate with your friends or family?",
+            "Do you think both celebrations are important? Why?"
+          ]
+        },
+        "part2": {
+          "q": "Describe a time you lost trust in someone.",
+          "p": [
+            "Explain how you felt about it.",
+            "Do you think it is easy to trust people nowadays?"
+          ]
+        },
+        "part3": "part3/55.jpg"
+      }
+    ]
+  },
+  {
     "date": "2025-08-16",
     "label": "16.08.2025",
     "slots": [
@@ -582,6 +1302,36 @@
           ]
         },
         "part3": "part3/22.jpg"
+      }
+    ]
+  },
+  {
+    "date": "2025-09-13",
+    "label": "13.09.2025",
+    "slots": [
+      {
+        "joy": "1-joy",
+        "part1": [
+          "How many people are there in your family?",
+          "Do you prefer to use a paper dictionary or a dictionary on your phone?",
+          "Do you use a computer?"
+        ],
+        "part12": {
+          "img": "part12/set76.jpg",
+          "q": [
+            "What do you see in these pictures?",
+            "What are some advantages of using public transport over driving a personal car?",
+            "Why do many people want to own a private car?"
+          ]
+        },
+        "part2": {
+          "q": "Tell me about a success you have achieved recently.",
+          "p": [
+            "How did you feel after this success?",
+            "What goals do most people in your country have in life?"
+          ]
+        },
+        "part3": "part3/56.jpg"
       }
     ]
   },
@@ -660,6 +1410,336 @@
           ]
         },
         "part3": "part3/25.jpg"
+      }
+    ]
+  },
+  {
+    "date": "2025-11-15",
+    "label": "15.11.2025",
+    "slots": [
+      {
+        "joy": "1-joy",
+        "part1": [
+          "Describe your typical weekend.",
+          "Tell me about a sportsperson.",
+          "Do you use the internet?"
+        ],
+        "part12": {
+          "img": "part12/set77.jpg",
+          "q": [
+            "What do you see in these pictures?",
+            "Do you prefer eating fast food or healthy food, and why?",
+            "How do you think eating too much fast food can affect people's health?"
+          ]
+        },
+        "part2": {
+          "q": "Talk about a special day you spent with your family.",
+          "p": [
+            "What you did on that day and who you spent it with.",
+            "Why is spending time with family important for people?"
+          ]
+        },
+        "part3": "part3/57.jpg"
+      }
+    ]
+  },
+  {
+    "date": "2025-12-13",
+    "label": "13.12.2025",
+    "slots": [
+      {
+        "joy": "1-joy",
+        "part1": [
+          "What is your favorite animal?",
+          "Do you often watch TV?",
+          "Do you have a big family?"
+        ],
+        "part12": {
+          "img": "part12/set78.jpg",
+          "q": [
+            "What do you see in these pictures?",
+            "Do you prefer typing on a computer or writing on paper?",
+            "What are the advantages of writing by hand?"
+          ]
+        },
+        "part2": {
+          "q": "Describe a time when you made someone happy.",
+          "p": [
+            "What did you do for that person?",
+            "Is it better to give expensive gifts or simple gifts? Why?"
+          ]
+        },
+        "part3": "part3/58.jpg"
+      }
+    ]
+  },
+  {
+    "date": "2026-02-14",
+    "label": "14.02.2026",
+    "slots": [
+      {
+        "joy": "1-joy",
+        "part1": [
+          "What's your favorite room in your house?",
+          "Tell me about your school.",
+          "Tell me about your country."
+        ],
+        "part12": {
+          "img": "part12/set79.jpg",
+          "q": [
+            "What do you see in these pictures?",
+            "Do you prefer reading paper books or e-books?",
+            "Do you think paper books will disappear in the future?"
+          ]
+        },
+        "part2": {
+          "q": "Describe a time when you solved a problem.",
+          "p": [
+            "What happened and how did you solve it?",
+            "How do young people usually solve problems?"
+          ]
+        },
+        "part3": "part3/59.jpg"
+      }
+    ]
+  },
+  {
+    "date": "2026-03-14",
+    "label": "14.03.2026",
+    "slots": [
+      {
+        "joy": "1-joy",
+        "part1": [
+          "Do you prefer shopping online or going to a physical store?",
+          "What kind of music do you listen to when you are feeling stressed?",
+          "Which season of the year is the most beautiful in your country?"
+        ],
+        "part12": {
+          "img": "part12/set80.jpg",
+          "q": [
+            "What do you see in these pictures?",
+            "Which activity do you think is more beneficial for a person's mental health? Why?",
+            "Why are many young people spending more time in the digital world than in nature?"
+          ]
+        },
+        "part2": {
+          "q": "Describe a profession or job that you find very interesting.",
+          "p": [
+            "What skills or qualities are necessary to be successful in that job?",
+            "Do you think people should choose a job for money or for passion?"
+          ]
+        },
+        "part3": "part3/60.jpg"
+      }
+    ]
+  },
+  {
+    "date": "2026-04-11",
+    "label": "11.04.2026",
+    "slots": [
+      {
+        "joy": "1-joy",
+        "part1": [
+          "How do you usually celebrate your birthday?",
+          "Besides English, what other language would you like to learn?",
+          "Do you like taking photos of yourself or of nature?"
+        ],
+        "part12": {
+          "img": "part12/set81.jpg",
+          "q": [
+            "What do you see in these pictures?",
+            "Would you prefer to live in a busy city or a quiet village? Why?",
+            "Why do many people choose to move from small villages to big cities?"
+          ]
+        },
+        "part2": {
+          "q": "Describe a time when you helped someone.",
+          "p": [
+            "Why did you help that person and how did you feel after helping them?",
+            "Do you think children should do volunteer work? Why?"
+          ]
+        },
+        "part3": "part3/61.jpg"
+      }
+    ]
+  },
+  {
+    "date": "2026-05-09",
+    "label": "09.05.2026",
+    "slots": [
+      {
+        "joy": "1-joy",
+        "part1": [
+          "Tell me about your hobbies.",
+          "Tell me about your favorite holiday.",
+          "What do you hope to do in the next 5 years?"
+        ],
+        "part12": {
+          "img": "part12/set82.jpg",
+          "q": [
+            "What do you see in these pictures?",
+            "What aspects of both jobs could be difficult?",
+            "Which environment would you prefer to work in?"
+          ]
+        },
+        "part2": {
+          "q": "Tell me about an interview you went to.",
+          "p": [
+            "How did it make you feel?",
+            "Why is it necessary to have interviews?"
+          ]
+        },
+        "part3": "part3/62.jpg"
+      }
+    ]
+  },
+  {
+    "date": "2026-06-13",
+    "label": "13.06.2026",
+    "slots": [
+      {
+        "joy": "1-joy",
+        "part1": [
+          "Are you planning to do anything this weekend?",
+          "Have you ever been to a concert?",
+          "What kind of films do you like?"
+        ],
+        "part12": {
+          "img": "part12/set83.jpg",
+          "q": [
+            "What do you see in these pictures?",
+            "What are the benefits of travelling with others?",
+            "Why do some people want to travel alone?"
+          ]
+        },
+        "part2": {
+          "q": "Talk about a time when you forgot something important.",
+          "p": [
+            "Why was it important?",
+            "What things do people usually forget?"
+          ]
+        },
+        "part3": "part3/63.jpg"
+      }
+    ]
+  },
+  {
+    "date": "2026-06-20",
+    "label": "20.06.2026",
+    "slots": [
+      {
+        "joy": "1-joy",
+        "part1": [
+          "Do you prefer reading e-books or physical books?",
+          "How do you usually keep fit?",
+          "Who is the most helpful person you know?"
+        ],
+        "part12": {
+          "img": "part12/set85.jpg",
+          "q": [
+            "What do you see in these pictures?",
+            "Tell me something about your family.",
+            "Do you think more people will work from home in the future?"
+          ]
+        },
+        "part2": {
+          "q": "Describe a prize you received",
+          "p": [
+            "What did you do to get it?",
+            "What prizes should schools give to students?"
+          ]
+        },
+        "part3": "part3/65.jpg"
+      }
+    ]
+  },
+  {
+    "date": "2026-07-11",
+    "label": "11.07.2026",
+    "slots": [
+      {
+        "joy": "1-joy",
+        "part1": [
+          "What apps do you use most often?",
+          "Do you like shopping online?",
+          "Do you prefer travelling by train or by car?"
+        ],
+        "part12": {
+          "img": "part12/set84.jpg",
+          "q": [
+            "What do you see in these pictures?",
+            "What are the advantages of riding a bicycle?",
+            "Are transportations harmful for the environment?"
+          ]
+        },
+        "part2": {
+          "q": "Tell me about a time when you received a piece of advice.",
+          "p": [
+            "How did this advice help you?",
+            "Do you think it is better to take advice from family or from friends?"
+          ]
+        },
+        "part3": "part3/64.jpg"
+      }
+    ]
+  },
+  {
+    "date": "2026-07-18",
+    "label": "18.07.2026",
+    "slots": [
+      {
+        "joy": "1-joy",
+        "part1": [
+          "What kind of movies do you like?",
+          "Do you like going to the beach?",
+          "Do you like to paint or draw?"
+        ],
+        "part12": {
+          "img": "part12/set86.jpg",
+          "q": [
+            "What do you see in these pictures?",
+            "Why do some people like to eat fast food?",
+            "Do you think breakfast is important?"
+          ]
+        },
+        "part2": {
+          "q": "Describe a special meal that someone prepared for you",
+          "p": [
+            "Who cooked it for you?",
+            "How did you feel about it?"
+          ]
+        },
+        "part3": "part3/66.jpg"
+      }
+    ]
+  },
+  {
+    "date": "2026-08-22",
+    "label": "22.08.2026",
+    "slots": [
+      {
+        "joy": "1-joy",
+        "part1": [
+          "What's the weather like today?",
+          "How often do you visit museums?",
+          "What is your favorite colour?"
+        ],
+        "part12": {
+          "img": "part12/set87.jpg",
+          "q": [
+            "What do you see in these pictures?",
+            "What is the advantage of buying products from local markets?",
+            "What is the advantage of buying products from a supermarket?"
+          ]
+        },
+        "part2": {
+          "q": "Describe a new skill you would like to learn",
+          "p": [
+            "What it is and why you need it",
+            "What you should do to learn it?"
+          ]
+        },
+        "part3": "part3/67.jpg"
       }
     ]
   }

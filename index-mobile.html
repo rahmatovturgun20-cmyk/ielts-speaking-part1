@@ -4395,6 +4395,12 @@ html.dark .ai-loading { color: #94a3b8; }
 
   .home-btn { position: fixed; top: 14px; left: 14px; z-index: 9999; background: var(--surface); color: var(--primary); border: 1.5px solid var(--border); border-radius: 999px; padding: 9px 16px; font-size: 13px; font-weight: 700; cursor: pointer; font-family: inherit; box-shadow: var(--shadow-lg); transition: .2s; }
   .home-btn:hover { border-color: var(--primary); transform: translateY(-1px); }
+  .rexam-modal { position: fixed; inset: 0; z-index: 100000; background: rgba(15, 23, 42, .78); display: flex; flex-direction: column; padding: 0; }
+  .rexam-modal.hidden { display: none; }
+  .rexam-modal-bar { position: sticky; top: 0; display: flex; justify-content: flex-start; padding: 12px 14px; }
+  .rexam-modal-bar .rexam-close { background: var(--surface); color: var(--primary); border: 1.5px solid var(--border); border-radius: 999px; padding: 9px 18px; font-size: 14px; font-weight: 700; cursor: pointer; font-family: inherit; box-shadow: 0 10px 24px -10px rgba(0,0,0,.4); transition: .15s; }
+  .rexam-modal-bar .rexam-close:hover { border-color: var(--primary); }
+  .rexam-modal iframe { flex: 1; width: 100%; border: 0; background: #f9fafb; border-radius: 16px 16px 0 0; }
   #questionsCard .intro-header { margin: 2px 0 14px; }
   #questionsCard .app-title { font-size: clamp(18px, 3.5vw, 24px); margin: 0; }
 
@@ -4474,6 +4480,21 @@ html.dark .ai-loading { color: #94a3b8; }
   #setupCard .action-buttons .btn-full:hover { box-shadow: 0 20px 44px -12px rgba(37, 99, 235, .7); }
   #setupCard .action-buttons .btn-past { background: #10b981; box-shadow: 0 14px 30px -12px rgba(16, 185, 129, .65); }
   #setupCard .action-buttons .btn-past:hover { box-shadow: 0 20px 44px -12px rgba(16, 185, 129, .75); }
+
+  /* Desktop: setup page fills more of the screen */
+  @media (min-width: 900px) {
+    .container { max-width: min(1500px, 96vw); }
+    #setupCard, #questionsCard { max-width: min(1300px, 96vw); }
+    #setupCard { gap: 20px; }
+    #setupCard .title { font-size: clamp(30px, 3.5vw, 40px); }
+    #setupCard .parts-grid { gap: 26px; margin: 10px 0 12px; }
+    #setupCard .part-card { min-height: 140px; padding: 28px 30px; }
+    #setupCard .part-title { font-size: 24px; }
+    #setupCard .part-desc { font-size: 16px; }
+    #setupCard .action-buttons { gap: 28px; margin-top: 14px; }
+    #setupCard .action-buttons .btn { min-height: 56px; padding: 16px 40px; font-size: 16.5px; }
+  }
+
   @media (prefers-reduced-motion: reduce) {
     #setupCard .part-card,
     #setupCard .action-buttons .btn { animation: none !important; }
@@ -4656,7 +4677,7 @@ html.dark .ai-loading { color: #94a3b8; }
 
   <div class="action-buttons">
     <button class="btn btn-full" id="mockBtn">🎯 Start Full Mock Test</button>
-    <a class="btn btn-past" href="/speaking/history" style="text-decoration:none;">📚 Real Past Exams</a>
+    <button type="button" class="btn btn-past" onclick="openRealExams()">📚 Real Past Exams</button>
   </div>
 
 </div>
@@ -5751,6 +5772,7 @@ const setupCard = $('setupCard');
   const againBtn = $('againBtn');
 
   const homeBtn = $('homeBtn');
+  var realExamSession = false;
 
 
 
@@ -6440,6 +6462,7 @@ function openPlansModal() {
   modal.classList.remove('hidden');
 }
 function closePlansModal() { var m = document.getElementById('plansModal'); if (m) { m.classList.add('hidden'); } }
+window.closePlansModal = closePlansModal;
 function selectPlan(p) {
   function openTg(msg) { window.open('https://t.me/rahmatovturgun?text=' + encodeURIComponent(msg), '_blank'); closePlansModal(); }
   var base = 'Assalomu alaykum! Men sizning veb-saytingizdagi Premium paketni sotib olmoqchiman. Tanlangan obuna: ' + p.name + ' (' + p.price_fmt + ').';
@@ -6449,10 +6472,10 @@ function selectPlan(p) {
   }).catch(function(){ openTg(base); });
 }
 function applyFreemium() {
-  markFree('groupList', 2, function(){ selGroupStart = 0; selGroupEnd = 3; });
-  markFree('picGroupList', 2, function(){ picSelStart = 0; picTotal = 1; });
-  markFree('part2GroupList', 2, function(){ p2SelStart = 0; p2SelEnd = 1; });
-  markFree('part3GroupList', 2, function(){ p3SelStart = 0; p3Total = 1; });
+  markFree('groupList', 4, function(){ selGroupStart = 0; selGroupEnd = 3; });
+  markFree('picGroupList', 4, function(){ picSelStart = 0; picTotal = 1; });
+  markFree('part2GroupList', 4, function(){ p2SelStart = 0; p2SelEnd = 1; });
+  markFree('part3GroupList', 4, function(){ p3SelStart = 0; p3Total = 1; });
 }
 function markFree(id, freeCount, setDefault) {
     var gl = document.getElementById(id);
@@ -6628,7 +6651,7 @@ function selectPart(part) {
 
 
 
-      gain.gain.setValueAtTime(0.25, ctx.currentTime + (delay || 0));
+      gain.gain.setValueAtTime(0.06, ctx.currentTime + (delay || 0));
 
 
 
@@ -6706,7 +6729,7 @@ function selectPart(part) {
 
 
 
-      a.volume = 0.9;
+      a.volume = 0.2;
 
 
 
@@ -12472,11 +12495,13 @@ practiceCard.classList.remove('hidden'); homeBtn.classList.remove('hidden');
 
     mode = 'mock';
     showSamples = false;
+    realExamSession = true;
 
     try {
       stream = await navigator.mediaDevices.getUserMedia({ audio: true });
     } catch (e) {
       alert('Microphone access was denied or no microphone was found. Allow access in your browser settings.');
+      realExamSession = false;
       return;
     }
 
@@ -12492,7 +12517,7 @@ practiceCard.classList.remove('hidden'); homeBtn.classList.remove('hidden');
     resultCard.classList.add('hidden');
     reviewCard.classList.add('hidden');
     practiceCard.classList.remove('hidden');
-    homeBtn.classList.remove('hidden');
+    homeBtn.classList.add('hidden');
     nextQuestion();
   }
 
@@ -12952,6 +12977,7 @@ clearTimer();
 
 
 homeBtn.addEventListener('click', () => {
+    if (realExamSession) { return; }
     stopSpeech();
     clearTimer();
     isPaused = false;
@@ -12961,6 +12987,7 @@ homeBtn.addEventListener('click', () => {
     practiceCard.classList.add('hidden');
     questionsCard.classList.add('hidden');
     setupCard.classList.remove('hidden');
+    realExamSession = false;
     teardownMic();
     if (stream) { stream.getTracks().forEach(function (t) { t.stop(); }); stream = null; }
   });
@@ -12992,6 +13019,7 @@ homeBtn.addEventListener('click', () => {
 
 
 
+    realExamSession = false;
     teardownMic();
 
 
@@ -13454,13 +13482,41 @@ homeBtn.addEventListener('click', () => {
           var intro = setupCard.querySelector('.intro-header');
           if (intro) { setupCard.insertBefore(banner, intro.nextSibling ? intro.nextSibling : setupCard.firstChild); }
           else { setupCard.insertBefore(banner, setupCard.firstChild); }
-          var btn = banner.querySelector('.real-exam-start');
-          btn.addEventListener('click', function () { beginRealExam(rexam, slotN); });
+var btn = banner.querySelector('.real-exam-start');
+                  btn.addEventListener('click', function () { beginRealExam(rexam, slotN); });
         }).catch(function () {});
       }
     }
   })();
 
+})();
+</script>
+
+<div class="rexam-modal hidden" id="rexamModal">
+  <div class="rexam-modal-bar">
+    <button class="rexam-close" id="rexamClose" type="button">⌂ Home</button>
+  </div>
+  <iframe id="rexamFrame" title="Real Past Exams" src="/speaking/history?embed=1" allow="microphone"></iframe>
+</div>
+
+<script>
+(function () {
+  var modal = document.getElementById('rexamModal');
+  var frame = document.getElementById('rexamFrame');
+  function openRealExams() {
+    frame.src = '/speaking/history?embed=1';
+    modal.classList.remove('hidden');
+  }
+  function closeRealExams() {
+    modal.classList.add('hidden');
+    frame.src = 'about:blank';
+  }
+  document.getElementById('rexamClose').addEventListener('click', closeRealExams);
+  window.addEventListener('message', function (e) {
+    if (e.data === 'close-rexam') { closeRealExams(); }
+  });
+  window.openRealExams = openRealExams;
+  window.closeRealExams = closeRealExams;
 })();
 </script>
 </body>

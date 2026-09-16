@@ -7,7 +7,7 @@ User=www-data
 Group=www-data
 WorkingDirectory=/var/www/mocktest
 Environment="PATH=/var/www/mocktest/venv/bin"
-ExecStart=/var/www/mocktest/venv/bin/gunicorn --workers 3 --bind 127.0.0.1:8000 wsgi:app
+ExecStart=/var/www/mocktest/venv/bin/gunicorn --worker-class gthread --workers 2 --threads 20 --timeout 180 --max-requests 1000 --max-requests-jitter 100 --bind 127.0.0.1:8000 wsgi:app
 Restart=always
 RestartSec=5
 

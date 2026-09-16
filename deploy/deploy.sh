@@ -28,8 +28,8 @@ systemctl daemon-reload
 systemctl enable mocktest
 systemctl restart mocktest
 
-echo "=== 5. Nginx sozlash ==="
-cp "$APP_DIR/deploy/nginx-mocktest.conf" /etc/nginx/sites-available/mocktest
+echo "=== 5. Nginx HTTP sozlash (SSL olinishidan oldin) ==="
+cp "$APP_DIR/deploy/nginx-http.conf" /etc/nginx/sites-available/mocktest
 ln -sf /etc/nginx/sites-available/mocktest /etc/nginx/sites-enabled/mocktest
 rm -f /etc/nginx/sites-enabled/default
 nginx -t
@@ -37,6 +37,11 @@ systemctl reload nginx
 
 echo "=== 6. SSL sertifikat (Let's Encrypt) ==="
 certbot --nginx -d "$DOMAIN" -d "www.$DOMAIN" --non-interactive --agree-tos -m admin@$DOMAIN --redirect
+
+echo "=== 6.1. Yakuniy nginx konfig (HTTPS + proxy) ==="
+cp "$APP_DIR/deploy/nginx-mocktest.conf" /etc/nginx/sites-available/mocktest
+nginx -t
+systemctl reload nginx
 
 echo "=== 7. Fayl huquqlari ==="
 chown -R www-data:www-data "$APP_DIR"

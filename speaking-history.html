@@ -43,28 +43,62 @@
   .slot { background: var(--surface2); border: 1px solid var(--border); border-radius: var(--radius-sm); padding: 14px 16px; margin-bottom: 12px; }
   .slot:last-child { margin-bottom: 0; }
   .slot-title { font-size: 13px; font-weight: 800; color: var(--primary); text-transform: uppercase; letter-spacing: .4px; margin-bottom: 12px; display: flex; align-items: center; gap: 8px; }
-  .part { margin-bottom: 12px; }
+  .part { margin-bottom: 14px; }
   .part:last-child { margin-bottom: 0; }
-  .part-label { font-size: 12px; font-weight: 800; color: var(--muted); text-transform: uppercase; letter-spacing: .4px; margin-bottom: 6px; }
-  .part .q { font-size: 14px; color: var(--text); line-height: 1.5; margin-bottom: 4px; }
-  .part .q::before { content: "•"; color: var(--primary); margin-right: 6px; }
-  .part-img { margin-top: 6px; }
-  .part-img img { max-width: 200px; border-radius: var(--radius-xs); border: 1px solid var(--border); display: block; }
+  .part-label { font-size: 12px; font-weight: 800; color: var(--muted); text-transform: uppercase; letter-spacing: .4px; margin-bottom: 8px; }
+  .part .q { display: flex; align-items: flex-start; gap: 9px; font-size: 14px; color: var(--text); line-height: 1.5; margin-bottom: 8px; text-align: left; }
+  .part .q:last-child { margin-bottom: 0; }
+  .part .q::before { content: "•"; color: var(--primary); font-weight: 800; flex: 0 0 auto; }
+  .part-img { margin-top: 8px; }
+  .part-img img { max-width: 100%; max-height: 260px; object-fit: contain; border-radius: var(--radius-sm); border: 1px solid var(--border); display: block; background: #f3f4f6; }
   .part-p .cue { margin-left: 14px; font-size: 12.5px; color: var(--muted); margin-top: 2px; }
   .slot-start { margin-top: 14px; text-align: right; }
   .slot-start a { background: linear-gradient(135deg, #059669, #10b981); color: #fff; text-decoration: none; display: inline-flex; align-items: center; gap: 8px; border-radius: 12px; padding: 11px 22px; font-size: 14.5px; font-weight: 700; font-family: inherit; box-shadow: 0 12px 26px -12px rgba(16,185,129,.65); transition: transform .15s, filter .2s; }
   .slot-start a:hover { transform: translateY(-1px); filter: brightness(1.05); }
+  .home-btn { position: fixed; top: 14px; left: 14px; z-index: 9999; background: var(--surface); color: var(--primary); border: 1.5px solid var(--border); border-radius: 999px; padding: 9px 16px; font-size: 13px; font-weight: 700; cursor: pointer; font-family: inherit; text-decoration: none; box-shadow: var(--shadow-lg); transition: .2s; }
+  .home-btn:hover { border-color: var(--primary); transform: translateY(-1px); }
+  .close-embedded { border-color: var(--red); color: var(--red); }
+  .close-embedded:hover { border-color: var(--red); }
+  .hidden { display: none !important; }
+  @media (max-width: 480px) { .home-btn { top: 10px; left: 10px; padding: 7px 12px; font-size: 12px; } }
   .loading, .empty { text-align: center; padding: 60px 20px; color: var(--muted); }
   .spinner { width: 40px; height: 40px; border: 4px solid var(--primary-bg); border-top-color: var(--primary); border-radius: 50%; margin: 0 auto 16px; animation: spin .8s linear infinite; }
   @keyframes spin { to { transform: rotate(360deg); } }
   .err { color: var(--red); background: var(--red-bg); border-radius: var(--radius-sm); padding: 14px 16px; }
   .footer { text-align: center; margin-top: 30px; font-size: 13px; color: var(--muted); }
+  .locked { max-width: 420px; margin: 24px auto 0; background: var(--card); border: 1px solid var(--border); border-radius: var(--radius); box-shadow: var(--shadow-lg); padding: 36px 30px; text-align: center; }
+  .locked .li { width: 74px; height: 74px; margin: 0 auto 18px; border-radius: 50%; background: var(--amber-bg); display: flex; align-items: center; justify-content: center; font-size: 34px; }
+  .locked h2 { font-size: 20px; font-weight: 800; margin-bottom: 8px; }
+  .locked h2 span { background: linear-gradient(135deg, var(--primary), var(--violet)); -webkit-background-clip: text; background-clip: text; -webkit-text-fill-color: transparent; }
+  .locked p { color: var(--muted); font-size: 14px; line-height: 1.6; margin-bottom: 22px; }
+  .locked .btn { display: inline-flex; align-items: center; gap: 8px; background: linear-gradient(135deg, var(--primary), var(--violet)); color: #fff; text-decoration: none; border-radius: 12px; padding: 13px 30px; font-size: 15px; font-weight: 800; font-family: inherit; box-shadow: 0 14px 30px -12px rgba(37,99,235,.7); transition: transform .15s, filter .2s; }
+  .locked .btn:hover { transform: translateY(-1px); filter: brightness(1.05); }
+  .lock-badge { font-size: 18px; flex-shrink: 0; }
+  .locked-hint { background: var(--amber-bg); color: #92400e; border: 1px solid #fcd34d; border-radius: var(--radius-sm); padding: 12px 16px; font-size: 13.5px; line-height: 1.5; margin-bottom: 16px; }
+  .locked-item { border-color: #fcd34d !important; }
+  .locked-item .exam-head:hover { background: var(--surface2); }
+
+  /* subscription modal */
+  .sub-modal { position: fixed; inset: 0; z-index: 99999; display: flex; align-items: center; justify-content: center; background: rgba(0,0,0,.45); }
+  .sub-modal.hidden { display: none !important; }
+  .sub-modal-card { background: #fff; border-radius: 20px; padding: 36px 28px 30px; max-width: 380px; width: 92%; text-align: center; box-shadow: 0 24px 60px rgba(0,0,0,.25); position: relative; }
+  .sub-close { position: absolute; top: 12px; right: 14px; background: none; border: none; font-size: 18px; cursor: pointer; color: var(--muted); font-family: inherit; }
+  .sub-icon { font-size: 48px; margin-bottom: 8px; }
+  .sub-price { font-size: 28px; font-weight: 900; color: var(--primary); margin: 10px 0 8px; }
+  .sub-desc { font-size: 14px; color: var(--muted); line-height: 1.6; margin-bottom: 20px; }
+  .sub-btn { display: inline-flex; align-items: center; gap: 8px; background: linear-gradient(135deg, var(--primary), var(--violet)); color: #fff; text-decoration: none; border-radius: 14px; padding: 15px 34px; font-size: 15.5px; font-weight: 800; font-family: inherit; box-shadow: 0 14px 30px -12px rgba(37,99,235,.65); transition: transform .15s; cursor: pointer; border: none; }
+  .sub-btn:hover { transform: translateY(-1px); filter: brightness(1.05); }
+  .sub-plan { display: flex; align-items: center; justify-content: space-between; border: 1px solid #e5e7eb; border-radius: 12px; padding: 12px 16px; margin-bottom: 8px; background: #f9fafb; }
+  .sub-plan .pn { font-weight: 700; font-size: 14px; }
+  .sub-plan .pp { font-weight: 800; font-size: 15px; color: var(--primary); }
+  .sub-plan .pp small { font-weight: 600; color: var(--muted); font-size: 12px; }
 </style>
 </head>
 <body>
 <div class="app">
+  <a class="home-btn" id="homeBtn" href="/">⌂ Home</a>
+  <button class="home-btn close-embedded hidden" id="closeEmbBtn" title="Yopish">✕ Yopish</button>
   <div class="topbar">
-    <a class="back" href="/">← Bosh sahifa</a>
     <span class="count" id="examCount">Real imtihonlar</span>
   </div>
 
@@ -77,13 +111,22 @@
     <div class="loading"><div class="spinner"></div>Yuklanmoqda...</div>
   </div>
 
-  <div class="footer">SPIKO · Speaking real imtihonlar arxivi</div>
+  
 </div>
 
 <script>
 (function () {
   var listEl = document.getElementById('list');
   var countEl = document.getElementById('examCount');
+
+  var emb = new URLSearchParams(window.location.search).get('embed') === '1';
+  if (emb) {
+    document.getElementById('homeBtn').classList.add('hidden');
+    document.getElementById('closeEmbBtn').classList.remove('hidden');
+    document.getElementById('closeEmbBtn').addEventListener('click', function () {
+      if (window.parent && window.parent !== window) { window.parent.postMessage('close-rexam', '*'); }
+    });
+  }
 
   function esc(s) {
     return String(s == null ? '' : s)
@@ -129,7 +172,7 @@
 
     html += '</div>';
 
-    html += '<div class="slot-start"><a href="/?real_exam=' + encodeURIComponent(date) + '&amp;slot=' + slotIdx + '">🎙️ Start practice</a></div>';
+    html += '<div class="slot-start"><a' + (emb ? ' target="_top"' : '') + ' href="/?real_exam=' + encodeURIComponent(date) + '&amp;slot=' + slotIdx + '">🎙️ Start practice</a></div>';
     html += '</div>';
     return html;
   }
@@ -140,6 +183,7 @@
     var day = d[0] || '--';
     var mon = d[1] ? monthName(d[1]) : '';
     var slots = (e.slots || []).length;
+    var freeBadge = e.free ? '<span style="background:#dcfce7;color:#15803d;font-size:11px;font-weight:800;padding:3px 8px;border-radius:999px;margin-left:8px;letter-spacing:.3px;">BEPUL</span>' : '';
 
     var body = '';
     (e.slots || []).forEach(function (s, i) { body += slotHtml(s, e.date || e.label, i); });
@@ -148,7 +192,7 @@
       + '<div class="exam-head">'
       + '<div class="exam-date">'
       + '<div class="date-badge"><span class="d">' + esc(day) + '</span><span class="m">' + esc(mon) + '</span></div>'
-      + '<div><div class="txt">' + date + '</div><div class="sub">' + slots + (slots === 1 ? ' joy' : ' joy') + '</div></div>'
+      + '<div><div class="txt">' + date + freeBadge + '</div><div class="sub">' + slots + (slots === 1 ? ' joy' : ' joy') + '</div></div>'
       + '</div>'
       + '<span class="chevron">▼</span>'
       + '</div>'
@@ -156,22 +200,79 @@
       + '</div>';
   }
 
+  function lockedExamHtml(e) {
+    var date = esc(e.label || e.date || '');
+    var d = date.split('.');
+    var day = d[0] || '--';
+    var mon = d[1] ? monthName(d[1]) : '';
+    return '<div class="exam locked-item" onclick="openSubscribe(); event.stopPropagation();">'
+      + '<div class="exam-head" style="cursor:pointer;">'
+      + '<div class="exam-date">'
+      + '<div class="date-badge"><span class="d">' + esc(day) + '</span><span class="m">' + esc(mon) + '</span></div>'
+      + '<div><div class="txt">' + date + '</div><div class="sub" style="color:#dc2626;">Premium obuna talab qilinadi</div></div>'
+      + '</div>'
+      + '<span class="lock-badge">🔒</span>'
+      + '</div>'
+      + '</div>';
+  }
+
+  window.openSubscribe = function () {
+    document.getElementById('subModal').classList.remove('hidden');
+  };
+  document.addEventListener('DOMContentLoaded', function () {
+    document.getElementById('subClose').addEventListener('click', function () {
+      document.getElementById('subModal').classList.add('hidden');
+    });
+    document.getElementById('subModal').addEventListener('click', function (e) {
+      if (e.target === this) this.classList.add('hidden');
+    });
+    fetch('/api/plans')
+      .then(function (r) { return r.json(); })
+      .then(function (plans) {
+        var el = document.getElementById('subPlans');
+        if (!plans || !plans.length) return;
+        el.innerHTML = plans.map(function (p) {
+          return '<div class="sub-plan"><span class="pn">' + esc(p.name || '') + '</span><span class="pp">' + esc(p.price_fmt || '') + '</span></div>';
+        }).join('');
+      })
+      .catch(function () {});
+  });
+
   fetch('/api/real-exams')
     .then(function (r) { return r.json(); })
     .then(function (data) {
-      if (!data.ok) throw new Error('ok false');
+      if (!data.ok) {
+        if (data.error === 'auth') { window.location.href = '/paywall'; return; }
+        throw new Error('ok false');
+      }
       var exams = data.exams || [];
       countEl.textContent = exams.length + ' ta imtihon';
       if (!exams.length) {
         listEl.innerHTML = '<div class="empty">Hozircha real imtihonlar mavjud emas.</div>';
         return;
       }
-      listEl.innerHTML = exams.map(examHtml).join('');
+      if (data.access) {
+        listEl.innerHTML = exams.map(examHtml).join('');
+      } else {
+        listEl.innerHTML = '<div class="locked-hint">📌 Eng yangi 2 ta sana <b>BEPUL</b> ochiq! Qolgan sanalarni ochish uchun Premium obuna kerak. Sana ustiga bosing va Telegram orqali obuna bo\'ling.</div>'
+          + exams.map(function (e) { return e.free ? examHtml(e) : lockedExamHtml(e); }).join('');
+      }
     })
     .catch(function () {
       listEl.innerHTML = '<div class="err">Real imtihonlarni yuklashda xatolik yuz berdi. Iltimos, qayta urinib ko\'ring.</div>';
     });
 })();
 </script>
+
+<div class="sub-modal hidden" id="subModal">
+  <div class="sub-modal-card">
+    <button class="sub-close" id="subClose" title="Yopish">✕</button>
+    <div class="sub-icon">🔒</div>
+    <h2 style="font-size:20px;font-weight:800;margin:0 0 4px;">Premium obuna</h2>
+    <p class="sub-desc">Real past imtihonlar arxivining barcha savollari va rasmlariga to'liq kirish. O'zingizga mos obunani tanlang va Telegram orqali admin bilan bog'laning.</p>
+    <div id="subPlans" style="margin-bottom:18px;"></div>
+    <a class="sub-btn" href="https://t.me/rahmatovturgun?text=Assalomu%20alaykum!%20Men%20sizning%20veb-saytingizdagi%20Premium%20paketni%20sotib%20olmoqchiman." target="_blank" rel="noopener">✈️ Telegram orqali sotib olish</a>
+  </div>
+</div>
 </body>
 </html>

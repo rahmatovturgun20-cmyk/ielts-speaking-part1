@@ -285,7 +285,10 @@ def add_security_headers(resp):
         log.info("RESPONSE %s %s -> %s (%.3fs)",
                  request.method, request.path, resp.status_code, dur)
     resp.headers["X-Content-Type-Options"] = "nosniff"
-    resp.headers["X-Frame-Options"] = "DENY"
+    if request.path.startswith("/speaking/history"):
+        resp.headers["X-Frame-Options"] = "SAMEORIGIN"
+    else:
+        resp.headers["X-Frame-Options"] = "DENY"
     resp.headers["X-XSS-Protection"] = "1; mode=block"
     resp.headers["Referrer-Policy"] = "strict-origin-when-cross-origin"
     resp.headers["Permissions-Policy"] = "microphone=(self)"
@@ -295,13 +298,16 @@ def add_security_headers(resp):
 # ---------------- DB ----------------
 
 def db():
-    conn = sqlite3.connect(DB_FILE)
+    conn = sqlite3.connect(DB_FILE, timeout=30)
     conn.row_factory = sqlite3.Row
+    conn.execute("PRAGMA busy_timeout=15000")
     return conn
 
 
 def init_db():
     conn = db()
+    conn.execute("PRAGMA journal_mode=WAL")
+    conn.execute("PRAGMA synchronous=NORMAL")
     conn.executescript("""
     CREATE TABLE IF NOT EXISTS users (
       id INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -354,6 +360,10 @@ def init_db():
         pass
     try:
         conn.execute("ALTER TABLE users ADD COLUMN session_token TEXT")
+    except sqlite3.OperationalError:
+        pass
+    try:
+        conn.execute("ALTER TABLE users ADD COLUMN session_token_at TEXT")
     except sqlite3.OperationalError:
         pass
     for _col in ("xp INTEGER DEFAULT 0", "streak INTEGER DEFAULT 0", "last_practice TEXT", "badges TEXT DEFAULT ''", "stickers TEXT DEFAULT ''"):
@@ -431,7 +441,7 @@ def verify_password(pw, stored):
         return False
 
 
-def current_user():
+def current_user(allow_revive=False):
     uid = session.get("uid")
     if not uid:
         return None
@@ -441,9 +451,42 @@ def current_user():
     if u is None:
         session.clear()
         return None
-    # Bitta qurilma cheklovi: boshqa qurilmadan kirilsa, eski sessiya yopiladi
+    # Bitta qurilma cheklovi: boshqa qurilmadan kirilsa, eski sessiya yopiladi.
+    # Lekin uzog'roq test (full mock) tugatib AI baholash olib bo'lishi uchun
+    # yangi kirishdan keyin ESKI sessiyaga 3 soatlik "grace" muddati beriladi.
     if u["session_token"] != session.get("token"):
-        session.clear()
+        if allow_revive:
+            # Baholash kabi davomiy harakat uchun: sessiyani avtomatik tiklash.
+            token = secrets.token_hex(16)
+            try:
+                conn = db()
+                conn.execute(
+                    "UPDATE users SET session_token=?, session_token_at=? WHERE id=?",
+                    (token, datetime.datetime.now().isoformat(timespec="seconds"), u["id"]))
+                conn.commit()
+                conn.close()
+            except sqlite3.Error:
+                pass
+            session["token"] = token
+            session.pop("kicked", None)
+            return u
+        at = u["session_token_at"]
+        in_grace = False
+        if at:
+            try:
+                ts = datetime.datetime.fromisoformat(at)
+                in_grace = (datetime.datetime.now() - ts).total_seconds() < SESSION_KICK_GRACE_SECONDS
+            except ValueError:
+                in_grace = False
+        else:
+            # session_token_at dastlab qo'shilgunga qadar ro'yxatdan o'tgan foydalanuvchi:
+            # yangi login qilmagan bo'lsa, eski sessiyani ta'qib qilmaymiz.
+            in_grace = True
+        if in_grace:
+            return u
+        # uid ni saqlab qolamiz: SPA ichida (sahifa qayta yuklanmasdan) davom etayotgan
+        # baholash so'rovi revive orqali sessiyani tiklab, ishni bexato tugatishi uchun.
+        session.pop("token", None)
         session["kicked"] = "1"
         return None
     return u
@@ -463,9 +506,13 @@ def has_access(u):
 
 # ---- Kontent (savol-javoblar) — server tomonida himoya qilinadi ----
 
-FREEMIUM_FREE_QUESTIONS = 6   # Part 1.1: birinchi 2 guruh (3 tadan savol) bepul
-FREEMIUM_FREE_ITEMS = 2       # Part 1.2 / 2 / 3: birinchi 2 rasm/karta/topshiriq bepul
-FREE_AI_DAILY = 6             # Bepul foydalanuvchi uchun kunlik AI baholash limiti
+FREEMIUM_FREE_QUESTIONS = 12  # Part 1.1: birinchi 4 guruh (3 tadan savol) bepul
+FREEMIUM_FREE_ITEMS = 4        # Part 1.2 / 2 / 3: birinchi 4 rasm/karta/topshiriq bepul
+FREE_AI_DAILY = 6              # Bepul foydalanuvchi uchun kunlik AI baholash limiti
+FREE_MOCK_USES = 2             # Obunasiz foydalanuvchi uchun bepul full-mock test soni
+REAL_EXAM_FREE_DAYS = 2        # Obunasiz foydalanuvchi uchun eng yangi 2 ta real imtihon kuni to'liq bepul
+REAL_EXAM_FREE_DATES = {"2023-01-14", "2023-02-11", "14.01.2023", "11.02.2023"}  # Maxsus bepul sanalar
+SESSION_KICK_GRACE_SECONDS = 3 * 3600  # Boshqa qurilmadan kirilgach eski sessiya yana 3 soat ishlaydi (mock tugatish uchun)
 
 _content_cache = None
 
@@ -636,7 +683,8 @@ def dev_quick_login():
         return redirect("/paywall")
     token = secrets.token_hex(16)
     conn = db()
-    conn.execute("UPDATE users SET session_token=? WHERE id=?", (token, u["id"]))
+    conn.execute("UPDATE users SET session_token=?, session_token_at=? WHERE id=?",
+                 (token, datetime.datetime.now().isoformat(timespec="seconds"), u["id"]))
     conn.commit()
     conn.close()
     session.clear()
@@ -695,7 +743,8 @@ def auth_login():
         return redirect("/paywall?error=blocked")
     token = secrets.token_hex(16)
     conn = db()
-    conn.execute("UPDATE users SET session_token=? WHERE id=?", (token, u["id"]))
+    conn.execute("UPDATE users SET session_token=?, session_token_at=? WHERE id=?",
+                 (token, datetime.datetime.now().isoformat(timespec="seconds"), u["id"]))
     conn.commit()
     conn.close()
     session.clear()
@@ -749,7 +798,8 @@ def _google_login_session(u):
     token = secrets.token_hex(16)
     try:
         conn = db()
-        conn.execute("UPDATE users SET session_token=? WHERE id=?", (token, u["id"]))
+        conn.execute("UPDATE users SET session_token=?, session_token_at=? WHERE id=?",
+                     (token, datetime.datetime.now().isoformat(timespec="seconds"), u["id"]))
         conn.commit()
         conn.close()
     except sqlite3.Error:
@@ -819,21 +869,27 @@ def auth_google_callback():
         return redirect("/paywall?error=google&msg=Google+profil+ma'lumotlari+olib+bo'lmadi")
     try:
         conn = db()
-        u = conn.execute("SELECT * FROM users WHERE google_sub=?", (sub,)).fetchone()
+        gph = ("g:" + sub)[:15]
+        u = conn.execute(
+            "SELECT * FROM users WHERE google_sub=? OR google_sub=? OR phone=? OR email=?",
+            (sub, gph, gph, email)).fetchone()
         if u is None:
             u = conn.execute("SELECT * FROM users WHERE email=? AND email!=''", (email,)).fetchone()
         if u is None:
             now = datetime.datetime.now()
             gphone = ("g:" + sub)[:15]
             conn.execute(
-                "INSERT INTO users (phone, password_hash, name, created_at, session_token, email, google_sub) VALUES (?,?,?,?,?,?,?)",
+                "INSERT INTO users (phone, password_hash, name, created_at, session_token, session_token_at, email, google_sub) VALUES (?,?,?,?,?,?,?,?)",
                 (gphone, hash_password(secrets.token_urlsafe(24)), name or email.split("@")[0],
-                 now.isoformat(timespec="seconds"), secrets.token_hex(16), email, sub))
+                 now.isoformat(timespec="seconds"), secrets.token_hex(16), now.isoformat(timespec="seconds"), email, sub))
             conn.commit()
             conn.close()
         else:
-            conn.execute("UPDATE users SET google_sub=?, email=? WHERE id=?",
-                         (sub, email, u["id"]))
+            new_name = (u["name"] or "").strip()
+            if not new_name and name:
+                new_name = name
+            conn.execute("UPDATE users SET google_sub=?, email=?, name=? WHERE id=?",
+                         (sub, email, new_name, u["id"]))
             conn.commit()
             conn.close()
             if u["blocked"]:
@@ -842,7 +898,10 @@ def auth_google_callback():
             log.info("GOOGLE LOGIN OK: uid=%s email=%s", u["id"], email)
             return redirect("/")
         conn = db()
-        u = conn.execute("SELECT * FROM users WHERE google_sub=?", (sub,)).fetchone()
+        gph = ("g:" + sub)[:15]
+        u = conn.execute(
+            "SELECT * FROM users WHERE google_sub=? OR phone=?",
+            (sub, gph)).fetchone()
         conn.close()
     except sqlite3.Error as e:
         log.error("GOOGLE DB error: %s", str(e))
@@ -877,8 +936,8 @@ def auth_register():
         # phone ustuni UNIQUE NOT NULL — email asosida sintetik unique raqam
         gphone = ("g:" + hashlib.sha256(email.encode()).hexdigest()[:12])[:15]
         conn.execute(
-            "INSERT INTO users (phone, password_hash, name, created_at, session_token, email) VALUES (?,?,?,?,?,?)",
-            (gphone, hash_password(pw), name, now.isoformat(timespec="seconds"), token, email))
+            "INSERT INTO users (phone, password_hash, name, created_at, session_token, session_token_at, email) VALUES (?,?,?,?,?,?,?)",
+            (gphone, hash_password(pw), name, now.isoformat(timespec="seconds"), token, now.isoformat(timespec="seconds"), email))
         conn.commit()
         u_new = conn.execute("SELECT id FROM users WHERE email=?", (email,)).fetchone()
         conn.close()
@@ -1009,6 +1068,7 @@ def api_me():
         "lifetime": bool(u["lifetime"]),
         "access_until": u["access_until"],
         "mock_used": bool(u["mock_used"]),
+        "mock_free_remaining": max(0, FREE_MOCK_USES - (u["mock_used"] or 0)),
         "xp": u["xp"] or 0,
         "streak": u["streak"] or 0,
         "badges": (u["badges"] or "").split(",") if (u["badges"] or "").strip() else [],
@@ -1051,15 +1111,27 @@ def api_content():
 
 @app.route("/api/real-exams")
 def api_real_exams():
-    """Real past speaking imtihonlari arxivini qaytaradi (kirgan foydalanuvchilar uchun)."""
-    if current_user() is None:
+    """Real past speaking imtihonlari arxivini qaytaradi (to'liq = premium, eng yangi 2 kuni = bepul)."""
+    u = current_user()
+    if u is None:
         return jsonify({"ok": False, "error": "auth"}), 401
+    access = has_access(u)
     try:
         with open(REAL_EXAMS_FILE, encoding="utf-8") as f:
             exams = json.load(f)
     except (OSError, ValueError):
         exams = []
-    return jsonify({"ok": True, "exams": exams})
+    if access:
+        return jsonify({"ok": True, "access": True, "exams": exams})
+    free_idx = max(0, len(exams) - REAL_EXAM_FREE_DAYS)
+    out = []
+    for i, e in enumerate(exams):
+        is_free = (i >= free_idx or e.get("date") in REAL_EXAM_FREE_DATES or e.get("label") in REAL_EXAM_FREE_DATES)
+        if is_free:
+            out.append(dict(e, free=True))
+        else:
+            out.append(dict(e, free=False, slots=[]))
+    return jsonify({"ok": True, "access": False, "exams": out})
 
 
 @app.route("/api/heartbeat", methods=["POST"])
@@ -1111,10 +1183,11 @@ def api_mock_start():
     if has_full:
         conn.close()
         return jsonify({"ok": True, "mock_used": True, "access": True})
-    if row is None or row["mock_used"]:
+    used = (row["mock_used"] or 0) if row is not None else 0
+    if row is None or used >= FREE_MOCK_USES:
         conn.close()
         return jsonify({"ok": False, "error": "Bepul mock testdan foydalanib bo'lgansiz. Davom etish uchun obuna oling.", "mock_used": True})
-    conn.execute("UPDATE users SET mock_used=1 WHERE id=?", (u["id"],))
+    conn.execute("UPDATE users SET mock_used=? WHERE id=?", (used + 1, u["id"]))
     conn.commit()
     conn.close()
     log.info("MOCK TEST FREE USE: uid=%s", u["id"])
@@ -1476,7 +1549,7 @@ def ai_score(audio_bytes, mime_type, question, part="1.1"):
         else:
             result["errors"] = [e for e in errs if isinstance(e, dict) and e.get("wrong")][:5]
         return result, None
-    return None, err or "Barcha AI xizmatlar hozir band. Birozdan keyin qayta urinib ko'ring."
+    return None, err or "Baholash xizmati vaqtincha band. Iltimos 30 soniyadan keyin qayta urinib ko'ring."
 
 
 BAND_BY_RATING = [(65, "C1"), (51, "B2"), (37, "B1"), (21, "A2"), (10, "A1")]
@@ -1559,7 +1632,7 @@ def _ai_score_groq(audio_bytes, mime_type, question, part):
     import requests
     import time as _time
 
-    def _post(url, retries=1, **kwargs):
+    def _post(url, retries=3, **kwargs):
         for _attempt in range(retries + 1):
             try:
                 r = requests.post(url, headers={"Authorization": "Bearer " + key}, timeout=120, **kwargs)
@@ -1631,9 +1704,11 @@ def _ai_score_groq(audio_bytes, mime_type, question, part):
         "https://api.groq.com/openai/v1/chat/completions",
         json={
             "model": llm_model,
-            "messages": [{"role": "user", "content": prompt}],
+            "messages": [
+                {"role": "system", "content": "You are a JSON assistant. Reply ONLY with valid JSON. No markdown, no explanation."},
+                {"role": "user", "content": prompt},
+            ],
             "temperature": 0,
-            "response_format": {"type": "json_object"},
             "max_tokens": 3000,
         },
     )
@@ -1649,10 +1724,27 @@ def _ai_score_groq(audio_bytes, mime_type, question, part):
     except Exception:
         content = ""
 
+    # Strip markdown code fences if present
+    content = content.strip()
+    if content.startswith("```"):
+        content = content.split("\n", 1)[-1] if "\n" in content else content[3:]
+        if content.endswith("```"):
+            content = content[:-3]
+        content = content.strip()
+
     try:
         result = json.loads(content)
     except Exception:
-        result = {"score": 0, "raw": content}
+        # Try to extract JSON from surrounding text
+        import re
+        m = re.search(r'\{.*\}', content, re.DOTALL)
+        if m:
+            try:
+                result = json.loads(m.group())
+            except Exception:
+                result = {"score": 0, "raw": content}
+        else:
+            result = {"score": 0, "raw": content}
     result["level"] = rb["level"]
     result["transcript"] = transcript
     result["scale"] = rb["scale"]
@@ -1702,12 +1794,34 @@ def _ai_score_gemini(audio_bytes, mime_type, question, part):
             "responseMimeType": "application/json",
         },
     }
+    import time as _time
     model = (cfg.get("gemini_model", "") or "gemini-3.6-flash").strip()
     url = "https://generativelanguage.googleapis.com/v1beta/models/" + urllib.parse.quote(model) + ":generateContent?key=" + urllib.parse.quote(key)
-    try:
-        r = requests.post(url, json=body, timeout=120)
-    except Exception as e:
-        log.error("Gemini request error: %s", str(e))
+    r = None
+    for _attempt in range(3):
+        try:
+            r = requests.post(url, json=body, timeout=120)
+        except Exception as e:
+            log.error("Gemini request error: %s", str(e))
+            return None, "Gemini bilan bog'lanib bo'lmadi"
+        if r.status_code in (429, 500, 502, 503) and _attempt < 2:
+            wait = 10.0
+            try:
+                ra = r.headers.get("Retry-After")
+                if ra:
+                    wait = min(float(ra) + 1.0, 60.0)
+                else:
+                    import re as _re
+                    m = _re.search(r"try again in ([\d.]+)s", (r.text or "").lower())
+                    if m:
+                        wait = min(float(m.group(1)) + 1.0, 60.0)
+            except Exception:
+                pass
+            log.warning("Gemini %s - retrying in %.0fs (attempt %d/3)", r.status_code, wait, _attempt + 1)
+            _time.sleep(wait)
+            continue
+        break
+    if r is None:
         return None, "Gemini bilan bog'lanib bo'lmadi"
     if r.status_code != 200:
         log.error("Gemini error %s: %s", r.status_code, r.text[:300])
@@ -1775,9 +1889,9 @@ def _score_cache_set(key, result):
 @app.route("/api/ai/score", methods=["POST"])
 @safe_api
 def api_ai_score():
-    u = current_user()
+    u = current_user(allow_revive=True)
     if u is None:
-        return api_error("Kirish kerak", 401)
+        return api_error("Sessiya tugagan. Iltimos tizimga qayta kiring, so'ng yana 'Baholash' tugmasini bosing.", 401)
     if u["blocked"]:
         return api_error("Hisobingiz bloklangan", 403)
     if not has_access(u):
@@ -1980,6 +2094,25 @@ def admin_add_user():
     conn.execute(
         "INSERT INTO users (phone, password_hash, name, created_at) VALUES (?,?,?,?)",
         (phone, hash_password(pw), name, datetime.datetime.now().isoformat(timespec="seconds")))
+    conn.commit()
+    conn.close()
+    return jsonify({"ok": True})
+
+
+@app.route("/admin/api/users/<int:uid>/rename", methods=["POST"])
+@safe_api
+def admin_rename(uid):
+    if require_editor() is None:
+        return jsonify({"ok": False}), 401
+    name = request.form.get("name", "").strip()
+    if not name:
+        return jsonify({"ok": False, "error": "Ism kiritilishi shart"})
+    conn = db()
+    u = conn.execute("SELECT * FROM users WHERE id=?", (uid,)).fetchone()
+    if u is None:
+        conn.close()
+        return jsonify({"ok": False, "error": "Foydalanuvchi topilmadi"})
+    conn.execute("UPDATE users SET name=? WHERE id=?", (name, uid))
     conn.commit()
     conn.close()
     return jsonify({"ok": True})
@@ -2188,6 +2321,7 @@ def admin_config():
         tg_chat = request.form.get("telegram_chat_id", "").strip()
         g_cid = request.form.get("google_client_id", "").strip()
         g_csec = request.form.get("google_client_secret", "").strip()
+        groq_key = request.form.get("groq_api_key", "").strip()
         cfg["card_number"] = card or cfg["card_number"]
         cfg["card_holder"] = holder or cfg["card_holder"]
         if base_url:
@@ -2200,6 +2334,8 @@ def admin_config():
             cfg["google_client_id"] = g_cid
         if g_csec:
             cfg["google_client_secret"] = g_csec
+        if groq_key:
+            cfg["groq_api_key"] = groq_key
         save_config(cfg)
         return jsonify({"ok": True})
     return jsonify({
@@ -2211,6 +2347,7 @@ def admin_config():
         "telegram_chat_id": cfg.get("telegram_chat_id", ""),
         "google_client_id": cfg.get("google_client_id", ""),
         "google_redirect_uri": google_redirect_uri(),
+        "groq_api_key": cfg.get("groq_api_key", ""),
     })
 
 
