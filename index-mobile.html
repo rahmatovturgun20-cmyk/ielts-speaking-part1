@@ -10966,7 +10966,7 @@ function renderResults() {
 
 
 
-        '<a class="download-link" href="' + fullAudioUrl + '" download="full-mock-test.wav">⬇ Download full audio</a>' +
+        '<button class="download-link" onclick="window.saveFullMockAudio()">⬇ Download full audio — Yuklab olishlarga qo\'shish</button>' +
         '<br><button class="ai-toggle" onclick="fullAiFeedback()">✨ AI baholash — full test</button>' +
         '<div class="ai-feedback hidden" id="fullAiBox"></div>';
 
@@ -11114,6 +11114,31 @@ window.aiFeedback = function (idx) {
     });
   }
   doAIRequest();
+}
+
+window.saveFullMockAudio = function () {
+  if (!fullAudioBlob) { alert("Yozuv yo'q"); return; }
+  var btn = document.querySelector('.download-link');
+  if (btn) btn.textContent = '⏳ Saqlanmoqda…';
+  var fd = new FormData();
+  fd.append("audio", fullAudioBlob, "full-mock-test.wav");
+  fd.append("question", "Full Mock Test - barcha javoblar birga (Part 1.1, 1.2, 2, 3)");
+  fd.append("part", "full");
+  fetch("/api/recordings/upload", { method: "POST", body: fd }).then(function (resp) { return resp.json(); }).then(function (d) {
+    if (btn) btn.textContent = '✓ Saqlandi';
+    if (d && d.ok) {
+      var sp = document.getElementById('settingsPanel');
+      if (sp) sp.classList.add('hidden');
+      var dlm = document.getElementById('dlModal');
+      if (dlm){ dlm.classList.remove('hidden'); if (window._openDownloads) window._openDownloads(); }
+    } else {
+      if (btn) btn.innerHTML = '⬇ Download full audio — Yuklab olishlarga qo\'shish';
+      alert((d && d.error) || "Saqlashda xatolik yuz berdi");
+    }
+  }).catch(function () {
+    if (btn) btn.innerHTML = '⬇ Download full audio — Yuklab olishlarga qo\'shish';
+    alert("Server bilan bog'lanishda xatolik");
+  });
 }
 
 window.fullAiFeedback = function () {
@@ -13538,12 +13563,15 @@ var btn = banner.querySelector('.real-exam-start');
   var modal = document.getElementById('dlModal');
   var content = document.getElementById('dlContent');
   document.getElementById('dlClose').onclick = function(){ modal.classList.add('hidden'); };
-  document.getElementById('spDownloads').onclick = function(e){
-    e.stopPropagation();
+  window._openDownloads = function(){
     var sp = document.getElementById('settingsPanel');
     if (sp) sp.classList.add('hidden');
     modal.classList.remove('hidden');
     loadRecordings();
+  };
+  document.getElementById('spDownloads').onclick = function(e){
+    e.stopPropagation();
+    window._openDownloads();
   };
   function esc(s){ return String(s==null?'':s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;'); }
   function fmtPart(p){
@@ -13588,7 +13616,9 @@ var btn = banner.querySelector('.real-exam-start');
         recBlock += '<button onclick="window._aiFb('+r.id+','+(r.has_result?'1':'0')+')" style="font-size:12px;padding:3px 10px;border:1px solid #2563eb;background:#2563eb;color:#fff;border-radius:8px;cursor:pointer">🤖 AI feedback</button>';
         recBlock += '<button onclick="window._delRec('+r.id+')" style="font-size:12px;padding:3px 8px;border:1px solid #fecaca;background:#fff;color:#dc2626;border-radius:8px;cursor:pointer">🗑️</button>';
         recBlock += '<span class="dl-status" id="dlst-'+r.id+'" style="font-size:12px;color:#888"></span>';
-        recBlock += '</div></div>';
+        recBlock += '</div>'
+          + '<audio controls preload="metadata" src="/api/recordings/'+r.id+'/download?inline=1" style="width:100%;height:36px;margin-top:8px"></audio>'
+          + '</div>';
         html += recBlock;
       }
       html += '</div>';

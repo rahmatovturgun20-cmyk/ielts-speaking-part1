@@ -2058,6 +2058,29 @@ def api_recording_evaluate(rid):
     return jsonify({"ok": True, "result": result})
 
 
+@app.route("/api/recordings/upload", methods=["POST"])
+@safe_api
+def api_recording_upload():
+    u = current_user(allow_revive=True)
+    if u is None:
+        return api_error("Avval tizimga kiring, so'ng qayta urinib ko'ring.", 401)
+    if u["blocked"]:
+        return api_error("Hisobingiz bloklangan", 403)
+    f = request.files.get("audio")
+    if f is None or f.filename == "":
+        return api_error("Audio yuborilmadi")
+    data = f.read()
+    if len(data) > 50 * 1024 * 1024:
+        return api_error("Audio juda katta (max 50MB)")
+    if not data:
+        return api_error("Audio bo'sh")
+    mime = (f.content_type or "").split(";")[0].strip() or "audio/wav"
+    part = (request.form.get("part") or "1.1").strip()
+    question = (request.form.get("question") or "Speaking task").strip()
+    rid = _save_recording(u["id"], data, mime, part, question)
+    return jsonify({"ok": True, "rid": rid})
+
+
 @app.route("/api/recordings/<int:rid>/download")
 @safe_api
 def api_recording_download(rid):
@@ -2071,8 +2094,13 @@ def api_recording_download(rid):
     if not os.path.exists(path):
         return api_error("Audio fayl topilmadi", 404)
     name = "speaking-%s-%s.%s" % (row["part"].replace("/", "-"), rid, _ext_for_mime(row["mime"]))
-    resp = send_file(path, as_attachment=True, download_name=name,
-                     mimetype="audio/wav" if "audio/" in (row["mime"] or "") else row["mime"])
+    mimetype = "audio/wav" if "audio/" in (row["mime"] or "") else row["mime"]
+    if request.args.get("inline") == "1":
+        resp = send_file(path, mimetype=mimetype)
+        resp.headers["Accept-Ranges"] = "bytes"
+        resp.headers["Cache-Control"] = "no-store"
+        return resp
+    resp = send_file(path, as_attachment=True, download_name=name, mimetype=mimetype)
     return resp
 
 
