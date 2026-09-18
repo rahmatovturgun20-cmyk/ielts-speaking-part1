@@ -128,6 +128,21 @@
     });
   }
 
+  document.addEventListener('click', function (ev) {
+    var a = ev.target && ev.target.closest ? ev.target.closest('.start-practice') : null;
+    if (!a) { return; }
+    ev.preventDefault();
+    ev.stopPropagation();
+    var date = a.getAttribute('data-date');
+    var slotN = parseInt(a.getAttribute('data-slot'), 10);
+    if (isNaN(slotN) || slotN < 0) { slotN = 0; }
+    if (emb && window.parent && window.parent !== window) {
+      window.parent.postMessage({ type: 'start-real-exam', date: date, slot: slotN }, '*');
+    } else {
+      window.location.href = '/?real_exam=' + encodeURIComponent(date) + '&slot=' + slotN;
+    }
+  }, true);
+
   function esc(s) {
     return String(s == null ? '' : s)
       .replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;')
@@ -172,7 +187,7 @@
 
     html += '</div>';
 
-    html += '<div class="slot-start"><a' + (emb ? ' target="_top"' : '') + ' href="/?real_exam=' + encodeURIComponent(date) + '&amp;slot=' + slotIdx + '">🎙️ Start practice</a></div>';
+    html += '<div class="slot-start"><a class="start-practice" data-date="' + esc(date) + '" data-slot="' + slotIdx + '" href="/?real_exam=' + encodeURIComponent(date) + '&amp;slot=' + slotIdx + '">🎙️ Start practice</a></div>';
     html += '</div>';
     return html;
   }

@@ -2984,7 +2984,7 @@ html.dark .ai-loading { color: #94a3b8; }
     width: 100%;
   }
   .question-box #cueCard .cue-q { color: #ffffff; font-size: 22px; font-weight: 800; margin-bottom: 12px; text-align: center; }
-  .question-box #cueCard .cue-points li { color: #ffffff; border-top: 1px dashed rgba(255,255,255,.35); }
+  .question-box #cueCard .cue-points li { color: #ffffff; border-top: 1px dashed rgba(255,255,255,.35); font-weight: 700; }
   .question-box #cueCard .cue-points li:before { color: #ffffff; }
   html.dark .question-box #cueCard .cue-q,
   html.dark .question-box #cueCard .cue-points li { color: #ffffff; }
@@ -11636,11 +11636,35 @@ nextQuestion();
 
   });
 
+  function showRealExamBanner(rexam, slotN, exam, slot, skipGate) {
+    setupCard.classList.remove('hidden');
+    questionsCard.classList.add('hidden');
+    practiceCard.classList.add('hidden');
+    resultCard.classList.add('hidden');
+    reviewCard.classList.add('hidden');
+    var old = setupCard.querySelector('.real-exam-banner');
+    if (old && old.parentNode) { old.parentNode.removeChild(old); }
+    var banner = document.createElement('div');
+    banner.className = 'real-exam-banner';
+    banner.style.cssText = 'background:linear-gradient(135deg,#059669,#10b981);color:#fff;border-radius:14px;padding:18px 20px;margin-bottom:18px;box-shadow:0 12px 26px -12px rgba(16,185,129,.65);';
+    banner.innerHTML = '<div style="font-size:13px;font-weight:700;text-transform:uppercase;letter-spacing:.4px;opacity:.9;">🎯 Real Past Exam</div>'
+      + '<div style="font-size:19px;font-weight:800;margin-top:4px;">' + ((exam && (exam.label || exam.date)) || '') + ' · ' + ((slot && slot.joy) || '') + '</div>'
+      + '<div style="font-size:13px;opacity:.95;margin-top:4px;">Haqiqiy imtihonda tushgan savollar · to\'liq mock test rejimi</div>'
+      + '<button class="btn real-exam-start" style="margin-top:14px;background:#fff;color:#059669;border:none;box-shadow:none;">🎙️ Start Real Exam</button>';
+    var intro = setupCard.querySelector('.intro-header');
+    if (intro) { setupCard.insertBefore(banner, intro.nextSibling ? intro.nextSibling : setupCard.firstChild); }
+    else { setupCard.insertBefore(banner, setupCard.firstChild); }
+    var btn = banner.querySelector('.real-exam-start');
+    btn.addEventListener('click', function () { beginRealExam(rexam, slotN, skipGate); });
+  }
+
   window.beginRealExam = beginRealExam;
 
-  async function beginRealExam(examDate, slotIdx) {
+  async function beginRealExam(examDate, slotIdx, skipGate) {
 
-    try { const mc = await fetch('/api/mock/start', { method: 'POST' }); const md = await mc.json(); if (!md.ok) { window.open('https://t.me/rahmatovturgun?text=' + encodeURIComponent('Assalomu alaykum! Men sizning veb-saytingizdagi Premium paketni sotib olmoqchiman.'), '_blank'); return; } } catch (e) {}
+    if (!skipGate) {
+      try { const mc = await fetch('/api/mock/start', { method: 'POST' }); const md = await mc.json(); if (!md.ok) { alert(md.error || "Bepul mock testlardan foydalanib bo'lgansiz. Davom etish uchun Premium obuna oling."); window.open('https://t.me/rahmatovturgun?text=' + encodeURIComponent('Assalomu alaykum! Men sizning veb-saytingizdagi Premium paketni sotib olmoqchiman.'), '_blank'); return; } } catch (e) {}
+    }
 
     let exams = [];
     try {
@@ -11744,8 +11768,8 @@ nextQuestion();
     try {
       stream = await navigator.mediaDevices.getUserMedia({ audio: true });
     } catch (e) {
-      alert('Microphone access was denied or no microphone was found. Allow access in your browser settings.');
       realExamSession = false;
+      showRealExamBanner(examDate, slotIdx, exam, slot, true);
       return;
     }
 
@@ -12707,18 +12731,7 @@ homeBtn.addEventListener('click', () => {
           if (!exam) { return; }
           var slot = (exam.slots || [])[slotN];
           if (!slot) { return; }
-          var banner = document.createElement('div');
-          banner.className = 'real-exam-banner';
-          banner.style.cssText = 'background:linear-gradient(135deg,#059669,#10b981);color:#fff;border-radius:14px;padding:18px 20px;margin-bottom:18px;box-shadow:0 12px 26px -12px rgba(16,185,129,.65);';
-          banner.innerHTML = '<div style="font-size:13px;font-weight:700;text-transform:uppercase;letter-spacing:.4px;opacity:.9;">🎯 Real Past Exam</div>'
-            + '<div style="font-size:19px;font-weight:800;margin-top:4px;">' + (exam.label || exam.date) + ' · ' + (slot.joy || '') + '</div>'
-            + '<div style="font-size:13px;opacity:.95;margin-top:4px;">Haqiqiy imtihonda tushgan savollar · to\'liq mock test rejimi</div>'
-            + '<button class="btn real-exam-start" style="margin-top:14px;background:#fff;color:#059669;border:none;box-shadow:none;">🎙️ Start Real Exam</button>';
-          var intro = setupCard.querySelector('.intro-header');
-          if (intro) { var h = intro.nextSibling; setupCard.insertBefore(banner, intro.nextSibling ? intro.nextSibling : setupCard.firstChild); }
-          else { setupCard.insertBefore(banner, setupCard.firstChild); }
-          var btn = banner.querySelector('.real-exam-start');
-          btn.addEventListener('click', function () { beginRealExam(rexam, slotN); });
+          showRealExamBanner(rexam, slotN, exam, slot);
         }).catch(function () {});
       }
     }
@@ -12748,7 +12761,12 @@ homeBtn.addEventListener('click', () => {
   }
   document.getElementById('rexamClose').addEventListener('click', closeRealExams);
   window.addEventListener('message', function (e) {
-    if (e.data === 'close-rexam') { closeRealExams(); }
+    var d = e.data;
+    if (d === 'close-rexam') { closeRealExams(); return; }
+    if (d && typeof d === 'object' && d.type === 'start-real-exam') {
+      closeRealExams();
+      if (typeof window.beginRealExam === 'function') { window.beginRealExam(d.date, d.slot); }
+    }
   });
   window.openRealExams = openRealExams;
   window.closeRealExams = closeRealExams;
