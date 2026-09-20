@@ -3943,6 +3943,7 @@ html.dark .ai-loading { color: #94a3b8; }
   <div class="action-buttons">
     <button class="btn btn-full" id="mockBtn">🎯 Start Full Mock Test</button>
     <button type="button" class="btn btn-past" onclick="openRealExams()">📚 Real Past Exams</button>
+    <button type="button" class="btn btn-past" id="grammarBtn">📖 Grammar Tests</button>
   </div>
 
   <div style="margin-top:26px;text-align:center;color:var(--muted);font-size:12.5px;opacity:.85;">Made by <strong style="color:var(--primary);font-weight:700;">Turg'un Rahmatov</strong> · <span id="footerYear">2026</span> ©</div>
@@ -12825,6 +12826,40 @@ homeBtn.addEventListener('click', () => {
   </div>
   <iframe id="rexamFrame" title="Real Past Exams" src="/speaking/history?embed=1" allow="microphone"></iframe>
 </div>
+
+<div class="rexam-modal hidden" id="gtModal">
+  <div class="rexam-modal-bar">
+    <button class="rexam-close" id="gtClose" type="button">⌂ Home</button>
+  </div>
+  <iframe id="gtFrame" title="Grammar Tests" src="/grammar-tests?embed=1"></iframe>
+</div>
+
+<script>
+(function () {
+  var modal = document.getElementById('gtModal');
+  var frame = document.getElementById('gtFrame');
+  function openGrammarTests() {
+    frame.src = '/grammar-tests?embed=1';
+    modal.classList.remove('hidden');
+  }
+  function closeGrammarTests() {
+    modal.classList.add('hidden');
+    frame.src = 'about:blank';
+  }
+  document.getElementById('gtClose').addEventListener('click', closeGrammarTests);
+  document.getElementById('grammarBtn').addEventListener('click', openGrammarTests);
+  window.addEventListener('message', function (e) {
+    var d = e.data;
+    if (d === 'close-rexam') { closeGrammarTests(); return; }
+    if (d && typeof d === 'object' && d.type === 'grammar-open-plans') {
+      closeGrammarTests();
+      if (typeof window.openPlansModal === 'function') { window.openPlansModal(); }
+    }
+  });
+  window.openGrammarTests = openGrammarTests;
+  window.closeGrammarTests = closeGrammarTests;
+})();
+</script>
 
 <script>
 (function () {

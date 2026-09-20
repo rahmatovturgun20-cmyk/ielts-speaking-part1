@@ -1,0 +1,477 @@
+<!DOCTYPE html>
+<html lang="uz">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Grammar Tests — Test Master</title>
+<style>
+  :root {
+    --primary: #2563eb; --primary-light: #3b82f6; --primary-bg: #dbeafe;
+    --violet: #1d4ed8; --text: #1f2937; --text-light: #4b5563; --muted: #6b7280;
+    --border: #e5e7eb; --bg: #f9fafb; --bg-alt: #f3f4f6; --card: #ffffff;
+    --green: #059669; --green-bg: #d1fae5; --red: #dc2626; --red-bg: #fee2e2;
+    --amber: #d97706; --amber-bg: #fef3c7;
+    --shadow: 0 10px 30px -12px rgba(0,0,0,.18);
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Arial, sans-serif;
+    background: var(--bg); color: var(--text); min-height: 100vh;
+  }
+  .gt-bar {
+    position: sticky; top: 0; z-index: 50; display: flex; align-items: center; gap: 10px;
+    padding: 10px 16px; background: linear-gradient(135deg, var(--primary), var(--violet));
+    color: #fff; box-shadow: var(--shadow);
+  }
+  .gt-bar h1 { font-size: 16px; font-weight: 800; flex: 1; }
+  .gt-bar .home-btn, .gt-bar .close-btn {
+    background: rgba(255,255,255,.18); color: #fff; border: 1px solid rgba(255,255,255,.35);
+    border-radius: 999px; padding: 7px 15px; font-size: 13px; font-weight: 700; cursor: pointer; font-family: inherit;
+  }
+  .gt-bar .home-btn:hover, .gt-bar .close-btn:hover { background: rgba(255,255,255,.3); }
+  .wrap { max-width: 780px; margin: 0 auto; padding: 16px 14px 40px; }
+  .card { background: var(--card); border: 1px solid var(--border); border-radius: 18px; padding: 16px; box-shadow: var(--shadow); }
+
+  /* Picker */
+  .level-title, .test-title { font-size: 13px; font-weight: 800; color: var(--muted); text-transform: uppercase; letter-spacing: .5px; margin: 18px 0 10px; display: flex; align-items: center; gap: 8px; }
+  .chips { display: flex; flex-wrap: wrap; gap: 10px; }
+  .chip {
+    border: 1.5px solid var(--border); background: var(--bg-alt); color: var(--text-light);
+    border-radius: 14px; padding: 11px 18px; font-size: 14px; font-weight: 700; cursor: pointer; font-family: inherit;
+    transition: .15s; text-align: center; min-width: 92px;
+  }
+  .chip:hover { border-color: var(--primary); }
+  .chip.active { background: var(--primary); border-color: var(--primary); color: #fff; box-shadow: 0 8px 20px -8px var(--primary); }
+  .chip.locked { cursor: not-allowed; opacity: .6; position: relative; }
+  .chip .best { display: block; font-size: 11px; font-weight: 600; opacity: .85; margin-top: 3px; }
+  .chip .lock { font-size: 12px; margin-left: 4px; }
+
+  /* Quiz */
+  .q-head { display: flex; align-items: center; gap: 10px; margin-bottom: 12px; }
+  .q-count { font-size: 12.5px; font-weight: 800; color: var(--primary); background: var(--primary-bg); padding: 4px 12px; border-radius: 999px; white-space: nowrap; }
+  .progress { flex: 1; height: 8px; background: var(--bg-alt); border-radius: 999px; overflow: hidden; }
+  .progress span { display: block; height: 100%; background: linear-gradient(90deg, var(--primary-light), var(--primary)); border-radius: 999px; transition: width .25s; }
+  .passage {
+    background: var(--bg-alt); border: 1px solid var(--border); border-radius: 14px;
+    padding: 14px 16px; font-size: 14.5px; line-height: 1.9; color: var(--text-light); margin-bottom: 14px;
+  }
+  .blank {
+    display: inline-block; min-width: 46px; height: 16px; background: var(--card); border: 1.5px dashed var(--muted);
+    border-radius: 6px; margin: 0 2px; vertical-align: middle;
+  }
+  .passage .blank { cursor: pointer; }
+  .passage .blank.cur { background: var(--amber-bg); border-color: var(--amber); box-shadow: 0 0 0 3px rgba(217,119,6,.18); }
+  .passage .blank.has { border-style: solid; border-color: var(--primary); background: var(--primary-bg); }
+  .stem { font-size: 18px; font-weight: 600; line-height: 1.9; margin-bottom: 18px; }
+  .stem .blank { height: 20px; min-width: 56px; }
+  .opts { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+  @media (max-width: 560px) { .opts { grid-template-columns: 1fr; } }
+  .opt {
+    display: flex; align-items: center; gap: 10px; text-align: left; border: 1.5px solid var(--border);
+    background: var(--card); border-radius: 12px; padding: 12px 14px; font-size: 14.5px; font-family: inherit;
+    color: var(--text); cursor: pointer; transition: .12s;
+  }
+  .opt:hover { border-color: var(--primary); box-shadow: 0 4px 14px -8px var(--primary); }
+  .opt .key { flex-shrink: 0; width: 28px; height: 28px; border-radius: 9px; background: var(--bg-alt); color: var(--primary); font-weight: 800; font-size: 13px; display: flex; align-items: center; justify-content: center; }
+  .opt.selected { border-color: var(--primary); background: var(--primary-bg); }
+  .opt.right { border-color: var(--green); background: var(--green-bg); }
+  .opt.right .key { background: var(--green); color: #fff; }
+  .opt.wrong { border-color: var(--red); background: var(--red-bg); }
+  .opt.wrong .key { background: var(--red); color: #fff; }
+  .opt.disabled { cursor: default; opacity: .85; }
+  .opt.disabled:hover { border-color: var(--border); box-shadow: none; }
+
+  .q-nav { display: flex; align-items: center; gap: 10px; margin-top: 18px; }
+  .q-nav .btn {
+    flex: 1; border: none; border-radius: 12px; padding: 13px; font-size: 14.5px; font-weight: 800; cursor: pointer; font-family: inherit; transition: .15s;
+  }
+  .btn-primary { background: linear-gradient(135deg, var(--primary), var(--violet)); color: #fff; }
+  .btn-primary:hover { filter: brightness(1.08); }
+  .btn-ghost { background: var(--bg-alt); color: var(--text-light); border: 1.5px solid var(--border) !important; }
+  .btn-ghost:hover { border-color: var(--primary) !important; color: var(--primary); }
+  .q-nav .btn:disabled { opacity: .4; cursor: not-allowed; }
+
+  .navdots { display: flex; flex-wrap: wrap; gap: 6px; justify-content: center; margin-top: 14px; }
+  .navdot {
+    width: 26px; height: 26px; border-radius: 8px; border: 1.5px solid var(--border); background: var(--card);
+    font-size: 12px; font-weight: 700; cursor: pointer; color: var(--muted); font-family: inherit;
+  }
+  .navdot.cur { background: var(--primary); border-color: var(--primary); color: #fff; }
+  .navdot.right { background: var(--green-bg); border-color: var(--green); color: var(--green); }
+  .navdot.wrong { background: var(--red-bg); border-color: var(--red); color: var(--red); }
+
+  /* Result */
+  .result { text-align: center; padding: 20px 0 8px; }
+  .result .big { font-size: 44px; font-weight: 900; }
+  .result .score-text { font-size: 15px; color: var(--muted); margin: 6px 0 16px; }
+  .result .bars { display: flex; justify-content: center; gap: 8px; margin-bottom: 18px; }
+  .result .bars div { width: 34px; height: 10px; border-radius: 999px; background: var(--bg-alt); overflow: hidden; }
+  .result .bars div span { display: block; height: 100%; border-radius: 999px; }
+  .result .again { background: linear-gradient(135deg, var(--primary), var(--violet)); color: #fff; border: none; border-radius: 12px; padding: 13px 34px; font-size: 15px; font-weight: 800; cursor: pointer; font-family: inherit; }
+  .result .again:hover { filter: brightness(1.08); }
+  .best-line { color: var(--green); font-weight: 800; font-size: 13.5px; margin-top: 8px; }
+
+  /* Premium locked */
+  .locked-note { text-align: center; padding: 26px 10px; }
+  .locked-note .ic { font-size: 34px; }
+  .locked-note .big { font-weight: 900; font-size: 17px; margin: 10px 0 6px; }
+  .locked-note p { color: var(--muted); font-size: 13.5px; line-height: 1.6; max-width: 460px; margin: 0 auto 16px; }
+  .locked-note .btn { border: none; border-radius: 12px; padding: 13px 30px; font-size: 14.5px; font-weight: 800; cursor: pointer; font-family: inherit; }
+  .sub-note { margin-top: 14px; text-align: center; font-size: 12px; color: var(--muted); }
+  .loading { text-align: center; padding: 60px 0; color: var(--muted); }
+  .spinner { width: 34px; height: 34px; border: 4px solid var(--border); border-top-color: var(--primary); border-radius: 50%; margin: 0 auto 14px; animation: spin .8s linear infinite; }
+  @keyframes spin { to { transform: rotate(360deg); } }
+
+  .flag { display: inline-block; font-size: 11.5px; font-weight: 800; color: #fff; background: var(--green); padding: 3px 9px; border-radius: 999px; margin-left: 8px; vertical-align: middle; }
+  .err { color: var(--red); font-weight: 700; padding: 40px 0; text-align: center; }
+
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --primary: #3b82f6; --primary-light: #60a5fa; --primary-bg: #1e3a6d;
+      --violet: #6366f1; --text: #e5edf6; --text-light: #c3d0e0;
+      --border: #2a3a55; --bg: #0b1220; --bg-alt: #17233b; --card: #151e32;
+      --green: #34d399; --green-bg: #124034; --red: #f87171; --red-bg: #4c1d24;
+      --amber: #fbbf24; --amber-bg: #44360e;
+    }
+  }
+</style>
+</head>
+<body>
+
+<div class="gt-bar">
+  <h1>🎓 Grammar Tests <span class="flag" id="accessFlag" style="display:none">Premium</span></h1>
+  <button class="home-btn" id="homeBtn" type="button">⌂ Home</button>
+  <button class="close-btn" id="closeEmbBtn" type="button" style="display:none">✕ Yopish</button>
+</div>
+
+<div class="wrap">
+
+  <div class="card" id="pickerCard">
+    <div class="level-title">1 · Daraja (Level) tanlang</div>
+    <div class="chips" id="levelChips"></div>
+
+    <div class="test-title">2 · Test raqamini tanlang</div>
+    <div class="chips" id="testChips"></div>
+
+    <div class="sub-note" id="teaser"></div>
+  </div>
+
+  <div id="quizArea"></div>
+
+</div>
+
+<script>
+(function () {
+  var STORE_KEY = 'grammar_tests_best_v1';
+  var state = { tests: [], access: false, freeCount: 1, level: null, testNo: null,
+                idx: 0, picked: null, checked: false, score: 0, results: {}, total: 0 };
+
+  var pickerCard = document.getElementById('pickerCard');
+  var levelChips = document.getElementById('levelChips');
+  var testChips = document.getElementById('testChips');
+  var quizArea = document.getElementById('quizArea');
+  var teaser = document.getElementById('teaser');
+  var accessFlag = document.getElementById('accessFlag');
+
+  var emb = new URLSearchParams(window.location.search).get('embed') === '1';
+  if (emb) {
+    document.getElementById('homeBtn').style.display = 'none';
+    document.getElementById('closeEmbBtn').style.display = '';
+    document.getElementById('closeEmbBtn').addEventListener('click', function () {
+      if (window.parent && window.parent !== window) { window.parent.postMessage('close-rexam', '*'); }
+    });
+  } else {
+    document.getElementById('homeBtn').addEventListener('click', function () { window.location.href = '/'; });
+  }
+
+  function esc(s) {
+    return String(s == null ? '' : s)
+      .replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;')
+      .replace(/"/g, '&quot;').replace(/'/g, '&#39;');
+  }
+
+  function bestOf(testNo) {
+    var b = {};
+    try { b = JSON.parse(window.localStorage.getItem(STORE_KEY) || '{}'); } catch (e) {}
+    return b[String(testNo)] || null;
+  }
+  function saveBest(testNo, correct, total) {
+    var best = bestOf(testNo);
+    var pct = total ? Math.round(100 * correct / total) : 0;
+    var prevPct = best ? best.pct : -1;
+    if (pct > prevPct) {
+      var b = {};
+      try { b = JSON.parse(window.localStorage.getItem(STORE_KEY) || '{}'); } catch (e) {}
+      b[String(testNo)] = { pct: pct, d: new Date().toISOString().slice(0, 10) };
+      try { window.localStorage.setItem(STORE_KEY, JSON.stringify(b)); } catch (e) {}
+    }
+  }
+
+  function levelsFrom() {
+    var seen = [], map = {};
+    state.tests.forEach(function (t) {
+      if (!map[t.level]) { map[t.level] = []; seen.push(t.level); }
+      map[t.level].push(t);
+    });
+    return { names: seen, map: map };
+  }
+
+  function renderPicker() {
+    pickerCard.classList.remove('hidden');
+    quizArea.innerHTML = '';
+    var lv = levelsFrom();
+    levelChips.innerHTML = lv.names.map(function (l) {
+      var active = l === state.level ? ' active' : '';
+      return '<button type="button" class="chip' + active + '" data-level="' + esc(l) + '">' + esc(l) + '</button>';
+    }).join('') ||
+      '<button type="button" class="chip locked">Mavjud emas</button>';
+
+    levelChips.querySelectorAll('[data-level]').forEach(function (b) {
+      b.addEventListener('click', function () {
+        state.level = b.getAttribute('data-level');
+        state.testNo = null;
+        renderPicker();
+      });
+    });
+
+    var list = lv.map[state.level] || state.tests;
+    testChips.innerHTML = list.map(function (t) {
+      var active = t.test === state.testNo ? ' active' : '';
+      var best = bestOf(t.test);
+      var bestHtml = best ? '<span class="best">🏆 ' + best.pct + '% · ' + esc(best.d) + '</span>' : '';
+      var lock = t.locked ? ' 🔒' : '';
+      return '<button type="button" class="chip' + active + (t.locked ? ' locked' : '') + '" data-test="' + t.test + '">Test ' + t.test + lock + bestHtml + '</button>';
+    }).join('');
+
+    testChips.querySelectorAll('[data-test]').forEach(function (b) {
+      b.addEventListener('click', function () {
+        var t = state.tests.filter(function (x) { return x.test === Number(b.getAttribute('data-test')) && x.level === state.level; })[0]
+            || state.tests.filter(function (x) { return x.test === Number(b.getAttribute('data-test')); })[0];
+        if (!t) return;
+        if (t.locked) { showLocked(t); return; }
+        state.testNo = t.test;
+        renderPicker();
+        startQuiz(t);
+      });
+    });
+
+    var freeSet = state.tests.filter(function (t) { return t.locked === false; });
+    if (freeSet.length && !state.access) {
+      teaser.innerHTML = '✨ <b>Test 1</b> ('.concat(freeSet[0].questions.length, ' ta savol) bepul. Qolgan testlar premium obuna bilan ochiladi.');
+    } else {
+      teaser.innerHTML = '';
+    }
+  }
+
+  function showLocked(t) {
+    quizArea.innerHTML =
+      '<div class="card locked-note"><div class="ic">🔒</div>' +
+      '<div class="big">Test ' + t.test + ' premium</div>' +
+      '<p>' + esc(t.level) + ' darajadagi Test ' + t.test + ' faqat premium obuna egalari uchun ochiq. Obuna olish orqali barcha 8 testga kirishingiz mumkin.</p>' +
+      '<button type="button" class="btn" style="background:linear-gradient(135deg,#d97706,#f59e0b);color:#fff" id="buyBtn">🚀 Obuna sotib olish</button></div>';
+    document.getElementById('buyBtn').addEventListener('click', function () {
+      if (window.parent && window.parent !== window) { window.parent.postMessage({ type: 'grammar-open-plans' }, '*'); }
+      else { window.location.href = '/paywall'; }
+    });
+  }
+
+  // ---------- Quiz ----------
+
+  function renderPassage(passage) {
+    var out = '', last = 0, re = /__(?:\(\s*(\d{1,3})\s*\))?__/g, m;
+    var qNos = state.test.questions.map(function (q) { return q.n; });
+    while ((m = re.exec(passage)) !== null) {
+      out += esc(passage.slice(last, m.index));
+      var n = m[1] ? parseInt(m[1], 10) : null;
+      var cur = n === state.cur.n;
+      var exists = n != null && qNos.indexOf(n) !== -1;
+      var cls = 'blank' + (cur ? ' cur' : '') + (exists ? ' has' : '');
+      out += '<span class="' + cls + '" role="button" aria-label="blank" data-n="' + (n == null ? '' : n) + '"></span>';
+      last = m.index + m[0].length;
+    }
+    out += esc(passage.slice(last));
+    return out;
+  }
+
+  function renderStem(stem) {
+    return esc(stem).replace(/_{3,}/g, '<span class="blank"></span>');
+  }
+
+  function startQuiz(t) {
+    pickerCard.classList.add('hidden');
+    state.test = t;
+    state.total = t.questions.length;
+    state.idx = 0;
+    state.picked = null;
+    state.checked = false;
+    state.score = 0;
+    state.results = {};
+    state.cur = t.questions[0];
+    drawQ();
+  }
+
+  function drawQ() {
+    var q = state.cur;
+    var idx = state.idx;
+    var total = state.total;
+    var res = state.results[idx] || null;
+
+    var head =
+      '<div class="q-head"><span class="q-count">Test ' + state.test.test + ' · ' + (idx + 1) + ' / ' + total + '</span>' +
+      '<div class="progress"><span style="width:' + Math.round(100 * state.answered() / total) + '%"></span></div></div>';
+
+    var body = '';
+    if (q.passage) {
+      body += '<div class="passage">' + renderPassage(q.passage) + '</div>';
+    }
+    if (q.stem) {
+      body += '<div class="stem">' + renderStem(q.stem) + '</div>';
+    }
+
+    var opts = q.options.map(function (o) {
+      var cls = 'opt';
+      var key = 'A) B) C) D)'.indexOf(o.key + ')') !== -1 ? o.key : o.key;
+      if (res) {
+        if (o.key === q.answer) cls += ' right';
+        else if (o.key === res.pick) cls += ' wrong';
+        cls += ' disabled';
+      } else if (state.picked === o.key) {
+        cls += ' selected';
+      }
+      return '<button type="button" class="' + cls + '" data-key="' + esc(o.key) + '"><span class="key">' + esc(o.key) + '</span><span>' + esc(o.text) + '</span></button>';
+    }).join('');
+    body += '<div class="opts" id="optBox">' + opts + '</div>';
+
+    var nav =
+      '<div class="q-nav">' +
+      '<button type="button" class="btn btn-ghost" id="prevBtn" ' + (idx === 0 ? 'disabled' : '') + '>← Oldingi</button>' +
+      '<button type="button" class="btn btn-primary" id="checkBtn">' + (state.checked ? (idx === total - 1 ? 'Yakunlash' : 'Keyingi →') : '✓ Tekshirish') + '</button>' +
+      '</div>';
+    var dots = '<div class="navdots">' + state.test.questions.slice(0, total).map(function (qq, i) {
+      var r = state.results[i];
+      var cls = 'navdot' + (i === state.idx ? ' cur' : '') + (r ? (r.ok ? ' right' : ' wrong') : '');
+      return '<button type="button" class="' + cls + '" data-i="' + i + '">' + qq.n + '</button>';
+    }).join('') + '</div>';
+
+    quizArea.innerHTML = '<div class="card" id="qCard">' + head + body + nav + dots + '</div>';
+    wireQ();
+  }
+
+  function wireQ() {
+    var q = state.cur;
+    var res = state.results[state.idx];
+
+    if (q.passage) {
+      document.querySelectorAll('.passage .blank[data-n]').forEach(function (b) {
+        b.addEventListener('click', function () {
+          var want = Number(b.getAttribute('data-n'));
+          if (!want) return;
+          var qi = state.test.questions.findIndex(function (x) { return x.n === want; });
+          if (qi !== -1) { state.idx = qi; state.cur = state.test.questions[qi]; state.picked = null; state.checked = false; drawQ(); }
+        });
+      });
+    }
+
+    if (!res) {
+      document.querySelectorAll('.opts .opt').forEach(function (b) {
+        b.addEventListener('click', function () {
+          if (state.checked) return;
+          state.picked = b.getAttribute('data-key');
+          document.querySelectorAll('.opts .opt').forEach(function (x) { x.classList.remove('selected'); });
+          b.classList.add('selected');
+        });
+      });
+
+      document.getElementById('checkBtn').addEventListener('click', function () {
+        if (!state.checked) {
+          if (!state.picked) return;
+          state.checked = true;
+          state.results[state.idx] = { pick: state.picked, ok: state.picked === state.cur.answer, answered: true };
+          if (state.picked === state.cur.answer) state.score++;
+          drawQ();
+          var nxtBtn = document.getElementById('checkBtn');
+          if (state.idx === state.total - 1) { nxtBtn.textContent = 'Yakunlash'; }
+        } else {
+          if (state.idx < state.total - 1) { state.idx++; state.cur = state.test.questions[state.idx]; state.picked = null; state.checked = false; drawQ(); }
+          else { finishQuiz(); }
+        }
+      });
+    } else {
+      document.getElementById('checkBtn').addEventListener('click', function () {
+        if (state.idx < state.total - 1) { state.idx++; state.cur = state.test.questions[state.idx]; state.picked = null; state.checked = false; drawQ(); }
+        else { finishQuiz(); }
+      });
+    }
+
+    document.getElementById('prevBtn').addEventListener('click', function () {
+      if (state.idx > 0) { state.idx--; state.cur = state.test.questions[state.idx]; state.picked = null; state.checked = false; drawQ(); }
+    });
+
+    document.querySelectorAll('.navdot').forEach(function (b) {
+      b.addEventListener('click', function () {
+        state.idx = Number(b.getAttribute('data-i'));
+        state.cur = state.test.questions[state.idx];
+        state.picked = null;
+        state.checked = false;
+        drawQ();
+      });
+    });
+  }
+
+  state.answered = function () {
+    return Object.keys(state.results).length;
+  };
+
+  function finishQuiz() {
+    saveBest(state.test.test, state.score, state.total);
+    var pct = Math.round(100 * state.score / state.total);
+    var best = bestOf(state.test.test);
+    var msg = pct >= 90 ? 'Juda zo\'r! 🌟' : pct >= 70 ? 'Yaxshi natija! 👍' : pct >= 50 ? 'O\'rtacha. Mashq qilishda davom eting 💪' : 'Yana bir bor urinib ko\'ring 🔁';
+    var bars = '';
+    for (var i = 0; i < state.total; i++) {
+      var r = state.results[i] || { ok: false };
+      bars += '<div><span style="width:100%;background:' + (r.ok ? 'var(--green)' : 'var(--red)') + '"></span></div>';
+    }
+    quizArea.innerHTML =
+      '<div class="card result">' +
+      '<div class="big">' + state.score + ' / ' + state.total + '</div>' +
+      '<div class="score-text">' + pct + '% · ' + msg + '</div>' +
+      '<div class="bars">' + bars + '</div>' +
+      '<button type="button" class="again" id="againBtn">🔁 Qayta urinish</button>' +
+      (best ? '<div class="best-line">🏆 Eng yaxshi natija: ' + best.pct + '% (' + esc(best.d) + ')</div>' : '') +
+      '</div>';
+    document.getElementById('againBtn').addEventListener('click', function () {
+      pickerCard.classList.remove('hidden');
+      renderPicker();
+      startQuiz(state.test);
+    });
+  }
+
+  // ---------- Load ----------
+
+  function load() {
+    quizArea.innerHTML = '<div class="loading"><div class="spinner"></div>Yuklanmoqda...</div>';
+    fetch('/api/grammar-tests')
+      .then(function (r) { return r.json(); })
+      .then(function (d) {
+        if (!d.ok) { showErr(d.error || 'Xatolik'); return; }
+        state.tests = d.tests;
+        state.access = !!d.access;
+        state.freeCount = d.free_tests || 1;
+        if (state.access) { accessFlag.style.display = ''; }
+        var first = levelsFrom().names[0];
+        state.level = first || null;
+        renderPicker();
+      })
+      .catch(function () { showErr('Server bilan bog\'lanishda xatolik'); });
+  }
+
+  function showErr(msg) {
+    quizArea.innerHTML = '<div class="card err">' + esc(msg) + '</div>';
+  }
+
+  load();
+})();
+</script>
+</body>
+</html>

@@ -26,6 +26,7 @@ DB_FILE = os.path.join(BASE_DIR, "site.db")
 CONFIG_FILE = os.path.join(BASE_DIR, "config.json")
 CONTENT_FILE = os.path.join(BASE_DIR, "content.json")
 REAL_EXAMS_FILE = os.path.join(BASE_DIR, "real_exams.json")
+GRAMMAR_FILE = os.path.join(BASE_DIR, "grammar_tests.json")
 LOG_FILE = os.path.join(BASE_DIR, "server.log")
 RECEIPTS_DIR = os.path.join(BASE_DIR, "receipts")
 if not os.path.isdir(RECEIPTS_DIR):
@@ -166,6 +167,7 @@ APP_PAGES = [
     "CEFR-speaking-part1.html",
     "CEFR-speaking-part1-mobile.html",
     "speaking-history.html",
+    "grammar-tests.html",
     "landing.html",
 ]
 
@@ -288,7 +290,7 @@ def add_security_headers(resp):
         log.info("RESPONSE %s %s -> %s (%.3fs)",
                  request.method, request.path, resp.status_code, dur)
     resp.headers["X-Content-Type-Options"] = "nosniff"
-    if request.path.startswith("/speaking/history"):
+    if request.path.startswith("/speaking/history") or request.path.startswith("/grammar-tests"):
         resp.headers["X-Frame-Options"] = "SAMEORIGIN"
     else:
         resp.headers["X-Frame-Options"] = "DENY"
@@ -528,6 +530,7 @@ FREEMIUM_FREE_ITEMS = 4        # Part 1.2 / 2 / 3: birinchi 4 rasm/karta/topshir
 FREE_AI_DAILY = 6              # Bepul foydalanuvchi uchun kunlik AI baholash limiti
 FREE_MOCK_USES = 2             # Obunasiz foydalanuvchi uchun bepul full-mock test soni
 REAL_EXAM_FREE_DAYS = 2        # Obunasiz foydalanuvchi uchun eng yangi 2 ta real imtihon kuni to'liq bepul
+FREE_GRAMMAR_TESTS = 1         # Obunasiz foydalanuvchi uchun bepul Grammar Test soni (Test 1)
 REAL_EXAM_FREE_DATES = {"2023-01-14", "2023-02-11", "14.01.2023", "11.02.2023"}  # Maxsus bepul sanalar
 SESSION_KICK_GRACE_SECONDS = 3 * 3600  # Boshqa qurilmadan kirilgach eski sessiya yana 3 soat ishlaydi (mock tugatish uchun)
 
@@ -1015,6 +1018,11 @@ def page_speaking_history():
     return gate_page("speaking-history.html")
 
 
+@app.route("/grammar-tests")
+def page_grammar_tests():
+    return gate_page("grammar-tests.html")
+
+
 def gate_page(fn):
     u = current_user()
     if u is None:
@@ -1149,6 +1157,30 @@ def api_real_exams():
         else:
             out.append(dict(e, free=False, slots=[]))
     return jsonify({"ok": True, "access": False, "exams": out})
+
+
+@app.route("/api/grammar-tests")
+def api_grammar_tests():
+    """Test Master Grammar testlari (Intermediate 1-8). Test 1 bepul, qolganlari premium."""
+    u = current_user()
+    if u is None:
+        return jsonify({"ok": False, "error": "auth"}), 401
+    access = has_access(u)
+    try:
+        with open(GRAMMAR_FILE, encoding="utf-8") as f:
+            tests = json.load(f)
+    except (OSError, ValueError):
+        tests = []
+    if not access:
+        free = set(range(1, FREE_GRAMMAR_TESTS + 1))
+        for t in tests:
+            if t.get("test") in free:
+                t["locked"] = False
+            else:
+                t["locked"] = True
+                t["questions"] = []
+    return jsonify({"ok": True, "access": bool(access),
+                    "free_tests": FREE_GRAMMAR_TESTS, "tests": tests})
 
 
 @app.route("/api/heartbeat", methods=["POST"])

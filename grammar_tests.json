@@ -1,0 +1,8998 @@
+[
+ {
+  "test": 1,
+  "level": "Intermediate",
+  "source": "Test Master — Book 1 Part A",
+  "questions": [
+   {
+    "n": 1,
+    "stem": "_____ you ever stayed at the Ritz?",
+    "passage": "",
+    "options": [
+     {
+      "key": "A",
+      "text": "Did"
+     },
+     {
+      "key": "B",
+      "text": "Have"
+     },
+     {
+      "key": "C",
+      "text": "Was"
+     },
+     {
+      "key": "D",
+      "text": "Were"
+     }
+    ],
+    "answer": "B"
+   },
+   {
+    "n": 2,
+    "stem": "We _____ breakfast in bed.",
+    "passage": "",
+    "options": [
+     {
+      "key": "A",
+      "text": "were have"
+     },
+     {
+      "key": "B",
+      "text": "has"
+     },
+     {
+      "key": "C",
+      "text": "was having"
+     },
+     {
+      "key": "D",
+      "text": "had"
+     }
+    ],
+    "answer": "D"
+   },
+   {
+    "n": 3,
+    "stem": "_____ John give you those flowers?",
+    "passage": "",
+    "options": [
+     {
+      "key": "A",
+      "text": "Did"
+     },
+     {
+      "key": "B",
+      "text": "Have"
+     },
+     {
+      "key": "C",
+      "text": "Was"
+     },
+     {
+      "key": "D",
+      "text": "Is"
+     }
+    ],
+    "answer": "A"
+   },
+   {
+    "n": 4,
+    "stem": "I _____ my homework very quickly last night.",
+    "passage": "",
+    "options": [
+     {
+      "key": "A",
+      "text": "do"
+     },
+     {
+      "key": "B",
+      "text": "have"
+     },
+     {
+      "key": "C",
+      "text": "did"
+     },
+     {
+      "key": "D",
+      "text": "am"
+     }
+    ],
+    "answer": "C"
+   },
+   {
+    "n": 5,
+    "stem": "She _____ a shower every morning before school.",
+    "passage": "",
+    "options": [
+     {
+      "key": "A",
+      "text": "does"
+     },
+     {
+      "key": "B",
+      "text": "has"
+     },
+     {
+      "key": "C",
+      "text": "did"
+     },
+     {
+      "key": "D",
+      "text": "is"
+     }
+    ],
+    "answer": "A"
+   },
+   {
+    "n": 6,
+    "stem": "We _____ talking to James about his exam.",
+    "passage": "",
+    "options": [
+     {
+      "key": "A",
+      "text": "don't"
+     },
+     {
+      "key": "B",
+      "text": "haven't"
+     },
+     {
+      "key": "C",
+      "text": "wasn't"
+     },
+     {
+      "key": "D",
+      "text": "aren't"
+     }
+    ],
+    "answer": "B"
+   },
+   {
+    "n": 7,
+    "stem": "Lots of trees _____ blown down by the wind.",
+    "passage": "",
+    "options": [
+     {
+      "key": "A",
+      "text": "were"
+     },
+     {
+      "key": "B",
+      "text": "has"
+     },
+     {
+      "key": "C",
+      "text": "did"
+     },
+     {
+      "key": "D",
+      "text": "is"
+     }
+    ],
+    "answer": "A"
+   },
+   {
+    "n": 8,
+    "stem": "Where _____ you yesterday?",
+    "passage": "",
+    "options": [
+     {
+      "key": "A",
+      "text": "was"
+     },
+     {
+      "key": "B",
+      "text": "have"
+     },
+     {
+      "key": "C",
+      "text": "did"
+     },
+     {
+      "key": "D",
+      "text": "were"
+     }
+    ],
+    "answer": "D"
+   },
+   {
+    "n": 9,
+    "stem": "Mary never _____ the washing up.",
+    "passage": "",
+    "options": [
+     {
+      "key": "A",
+      "text": "does"
+     },
+     {
+      "key": "B",
+      "text": "has"
+     },
+     {
+      "key": "C",
+      "text": "did"
+     },
+     {
+      "key": "D",
+      "text": "is"
+     }
+    ],
+    "answer": "A"
+   },
+   {
+    "n": 10,
+    "stem": "Thank goodness we _____ a dishwasher!",
+    "passage": "",
+    "options": [
+     {
+      "key": "A",
+      "text": "was"
+     },
+     {
+      "key": "B",
+      "text": "have"
+     },
+     {
+      "key": "C",
+      "text": "did"
+     },
+     {
+      "key": "D",
+      "text": "were"
+     }
+    ],
+    "answer": "B"
+   },
+   {
+    "n": 11,
+    "stem": "How many people _____ you invited to the party?",
+    "passage": "",
+    "options": [
+     {
+      "key": "A",
+      "text": "was"
+     },
+     {
+      "key": "B",
+      "text": "have"
+     },
+     {
+      "key": "C",
+      "text": "did"
+     },
+     {
+      "key": "D",
+      "text": "were"
+     }
+    ],
+    "answer": "C"
+   },
+   {
+    "n": 12,
+    "stem": "Why _____ you leaving so early?",
+    "passage": "",
+    "options": [
+     {
+      "key": "A",
+      "text": "was"
+     },
+     {
+      "key": "B",
+      "text": "have"
+     },
+     {
+      "key": "C",
+      "text": "is"
+     },
+     {
+      "key": "D",
+      "text": "are"
+     }
+    ],
+    "answer": "D"
+   },
+   {
+    "n": 13,
+    "stem": "We _____ got a beautiful puppy called Molly.",
+    "passage": "",
+    "options": [
+     {
+      "key": "A",
+      "text": "was"
+     },
+     {
+      "key": "B",
+      "text": "have"
+     },
+     {
+      "key": "C",
+      "text": "did"
+     },
+     {
+      "key": "D",
+      "text": "were"
+     }
+    ],
+    "answer": "C"
+   },
+   {
+    "n": 14,
+    "stem": "We _____ a beautiful puppy called Molly.",
+    "passage": "",
+    "options": [
+     {
+      "key": "A",
+      "text": "was"
+     },
+     {
+      "key": "B",
+      "text": "having"
+     },
+     {
+      "key": "C",
+      "text": "did"
+     },
+     {
+      "key": "D",
+      "text": "had"
+     }
+    ],
+    "answer": "D"
+   },
+   {
+    "n": 15,
+    "stem": "I have been to Australia but Anna _____ .",
+    "passage": "",
+    "options": [
+     {
+      "key": "A",
+      "text": "haven't"
+     },
+     {
+      "key": "B",
+      "text": "hasn't"
+     },
+     {
+      "key": "C",
+      "text": "isn't"
+     },
+     {
+      "key": "D",
+      "text": "doesn't"
+     }
+    ],
+    "answer": "B"
+   },
+   {
+    "n": 16,
+    "stem": "Anna likes ice-cream but John _____ .",
+    "passage": "",
+    "options": [
+     {
+      "key": "A",
+      "text": "haven't"
+     },
+     {
+      "key": "B",
+      "text": "hasn't"
+     },
+     {
+      "key": "C",
+      "text": "isn't"
+     },
+     {
+      "key": "D",
+      "text": "doesn't"
+     }
+    ],
+    "answer": "D"
+   },
+   {
+    "n": 17,
+    "stem": "I don't like ice-cream but Jill _____ .",
+    "passage": "",
+    "options": [
+     {
+      "key": "A",
+      "text": "have"
+     },
+     {
+      "key": "B",
+      "text": "has"
+     },
+     {
+      "key": "C",
+      "text": "is"
+     },
+     {
+      "key": "D",
+      "text": "does"
+     }
+    ],
+    "answer": "D"
+   },
+   {
+    "n": 18,
+    "stem": "Maria isn't studying hard but I _____ .",
+    "passage": "",
+    "options": [
+     {
+      "key": "A",
+      "text": "have"
+     },
+     {
+      "key": "B",
+      "text": "has"
+     },
+     {
+      "key": "C",
+      "text": "am"
+     },
+     {
+      "key": "D",
+      "text": "are"
+     }
+    ],
+    "answer": "C"
+   },
+   {
+    "n": 19,
+    "stem": "John loves flying but we _____ .",
+    "passage": "",
+    "options": [
+     {
+      "key": "A",
+      "text": "haven't"
+     },
+     {
+      "key": "B",
+      "text": "don't"
+     },
+     {
+      "key": "C",
+      "text": "isn't"
+     },
+     {
+      "key": "D",
+      "text": "doesn't"
+     }
+    ],
+    "answer": "B"
+   },
+   {
+    "n": 20,
+    "stem": "I watched TV last night but my sister _____ .",
+    "passage": "",
+    "options": [
+     {
+      "key": "A",
+      "text": "hasn't"
+     },
+     {
+      "key": "B",
+      "text": "didn't"
+     },
+     {
+      "key": "C",
+      "text": "isn't"
+     },
+     {
+      "key": "D",
+      "text": "doesn't"
+     }
+    ],
+    "answer": "B"
+   },
+   {
+    "n": 21,
+    "stem": "Bill hasn't finished his work but we _____ .",
+    "passage": "",
+    "options": [
+     {
+      "key": "A",
+      "text": "have"
+     },
+     {
+      "key": "B",
+      "text": "do"
+     },
+     {
+      "key": "C",
+      "text": "don't"
+     },
+     {
+      "key": "D",
+      "text": "doesn't"
+     }
+    ],
+    "answer": "A"
+   },
+   {
+    "n": 22,
+    "stem": "We don't want to leave early but they _____ .",
+    "passage": "",
+    "options": [
+     {
+      "key": "A",
+      "text": "have"
+     },
+     {
+      "key": "B",
+      "text": "do"
+     },
+     {
+      "key": "C",
+      "text": "is"
+     },
+     {
+      "key": "D",
+      "text": "does"
+     }
+    ],
+    "answer": "B"
+   },
+   {
+    "n": 23,
+    "stem": "They didn't remember my birthday but you _____ .",
+    "passage": "",
+    "options": [
+     {
+      "key": "A",
+      "text": "have"
+     },
+     {
+      "key": "B",
+      "text": "don't"
+     },
+     {
+      "key": "C",
+      "text": "did"
+     },
+     {
+      "key": "D",
+      "text": "does"
+     }
+    ],
+    "answer": "C"
+   },
+   {
+    "n": 24,
+    "stem": "Your English is really improving but mine _____ .",
+    "passage": "",
+    "options": [
+     {
+      "key": "A",
+      "text": "haven't"
+     },
+     {
+      "key": "B",
+      "text": "don't"
+     },
+     {
+      "key": "C",
+      "text": "isn't"
+     },
+     {
+      "key": "D",
+      "text": "doesn't"
+     }
+    ],
+    "answer": "C"
+   },
+   {
+    "n": 25,
+    "stem": "_____ you speak three languages?",
+    "passage": "",
+    "options": [
+     {
+      "key": "A",
+      "text": "Do"
+     },
+     {
+      "key": "B",
+      "text": "Does"
+     },
+     {
+      "key": "C",
+      "text": "Did"
+     },
+     {
+      "key": "D",
+      "text": "Are"
+     }
+    ],
+    "answer": "A"
+   },
+   {
+    "n": 26,
+    "stem": "_____ you having a holiday soon?",
+    "passage": "",
+    "options": [
+     {
+      "key": "A",
+      "text": "Do"
+     },
+     {
+      "key": "B",
+      "text": "Does"
+     },
+     {
+      "key": "C",
+      "text": "Did"
+     },
+     {
+      "key": "D",
+      "text": "Are"
+     }
+    ],
+    "answer": "D"
+   },
+   {
+    "n": 27,
+    "stem": "_____ you have a good holiday last year?",
+    "passage": "",
+    "options": [
+     {
+      "key": "A",
+      "text": "Do"
+     },
+     {
+      "key": "B",
+      "text": "Does"
+     },
+     {
+      "key": "C",
+      "text": "Did"
+     },
+     {
+      "key": "D",
+      "text": "Are"
+     }
+    ],
+    "answer": "C"
+   },
+   {
+    "n": 28,
+    "stem": "_____ you ever been to Amsterdam?",
+    "passage": "",
+    "options": [
+     {
+      "key": "A",
+      "text": "Do"
+     },
+     {
+      "key": "B",
+      "text": "Does"
+     },
+     {
+      "key": "C",
+      "text": "Have"
+     },
+     {
+      "key": "D",
+      "text": "Did"
+     }
+    ],
+    "answer": "C"
+   },
+   {
+    "n": 29,
+    "stem": "_____ you often travel abroad?",
+    "passage": "",
+    "options": [
+     {
+      "key": "A",
+      "text": "Do"
+     },
+     {
+      "key": "B",
+      "text": "Does"
+     },
+     {
+      "key": "C",
+      "text": "Have"
+     },
+     {
+      "key": "D",
+      "text": "Did"
+     }
+    ],
+    "answer": "A"
+   },
+   {
+    "n": 30,
+    "stem": "_____ your best friend sometimes go on holiday with you?",
+    "passage": "",
+    "options": [
+     {
+      "key": "A",
+      "text": "Do"
+     },
+     {
+      "key": "B",
+      "text": "Does"
+     },
+     {
+      "key": "C",
+      "text": "Have"
+     },
+     {
+      "key": "D",
+      "text": "Did"
+     }
+    ],
+    "answer": "B"
+   },
+   {
+    "n": 31,
+    "stem": "I think you're wrong. I don't agree _____ you at all.",
+    "passage": "",
+    "options": [
+     {
+      "key": "A",
+      "text": "to"
+     },
+     {
+      "key": "B",
+      "text": "on"
+     },
+     {
+      "key": "C",
+      "text": "with"
+     },
+     {
+      "key": "D",
+      "text": "about"
+     }
+    ],
+    "answer": "C"
+   },
+   {
+    "n": 32,
+    "stem": "I'm not interested _____ what you think or what you want.",
+    "passage": "",
+    "options": [
+     {
+      "key": "A",
+      "text": "to"
+     },
+     {
+      "key": "B",
+      "text": "on"
+     },
+     {
+      "key": "C",
+      "text": "with"
+     },
+     {
+      "key": "D",
+      "text": "in"
+     }
+    ],
+    "answer": "D"
+   },
+   {
+    "n": 33,
+    "stem": "We might have a picnic. It depends _____ the weather.",
+    "passage": "",
+    "options": [
+     {
+      "key": "A",
+      "text": "to"
+     },
+     {
+      "key": "B",
+      "text": "on"
+     },
+     {
+      "key": "C",
+      "text": "with"
+     },
+     {
+      "key": "D",
+      "text": "about"
+     }
+    ],
+    "answer": "B"
+   },
+   {
+    "n": 34,
+    "stem": "What are you listening _____ ?",
+    "passage": "",
+    "options": [
+     {
+      "key": "A",
+      "text": "to"
+     },
+     {
+      "key": "B",
+      "text": "on"
+     },
+     {
+      "key": "C",
+      "text": "with"
+     },
+     {
+      "key": "D",
+      "text": "about"
+     }
+    ],
+    "answer": "A"
+   },
+   {
+    "n": 35,
+    "stem": "If you have a problem, talk _____ the teacher.",
+    "passage": "",
+    "options": [
+     {
+      "key": "A",
+      "text": "to"
+     },
+     {
+      "key": "B",
+      "text": "on"
+     },
+     {
+      "key": "C",
+      "text": "at"
+     },
+     {
+      "key": "D",
+      "text": "in"
+     }
+    ],
+    "answer": "A"
+   },
+   {
+    "n": 36,
+    "stem": "\"What did you talk _____ ?\" \"Oh, this and that.\"",
+    "passage": "",
+    "options": [
+     {
+      "key": "A",
+      "text": "to"
+     },
+     {
+      "key": "B",
+      "text": "on"
+     },
+     {
+      "key": "C",
+      "text": "with"
+     },
+     {
+      "key": "D",
+      "text": "about"
+     }
+    ],
+    "answer": "D"
+   },
+   {
+    "n": 37,
+    "stem": "You aren't concentrating on your work. What are you thinking _____?",
+    "passage": "",
+    "options": [
+     {
+      "key": "A",
+      "text": "to"
+     },
+     {
+      "key": "B",
+      "text": "on"
+     },
+     {
+      "key": "C",
+      "text": "with"
+     },
+     {
+      "key": "D",
+      "text": "about"
+     }
+    ],
+    "answer": "D"
+   },
+   {
+    "n": 38,
+    "stem": "\"What do you think _____ Pete?\" \"I really like him.\"",
+    "passage": "",
+    "options": [
+     {
+      "key": "A",
+      "text": "to"
+     },
+     {
+      "key": "B",
+      "text": "at"
+     },
+     {
+      "key": "C",
+      "text": "with"
+     },
+     {
+      "key": "D",
+      "text": "of"
+     }
+    ],
+    "answer": "D"
+   },
+   {
+    "n": 39,
+    "stem": "Where's the cash desk? I'd like to pay _____ this book.",
+    "passage": "",
+    "options": [
+     {
+      "key": "A",
+      "text": "to"
+     },
+     {
+      "key": "B",
+      "text": "for"
+     },
+     {
+      "key": "C",
+      "text": "with"
+     },
+     {
+      "key": "D",
+      "text": "about"
+     }
+    ],
+    "answer": "B"
+   },
+   {
+    "n": 40,
+    "stem": "\"I've lost your pen. Sorry ...\" \"It's all right. Don't worry _____ it.\"",
+    "passage": "",
+    "options": [
+     {
+      "key": "A",
+      "text": "to"
+     },
+     {
+      "key": "B",
+      "text": "on"
+     },
+     {
+      "key": "C",
+      "text": "with"
+     },
+     {
+      "key": "D",
+      "text": "about"
+     }
+    ],
+    "answer": "D"
+   }
+  ]
+ },
+ {
+  "test": 2,
+  "level": "Intermediate",
+  "source": "Test Master — Book 1 Part A",
+  "questions": [
+   {
+    "n": 1,
+    "stem": "Sue and Geoff _____ a shop.",
+    "passage": "",
+    "options": [
+     {
+      "key": "A",
+      "text": "work"
+     },
+     {
+      "key": "B",
+      "text": "study"
+     },
+     {
+      "key": "C",
+      "text": "run"
+     },
+     {
+      "key": "D",
+      "text": "runs"
+     }
+    ],
+    "answer": "C"
+   },
+   {
+    "n": 2,
+    "stem": "This kind of shop _____ a milk bar.",
+    "passage": "",
+    "options": [
+     {
+      "key": "A",
+      "text": "is called"
+     },
+     {
+      "key": "B",
+      "text": "called"
+     },
+     {
+      "key": "C",
+      "text": "is calling"
+     },
+     {
+      "key": "D",
+      "text": "is being called"
+     }
+    ],
+    "answer": "A"
+   },
+   {
+    "n": 3,
+    "stem": "Most days the shop _____ at 10.00 p.m.",
+    "passage": "",
+    "options": [
+     {
+      "key": "A",
+      "text": "sells"
+     },
+     {
+      "key": "B",
+      "text": "opened"
+     },
+     {
+      "key": "C",
+      "text": "closes"
+     },
+     {
+      "key": "D",
+      "text": "run"
+     }
+    ],
+    "answer": "C"
+   },
+   {
+    "n": 4,
+    "stem": "They _____ camping any more.",
+    "passage": "",
+    "options": [
+     {
+      "key": "A",
+      "text": "go"
+     },
+     {
+      "key": "B",
+      "text": "doesn't go"
+     },
+     {
+      "key": "C",
+      "text": "don't go"
+     },
+     {
+      "key": "D",
+      "text": "have gone"
+     }
+    ],
+    "answer": "C"
+   },
+   {
+    "n": 5,
+    "stem": "Ursula _____ four brothers and sisters.",
+    "passage": "",
+    "options": [
+     {
+      "key": "A",
+      "text": "have"
+     },
+     {
+      "key": "B",
+      "text": "has"
+     },
+     {
+      "key": "C",
+      "text": "haven't"
+     },
+     {
+      "key": "D",
+      "text": "having"
+     }
+    ],
+    "answer": "B"
+   },
+   {
+    "n": 6,
+    "stem": "It _____ her fifteen minutes _____ to school.",
+    "passage": "",
+    "options": [
+     {
+      "key": "A",
+      "text": "took / go"
+     },
+     {
+      "key": "B",
+      "text": "has taken / walk"
+     },
+     {
+      "key": "C",
+      "text": "takes / walk"
+     },
+     {
+      "key": "D",
+      "text": "takes / to walk"
+     }
+    ],
+    "answer": "D"
+   },
+   {
+    "n": 7,
+    "stem": "She _____ school at 7:45 a.m.",
+    "passage": "",
+    "options": [
+     {
+      "key": "A",
+      "text": "go"
+     },
+     {
+      "key": "B",
+      "text": "begin"
+     },
+     {
+      "key": "C",
+      "text": "starts"
+     },
+     {
+      "key": "D",
+      "text": "goes"
+     }
+    ],
+    "answer": "D"
+   },
+   {
+    "n": 8,
+    "stem": "I _____ lunch in the university canteen.",
+    "passage": "",
+    "options": [
+     {
+      "key": "A",
+      "text": "eats"
+     },
+     {
+      "key": "B",
+      "text": "have"
+     },
+     {
+      "key": "C",
+      "text": "drink"
+     },
+     {
+      "key": "D",
+      "text": "has"
+     }
+    ],
+    "answer": "A"
+   },
+   {
+    "n": 9,
+    "stem": "I _____ extra money teaching computer studies.",
+    "passage": "",
+    "options": [
+     {
+      "key": "A",
+      "text": "earn"
+     },
+     {
+      "key": "B",
+      "text": "earns"
+     },
+     {
+      "key": "C",
+      "text": "win"
+     },
+     {
+      "key": "D",
+      "text": "buy"
+     }
+    ],
+    "answer": "A"
+   },
+   {
+    "n": 10,
+    "stem": "I _____ the traffic in Bangkok.",
+    "passage": "",
+    "options": [
+     {
+      "key": "A",
+      "text": "play"
+     },
+     {
+      "key": "B",
+      "text": "have"
+     },
+     {
+      "key": "C",
+      "text": "hate"
+     },
+     {
+      "key": "D",
+      "text": "has"
+     }
+    ],
+    "answer": "C"
+   },
+   {
+    "n": 11,
+    "stem": "English is _____ here.",
+    "passage": "",
+    "options": [
+     {
+      "key": "A",
+      "text": "speak"
+     },
+     {
+      "key": "B",
+      "text": "spoke"
+     },
+     {
+      "key": "C",
+      "text": "is speaking"
+     },
+     {
+      "key": "D",
+      "text": "spoken"
+     }
+    ],
+    "answer": "D"
+   },
+   {
+    "n": 12,
+    "stem": "Volvos are _____ in Sweden.",
+    "passage": "",
+    "options": [
+     {
+      "key": "A",
+      "text": "produced"
+     },
+     {
+      "key": "B",
+      "text": "produce"
+     },
+     {
+      "key": "C",
+      "text": "produces"
+     },
+     {
+      "key": "D",
+      "text": "producing"
+     }
+    ],
+    "answer": "A"
+   },
+   {
+    "n": 13,
+    "stem": "Is service _____ in the bill?",
+    "passage": "",
+    "options": [
+     {
+      "key": "A",
+      "text": "including"
+     },
+     {
+      "key": "B",
+      "text": "include"
+     },
+     {
+      "key": "C",
+      "text": "to include"
+     },
+     {
+      "key": "D",
+      "text": "included"
+     }
+    ],
+    "answer": "D"
+   },
+   {
+    "n": 14,
+    "stem": "Our kitchen _____ decorated at the moment.",
+    "passage": "",
+    "options": [
+     {
+      "key": "A",
+      "text": "is"
+     },
+     {
+      "key": "B",
+      "text": "is being"
+     },
+     {
+      "key": "C",
+      "text": "being"
+     },
+     {
+      "key": "D",
+      "text": "was being"
+     }
+    ],
+    "answer": "B"
+   },
+   {
+    "n": 15,
+    "stem": "Our factory is being _____ over by an American company.",
+    "passage": "",
+    "options": [
+     {
+      "key": "A",
+      "text": "taken"
+     },
+     {
+      "key": "B",
+      "text": "bought"
+     },
+     {
+      "key": "C",
+      "text": "sold"
+     },
+     {
+      "key": "D",
+      "text": "run"
+     }
+    ],
+    "answer": "A"
+   },
+   {
+    "n": 16,
+    "stem": "About one thousand people are _____ in the factory.",
+    "passage": "",
+    "options": [
+     {
+      "key": "A",
+      "text": "taken"
+     },
+     {
+      "key": "B",
+      "text": "cleaned"
+     },
+     {
+      "key": "C",
+      "text": "employed"
+     },
+     {
+      "key": "D",
+      "text": "worked"
+     }
+    ],
+    "answer": "C"
+   },
+   {
+    "n": 17,
+    "stem": "Lots of tulips are _____ in Holland.",
+    "passage": "",
+    "options": [
+     {
+      "key": "A",
+      "text": "grown"
+     },
+     {
+      "key": "B",
+      "text": "growing"
+     },
+     {
+      "key": "C",
+      "text": "grow"
+     },
+     {
+      "key": "D",
+      "text": "grew"
+     }
+    ],
+    "answer": "A"
+   },
+   {
+    "n": 18,
+    "stem": "That block of flats is being _____ because it is unsafe.",
+    "passage": "",
+    "options": [
+     {
+      "key": "A",
+      "text": "pulled down"
+     },
+     {
+      "key": "B",
+      "text": "pulled"
+     },
+     {
+      "key": "C",
+      "text": "pulled up"
+     },
+     {
+      "key": "D",
+      "text": "pulling down"
+     }
+    ],
+    "answer": "A"
+   },
+   {
+    "n": 19,
+    "stem": "In Britain milk is _____ to your doorstep.",
+    "passage": "",
+    "options": [
+     {
+      "key": "A",
+      "text": "shown"
+     },
+     {
+      "key": "B",
+      "text": "sold"
+     },
+     {
+      "key": "C",
+      "text": "bought"
+     },
+     {
+      "key": "D",
+      "text": "delivered"
+     }
+    ],
+    "answer": "D"
+   },
+   {
+    "n": 20,
+    "stem": "",
+    "passage": "When you __(20)__ at an airport, you should go straight to the check- in desk where your ticket and luggage __(21)__. You __(22)__ your hand luggage with you but your suitcases __(23)__ to the plane on a conveyor belt. You can now go to the departure lounge. If you are on an international flight, your passport __(24)__, and then you and your bags __(25)__ by security cameras; sometimes you __(26)__ a body search and your luggage __(27)__ by a security officer. You __(28)__ in the departure lounge until your flight __(29)__ and you __(30)__ which gate number to go. Finally you __(31)__ your plane and you __(32)__ your seat by a flight attendant.",
+    "options": [
+     {
+      "key": "A",
+      "text": "start"
+     },
+     {
+      "key": "B",
+      "text": "started"
+     },
+     {
+      "key": "C",
+      "text": "arrive"
+     },
+     {
+      "key": "D",
+      "text": "are arrived"
+     }
+    ],
+    "answer": "C"
+   },
+   {
+    "n": 21,
+    "stem": "",
+    "passage": "When you __(20)__ at an airport, you should go straight to the check- in desk where your ticket and luggage __(21)__. You __(22)__ your hand luggage with you but your suitcases __(23)__ to the plane on a conveyor belt. You can now go to the departure lounge. If you are on an international flight, your passport __(24)__, and then you and your bags __(25)__ by security cameras; sometimes you __(26)__ a body search and your luggage __(27)__ by a security officer. You __(28)__ in the departure lounge until your flight __(29)__ and you __(30)__ which gate number to go. Finally you __(31)__ your plane and you __(32)__ your seat by a flight attendant.",
+    "options": [
+     {
+      "key": "A",
+      "text": "are checked"
+     },
+     {
+      "key": "B",
+      "text": "control"
+     },
+     {
+      "key": "C",
+      "text": "check"
+     },
+     {
+      "key": "D",
+      "text": "is changed"
+     }
+    ],
+    "answer": "A"
+   },
+   {
+    "n": 22,
+    "stem": "",
+    "passage": "When you __(20)__ at an airport, you should go straight to the check- in desk where your ticket and luggage __(21)__. You __(22)__ your hand luggage with you but your suitcases __(23)__ to the plane on a conveyor belt. You can now go to the departure lounge. If you are on an international flight, your passport __(24)__, and then you and your bags __(25)__ by security cameras; sometimes you __(26)__ a body search and your luggage __(27)__ by a security officer. You __(28)__ in the departure lounge until your flight __(29)__ and you __(30)__ which gate number to go. Finally you __(31)__ your plane and you __(32)__ your seat by a flight attendant.",
+    "options": [
+     {
+      "key": "A",
+      "text": "kept"
+     },
+     {
+      "key": "B",
+      "text": "keeping"
+     },
+     {
+      "key": "C",
+      "text": "wait"
+     },
+     {
+      "key": "D",
+      "text": "keep"
+     }
+    ],
+    "answer": "D"
+   },
+   {
+    "n": 23,
+    "stem": "",
+    "passage": "When you __(20)__ at an airport, you should go straight to the check- in desk where your ticket and luggage __(21)__. You __(22)__ your hand luggage with you but your suitcases __(23)__ to the plane on a conveyor belt. You can now go to the departure lounge. If you are on an international flight, your passport __(24)__, and then you and your bags __(25)__ by security cameras; sometimes you __(26)__ a body search and your luggage __(27)__ by a security officer. You __(28)__ in the departure lounge until your flight __(29)__ and you __(30)__ which gate number to go. Finally you __(31)__ your plane and you __(32)__ your seat by a flight attendant.",
+    "options": [
+     {
+      "key": "A",
+      "text": "take"
+     },
+     {
+      "key": "B",
+      "text": "took"
+     },
+     {
+      "key": "C",
+      "text": "are taken"
+     },
+     {
+      "key": "D",
+      "text": "taking"
+     }
+    ],
+    "answer": "C"
+   },
+   {
+    "n": 24,
+    "stem": "",
+    "passage": "When you __(20)__ at an airport, you should go straight to the check- in desk where your ticket and luggage __(21)__. You __(22)__ your hand luggage with you but your suitcases __(23)__ to the plane on a conveyor belt. You can now go to the departure lounge. If you are on an international flight, your passport __(24)__, and then you and your bags __(25)__ by security cameras; sometimes you __(26)__ a body search and your luggage __(27)__ by a security officer. You __(28)__ in the departure lounge until your flight __(29)__ and you __(30)__ which gate number to go. Finally you __(31)__ your plane and you __(32)__ your seat by a flight attendant.",
+    "options": [
+     {
+      "key": "A",
+      "text": "check"
+     },
+     {
+      "key": "B",
+      "text": "checked"
+     },
+     {
+      "key": "C",
+      "text": "is checking"
+     },
+     {
+      "key": "D",
+      "text": "is checked"
+     }
+    ],
+    "answer": "D"
+   },
+   {
+    "n": 25,
+    "stem": "",
+    "passage": "When you __(20)__ at an airport, you should go straight to the check- in desk where your ticket and luggage __(21)__. You __(22)__ your hand luggage with you but your suitcases __(23)__ to the plane on a conveyor belt. You can now go to the departure lounge. If you are on an international flight, your passport __(24)__, and then you and your bags __(25)__ by security cameras; sometimes you __(26)__ a body search and your luggage __(27)__ by a security officer. You __(28)__ in the departure lounge until your flight __(29)__ and you __(30)__ which gate number to go. Finally you __(31)__ your plane and you __(32)__ your seat by a flight attendant.",
+    "options": [
+     {
+      "key": "A",
+      "text": "are x-rayed"
+     },
+     {
+      "key": "B",
+      "text": "x-rayed"
+     },
+     {
+      "key": "C",
+      "text": "control"
+     },
+     {
+      "key": "D",
+      "text": "check"
+     }
+    ],
+    "answer": "A"
+   },
+   {
+    "n": 26,
+    "stem": "",
+    "passage": "When you __(20)__ at an airport, you should go straight to the check- in desk where your ticket and luggage __(21)__. You __(22)__ your hand luggage with you but your suitcases __(23)__ to the plane on a conveyor belt. You can now go to the departure lounge. If you are on an international flight, your passport __(24)__, and then you and your bags __(25)__ by security cameras; sometimes you __(26)__ a body search and your luggage __(27)__ by a security officer. You __(28)__ in the departure lounge until your flight __(29)__ and you __(30)__ which gate number to go. Finally you __(31)__ your plane and you __(32)__ your seat by a flight attendant.",
+    "options": [
+     {
+      "key": "A",
+      "text": "give"
+     },
+     {
+      "key": "B",
+      "text": "are given"
+     },
+     {
+      "key": "C",
+      "text": "gave"
+     },
+     {
+      "key": "D",
+      "text": "giving"
+     }
+    ],
+    "answer": "B"
+   },
+   {
+    "n": 27,
+    "stem": "",
+    "passage": "When you __(20)__ at an airport, you should go straight to the check- in desk where your ticket and luggage __(21)__. You __(22)__ your hand luggage with you but your suitcases __(23)__ to the plane on a conveyor belt. You can now go to the departure lounge. If you are on an international flight, your passport __(24)__, and then you and your bags __(25)__ by security cameras; sometimes you __(26)__ a body search and your luggage __(27)__ by a security officer. You __(28)__ in the departure lounge until your flight __(29)__ and you __(30)__ which gate number to go. Finally you __(31)__ your plane and you __(32)__ your seat by a flight attendant.",
+    "options": [
+     {
+      "key": "A",
+      "text": "is searched"
+     },
+     {
+      "key": "B",
+      "text": "searching"
+     },
+     {
+      "key": "C",
+      "text": "searched"
+     },
+     {
+      "key": "D",
+      "text": "search"
+     }
+    ],
+    "answer": "A"
+   },
+   {
+    "n": 28,
+    "stem": "",
+    "passage": "When you __(20)__ at an airport, you should go straight to the check- in desk where your ticket and luggage __(21)__. You __(22)__ your hand luggage with you but your suitcases __(23)__ to the plane on a conveyor belt. You can now go to the departure lounge. If you are on an international flight, your passport __(24)__, and then you and your bags __(25)__ by security cameras; sometimes you __(26)__ a body search and your luggage __(27)__ by a security officer. You __(28)__ in the departure lounge until your flight __(29)__ and you __(30)__ which gate number to go. Finally you __(31)__ your plane and you __(32)__ your seat by a flight attendant.",
+    "options": [
+     {
+      "key": "A",
+      "text": "waiting"
+     },
+     {
+      "key": "B",
+      "text": "waits"
+     },
+     {
+      "key": "C",
+      "text": "wait"
+     },
+     {
+      "key": "D",
+      "text": "waited"
+     }
+    ],
+    "answer": "C"
+   },
+   {
+    "n": 29,
+    "stem": "",
+    "passage": "When you __(20)__ at an airport, you should go straight to the check- in desk where your ticket and luggage __(21)__. You __(22)__ your hand luggage with you but your suitcases __(23)__ to the plane on a conveyor belt. You can now go to the departure lounge. If you are on an international flight, your passport __(24)__, and then you and your bags __(25)__ by security cameras; sometimes you __(26)__ a body search and your luggage __(27)__ by a security officer. You __(28)__ in the departure lounge until your flight __(29)__ and you __(30)__ which gate number to go. Finally you __(31)__ your plane and you __(32)__ your seat by a flight attendant.",
+    "options": [
+     {
+      "key": "A",
+      "text": "calling"
+     },
+     {
+      "key": "B",
+      "text": "call"
+     },
+     {
+      "key": "C",
+      "text": "is called"
+     },
+     {
+      "key": "D",
+      "text": "called"
+     }
+    ],
+    "answer": "C"
+   },
+   {
+    "n": 30,
+    "stem": "",
+    "passage": "When you __(20)__ at an airport, you should go straight to the check- in desk where your ticket and luggage __(21)__. You __(22)__ your hand luggage with you but your suitcases __(23)__ to the plane on a conveyor belt. You can now go to the departure lounge. If you are on an international flight, your passport __(24)__, and then you and your bags __(25)__ by security cameras; sometimes you __(26)__ a body search and your luggage __(27)__ by a security officer. You __(28)__ in the departure lounge until your flight __(29)__ and you __(30)__ which gate number to go. Finally you __(31)__ your plane and you __(32)__ your seat by a flight attendant.",
+    "options": [
+     {
+      "key": "A",
+      "text": "are told"
+     },
+     {
+      "key": "B",
+      "text": "telling"
+     },
+     {
+      "key": "C",
+      "text": "told"
+     },
+     {
+      "key": "D",
+      "text": "tell"
+     }
+    ],
+    "answer": "A"
+   },
+   {
+    "n": 31,
+    "stem": "",
+    "passage": "When you __(20)__ at an airport, you should go straight to the check- in desk where your ticket and luggage __(21)__. You __(22)__ your hand luggage with you but your suitcases __(23)__ to the plane on a conveyor belt. You can now go to the departure lounge. If you are on an international flight, your passport __(24)__, and then you and your bags __(25)__ by security cameras; sometimes you __(26)__ a body search and your luggage __(27)__ by a security officer. You __(28)__ in the departure lounge until your flight __(29)__ and you __(30)__ which gate number to go. Finally you __(31)__ your plane and you __(32)__ your seat by a flight attendant.",
+    "options": [
+     {
+      "key": "A",
+      "text": "boarded"
+     },
+     {
+      "key": "B",
+      "text": "boarding"
+     },
+     {
+      "key": "C",
+      "text": "sit"
+     },
+     {
+      "key": "D",
+      "text": "board"
+     }
+    ],
+    "answer": "D"
+   },
+   {
+    "n": 32,
+    "stem": "",
+    "passage": "When you __(20)__ at an airport, you should go straight to the check- in desk where your ticket and luggage __(21)__. You __(22)__ your hand luggage with you but your suitcases __(23)__ to the plane on a conveyor belt. You can now go to the departure lounge. If you are on an international flight, your passport __(24)__, and then you and your bags __(25)__ by security cameras; sometimes you __(26)__ a body search and your luggage __(27)__ by a security officer. You __(28)__ in the departure lounge until your flight __(29)__ and you __(30)__ which gate number to go. Finally you __(31)__ your plane and you __(32)__ your seat by a flight attendant.",
+    "options": [
+     {
+      "key": "A",
+      "text": "show"
+     },
+     {
+      "key": "B",
+      "text": "are shown"
+     },
+     {
+      "key": "C",
+      "text": "showing"
+     },
+     {
+      "key": "D",
+      "text": "come"
+     }
+    ],
+    "answer": "B"
+   },
+   {
+    "n": 33,
+    "stem": "\"Hello. Can I speak to Mr. James, please?\" \"I'm sorry. He isn't _____ at the moment. Can I take a message?\"",
+    "passage": "",
+    "options": [
+     {
+      "key": "A",
+      "text": "in"
+     },
+     {
+      "key": "B",
+      "text": "on"
+     },
+     {
+      "key": "C",
+      "text": "at"
+     },
+     {
+      "key": "D",
+      "text": "off"
+     }
+    ],
+    "answer": "A"
+   },
+   {
+    "n": 34,
+    "stem": "\"Hello. Can I speak to Mr. James, please?\" \"I'm sorry. He is _____ on holiday at the moment. Can I help you?\"",
+    "passage": "",
+    "options": [
+     {
+      "key": "A",
+      "text": "in"
+     },
+     {
+      "key": "B",
+      "text": "on"
+     },
+     {
+      "key": "C",
+      "text": "away"
+     },
+     {
+      "key": "D",
+      "text": "off"
+     }
+    ],
+    "answer": "B"
+   },
+   {
+    "n": 35,
+    "stem": "\"I feel like going to the cinema tonight.\" \"Good idea! What's _____ at the moment?\"",
+    "passage": "",
+    "options": [
+     {
+      "key": "A",
+      "text": "in"
+     },
+     {
+      "key": "B",
+      "text": "on"
+     },
+     {
+      "key": "C",
+      "text": "at"
+     },
+     {
+      "key": "D",
+      "text": "off"
+     }
+    ],
+    "answer": "B"
+   },
+   {
+    "n": 36,
+    "stem": "I think this milk's _____ . It smells horrid.",
+    "passage": "",
+    "options": [
+     {
+      "key": "A",
+      "text": "in"
+     },
+     {
+      "key": "B",
+      "text": "on"
+     },
+     {
+      "key": "C",
+      "text": "at"
+     },
+     {
+      "key": "D",
+      "text": "off"
+     }
+    ],
+    "answer": "D"
+   },
+   {
+    "n": 37,
+    "stem": "\"Where shall we go for a meal?\" \"It's _____ you. It's your birthday. You choose.\"",
+    "passage": "",
+    "options": [
+     {
+      "key": "A",
+      "text": "in"
+     },
+     {
+      "key": "B",
+      "text": "on"
+     },
+     {
+      "key": "C",
+      "text": "at"
+     },
+     {
+      "key": "D",
+      "text": "up to"
+     }
+    ],
+    "answer": "D"
+   },
+   {
+    "n": 38,
+    "stem": "Come on, kids! Aren't you _____ yet? Breakfast's on the table.",
+    "passage": "",
+    "options": [
+     {
+      "key": "A",
+      "text": "in"
+     },
+     {
+      "key": "B",
+      "text": "on"
+     },
+     {
+      "key": "C",
+      "text": "up"
+     },
+     {
+      "key": "D",
+      "text": "off"
+     }
+    ],
+    "answer": "C"
+   },
+   {
+    "n": 39,
+    "stem": "I wonder why they aren't answering the door. There must be someone _____ .",
+    "passage": "",
+    "options": [
+     {
+      "key": "A",
+      "text": "in"
+     },
+     {
+      "key": "B",
+      "text": "on"
+     },
+     {
+      "key": "C",
+      "text": "at"
+     },
+     {
+      "key": "D",
+      "text": "off"
+     }
+    ],
+    "answer": "C"
+   },
+   {
+    "n": 40,
+    "stem": "All the lights are _____ . I can see nothing.",
+    "passage": "",
+    "options": [
+     {
+      "key": "A",
+      "text": "in"
+     },
+     {
+      "key": "B",
+      "text": "on"
+     },
+     {
+      "key": "C",
+      "text": "at"
+     },
+     {
+      "key": "D",
+      "text": "off"
+     }
+    ],
+    "answer": "D"
+   },
+   {
+    "n": 41,
+    "stem": "I must be _____ soon. I want to get to the shops before they close.",
+    "passage": "",
+    "options": [
+     {
+      "key": "A",
+      "text": "in"
+     },
+     {
+      "key": "B",
+      "text": "on"
+     },
+     {
+      "key": "C",
+      "text": "at"
+     },
+     {
+      "key": "D",
+      "text": "off"
+     }
+    ],
+    "answer": "D"
+   },
+   {
+    "n": 42,
+    "stem": "\"Why isn't there any hot water?\" \"The central heating is _____ . That's why.\"",
+    "passage": "",
+    "options": [
+     {
+      "key": "A",
+      "text": "in"
+     },
+     {
+      "key": "B",
+      "text": "on"
+     },
+     {
+      "key": "C",
+      "text": "at"
+     },
+     {
+      "key": "D",
+      "text": "off"
+     }
+    ],
+    "answer": "D"
+   },
+   {
+    "n": 43,
+    "stem": "\"You're crying. What's _____ ?\" \"I'm just a bit sad. That's all.\"",
+    "passage": "",
+    "options": [
+     {
+      "key": "A",
+      "text": "in"
+     },
+     {
+      "key": "B",
+      "text": "on"
+     },
+     {
+      "key": "C",
+      "text": "up"
+     },
+     {
+      "key": "D",
+      "text": "off Book 1 Part A Intermediate Test 2"
+     }
+    ],
+    "answer": "C"
+   }
+  ]
+ },
+ {
+  "test": 3,
+  "level": "Intermediate",
+  "source": "Test Master — Book 1 Part A",
+  "questions": [
+   {
+    "n": 1,
+    "stem": "My uncle died _____ the war.",
+    "passage": "",
+    "options": [
+     {
+      "key": "A",
+      "text": "via"
+     },
+     {
+      "key": "B",
+      "text": "during"
+     },
+     {
+      "key": "C",
+      "text": "for"
+     },
+     {
+      "key": "D",
+      "text": "in"
+     }
+    ],
+    "answer": "B"
+   },
+   {
+    "n": 2,
+    "stem": "The phone rang _____ I was having supper.",
+    "passage": "",
+    "options": [
+     {
+      "key": "A",
+      "text": "while"
+     },
+     {
+      "key": "B",
+      "text": "during"
+     },
+     {
+      "key": "C",
+      "text": "for"
+     },
+     {
+      "key": "D",
+      "text": "in"
+     }
+    ],
+    "answer": "A"
+   },
+   {
+    "n": 3,
+    "stem": "I lived in Paris _____ several years.",
+    "passage": "",
+    "options": [
+     {
+      "key": "A",
+      "text": "while"
+     },
+     {
+      "key": "B",
+      "text": "during"
+     },
+     {
+      "key": "C",
+      "text": "for"
+     },
+     {
+      "key": "D",
+      "text": "in"
+     }
+    ],
+    "answer": "C"
+   },
+   {
+    "n": 4,
+    "stem": "_____ I was in Paris, I made a lot of friends.",
+    "passage": "",
+    "options": [
+     {
+      "key": "A",
+      "text": "While"
+     },
+     {
+      "key": "B",
+      "text": "During"
+     },
+     {
+      "key": "C",
+      "text": "For"
+     },
+     {
+      "key": "D",
+      "text": "In"
+     }
+    ],
+    "answer": "A"
+   },
+   {
+    "n": 5,
+    "stem": "I was in hospital _____ three weeks.",
+    "passage": "",
+    "options": [
+     {
+      "key": "A",
+      "text": "while"
+     },
+     {
+      "key": "B",
+      "text": "during"
+     },
+     {
+      "key": "C",
+      "text": "for"
+     },
+     {
+      "key": "D",
+      "text": "in"
+     }
+    ],
+    "answer": "C"
+   },
+   {
+    "n": 6,
+    "stem": "_____ my stay in hospital, the nurses looked after me very well.",
+    "passage": "",
+    "options": [
+     {
+      "key": "A",
+      "text": "While"
+     },
+     {
+      "key": "B",
+      "text": "During"
+     },
+     {
+      "key": "C",
+      "text": "For"
+     },
+     {
+      "key": "D",
+      "text": "In"
+     }
+    ],
+    "answer": "B"
+   },
+   {
+    "n": 7,
+    "stem": "A football match lasts _____ ninety minutes.",
+    "passage": "",
+    "options": [
+     {
+      "key": "A",
+      "text": "while"
+     },
+     {
+      "key": "B",
+      "text": "during"
+     },
+     {
+      "key": "C",
+      "text": "for"
+     },
+     {
+      "key": "D",
+      "text": "in"
+     }
+    ],
+    "answer": "C"
+   },
+   {
+    "n": 8,
+    "stem": "I hurt my leg _____ I was playing football yesterday.",
+    "passage": "",
+    "options": [
+     {
+      "key": "A",
+      "text": "while"
+     },
+     {
+      "key": "B",
+      "text": "during"
+     },
+     {
+      "key": "C",
+      "text": "for"
+     },
+     {
+      "key": "D",
+      "text": "in"
+     }
+    ],
+    "answer": "A"
+   },
+   {
+    "n": 9,
+    "stem": "I hurt my leg _____ the second half of the match.",
+    "passage": "",
+    "options": [
+     {
+      "key": "A",
+      "text": "via"
+     },
+     {
+      "key": "B",
+      "text": "until"
+     },
+     {
+      "key": "C",
+      "text": "for"
+     },
+     {
+      "key": "D",
+      "text": "in"
+     }
+    ],
+    "answer": "D"
+   },
+   {
+    "n": 10,
+    "stem": "Traffic is always bad _____ the rush hour.",
+    "passage": "",
+    "options": [
+     {
+      "key": "A",
+      "text": "while"
+     },
+     {
+      "key": "B",
+      "text": "during"
+     },
+     {
+      "key": "C",
+      "text": "for"
+     },
+     {
+      "key": "D",
+      "text": "in"
+     }
+    ],
+    "answer": "B"
+   },
+   {
+    "n": 11,
+    "stem": "Last week I was held up _____ three hours.",
+    "passage": "",
+    "options": [
+     {
+      "key": "A",
+      "text": "while"
+     },
+     {
+      "key": "B",
+      "text": "during"
+     },
+     {
+      "key": "C",
+      "text": "for"
+     },
+     {
+      "key": "D",
+      "text": "in"
+     }
+    ],
+    "answer": "C"
+   },
+   {
+    "n": 12,
+    "stem": "Peter came round _____ we were eating.",
+    "passage": "",
+    "options": [
+     {
+      "key": "A",
+      "text": "while"
+     },
+     {
+      "key": "B",
+      "text": "during"
+     },
+     {
+      "key": "C",
+      "text": "for"
+     },
+     {
+      "key": "D",
+      "text": "in"
+     }
+    ],
+    "answer": "A"
+   },
+   {
+    "n": 13,
+    "stem": "Peter came round _____ the meal.",
+    "passage": "",
+    "options": [
+     {
+      "key": "A",
+      "text": "while"
+     },
+     {
+      "key": "B",
+      "text": "during"
+     },
+     {
+      "key": "C",
+      "text": "on"
+     },
+     {
+      "key": "D",
+      "text": "in"
+     }
+    ],
+    "answer": "B"
+   },
+   {
+    "n": 14,
+    "stem": "It's my birthday _____ next week.",
+    "passage": "",
+    "options": [
+     {
+      "key": "A",
+      "text": "at"
+     },
+     {
+      "key": "B",
+      "text": "in"
+     },
+     {
+      "key": "C",
+      "text": "on"
+     },
+     {
+      "key": "D",
+      "text": "*"
+     }
+    ],
+    "answer": "D"
+   },
+   {
+    "n": 15,
+    "stem": "\"When?\" \"_____ Monday.\"",
+    "passage": "",
+    "options": [
+     {
+      "key": "A",
+      "text": "At"
+     },
+     {
+      "key": "B",
+      "text": "In"
+     },
+     {
+      "key": "C",
+      "text": "On"
+     },
+     {
+      "key": "D",
+      "text": "*"
+     }
+    ],
+    "answer": "C"
+   },
+   {
+    "n": 16,
+    "stem": "_____ when were you born?",
+    "passage": "",
+    "options": [
+     {
+      "key": "A",
+      "text": "At"
+     },
+     {
+      "key": "B",
+      "text": "In"
+     },
+     {
+      "key": "C",
+      "text": "On"
+     },
+     {
+      "key": "D",
+      "text": "*"
+     }
+    ],
+    "answer": "C"
+   },
+   {
+    "n": 17,
+    "stem": "_____ 8.00 _____ the morning.",
+    "passage": "",
+    "options": [
+     {
+      "key": "A",
+      "text": "At / in"
+     },
+     {
+      "key": "B",
+      "text": "In / in"
+     },
+     {
+      "key": "C",
+      "text": "On / in"
+     },
+     {
+      "key": "D",
+      "text": "* / in"
+     }
+    ],
+    "answer": "A"
+   },
+   {
+    "n": 18,
+    "stem": "I'm meeting Alan _____ this evening.",
+    "passage": "",
+    "options": [
+     {
+      "key": "A",
+      "text": "at"
+     },
+     {
+      "key": "B",
+      "text": "in"
+     },
+     {
+      "key": "C",
+      "text": "on"
+     },
+     {
+      "key": "D",
+      "text": "*"
+     }
+    ],
+    "answer": "D"
+   },
+   {
+    "n": 19,
+    "stem": "\"What time?\" \"_____ six.\"",
+    "passage": "",
+    "options": [
+     {
+      "key": "A",
+      "text": "At"
+     },
+     {
+      "key": "B",
+      "text": "In"
+     },
+     {
+      "key": "C",
+      "text": "On"
+     },
+     {
+      "key": "D",
+      "text": "*"
+     }
+    ],
+    "answer": "A"
+   },
+   {
+    "n": 20,
+    "stem": "What did you do _____ the weekend?",
+    "passage": "",
+    "options": [
+     {
+      "key": "A",
+      "text": "at"
+     },
+     {
+      "key": "B",
+      "text": "in"
+     },
+     {
+      "key": "C",
+      "text": "with"
+     },
+     {
+      "key": "D",
+      "text": "*"
+     }
+    ],
+    "answer": "A"
+   },
+   {
+    "n": 21,
+    "stem": "_____ Friday evening we went to a party.",
+    "passage": "",
+    "options": [
+     {
+      "key": "A",
+      "text": "At"
+     },
+     {
+      "key": "B",
+      "text": "In"
+     },
+     {
+      "key": "C",
+      "text": "On"
+     },
+     {
+      "key": "D",
+      "text": "*"
+     }
+    ],
+    "answer": "C"
+   },
+   {
+    "n": 22,
+    "stem": "We slept late _____ Saturday morning.",
+    "passage": "",
+    "options": [
+     {
+      "key": "A",
+      "text": "at"
+     },
+     {
+      "key": "B",
+      "text": "in"
+     },
+     {
+      "key": "C",
+      "text": "on"
+     },
+     {
+      "key": "D",
+      "text": "*"
+     }
+    ],
+    "answer": "C"
+   },
+   {
+    "n": 23,
+    "stem": "_____ the afternoon we went shopping.",
+    "passage": "",
+    "options": [
+     {
+      "key": "A",
+      "text": "At"
+     },
+     {
+      "key": "B",
+      "text": "In"
+     },
+     {
+      "key": "C",
+      "text": "On"
+     },
+     {
+      "key": "D",
+      "text": "*"
+     }
+    ],
+    "answer": "B"
+   },
+   {
+    "n": 24,
+    "stem": "____ 7:00 some friends came round for a drink.",
+    "passage": "",
+    "options": [
+     {
+      "key": "A",
+      "text": "At"
+     },
+     {
+      "key": "B",
+      "text": "In"
+     },
+     {
+      "key": "C",
+      "text": "On"
+     },
+     {
+      "key": "D",
+      "text": "*"
+     }
+    ],
+    "answer": "A"
+   },
+   {
+    "n": 25,
+    "stem": "We didn't do anything _____ Sunday.",
+    "passage": "",
+    "options": [
+     {
+      "key": "A",
+      "text": "at"
+     },
+     {
+      "key": "B",
+      "text": "in"
+     },
+     {
+      "key": "C",
+      "text": "on"
+     },
+     {
+      "key": "D",
+      "text": "*"
+     }
+    ],
+    "answer": "C"
+   },
+   {
+    "n": 26,
+    "stem": "The weather in England is unreliable. _____ summer it can be hot, but it often rains _____ April and June.",
+    "passage": "",
+    "options": [
+     {
+      "key": "A",
+      "text": "At / in"
+     },
+     {
+      "key": "B",
+      "text": "In / in"
+     },
+     {
+      "key": "C",
+      "text": "On / in"
+     },
+     {
+      "key": "D",
+      "text": "* / in"
+     }
+    ],
+    "answer": "B"
+   },
+   {
+    "n": 27,
+    "stem": "_____ last year the summer was awful.",
+    "passage": "",
+    "options": [
+     {
+      "key": "A",
+      "text": "At"
+     },
+     {
+      "key": "B",
+      "text": "In"
+     },
+     {
+      "key": "C",
+      "text": "On"
+     },
+     {
+      "key": "D",
+      "text": "*"
+     }
+    ],
+    "answer": "D"
+   },
+   {
+    "n": 28,
+    "stem": "The best English weather is _____ spring and autumn.",
+    "passage": "",
+    "options": [
+     {
+      "key": "A",
+      "text": "at"
+     },
+     {
+      "key": "B",
+      "text": "in"
+     },
+     {
+      "key": "C",
+      "text": "on"
+     },
+     {
+      "key": "D",
+      "text": "*"
+     }
+    ],
+    "answer": "B"
+   },
+   {
+    "n": 29,
+    "stem": "I learned to drive _____ 1980 _____ the age of 17.",
+    "passage": "",
+    "options": [
+     {
+      "key": "A",
+      "text": "at / at"
+     },
+     {
+      "key": "B",
+      "text": "in / at"
+     },
+     {
+      "key": "C",
+      "text": "on / at"
+     },
+     {
+      "key": "D",
+      "text": "* / at"
+     }
+    ],
+    "answer": "B"
+   },
+   {
+    "n": 30,
+    "stem": "My brother learned _____ the same time as me, but I passed first.",
+    "passage": "",
+    "options": [
+     {
+      "key": "A",
+      "text": "at"
+     },
+     {
+      "key": "B",
+      "text": "in"
+     },
+     {
+      "key": "C",
+      "text": "on"
+     },
+     {
+      "key": "D",
+      "text": "*"
+     }
+    ],
+    "answer": "A"
+   },
+   {
+    "n": 31,
+    "stem": "I'll phone you _____ next week. _____ Thursday.",
+    "passage": "",
+    "options": [
+     {
+      "key": "A",
+      "text": "at / On"
+     },
+     {
+      "key": "B",
+      "text": "in / On"
+     },
+     {
+      "key": "C",
+      "text": "on / On"
+     },
+     {
+      "key": "D",
+      "text": "* / On"
+     }
+    ],
+    "answer": "D"
+   },
+   {
+    "n": 32,
+    "stem": "I'll phone you _____ about 3.00.",
+    "passage": "",
+    "options": [
+     {
+      "key": "A",
+      "text": "at"
+     },
+     {
+      "key": "B",
+      "text": "in"
+     },
+     {
+      "key": "C",
+      "text": "on"
+     },
+     {
+      "key": "D",
+      "text": "*"
+     }
+    ],
+    "answer": "A"
+   },
+   {
+    "n": 33,
+    "stem": "",
+    "passage": "Helen Keller's deafness and blindness __(33)__ by a severe illness when she was a baby. Her parents __(34)__ what to do, and they __(35)__ it difficult to control their growing daughter. One day they __(36)__ about a brilliant young teacher called Anne Sullivan. She __(37)__ to work with Helen. Very firmly and patiently, she __(38)__ her that every object __(39)__ a name. Eventually Helen __(40)__ a place at university. After this she __(41)__ the world helping people like herself. In 1962 the story of her life __(42)__ into a film, The Miracle Worker.",
+    "options": [
+     {
+      "key": "A",
+      "text": "cause"
+     },
+     {
+      "key": "B",
+      "text": "caused"
+     },
+     {
+      "key": "C",
+      "text": "were caused"
+     },
+     {
+      "key": "D",
+      "text": "has caused"
+     }
+    ],
+    "answer": "C"
+   },
+   {
+    "n": 34,
+    "stem": "",
+    "passage": "Helen Keller's deafness and blindness __(33)__ by a severe illness when she was a baby. Her parents __(34)__ what to do, and they __(35)__ it difficult to control their growing daughter. One day they __(36)__ about a brilliant young teacher called Anne Sullivan. She __(37)__ to work with Helen. Very firmly and patiently, she __(38)__ her that every object __(39)__ a name. Eventually Helen __(40)__ a place at university. After this she __(41)__ the world helping people like herself. In 1962 the story of her life __(42)__ into a film, The Miracle Worker.",
+    "options": [
+     {
+      "key": "A",
+      "text": "didn't know"
+     },
+     {
+      "key": "B",
+      "text": "doesn't know"
+     },
+     {
+      "key": "C",
+      "text": "knew"
+     },
+     {
+      "key": "D",
+      "text": "knows"
+     }
+    ],
+    "answer": "A"
+   },
+   {
+    "n": 35,
+    "stem": "",
+    "passage": "Helen Keller's deafness and blindness __(33)__ by a severe illness when she was a baby. Her parents __(34)__ what to do, and they __(35)__ it difficult to control their growing daughter. One day they __(36)__ about a brilliant young teacher called Anne Sullivan. She __(37)__ to work with Helen. Very firmly and patiently, she __(38)__ her that every object __(39)__ a name. Eventually Helen __(40)__ a place at university. After this she __(41)__ the world helping people like herself. In 1962 the story of her life __(42)__ into a film, The Miracle Worker.",
+    "options": [
+     {
+      "key": "A",
+      "text": "find"
+     },
+     {
+      "key": "B",
+      "text": "finds"
+     },
+     {
+      "key": "C",
+      "text": "were found"
+     },
+     {
+      "key": "D",
+      "text": "found"
+     }
+    ],
+    "answer": "D"
+   },
+   {
+    "n": 36,
+    "stem": "",
+    "passage": "Helen Keller's deafness and blindness __(33)__ by a severe illness when she was a baby. Her parents __(34)__ what to do, and they __(35)__ it difficult to control their growing daughter. One day they __(36)__ about a brilliant young teacher called Anne Sullivan. She __(37)__ to work with Helen. Very firmly and patiently, she __(38)__ her that every object __(39)__ a name. Eventually Helen __(40)__ a place at university. After this she __(41)__ the world helping people like herself. In 1962 the story of her life __(42)__ into a film, The Miracle Worker.",
+    "options": [
+     {
+      "key": "A",
+      "text": "tell"
+     },
+     {
+      "key": "B",
+      "text": "were told"
+     },
+     {
+      "key": "C",
+      "text": "telling"
+     },
+     {
+      "key": "D",
+      "text": "told"
+     }
+    ],
+    "answer": "B"
+   },
+   {
+    "n": 37,
+    "stem": "",
+    "passage": "Helen Keller's deafness and blindness __(33)__ by a severe illness when she was a baby. Her parents __(34)__ what to do, and they __(35)__ it difficult to control their growing daughter. One day they __(36)__ about a brilliant young teacher called Anne Sullivan. She __(37)__ to work with Helen. Very firmly and patiently, she __(38)__ her that every object __(39)__ a name. Eventually Helen __(40)__ a place at university. After this she __(41)__ the world helping people like herself. In 1962 the story of her life __(42)__ into a film, The Miracle Worker.",
+    "options": [
+     {
+      "key": "A",
+      "text": "came"
+     },
+     {
+      "key": "B",
+      "text": "begin"
+     },
+     {
+      "key": "C",
+      "text": "start"
+     },
+     {
+      "key": "D",
+      "text": "helping"
+     }
+    ],
+    "answer": "A"
+   },
+   {
+    "n": 38,
+    "stem": "",
+    "passage": "Helen Keller's deafness and blindness __(33)__ by a severe illness when she was a baby. Her parents __(34)__ what to do, and they __(35)__ it difficult to control their growing daughter. One day they __(36)__ about a brilliant young teacher called Anne Sullivan. She __(37)__ to work with Helen. Very firmly and patiently, she __(38)__ her that every object __(39)__ a name. Eventually Helen __(40)__ a place at university. After this she __(41)__ the world helping people like herself. In 1962 the story of her life __(42)__ into a film, The Miracle Worker.",
+    "options": [
+     {
+      "key": "A",
+      "text": "studied"
+     },
+     {
+      "key": "B",
+      "text": "helped"
+     },
+     {
+      "key": "C",
+      "text": "thought"
+     },
+     {
+      "key": "D",
+      "text": "taught"
+     }
+    ],
+    "answer": "D"
+   },
+   {
+    "n": 39,
+    "stem": "",
+    "passage": "Helen Keller's deafness and blindness __(33)__ by a severe illness when she was a baby. Her parents __(34)__ what to do, and they __(35)__ it difficult to control their growing daughter. One day they __(36)__ about a brilliant young teacher called Anne Sullivan. She __(37)__ to work with Helen. Very firmly and patiently, she __(38)__ her that every object __(39)__ a name. Eventually Helen __(40)__ a place at university. After this she __(41)__ the world helping people like herself. In 1962 the story of her life __(42)__ into a film, The Miracle Worker.",
+    "options": [
+     {
+      "key": "A",
+      "text": "has"
+     },
+     {
+      "key": "B",
+      "text": "had"
+     },
+     {
+      "key": "C",
+      "text": "have"
+     },
+     {
+      "key": "D",
+      "text": "having"
+     }
+    ],
+    "answer": "B"
+   },
+   {
+    "n": 40,
+    "stem": "",
+    "passage": "Helen Keller's deafness and blindness __(33)__ by a severe illness when she was a baby. Her parents __(34)__ what to do, and they __(35)__ it difficult to control their growing daughter. One day they __(36)__ about a brilliant young teacher called Anne Sullivan. She __(37)__ to work with Helen. Very firmly and patiently, she __(38)__ her that every object __(39)__ a name. Eventually Helen __(40)__ a place at university. After this she __(41)__ the world helping people like herself. In 1962 the story of her life __(42)__ into a film, The Miracle Worker.",
+    "options": [
+     {
+      "key": "A",
+      "text": "offer"
+     },
+     {
+      "key": "B",
+      "text": "offered"
+     },
+     {
+      "key": "C",
+      "text": "was offered"
+     },
+     {
+      "key": "D",
+      "text": "offering"
+     }
+    ],
+    "answer": "C"
+   },
+   {
+    "n": 41,
+    "stem": "",
+    "passage": "Helen Keller's deafness and blindness __(33)__ by a severe illness when she was a baby. Her parents __(34)__ what to do, and they __(35)__ it difficult to control their growing daughter. One day they __(36)__ about a brilliant young teacher called Anne Sullivan. She __(37)__ to work with Helen. Very firmly and patiently, she __(38)__ her that every object __(39)__ a name. Eventually Helen __(40)__ a place at university. After this she __(41)__ the world helping people like herself. In 1962 the story of her life __(42)__ into a film, The Miracle Worker.",
+    "options": [
+     {
+      "key": "A",
+      "text": "tour"
+     },
+     {
+      "key": "B",
+      "text": "toured"
+     },
+     {
+      "key": "C",
+      "text": "touring"
+     },
+     {
+      "key": "D",
+      "text": "tours"
+     }
+    ],
+    "answer": "B"
+   },
+   {
+    "n": 42,
+    "stem": "",
+    "passage": "Helen Keller's deafness and blindness __(33)__ by a severe illness when she was a baby. Her parents __(34)__ what to do, and they __(35)__ it difficult to control their growing daughter. One day they __(36)__ about a brilliant young teacher called Anne Sullivan. She __(37)__ to work with Helen. Very firmly and patiently, she __(38)__ her that every object __(39)__ a name. Eventually Helen __(40)__ a place at university. After this she __(41)__ the world helping people like herself. In 1962 the story of her life __(42)__ into a film, The Miracle Worker.",
+    "options": [
+     {
+      "key": "A",
+      "text": "was made"
+     },
+     {
+      "key": "B",
+      "text": "make"
+     },
+     {
+      "key": "C",
+      "text": "is making"
+     },
+     {
+      "key": "D",
+      "text": "was making"
+     }
+    ],
+    "answer": "A"
+   }
+  ]
+ },
+ {
+  "test": 4,
+  "level": "Intermediate",
+  "source": "Test Master — Book 1 Part A",
+  "questions": [
+   {
+    "n": 1,
+    "stem": "I _____ work very hard because I have an exam next week.",
+    "passage": "",
+    "options": [
+     {
+      "key": "A",
+      "text": "am having"
+     },
+     {
+      "key": "B",
+      "text": "has to"
+     },
+     {
+      "key": "C",
+      "text": "had to"
+     },
+     {
+      "key": "D",
+      "text": "have to"
+     }
+    ],
+    "answer": "D"
+   },
+   {
+    "n": 2,
+    "stem": "You _____ work hard after your exam. You can have a holiday.",
+    "passage": "",
+    "options": [
+     {
+      "key": "A",
+      "text": "had to"
+     },
+     {
+      "key": "B",
+      "text": "won't have to"
+     },
+     {
+      "key": "C",
+      "text": "have too"
+     },
+     {
+      "key": "D",
+      "text": "won't have"
+     }
+    ],
+    "answer": "B"
+   },
+   {
+    "n": 3,
+    "stem": "",
+    "passage": "My father is a customs official so he always __(3)__ wear a uniform at work, but my mother is a teacher so she __(4)__ wear one.",
+    "options": [
+     {
+      "key": "A",
+      "text": "doesn't have to"
+     },
+     {
+      "key": "B",
+      "text": "have to"
+     },
+     {
+      "key": "C",
+      "text": "has to"
+     },
+     {
+      "key": "D",
+      "text": "don't have to"
+     }
+    ],
+    "answer": "C"
+   },
+   {
+    "n": 4,
+    "stem": "",
+    "passage": "My father is a customs official so he always __(3)__ wear a uniform at work, but my mother is a teacher so she __(4)__ wear one.",
+    "options": [
+     {
+      "key": "A",
+      "text": "doesn't have to"
+     },
+     {
+      "key": "B",
+      "text": "have to"
+     },
+     {
+      "key": "C",
+      "text": "has to"
+     },
+     {
+      "key": "D",
+      "text": "don't have to"
+     }
+    ],
+    "answer": "A"
+   },
+   {
+    "n": 5,
+    "stem": "",
+    "passage": "When we were teenagers, we __(5)__ be home by nine o'clock. But we __(6)__ take as many exams as teenagers nowadays.",
+    "options": [
+     {
+      "key": "A",
+      "text": "had to"
+     },
+     {
+      "key": "B",
+      "text": "won't have to"
+     },
+     {
+      "key": "C",
+      "text": "have to"
+     },
+     {
+      "key": "D",
+      "text": "don't have to"
+     }
+    ],
+    "answer": "A"
+   },
+   {
+    "n": 6,
+    "stem": "",
+    "passage": "When we were teenagers, we __(5)__ be home by nine o'clock. But we __(6)__ take as many exams as teenagers nowadays.",
+    "options": [
+     {
+      "key": "A",
+      "text": "had to"
+     },
+     {
+      "key": "B",
+      "text": "didn't have to"
+     },
+     {
+      "key": "C",
+      "text": "have to"
+     },
+     {
+      "key": "D",
+      "text": "don't have to"
+     }
+    ],
+    "answer": "B"
+   },
+   {
+    "n": 7,
+    "stem": "I can't see the small print very well. I think I ____ wear glasses soon.",
+    "passage": "",
+    "options": [
+     {
+      "key": "A",
+      "text": "will have to"
+     },
+     {
+      "key": "B",
+      "text": "won't have to"
+     },
+     {
+      "key": "C",
+      "text": "have to"
+     },
+     {
+      "key": "D",
+      "text": "don't have to"
+     }
+    ],
+    "answer": "A"
+   },
+   {
+    "n": 8,
+    "stem": "Nobody enjoys _____ get up at five o'clock in the morning.",
+    "passage": "",
+    "options": [
+     {
+      "key": "A",
+      "text": "have to"
+     },
+     {
+      "key": "B",
+      "text": "has to"
+     },
+     {
+      "key": "C",
+      "text": "having to"
+     },
+     {
+      "key": "D",
+      "text": "will have to"
+     }
+    ],
+    "answer": "C"
+   },
+   {
+    "n": 9,
+    "stem": "_____ we _____ have any vaccinations before we go to Barbados?",
+    "passage": "",
+    "options": [
+     {
+      "key": "A",
+      "text": "Will / have to"
+     },
+     {
+      "key": "B",
+      "text": "Did / have to"
+     },
+     {
+      "key": "C",
+      "text": "Won't / have"
+     },
+     {
+      "key": "D",
+      "text": "Are / having"
+     }
+    ],
+    "answer": "A"
+   },
+   {
+    "n": 10,
+    "stem": "_____ your grandmother _____ leave school when she was only fourteen?",
+    "passage": "",
+    "options": [
+     {
+      "key": "A",
+      "text": "Will / have to"
+     },
+     {
+      "key": "B",
+      "text": "Did / have to"
+     },
+     {
+      "key": "C",
+      "text": "Won't / have"
+     },
+     {
+      "key": "D",
+      "text": "Are / having to"
+     }
+    ],
+    "answer": "B"
+   },
+   {
+    "n": 11,
+    "stem": "You _____ be a millionaire to shop in Harrods. Everything is expensive there.",
+    "passage": "",
+    "options": [
+     {
+      "key": "A",
+      "text": "will have to"
+     },
+     {
+      "key": "B",
+      "text": "won't have to"
+     },
+     {
+      "key": "C",
+      "text": "have to"
+     },
+     {
+      "key": "D",
+      "text": "don't have to"
+     }
+    ],
+    "answer": "C"
+   },
+   {
+    "n": 12,
+    "stem": "If I fail my exam, ____ I ___ take it again?",
+    "passage": "",
+    "options": [
+     {
+      "key": "A",
+      "text": "will / have to"
+     },
+     {
+      "key": "B",
+      "text": "did / have to"
+     },
+     {
+      "key": "C",
+      "text": "does / have to"
+     },
+     {
+      "key": "D",
+      "text": "do / won't have"
+     }
+    ],
+    "answer": "A"
+   },
+   {
+    "n": 13,
+    "stem": "I phoned the plumber because I _____ smell gas in the kitchen.",
+    "passage": "",
+    "options": [
+     {
+      "key": "A",
+      "text": "can"
+     },
+     {
+      "key": "B",
+      "text": "could"
+     },
+     {
+      "key": "C",
+      "text": "managed to"
+     },
+     {
+      "key": "D",
+      "text": "couldn't"
+     }
+    ],
+    "answer": "B"
+   },
+   {
+    "n": 14,
+    "stem": "Jane and John saved and saved, and finally they _____ buy the house of their dreams.",
+    "passage": "",
+    "options": [
+     {
+      "key": "A",
+      "text": "can"
+     },
+     {
+      "key": "B",
+      "text": "could"
+     },
+     {
+      "key": "C",
+      "text": "managed to"
+     },
+     {
+      "key": "D",
+      "text": "couldn't"
+     }
+    ],
+    "answer": "C"
+   },
+   {
+    "n": 15,
+    "stem": "I phoned yesterday, but I ____ get an answer. Where were you?",
+    "passage": "",
+    "options": [
+     {
+      "key": "A",
+      "text": "can"
+     },
+     {
+      "key": "B",
+      "text": "could"
+     },
+     {
+      "key": "C",
+      "text": "managed to"
+     },
+     {
+      "key": "D",
+      "text": "couldn't"
+     }
+    ],
+    "answer": "D"
+   },
+   {
+    "n": 16,
+    "stem": "The neighbors were having a row, and I _____ hear every word they said.",
+    "passage": "",
+    "options": [
+     {
+      "key": "A",
+      "text": "can"
+     },
+     {
+      "key": "B",
+      "text": "could"
+     },
+     {
+      "key": "C",
+      "text": "managed to"
+     },
+     {
+      "key": "D",
+      "text": "couldn't"
+     }
+    ],
+    "answer": "D"
+   },
+   {
+    "n": 17,
+    "stem": "____ you speak French before you moved to Paris?",
+    "passage": "",
+    "options": [
+     {
+      "key": "A",
+      "text": "Can"
+     },
+     {
+      "key": "B",
+      "text": "Could"
+     },
+     {
+      "key": "C",
+      "text": "Managed to"
+     },
+     {
+      "key": "D",
+      "text": "Couldn't"
+     }
+    ],
+    "answer": "B"
+   },
+   {
+    "n": 18,
+    "stem": "I went for a ten-mile run last Saturday. It nearly killed me! I _____ move on Sunday.",
+    "passage": "",
+    "options": [
+     {
+      "key": "A",
+      "text": "can"
+     },
+     {
+      "key": "B",
+      "text": "could"
+     },
+     {
+      "key": "C",
+      "text": "managed to"
+     },
+     {
+      "key": "D",
+      "text": "couldn't -Modal verbs (can, could, have to)"
+     }
+    ],
+    "answer": "D"
+   },
+   {
+    "n": 19,
+    "stem": "_____ you _____ find all the things you wanted at the shops?",
+    "passage": "",
+    "options": [
+     {
+      "key": "A",
+      "text": "Did / have to"
+     },
+     {
+      "key": "B",
+      "text": "Did / can"
+     },
+     {
+      "key": "C",
+      "text": "Did / manage to"
+     },
+     {
+      "key": "D",
+      "text": "Did / could"
+     }
+    ],
+    "answer": "C"
+   },
+   {
+    "n": 20,
+    "stem": "The police _____ find the man who had stolen my car. He was sent to prison.",
+    "passage": "",
+    "options": [
+     {
+      "key": "A",
+      "text": "can"
+     },
+     {
+      "key": "B",
+      "text": "could"
+     },
+     {
+      "key": "C",
+      "text": "managed to"
+     },
+     {
+      "key": "D",
+      "text": "couldn't"
+     }
+    ],
+    "answer": "C"
+   },
+   {
+    "n": 21,
+    "stem": "My grandfather _____ speak four languages when he was alive.",
+    "passage": "",
+    "options": [
+     {
+      "key": "A",
+      "text": "can"
+     },
+     {
+      "key": "B",
+      "text": "could"
+     },
+     {
+      "key": "C",
+      "text": "managed to"
+     },
+     {
+      "key": "D",
+      "text": "couldn't"
+     }
+    ],
+    "answer": "B"
+   },
+   {
+    "n": 22,
+    "stem": "When we got to the top of the mountain we _____ see for miles.",
+    "passage": "",
+    "options": [
+     {
+      "key": "A",
+      "text": "can"
+     },
+     {
+      "key": "B",
+      "text": "could"
+     },
+     {
+      "key": "C",
+      "text": "managed"
+     },
+     {
+      "key": "D",
+      "text": "couldn't"
+     }
+    ],
+    "answer": "B"
+   },
+   {
+    "n": 23,
+    "stem": "In my country you _____ get married when you're sixteen.",
+    "passage": "",
+    "options": [
+     {
+      "key": "A",
+      "text": "can"
+     },
+     {
+      "key": "B",
+      "text": "could"
+     },
+     {
+      "key": "C",
+      "text": "managed to"
+     },
+     {
+      "key": "D",
+      "text": "couldn't"
+     }
+    ],
+    "answer": "A"
+   },
+   {
+    "n": 24,
+    "stem": "Speak up! I _____ hear you!",
+    "passage": "",
+    "options": [
+     {
+      "key": "A",
+      "text": "can"
+     },
+     {
+      "key": "B",
+      "text": "could"
+     },
+     {
+      "key": "C",
+      "text": "can't"
+     },
+     {
+      "key": "D",
+      "text": "couldn't"
+     }
+    ],
+    "answer": "C"
+   },
+   {
+    "n": 25,
+    "stem": "_____ I borrow your dictionary?",
+    "passage": "",
+    "options": [
+     {
+      "key": "A",
+      "text": "Can't"
+     },
+     {
+      "key": "B",
+      "text": "Could"
+     },
+     {
+      "key": "C",
+      "text": "Manage to"
+     },
+     {
+      "key": "D",
+      "text": "Couldn't"
+     }
+    ],
+    "answer": "B"
+   },
+   {
+    "n": 26,
+    "stem": "I'd love _____ help you, but I can't. I'm sorry.",
+    "passage": "",
+    "options": [
+     {
+      "key": "A",
+      "text": "can"
+     },
+     {
+      "key": "B",
+      "text": "could"
+     },
+     {
+      "key": "C",
+      "text": "managed to"
+     },
+     {
+      "key": "D",
+      "text": "to be able to"
+     }
+    ],
+    "answer": "D"
+   },
+   {
+    "n": 27,
+    "stem": "I _____ get into my house last night because I'd lost my key.",
+    "passage": "",
+    "options": [
+     {
+      "key": "A",
+      "text": "can"
+     },
+     {
+      "key": "B",
+      "text": "could"
+     },
+     {
+      "key": "C",
+      "text": "managed to"
+     },
+     {
+      "key": "D",
+      "text": "couldn't"
+     }
+    ],
+    "answer": "D"
+   },
+   {
+    "n": 28,
+    "stem": "Women _____ vote in England until 1922.",
+    "passage": "",
+    "options": [
+     {
+      "key": "A",
+      "text": "can"
+     },
+     {
+      "key": "B",
+      "text": "are able to"
+     },
+     {
+      "key": "C",
+      "text": "managed to"
+     },
+     {
+      "key": "D",
+      "text": "couldn't"
+     }
+    ],
+    "answer": "D"
+   },
+   {
+    "n": 29,
+    "stem": "I'm learning Spanish because I want _____ speak when I'm in Mexico.",
+    "passage": "",
+    "options": [
+     {
+      "key": "A",
+      "text": "can"
+     },
+     {
+      "key": "B",
+      "text": "could"
+     },
+     {
+      "key": "C",
+      "text": "will be able to"
+     },
+     {
+      "key": "D",
+      "text": "to be able to"
+     }
+    ],
+    "answer": "D"
+   },
+   {
+    "n": 30,
+    "stem": "The doctor says I _____ walk again in two weeks' time.",
+    "passage": "",
+    "options": [
+     {
+      "key": "A",
+      "text": "can"
+     },
+     {
+      "key": "B",
+      "text": "could"
+     },
+     {
+      "key": "C",
+      "text": "will be able to"
+     },
+     {
+      "key": "D",
+      "text": "to be able to"
+     }
+    ],
+    "answer": "C"
+   },
+   {
+    "n": 31,
+    "stem": "",
+    "passage": "I asked the teacher if I __(31)__ open the window, but she said I __(32)__ because it would be too noisy.",
+    "options": [
+     {
+      "key": "A",
+      "text": "can"
+     },
+     {
+      "key": "B",
+      "text": "could"
+     },
+     {
+      "key": "C",
+      "text": "managed to"
+     },
+     {
+      "key": "D",
+      "text": "couldn't"
+     }
+    ],
+    "answer": "B"
+   },
+   {
+    "n": 32,
+    "stem": "",
+    "passage": "I asked the teacher if I __(31)__ open the window, but she said I __(32)__ because it would be too noisy.",
+    "options": [
+     {
+      "key": "A",
+      "text": "can"
+     },
+     {
+      "key": "B",
+      "text": "could"
+     },
+     {
+      "key": "C",
+      "text": "managed to"
+     },
+     {
+      "key": "D",
+      "text": "couldn't"
+     }
+    ],
+    "answer": "D"
+   },
+   {
+    "n": 33,
+    "stem": "I'm sorry, but I _____ come to your party next week.",
+    "passage": "",
+    "options": [
+     {
+      "key": "A",
+      "text": "can't"
+     },
+     {
+      "key": "B",
+      "text": "couldn't"
+     },
+     {
+      "key": "C",
+      "text": "can"
+     },
+     {
+      "key": "D",
+      "text": "'ll be able to"
+     }
+    ],
+    "answer": "A"
+   },
+   {
+    "n": 34,
+    "stem": "I love driving! _____ drive has changed my whole life.",
+    "passage": "",
+    "options": [
+     {
+      "key": "A",
+      "text": "Can"
+     },
+     {
+      "key": "B",
+      "text": "Could"
+     },
+     {
+      "key": "C",
+      "text": "Will be able to"
+     },
+     {
+      "key": "D",
+      "text": "Being able to"
+     }
+    ],
+    "answer": "D"
+   },
+   {
+    "n": 35,
+    "stem": "Children in my country _____ go to school when they're 7.",
+    "passage": "",
+    "options": [
+     {
+      "key": "A",
+      "text": "doesn't have to"
+     },
+     {
+      "key": "B",
+      "text": "has to"
+     },
+     {
+      "key": "C",
+      "text": "have to"
+     },
+     {
+      "key": "D",
+      "text": "don't have to"
+     }
+    ],
+    "answer": "C"
+   },
+   {
+    "n": 36,
+    "stem": "Adults _____ go to school.",
+    "passage": "",
+    "options": [
+     {
+      "key": "A",
+      "text": "doesn't have to"
+     },
+     {
+      "key": "B",
+      "text": "has to"
+     },
+     {
+      "key": "C",
+      "text": "have to"
+     },
+     {
+      "key": "D",
+      "text": "don't have to"
+     }
+    ],
+    "answer": "C"
+   },
+   {
+    "n": 37,
+    "stem": "Every adult _____ go to work.",
+    "passage": "",
+    "options": [
+     {
+      "key": "A",
+      "text": "doesn't have to"
+     },
+     {
+      "key": "B",
+      "text": "has to"
+     },
+     {
+      "key": "C",
+      "text": "have to"
+     },
+     {
+      "key": "D",
+      "text": "don't have to"
+     }
+    ],
+    "answer": "B"
+   },
+   {
+    "n": 38,
+    "stem": "A retired person_____ go to work.",
+    "passage": "",
+    "options": [
+     {
+      "key": "A",
+      "text": "doesn't have to"
+     },
+     {
+      "key": "B",
+      "text": "has to"
+     },
+     {
+      "key": "C",
+      "text": "have to"
+     },
+     {
+      "key": "D",
+      "text": "don't have to"
+     }
+    ],
+    "answer": "A"
+   },
+   {
+    "n": 39,
+    "stem": "Teenagers _____ study for exams.",
+    "passage": "",
+    "options": [
+     {
+      "key": "A",
+      "text": "doesn't have to"
+     },
+     {
+      "key": "B",
+      "text": "has to"
+     },
+     {
+      "key": "C",
+      "text": "have to"
+     },
+     {
+      "key": "D",
+      "text": "don't have to"
+     }
+    ],
+    "answer": "C"
+   },
+   {
+    "n": 40,
+    "stem": "You _____ drive on the right in Britain.",
+    "passage": "",
+    "options": [
+     {
+      "key": "A",
+      "text": "mustn't"
+     },
+     {
+      "key": "B",
+      "text": "has to"
+     },
+     {
+      "key": "C",
+      "text": "have to"
+     },
+     {
+      "key": "D",
+      "text": "don't have to Book 1 Part A Intermediate Test 4"
+     }
+    ],
+    "answer": "A"
+   }
+  ]
+ },
+ {
+  "test": 5,
+  "level": "Intermediate",
+  "source": "Test Master — Book 1 Part A",
+  "questions": [
+   {
+    "n": 1,
+    "stem": "Is there a public call box near here? I have to _____ a phone call.",
+    "passage": "",
+    "options": [
+     {
+      "key": "A",
+      "text": "do"
+     },
+     {
+      "key": "B",
+      "text": "make"
+     },
+     {
+      "key": "C",
+      "text": "get"
+     },
+     {
+      "key": "D",
+      "text": "hear"
+     }
+    ],
+    "answer": "B"
+   },
+   {
+    "n": 2,
+    "stem": "First she said \"Yes\", then she said \"No\", but in the end she _____ up her mind to marry him.",
+    "passage": "",
+    "options": [
+     {
+      "key": "A",
+      "text": "did"
+     },
+     {
+      "key": "B",
+      "text": "made"
+     },
+     {
+      "key": "C",
+      "text": "got"
+     },
+     {
+      "key": "D",
+      "text": "said"
+     }
+    ],
+    "answer": "B"
+   },
+   {
+    "n": 3,
+    "stem": "When you're not sure what to do, the best thing is to _____ nothing,",
+    "passage": "",
+    "options": [
+     {
+      "key": "A",
+      "text": "do"
+     },
+     {
+      "key": "B",
+      "text": "make"
+     },
+     {
+      "key": "C",
+      "text": "get"
+     },
+     {
+      "key": "D",
+      "text": "hear"
+     }
+    ],
+    "answer": "A"
+   },
+   {
+    "n": 4,
+    "stem": "Ssh! You mustn't _____ a noise. The baby's asleep.",
+    "passage": "",
+    "options": [
+     {
+      "key": "A",
+      "text": "do"
+     },
+     {
+      "key": "B",
+      "text": "make"
+     },
+     {
+      "key": "C",
+      "text": "get"
+     },
+     {
+      "key": "D",
+      "text": "hear"
+     }
+    ],
+    "answer": "B"
+   },
+   {
+    "n": 5,
+    "stem": "My teacher says I must work harder, but I can't work any harder. I'm _____ my best.",
+    "passage": "",
+    "options": [
+     {
+      "key": "A",
+      "text": "doing"
+     },
+     {
+      "key": "B",
+      "text": "trying"
+     },
+     {
+      "key": "C",
+      "text": "making"
+     },
+     {
+      "key": "D",
+      "text": "showing"
+     }
+    ],
+    "answer": "B"
+   },
+   {
+    "n": 6,
+    "stem": "We asked to see the manager and we _____ a complaint about the terrible service in the restaurant.",
+    "passage": "",
+    "options": [
+     {
+      "key": "A",
+      "text": "did"
+     },
+     {
+      "key": "B",
+      "text": "made"
+     },
+     {
+      "key": "C",
+      "text": "had"
+     },
+     {
+      "key": "D",
+      "text": "heard"
+     }
+    ],
+    "answer": "B"
+   },
+   {
+    "n": 7,
+    "stem": "At first I found learning English very easy, but now I don't think I'm _____ any progress at all.",
+    "passage": "",
+    "options": [
+     {
+      "key": "A",
+      "text": "doing"
+     },
+     {
+      "key": "B",
+      "text": "making"
+     },
+     {
+      "key": "C",
+      "text": "showing"
+     },
+     {
+      "key": "D",
+      "text": "getting"
+     }
+    ],
+    "answer": "B"
+   },
+   {
+    "n": 8,
+    "stem": "Could you _____ me a favor please? Could you give me a lift to the airport?",
+    "passage": "",
+    "options": [
+     {
+      "key": "A",
+      "text": "make"
+     },
+     {
+      "key": "B",
+      "text": "do"
+     },
+     {
+      "key": "C",
+      "text": "give"
+     },
+     {
+      "key": "D",
+      "text": "want"
+     }
+    ],
+    "answer": "B"
+   },
+   {
+    "n": 9,
+    "stem": "My uncle died without _____ a will, and it was very difficult for our family to sort out his money and possessions.",
+    "passage": "",
+    "options": [
+     {
+      "key": "A",
+      "text": "doing"
+     },
+     {
+      "key": "B",
+      "text": "make"
+     },
+     {
+      "key": "C",
+      "text": "get"
+     },
+     {
+      "key": "D",
+      "text": "making"
+     }
+    ],
+    "answer": "D"
+   },
+   {
+    "n": 10,
+    "stem": "We have some lovely new neighbors; we've already _____ friends with them.",
+    "passage": "",
+    "options": [
+     {
+      "key": "A",
+      "text": "did"
+     },
+     {
+      "key": "B",
+      "text": "made"
+     },
+     {
+      "key": "C",
+      "text": "done"
+     },
+     {
+      "key": "D",
+      "text": "make"
+     }
+    ],
+    "answer": "B"
+   },
+   {
+    "n": 11,
+    "stem": "I like to keep fit, so I _____ exercises every day.",
+    "passage": "",
+    "options": [
+     {
+      "key": "A",
+      "text": "do"
+     },
+     {
+      "key": "B",
+      "text": "make"
+     },
+     {
+      "key": "C",
+      "text": "get"
+     },
+     {
+      "key": "D",
+      "text": "hear"
+     }
+    ],
+    "answer": "A"
+   },
+   {
+    "n": 12,
+    "stem": "Before you go on holiday, you should _____ sure that the doors and windows are shut and locked.",
+    "passage": "",
+    "options": [
+     {
+      "key": "A",
+      "text": "do"
+     },
+     {
+      "key": "B",
+      "text": "make"
+     },
+     {
+      "key": "C",
+      "text": "get"
+     },
+     {
+      "key": "D",
+      "text": "hear"
+     }
+    ],
+    "answer": "B"
+   },
+   {
+    "n": 13,
+    "stem": "_____ money, not war!",
+    "passage": "",
+    "options": [
+     {
+      "key": "A",
+      "text": "Do"
+     },
+     {
+      "key": "B",
+      "text": "Make"
+     },
+     {
+      "key": "C",
+      "text": "Study"
+     },
+     {
+      "key": "D",
+      "text": "Get"
+     }
+    ],
+    "answer": "B"
+   },
+   {
+    "n": 14,
+    "stem": "I was _____ a queue waiting to buy some bread.",
+    "passage": "",
+    "options": [
+     {
+      "key": "A",
+      "text": "in"
+     },
+     {
+      "key": "B",
+      "text": "on"
+     },
+     {
+      "key": "C",
+      "text": "at"
+     },
+     {
+      "key": "D",
+      "text": "by"
+     }
+    ],
+    "answer": "A"
+   },
+   {
+    "n": 15,
+    "stem": "I looked _____ all the shelves and _____ all the cupboards.",
+    "passage": "",
+    "options": [
+     {
+      "key": "A",
+      "text": "in / on"
+     },
+     {
+      "key": "B",
+      "text": "on / in"
+     },
+     {
+      "key": "C",
+      "text": "at / in"
+     },
+     {
+      "key": "D",
+      "text": "at / on"
+     }
+    ],
+    "answer": "B"
+   },
+   {
+    "n": 16,
+    "stem": "They certainly weren't _____ the table or _____ the floor.",
+    "passage": "",
+    "options": [
+     {
+      "key": "A",
+      "text": "in / on"
+     },
+     {
+      "key": "B",
+      "text": "on / in"
+     },
+     {
+      "key": "C",
+      "text": "at / in"
+     },
+     {
+      "key": "D",
+      "text": "on / on"
+     }
+    ],
+    "answer": "D"
+   },
+   {
+    "n": 17,
+    "stem": "Had I left them _____ work?",
+    "passage": "",
+    "options": [
+     {
+      "key": "A",
+      "text": "in"
+     },
+     {
+      "key": "B",
+      "text": "on"
+     },
+     {
+      "key": "C",
+      "text": "at"
+     },
+     {
+      "key": "D",
+      "text": "near"
+     }
+    ],
+    "answer": "C"
+   },
+   {
+    "n": 18,
+    "stem": "Were they _____ the car?",
+    "passage": "",
+    "options": [
+     {
+      "key": "A",
+      "text": "in"
+     },
+     {
+      "key": "B",
+      "text": "on"
+     },
+     {
+      "key": "C",
+      "text": "at"
+     },
+     {
+      "key": "D",
+      "text": "of"
+     }
+    ],
+    "answer": "A"
+   },
+   {
+    "n": 19,
+    "stem": "Then I realized where they were. They were _____ my favorite armchair.",
+    "passage": "",
+    "options": [
+     {
+      "key": "A",
+      "text": "on"
+     },
+     {
+      "key": "B",
+      "text": "into"
+     },
+     {
+      "key": "C",
+      "text": "at"
+     },
+     {
+      "key": "D",
+      "text": "off"
+     }
+    ],
+    "answer": "A"
+   },
+   {
+    "n": 20,
+    "stem": "\"Where were you at 2:00?\" \"_____ the beach.\"",
+    "passage": "",
+    "options": [
+     {
+      "key": "A",
+      "text": "In"
+     },
+     {
+      "key": "B",
+      "text": "On"
+     },
+     {
+      "key": "C",
+      "text": "At"
+     },
+     {
+      "key": "D",
+      "text": "To"
+     }
+    ],
+    "answer": "C"
+   },
+   {
+    "n": 21,
+    "stem": "\"Where were you at 2:00?\" \"_____ Sally's house doing my homework.\"",
+    "passage": "",
+    "options": [
+     {
+      "key": "A",
+      "text": "Of"
+     },
+     {
+      "key": "B",
+      "text": "On"
+     },
+     {
+      "key": "C",
+      "text": "At"
+     },
+     {
+      "key": "D",
+      "text": "From"
+     }
+    ],
+    "answer": "C"
+   },
+   {
+    "n": 22,
+    "stem": "\"Where were you at 2:00?\" \"_____ a cave.\"",
+    "passage": "",
+    "options": [
+     {
+      "key": "A",
+      "text": "In"
+     },
+     {
+      "key": "B",
+      "text": "On"
+     },
+     {
+      "key": "C",
+      "text": "At"
+     },
+     {
+      "key": "D",
+      "text": "By"
+     }
+    ],
+    "answer": "A"
+   },
+   {
+    "n": 23,
+    "stem": "Would you like _____ to eat?",
+    "passage": "",
+    "options": [
+     {
+      "key": "A",
+      "text": "something"
+     },
+     {
+      "key": "B",
+      "text": "anything"
+     },
+     {
+      "key": "C",
+      "text": "nothing"
+     },
+     {
+      "key": "D",
+      "text": "everything"
+     }
+    ],
+    "answer": "A"
+   },
+   {
+    "n": 24,
+    "stem": "Can I have _____ to drink?",
+    "passage": "",
+    "options": [
+     {
+      "key": "A",
+      "text": "something"
+     },
+     {
+      "key": "B",
+      "text": "anything"
+     },
+     {
+      "key": "C",
+      "text": "nothing"
+     },
+     {
+      "key": "D",
+      "text": "everything"
+     }
+    ],
+    "answer": "A"
+   },
+   {
+    "n": 25,
+    "stem": "Can we go _____ quiet?",
+    "passage": "",
+    "options": [
+     {
+      "key": "A",
+      "text": "somewhere"
+     },
+     {
+      "key": "B",
+      "text": "anywhere"
+     },
+     {
+      "key": "C",
+      "text": "nowhere"
+     },
+     {
+      "key": "D",
+      "text": "everywhere"
+     }
+    ],
+    "answer": "A"
+   },
+   {
+    "n": 26,
+    "stem": "If you need _____, just ask.",
+    "passage": "",
+    "options": [
+     {
+      "key": "A",
+      "text": "something"
+     },
+     {
+      "key": "B",
+      "text": "anything"
+     },
+     {
+      "key": "C",
+      "text": "nothing"
+     },
+     {
+      "key": "D",
+      "text": "everything"
+     }
+    ],
+    "answer": "B"
+   },
+   {
+    "n": 27,
+    "stem": "Come and see me _____ you want. I don't mind.",
+    "passage": "",
+    "options": [
+     {
+      "key": "A",
+      "text": "some time"
+     },
+     {
+      "key": "B",
+      "text": "any time"
+     },
+     {
+      "key": "C",
+      "text": "no time"
+     },
+     {
+      "key": "D",
+      "text": "every time"
+     }
+    ],
+    "answer": "B"
+   },
+   {
+    "n": 28,
+    "stem": "Help yourself to food. You can have _____ you want.",
+    "passage": "",
+    "options": [
+     {
+      "key": "A",
+      "text": "something"
+     },
+     {
+      "key": "B",
+      "text": "anything"
+     },
+     {
+      "key": "C",
+      "text": "nothing"
+     },
+     {
+      "key": "D",
+      "text": "everything"
+     }
+    ],
+    "answer": "B"
+   },
+   {
+    "n": 29,
+    "stem": "_____ will tell you that two and two is four.",
+    "passage": "",
+    "options": [
+     {
+      "key": "A",
+      "text": "Someone"
+     },
+     {
+      "key": "B",
+      "text": "Anyone"
+     },
+     {
+      "key": "C",
+      "text": "No one"
+     },
+     {
+      "key": "D",
+      "text": "Nothing"
+     }
+    ],
+    "answer": "A"
+   },
+   {
+    "n": 30,
+    "stem": "'Does _____ want a game of tennis?' 'Yes.'",
+    "passage": "",
+    "options": [
+     {
+      "key": "A",
+      "text": "someone"
+     },
+     {
+      "key": "B",
+      "text": "anyone"
+     },
+     {
+      "key": "C",
+      "text": "no one"
+     },
+     {
+      "key": "D",
+      "text": "everyone"
+     }
+    ],
+    "answer": "B"
+   },
+   {
+    "n": 31,
+    "stem": "Did _____ phone me while I was out?",
+    "passage": "",
+    "options": [
+     {
+      "key": "A",
+      "text": "someone"
+     },
+     {
+      "key": "B",
+      "text": "anyone"
+     },
+     {
+      "key": "C",
+      "text": "no one"
+     },
+     {
+      "key": "D",
+      "text": "everyone"
+     }
+    ],
+    "answer": "B"
+   },
+   {
+    "n": 32,
+    "stem": "What's that smell? Can you smell _____ burning?",
+    "passage": "",
+    "options": [
+     {
+      "key": "A",
+      "text": "something"
+     },
+     {
+      "key": "B",
+      "text": "anything"
+     },
+     {
+      "key": "C",
+      "text": "nothing"
+     },
+     {
+      "key": "D",
+      "text": "everything"
+     }
+    ],
+    "answer": "A"
+   },
+   {
+    "n": 33,
+    "stem": "I asked if _____ wanted an ice-cream, but _____ did, so I just bought one for myself.",
+    "passage": "",
+    "options": [
+     {
+      "key": "A",
+      "text": "anyone / no one"
+     },
+     {
+      "key": "B",
+      "text": "no one / somebody"
+     },
+     {
+      "key": "C",
+      "text": "anybody / somebody"
+     },
+     {
+      "key": "D",
+      "text": "no body / no one"
+     }
+    ],
+    "answer": "A"
+   },
+   {
+    "n": 34,
+    "stem": "Your face looks terribly familiar. Haven't I seen you _____ before?",
+    "passage": "",
+    "options": [
+     {
+      "key": "A",
+      "text": "somewhere"
+     },
+     {
+      "key": "B",
+      "text": "anywhere"
+     },
+     {
+      "key": "C",
+      "text": "nowhere"
+     },
+     {
+      "key": "D",
+      "text": "everywhere"
+     }
+    ],
+    "answer": "B"
+   },
+   {
+    "n": 35,
+    "stem": "She left the room without saying _____.",
+    "passage": "",
+    "options": [
+     {
+      "key": "A",
+      "text": "something"
+     },
+     {
+      "key": "B",
+      "text": "anything"
+     },
+     {
+      "key": "C",
+      "text": "nothing"
+     },
+     {
+      "key": "D",
+      "text": "everything"
+     }
+    ],
+    "answer": "B"
+   },
+   {
+    "n": 36,
+    "stem": "This doesn't look a very nice restaurant. Can we go _____ else?",
+    "passage": "",
+    "options": [
+     {
+      "key": "A",
+      "text": "somewhere"
+     },
+     {
+      "key": "B",
+      "text": "anywhere"
+     },
+     {
+      "key": "C",
+      "text": "nowhere"
+     },
+     {
+      "key": "D",
+      "text": "everywhere"
+     }
+    ],
+    "answer": "A"
+   },
+   {
+    "n": 37,
+    "stem": "I have _____ more to say to you. Goodbye!",
+    "passage": "",
+    "options": [
+     {
+      "key": "A",
+      "text": "something"
+     },
+     {
+      "key": "B",
+      "text": "anything"
+     },
+     {
+      "key": "C",
+      "text": "nothing"
+     },
+     {
+      "key": "D",
+      "text": "everything"
+     }
+    ],
+    "answer": "C"
+   },
+   {
+    "n": 38,
+    "stem": "I have never been _____ more beautiful than Scotland.",
+    "passage": "",
+    "options": [
+     {
+      "key": "A",
+      "text": "somewhere"
+     },
+     {
+      "key": "B",
+      "text": "anywhere"
+     },
+     {
+      "key": "C",
+      "text": "nowhere"
+     },
+     {
+      "key": "D",
+      "text": "everywhere"
+     }
+    ],
+    "answer": "B"
+   },
+   {
+    "n": 39,
+    "stem": "I felt so embarrassed. _____ was laughing at me.",
+    "passage": "",
+    "options": [
+     {
+      "key": "A",
+      "text": "Everyone"
+     },
+     {
+      "key": "B",
+      "text": "Anyone"
+     },
+     {
+      "key": "C",
+      "text": "No one"
+     },
+     {
+      "key": "D",
+      "text": "Something"
+     }
+    ],
+    "answer": "C"
+   },
+   {
+    "n": 40,
+    "stem": "\"What do you want for supper?\" \"_____ , I don't mind.\"",
+    "passage": "",
+    "options": [
+     {
+      "key": "A",
+      "text": "Something"
+     },
+     {
+      "key": "B",
+      "text": "Anything"
+     },
+     {
+      "key": "C",
+      "text": "Nothing"
+     },
+     {
+      "key": "D",
+      "text": "Everything"
+     }
+    ],
+    "answer": "B"
+   },
+   {
+    "n": 41,
+    "stem": "It was Sunday, and the town was deserted. _____ was in the streets, and _____ was open.",
+    "passage": "",
+    "options": [
+     {
+      "key": "A",
+      "text": "Somebody / somewhere"
+     },
+     {
+      "key": "B",
+      "text": "Anybody / anywhere"
+     },
+     {
+      "key": "C",
+      "text": "Nobody / nowhere"
+     },
+     {
+      "key": "D",
+      "text": "Everybody / everywhere"
+     }
+    ],
+    "answer": "C"
+   },
+   {
+    "n": 42,
+    "stem": "\"Who was at the party?\" \"_____: Pete, Ann, James, Kathy, all the Smiths, Sally Beams and Sally Rogers.\"",
+    "passage": "",
+    "options": [
+     {
+      "key": "A",
+      "text": "Someone"
+     },
+     {
+      "key": "B",
+      "text": "Anyone"
+     },
+     {
+      "key": "C",
+      "text": "No one"
+     },
+     {
+      "key": "D",
+      "text": "Everyone"
+     }
+    ],
+    "answer": "D"
+   },
+   {
+    "n": 43,
+    "stem": "\"Where do you want to go on holiday?\" \"_____ hot. I don't care if it's Greece, Spain, Italy or Sahara, but it has to be hot.\"",
+    "passage": "",
+    "options": [
+     {
+      "key": "A",
+      "text": "Somebody"
+     },
+     {
+      "key": "B",
+      "text": "Anywhere"
+     },
+     {
+      "key": "C",
+      "text": "Nowhere"
+     },
+     {
+      "key": "D",
+      "text": "Everywhere"
+     }
+    ],
+    "answer": "B"
+   }
+  ]
+ },
+ {
+  "test": 6,
+  "level": "Intermediate",
+  "source": "Test Master — Book 1 Part A",
+  "questions": [
+   {
+    "n": 1,
+    "stem": "I'm really looking forward to _____ my new course.",
+    "passage": "",
+    "options": [
+     {
+      "key": "A",
+      "text": "start"
+     },
+     {
+      "key": "B",
+      "text": "starting"
+     },
+     {
+      "key": "C",
+      "text": "started"
+     },
+     {
+      "key": "D",
+      "text": "to start"
+     }
+    ],
+    "answer": "B"
+   },
+   {
+    "n": 2,
+    "stem": "They can't help us _____ the house.",
+    "passage": "",
+    "options": [
+     {
+      "key": "A",
+      "text": "move"
+     },
+     {
+      "key": "B",
+      "text": "moving"
+     },
+     {
+      "key": "C",
+      "text": "moved"
+     },
+     {
+      "key": "D",
+      "text": "move to"
+     }
+    ],
+    "answer": "A"
+   },
+   {
+    "n": 3,
+    "stem": "She refused _____ the phone.",
+    "passage": "",
+    "options": [
+     {
+      "key": "A",
+      "text": "answer"
+     },
+     {
+      "key": "B",
+      "text": "to answer"
+     },
+     {
+      "key": "C",
+      "text": "answered"
+     },
+     {
+      "key": "D",
+      "text": "answering"
+     }
+    ],
+    "answer": "B"
+   },
+   {
+    "n": 4,
+    "stem": "I don't mind _____ to the restaurant.",
+    "passage": "",
+    "options": [
+     {
+      "key": "A",
+      "text": "driving"
+     },
+     {
+      "key": "B",
+      "text": "drive"
+     },
+     {
+      "key": "C",
+      "text": "drove"
+     },
+     {
+      "key": "D",
+      "text": "to drive"
+     }
+    ],
+    "answer": "A"
+   },
+   {
+    "n": 5,
+    "stem": "We encouraged them _____ a new business.",
+    "passage": "",
+    "options": [
+     {
+      "key": "A",
+      "text": "setting up"
+     },
+     {
+      "key": "B",
+      "text": "to set up"
+     },
+     {
+      "key": "C",
+      "text": "set up"
+     },
+     {
+      "key": "D",
+      "text": "'d setup"
+     }
+    ],
+    "answer": "B"
+   },
+   {
+    "n": 6,
+    "stem": "His parents don't allow him _____ after ten o'clock.",
+    "passage": "",
+    "options": [
+     {
+      "key": "A",
+      "text": "stay up"
+     },
+     {
+      "key": "B",
+      "text": "to stay up"
+     },
+     {
+      "key": "D",
+      "text": "stayed up"
+     }
+    ],
+    "answer": "B"
+   },
+   {
+    "n": 7,
+    "stem": "I'll be back in touch _____ soon _____ possible.",
+    "passage": "",
+    "options": [
+     {
+      "key": "A",
+      "text": "as"
+     },
+     {
+      "key": "B",
+      "text": "like"
+     },
+     {
+      "key": "C",
+      "text": "like / as"
+     },
+     {
+      "key": "D",
+      "text": "as / as"
+     }
+    ],
+    "answer": "D"
+   },
+   {
+    "n": 8,
+    "stem": "This wine tastes _____ vinegar!",
+    "passage": "",
+    "options": [
+     {
+      "key": "A",
+      "text": "likes"
+     },
+     {
+      "key": "B",
+      "text": "as / as"
+     },
+     {
+      "key": "C",
+      "text": "like"
+     },
+     {
+      "key": "D",
+      "text": "as"
+     }
+    ],
+    "answer": "C"
+   },
+   {
+    "n": 9,
+    "stem": "I've known Andy for years. He went to the same school _____ I did.",
+    "passage": "",
+    "options": [
+     {
+      "key": "A",
+      "text": "liked"
+     },
+     {
+      "key": "B",
+      "text": "similar to"
+     },
+     {
+      "key": "C",
+      "text": "like"
+     },
+     {
+      "key": "D",
+      "text": "as"
+     }
+    ],
+    "answer": "D"
+   },
+   {
+    "n": 10,
+    "stem": "My sister's a teacher _____ me.",
+    "passage": "",
+    "options": [
+     {
+      "key": "A",
+      "text": "likes"
+     },
+     {
+      "key": "B",
+      "text": "similar"
+     },
+     {
+      "key": "C",
+      "text": "like"
+     },
+     {
+      "key": "D",
+      "text": "as"
+     }
+    ],
+    "answer": "C"
+   },
+   {
+    "n": 11,
+    "stem": "'We had a new teacher today called Mary.' 'What was she _____?'",
+    "passage": "",
+    "options": [
+     {
+      "key": "A",
+      "text": "liked"
+     },
+     {
+      "key": "B",
+      "text": "look like"
+     },
+     {
+      "key": "C",
+      "text": "like"
+     },
+     {
+      "key": "D",
+      "text": "as"
+     }
+    ],
+    "answer": "C"
+   },
+   {
+    "n": 12,
+    "stem": "Who do I look _____ , my mother or my father?",
+    "passage": "",
+    "options": [
+     {
+      "key": "A",
+      "text": "like"
+     },
+     {
+      "key": "B",
+      "text": "more"
+     },
+     {
+      "key": "C",
+      "text": "likes"
+     },
+     {
+      "key": "D",
+      "text": "as"
+     }
+    ],
+    "answer": "A"
+   },
+   {
+    "n": 13,
+    "stem": "She really annoys me. I can't stand people _____ her.",
+    "passage": "",
+    "options": [
+     {
+      "key": "A",
+      "text": "likes"
+     },
+     {
+      "key": "B",
+      "text": "compared to"
+     },
+     {
+      "key": "C",
+      "text": "like"
+     },
+     {
+      "key": "D",
+      "text": "as"
+     }
+    ],
+    "answer": "C"
+   },
+   {
+    "n": 14,
+    "stem": "I'll see you tomorrow at 11.00 _____ usual.",
+    "passage": "",
+    "options": [
+     {
+      "key": "A",
+      "text": "like"
+     },
+     {
+      "key": "B",
+      "text": "as - as"
+     },
+     {
+      "key": "D",
+      "text": "as"
+     }
+    ],
+    "answer": "D"
+   },
+   {
+    "n": 15,
+    "stem": "It's July and the weather's awful! It's _____ in winter!",
+    "passage": "",
+    "options": [
+     {
+      "key": "A",
+      "text": "likes"
+     },
+     {
+      "key": "B",
+      "text": "as like"
+     },
+     {
+      "key": "C",
+      "text": "like"
+     },
+     {
+      "key": "D",
+      "text": "as"
+     }
+    ],
+    "answer": "C"
+   },
+   {
+    "n": 16,
+    "stem": "I need to buy all sorts of things _____ socks, shirts and knickers.",
+    "passage": "",
+    "options": [
+     {
+      "key": "A",
+      "text": "likes"
+     },
+     {
+      "key": "B",
+      "text": "such"
+     },
+     {
+      "key": "C",
+      "text": "like"
+     },
+     {
+      "key": "D",
+      "text": "as"
+     }
+    ],
+    "answer": "C"
+   },
+   {
+    "n": 17,
+    "stem": "My wife has found a job _____ a personal assistant.",
+    "passage": "",
+    "options": [
+     {
+      "key": "A",
+      "text": "likes"
+     },
+     {
+      "key": "B",
+      "text": "as - as"
+     },
+     {
+      "key": "C",
+      "text": "like"
+     },
+     {
+      "key": "D",
+      "text": "as"
+     }
+    ],
+    "answer": "D"
+   },
+   {
+    "n": 18,
+    "stem": "Dave drinks _____ a fish! I've never seen anyone drink as much.",
+    "passage": "",
+    "options": [
+     {
+      "key": "A",
+      "text": "likes"
+     },
+     {
+      "key": "B",
+      "text": "as such"
+     },
+     {
+      "key": "C",
+      "text": "like"
+     },
+     {
+      "key": "D",
+      "text": "as"
+     }
+    ],
+    "answer": "C"
+   },
+   {
+    "n": 19,
+    "stem": "My brother has a car _____ yours.",
+    "passage": "",
+    "options": [
+     {
+      "key": "A",
+      "text": "likes"
+     },
+     {
+      "key": "B",
+      "text": "such"
+     },
+     {
+      "key": "C",
+      "text": "like"
+     },
+     {
+      "key": "D",
+      "text": "as"
+     }
+    ],
+    "answer": "C"
+   },
+   {
+    "n": 20,
+    "stem": "Don't touch anything. Leave everything _____ it is.",
+    "passage": "",
+    "options": [
+     {
+      "key": "A",
+      "text": "likes"
+     },
+     {
+      "key": "B",
+      "text": "so"
+     },
+     {
+      "key": "C",
+      "text": "like"
+     },
+     {
+      "key": "D",
+      "text": "as"
+     }
+    ],
+    "answer": "D"
+   },
+   {
+    "n": 21,
+    "stem": "It's freezing. My feet are _____ blocks of ice.",
+    "passage": "",
+    "options": [
+     {
+      "key": "A",
+      "text": "likes"
+     },
+     {
+      "key": "B",
+      "text": "such"
+     },
+     {
+      "key": "C",
+      "text": "like"
+     },
+     {
+      "key": "D",
+      "text": "as"
+     }
+    ],
+    "answer": "C"
+   },
+   {
+    "n": 22,
+    "stem": "I want _____ more careful with your homework in future.",
+    "passage": "",
+    "options": [
+     {
+      "key": "A",
+      "text": "you be"
+     },
+     {
+      "key": "B",
+      "text": "you to be"
+     },
+     {
+      "key": "C",
+      "text": "that you are"
+     },
+     {
+      "key": "D",
+      "text": "you being"
+     }
+    ],
+    "answer": "B"
+   },
+   {
+    "n": 23,
+    "stem": "I stopped _____ when I was thirty.",
+    "passage": "",
+    "options": [
+     {
+      "key": "A",
+      "text": "to smoke"
+     },
+     {
+      "key": "B",
+      "text": "smoke"
+     },
+     {
+      "key": "C",
+      "text": "smoking"
+     },
+     {
+      "key": "D",
+      "text": "too smoke"
+     }
+    ],
+    "answer": "C"
+   },
+   {
+    "n": 24,
+    "stem": "Why did I agree _____ with you? I can't stand it.",
+    "passage": "",
+    "options": [
+     {
+      "key": "A",
+      "text": "to work"
+     },
+     {
+      "key": "B",
+      "text": "work"
+     },
+     {
+      "key": "C",
+      "text": "working"
+     },
+     {
+      "key": "D",
+      "text": "to working"
+     }
+    ],
+    "answer": "A"
+   },
+   {
+    "n": 25,
+    "stem": "I tried _____ you that you were making a mistake, but you didn't listen.",
+    "passage": "",
+    "options": [
+     {
+      "key": "A",
+      "text": "tell"
+     },
+     {
+      "key": "B",
+      "text": "to tell"
+     },
+     {
+      "key": "C",
+      "text": "telling"
+     },
+     {
+      "key": "D",
+      "text": "told"
+     }
+    ],
+    "answer": "B"
+   },
+   {
+    "n": 26,
+    "stem": "I'm looking forward _____ you again soon.",
+    "passage": "",
+    "options": [
+     {
+      "key": "A",
+      "text": "to see"
+     },
+     {
+      "key": "B",
+      "text": "to seeing"
+     },
+     {
+      "key": "C",
+      "text": "seeing"
+     },
+     {
+      "key": "D",
+      "text": "too seeing"
+     }
+    ],
+    "answer": "B"
+   },
+   {
+    "n": 27,
+    "stem": "My parents let me _____ what I wanted when I was young.",
+    "passage": "",
+    "options": [
+     {
+      "key": "A",
+      "text": "do"
+     },
+     {
+      "key": "B",
+      "text": "to do"
+     },
+     {
+      "key": "C",
+      "text": "doing"
+     },
+     {
+      "key": "D",
+      "text": "does"
+     }
+    ],
+    "answer": "A"
+   },
+   {
+    "n": 28,
+    "stem": "I wasn't allowed _____ out unless they knew where I was going.",
+    "passage": "",
+    "options": [
+     {
+      "key": "A",
+      "text": "going"
+     },
+     {
+      "key": "B",
+      "text": "go"
+     },
+     {
+      "key": "C",
+      "text": "to go"
+     },
+     {
+      "key": "D",
+      "text": "going to"
+     }
+    ],
+    "answer": "C"
+   },
+   {
+    "n": 29,
+    "stem": "I finished _____ the television, and then I went to bed.",
+    "passage": "",
+    "options": [
+     {
+      "key": "A",
+      "text": "watching"
+     },
+     {
+      "key": "B",
+      "text": "to watch"
+     },
+     {
+      "key": "C",
+      "text": "watch"
+     },
+     {
+      "key": "D",
+      "text": "watch to"
+     }
+    ],
+    "answer": "A"
+   },
+   {
+    "n": 30,
+    "stem": "I don't like people _____ arrive late.",
+    "passage": "",
+    "options": [
+     {
+      "key": "A",
+      "text": "which"
+     },
+     {
+      "key": "B",
+      "text": "whose"
+     },
+     {
+      "key": "C",
+      "text": "who"
+     },
+     {
+      "key": "D",
+      "text": "where"
+     }
+    ],
+    "answer": "C"
+   },
+   {
+    "n": 31,
+    "stem": "The company _____ he works for is based in Germany.",
+    "passage": "",
+    "options": [
+     {
+      "key": "A",
+      "text": "which"
+     },
+     {
+      "key": "B",
+      "text": "whose"
+     },
+     {
+      "key": "C",
+      "text": "who"
+     },
+     {
+      "key": "D",
+      "text": "where"
+     }
+    ],
+    "answer": "A"
+   },
+   {
+    "n": 32,
+    "stem": "Where are the scissors _____ I bought yesterday?",
+    "passage": "",
+    "options": [
+     {
+      "key": "A",
+      "text": "which"
+     },
+     {
+      "key": "B",
+      "text": "whose"
+     },
+     {
+      "key": "C",
+      "text": "who"
+     },
+     {
+      "key": "D",
+      "text": "where"
+     }
+    ],
+    "answer": "A"
+   },
+   {
+    "n": 33,
+    "stem": "I want you to meet the woman _____ taught me how to drive.",
+    "passage": "",
+    "options": [
+     {
+      "key": "A",
+      "text": "which"
+     },
+     {
+      "key": "B",
+      "text": "whose"
+     },
+     {
+      "key": "C",
+      "text": "who"
+     },
+     {
+      "key": "D",
+      "text": "where"
+     }
+    ],
+    "answer": "C"
+   },
+   {
+    "n": 34,
+    "stem": "The meal _____ you cooked was delicious.",
+    "passage": "",
+    "options": [
+     {
+      "key": "A",
+      "text": "which"
+     },
+     {
+      "key": "B",
+      "text": "whose"
+     },
+     {
+      "key": "C",
+      "text": "who"
+     },
+     {
+      "key": "D",
+      "text": "where"
+     }
+    ],
+    "answer": "A"
+   },
+   {
+    "n": 35,
+    "stem": "I like animals _____ don't make a mess.",
+    "passage": "",
+    "options": [
+     {
+      "key": "A",
+      "text": "which"
+     },
+     {
+      "key": "B",
+      "text": "whose"
+     },
+     {
+      "key": "C",
+      "text": "who"
+     },
+     {
+      "key": "D",
+      "text": "where"
+     }
+    ],
+    "answer": "A"
+   },
+   {
+    "n": 36,
+    "stem": "The film _____ I've always wanted to see is on TV tonight.",
+    "passage": "",
+    "options": [
+     {
+      "key": "A",
+      "text": "whose"
+     },
+     {
+      "key": "B",
+      "text": "which"
+     },
+     {
+      "key": "C",
+      "text": "who"
+     },
+     {
+      "key": "D",
+      "text": "where"
+     }
+    ],
+    "answer": "B"
+   },
+   {
+    "n": 37,
+    "stem": "The flat _____ they bought was very expensive.",
+    "passage": "",
+    "options": [
+     {
+      "key": "A",
+      "text": "which"
+     },
+     {
+      "key": "B",
+      "text": "whose"
+     },
+     {
+      "key": "C",
+      "text": "who"
+     },
+     {
+      "key": "D",
+      "text": "where"
+     }
+    ],
+    "answer": "A"
+   },
+   {
+    "n": 38,
+    "stem": "The room in our house _____ is most used is the kitchen.",
+    "passage": "",
+    "options": [
+     {
+      "key": "A",
+      "text": "which"
+     },
+     {
+      "key": "B",
+      "text": "whose"
+     },
+     {
+      "key": "C",
+      "text": "who"
+     },
+     {
+      "key": "D",
+      "text": "where"
+     }
+    ],
+    "answer": "A"
+   },
+   {
+    "n": 39,
+    "stem": "I didn't like the meal _____ we had yesterday.",
+    "passage": "",
+    "options": [
+     {
+      "key": "A",
+      "text": "which"
+     },
+     {
+      "key": "B",
+      "text": "whose"
+     },
+     {
+      "key": "C",
+      "text": "who"
+     },
+     {
+      "key": "D",
+      "text": "where"
+     }
+    ],
+    "answer": "A"
+   },
+   {
+    "n": 40,
+    "stem": "The people _____ work here are very interesting.",
+    "passage": "",
+    "options": [
+     {
+      "key": "A",
+      "text": "which"
+     },
+     {
+      "key": "B",
+      "text": "whose"
+     },
+     {
+      "key": "C",
+      "text": "who"
+     },
+     {
+      "key": "D",
+      "text": "where"
+     }
+    ],
+    "answer": "C"
+   },
+   {
+    "n": 41,
+    "stem": "The man _____ you were talking about has just come in the room.",
+    "passage": "",
+    "options": [
+     {
+      "key": "A",
+      "text": "which"
+     },
+     {
+      "key": "B",
+      "text": "whose"
+     },
+     {
+      "key": "C",
+      "text": "who"
+     },
+     {
+      "key": "D",
+      "text": "where"
+     }
+    ],
+    "answer": "C"
+   },
+   {
+    "n": 42,
+    "stem": "I received a letter this morning _____ really upset me.",
+    "passage": "",
+    "options": [
+     {
+      "key": "A",
+      "text": "who"
+     },
+     {
+      "key": "B",
+      "text": "which"
+     },
+     {
+      "key": "C",
+      "text": "where"
+     },
+     {
+      "key": "D",
+      "text": "whose"
+     }
+    ],
+    "answer": "B"
+   },
+   {
+    "n": 43,
+    "stem": "Toby, a boy _____ I went to school with, is ill in hospital.",
+    "passage": "",
+    "options": [
+     {
+      "key": "A",
+      "text": "who"
+     },
+     {
+      "key": "B",
+      "text": "which"
+     },
+     {
+      "key": "C",
+      "text": "where"
+     },
+     {
+      "key": "D",
+      "text": "whose"
+     }
+    ],
+    "answer": "A"
+   },
+   {
+    "n": 44,
+    "stem": "He's going to have an operation _____ could save his life.",
+    "passage": "",
+    "options": [
+     {
+      "key": "A",
+      "text": "who"
+     },
+     {
+      "key": "B",
+      "text": "which"
+     },
+     {
+      "key": "C",
+      "text": "where"
+     },
+     {
+      "key": "D",
+      "text": "whose"
+     }
+    ],
+    "answer": "B"
+   },
+   {
+    "n": 45,
+    "stem": "Toby, _____ parents both died a few years ago, is the same age as me.",
+    "passage": "",
+    "options": [
+     {
+      "key": "A",
+      "text": "who"
+     },
+     {
+      "key": "B",
+      "text": "which"
+     },
+     {
+      "key": "C",
+      "text": "where"
+     },
+     {
+      "key": "D",
+      "text": "whose"
+     }
+    ],
+    "answer": "D"
+   },
+   {
+    "n": 46,
+    "stem": "I recently went back to the town ____ I was born.",
+    "passage": "",
+    "options": [
+     {
+      "key": "A",
+      "text": "who"
+     },
+     {
+      "key": "B",
+      "text": "which"
+     },
+     {
+      "key": "C",
+      "text": "where"
+     },
+     {
+      "key": "D",
+      "text": "whose"
+     }
+    ],
+    "answer": "C"
+   },
+   {
+    "n": 47,
+    "stem": "The people _____ used to live next door moved a long time ago.",
+    "passage": "",
+    "options": [
+     {
+      "key": "A",
+      "text": "who"
+     },
+     {
+      "key": "B",
+      "text": "which"
+     },
+     {
+      "key": "C",
+      "text": "where"
+     },
+     {
+      "key": "D",
+      "text": "whose"
+     }
+    ],
+    "answer": "A"
+   },
+   {
+    "n": 48,
+    "stem": "I met a girl _____ I used to play tennis with.",
+    "passage": "",
+    "options": [
+     {
+      "key": "A",
+      "text": "who"
+     },
+     {
+      "key": "B",
+      "text": "which"
+     },
+     {
+      "key": "C",
+      "text": "where"
+     },
+     {
+      "key": "D",
+      "text": "whose"
+     }
+    ],
+    "answer": "A"
+   },
+   {
+    "n": 49,
+    "stem": "She told me a story _____ I found hard to believe.",
+    "passage": "",
+    "options": [
+     {
+      "key": "A",
+      "text": "who"
+     },
+     {
+      "key": "B",
+      "text": "which"
+     },
+     {
+      "key": "C",
+      "text": "where"
+     },
+     {
+      "key": "D",
+      "text": "whose"
+     }
+    ],
+    "answer": "B"
+   },
+   {
+    "n": 50,
+    "stem": "She said she'd married a man _____ had been married ten times before.",
+    "passage": "",
+    "options": [
+     {
+      "key": "A",
+      "text": "who"
+     },
+     {
+      "key": "B",
+      "text": "which"
+     },
+     {
+      "key": "C",
+      "text": "where"
+     },
+     {
+      "key": "D",
+      "text": "whose"
+     }
+    ],
+    "answer": "A"
+   },
+   {
+    "n": 51,
+    "stem": "I'll dry the dishes if you _____ them _____.",
+    "passage": "",
+    "options": [
+     {
+      "key": "A",
+      "text": "put / away"
+     },
+     {
+      "key": "B",
+      "text": "find / out"
+     },
+     {
+      "key": "C",
+      "text": "put / out"
+     },
+     {
+      "key": "D",
+      "text": "wash / up"
+     }
+    ],
+    "answer": "D"
+   },
+   {
+    "n": 52,
+    "stem": "'Can you _____ the time of the next train to London?' 'O.K. I'll phone the station.'",
+    "passage": "",
+    "options": [
+     {
+      "key": "A",
+      "text": "put away"
+     },
+     {
+      "key": "B",
+      "text": "find out"
+     },
+     {
+      "key": "C",
+      "text": "put out"
+     },
+     {
+      "key": "D",
+      "text": "clear up Book 1 Part A Intermediate Test 6"
+     }
+    ],
+    "answer": "B"
+   },
+   {
+    "n": 53,
+    "stem": "\"Look at these shoes! They're brand new, and the heel's fallen off already.\" \"_____ them _____ and change them, then.\"",
+    "passage": "",
+    "options": [
+     {
+      "key": "A",
+      "text": "Put / away"
+     },
+     {
+      "key": "B",
+      "text": "Find / out"
+     },
+     {
+      "key": "C",
+      "text": "Put / out"
+     },
+     {
+      "key": "D",
+      "text": "Take / back"
+     }
+    ],
+    "answer": "D"
+   },
+   {
+    "n": 54,
+    "stem": "\"Oh, dear! The washing machine isn't working. I haven't got any clean clothes, and I've got to go to work. What am I going to do?' 'Don't worry. I'll ___ them all ___. Just go to work.'",
+    "passage": "",
+    "options": [
+     {
+      "key": "A",
+      "text": "put / away"
+     },
+     {
+      "key": "B",
+      "text": "find / out"
+     },
+     {
+      "key": "C",
+      "text": "sort / out"
+     },
+     {
+      "key": "D",
+      "text": "clear / up"
+     }
+    ],
+    "answer": "C"
+   },
+   {
+    "n": 55,
+    "stem": "The fire was so intense that it took the firemen three hours to _____ it _____.",
+    "passage": "",
+    "options": [
+     {
+      "key": "A",
+      "text": "put / away"
+     },
+     {
+      "key": "B",
+      "text": "find / out"
+     },
+     {
+      "key": "C",
+      "text": "put / out"
+     },
+     {
+      "key": "D",
+      "text": "clear / up"
+     }
+    ],
+    "answer": "C"
+   },
+   {
+    "n": 56,
+    "stem": "The government wants to _____ a new scheme to encourage people to start their own businesses.",
+    "passage": "",
+    "options": [
+     {
+      "key": "A",
+      "text": "put away"
+     },
+     {
+      "key": "B",
+      "text": "find out"
+     },
+     {
+      "key": "C",
+      "text": "try out"
+     },
+     {
+      "key": "D",
+      "text": "clear up"
+     }
+    ],
+    "answer": "C"
+   },
+   {
+    "n": 57,
+    "stem": "'Can I _____ these jeans _____ please?' 'Sure. The changing rooms are over there.'",
+    "passage": "",
+    "options": [
+     {
+      "key": "A",
+      "text": "put / away"
+     },
+     {
+      "key": "B",
+      "text": "try / out"
+     },
+     {
+      "key": "C",
+      "text": "put / out"
+     },
+     {
+      "key": "D",
+      "text": "try / on"
+     }
+    ],
+    "answer": "D"
+   },
+   {
+    "n": 58,
+    "stem": "I won't be able to go shopping with you today, I'm afraid. I've got a lot to do at the moment. Can we _____ it _____ till next week?",
+    "passage": "",
+    "options": [
+     {
+      "key": "A",
+      "text": "put / off"
+     },
+     {
+      "key": "B",
+      "text": "find / out"
+     },
+     {
+      "key": "C",
+      "text": "put / out"
+     },
+     {
+      "key": "D",
+      "text": "take / back"
+     }
+    ],
+    "answer": "A"
+   },
+   {
+    "n": 59,
+    "stem": "I don't mind your baking a cake, but just make sure you ___ everything __ when you've finished.",
+    "passage": "",
+    "options": [
+     {
+      "key": "A",
+      "text": "put /away"
+     },
+     {
+      "key": "B",
+      "text": "clear / up"
+     },
+     {
+      "key": "C",
+      "text": "put / out"
+     },
+     {
+      "key": "D",
+      "text": "take / back"
+     }
+    ],
+    "answer": "B"
+   },
+   {
+    "n": 60,
+    "stem": "'What should I do with this form?' '_____ it _____.'",
+    "passage": "",
+    "options": [
+     {
+      "key": "A",
+      "text": "Find / out"
+     },
+     {
+      "key": "B",
+      "text": "Fill / in"
+     },
+     {
+      "key": "C",
+      "text": "Put / out"
+     },
+     {
+      "key": "D",
+      "text": "Clear / up"
+     }
+    ],
+    "answer": "B"
+   },
+   {
+    "n": 61,
+    "stem": "I wanted to _____ to you yesterday.",
+    "passage": "",
+    "options": [
+     {
+      "key": "A",
+      "text": "to speak"
+     },
+     {
+      "key": "B",
+      "text": "speaking"
+     },
+     {
+      "key": "C",
+      "text": "speak"
+     },
+     {
+      "key": "D",
+      "text": "to speaking"
+     }
+    ],
+    "answer": "C"
+   },
+   {
+    "n": 62,
+    "stem": "They enjoyed _____ on holiday by the sea.",
+    "passage": "",
+    "options": [
+     {
+      "key": "A",
+      "text": "be"
+     },
+     {
+      "key": "B",
+      "text": "being"
+     },
+     {
+      "key": "C",
+      "text": "to be"
+     },
+     {
+      "key": "D",
+      "text": "too be"
+     }
+    ],
+    "answer": "B"
+   },
+   {
+    "n": 63,
+    "stem": "We hope _____ by half past seven.",
+    "passage": "",
+    "options": [
+     {
+      "key": "A",
+      "text": "arriving"
+     },
+     {
+      "key": "B",
+      "text": "to arrive"
+     },
+     {
+      "key": "C",
+      "text": "arrive"
+     },
+     {
+      "key": "D",
+      "text": "arrived"
+     }
+    ],
+    "answer": "B"
+   },
+   {
+    "n": 64,
+    "stem": "The weather was awful. It didn't stop _____ all week.",
+    "passage": "",
+    "options": [
+     {
+      "key": "A",
+      "text": "raining"
+     },
+     {
+      "key": "B",
+      "text": "to rain"
+     },
+     {
+      "key": "C",
+      "text": "rain"
+     },
+     {
+      "key": "D",
+      "text": "rain too"
+     }
+    ],
+    "answer": "A"
+   },
+   {
+    "n": 65,
+    "stem": "My sister has agreed _____ with the decorating.",
+    "passage": "",
+    "options": [
+     {
+      "key": "A",
+      "text": "help"
+     },
+     {
+      "key": "B",
+      "text": "helping"
+     },
+     {
+      "key": "C",
+      "text": "to help"
+     },
+     {
+      "key": "D",
+      "text": "helps"
+     }
+    ],
+    "answer": "C"
+   },
+   {
+    "n": 66,
+    "stem": "She loves _____ for herself.",
+    "passage": "",
+    "options": [
+     {
+      "key": "A",
+      "text": "to work"
+     },
+     {
+      "key": "B",
+      "text": "work"
+     },
+     {
+      "key": "C",
+      "text": "working"
+     },
+     {
+      "key": "D",
+      "text": "works"
+     }
+    ],
+    "answer": "C"
+   },
+   {
+    "n": 67,
+    "stem": "Please let me _____ for the drinks.",
+    "passage": "",
+    "options": [
+     {
+      "key": "A",
+      "text": "to pay"
+     },
+     {
+      "key": "B",
+      "text": "pay"
+     },
+     {
+      "key": "C",
+      "text": "paying"
+     },
+     {
+      "key": "D",
+      "text": "paid"
+     }
+    ],
+    "answer": "B"
+   },
+   {
+    "n": 68,
+    "stem": "My health wasn't very good so I stopped _____.",
+    "passage": "",
+    "options": [
+     {
+      "key": "A",
+      "text": "smoking"
+     },
+     {
+      "key": "B",
+      "text": "to smoke"
+     },
+     {
+      "key": "C",
+      "text": "smoke"
+     },
+     {
+      "key": "D",
+      "text": "smoked"
+     }
+    ],
+    "answer": "A"
+   },
+   {
+    "n": 69,
+    "stem": "We chose _____ by boat rather than by plane.",
+    "passage": "",
+    "options": [
+     {
+      "key": "A",
+      "text": "traveling"
+     },
+     {
+      "key": "B",
+      "text": "travel"
+     },
+     {
+      "key": "C",
+      "text": "to travel"
+     },
+     {
+      "key": "D",
+      "text": "traveled"
+     }
+    ],
+    "answer": "C"
+   },
+   {
+    "n": 70,
+    "stem": "We've finished _____ the house.",
+    "passage": "",
+    "options": [
+     {
+      "key": "A",
+      "text": "decorate"
+     },
+     {
+      "key": "B",
+      "text": "decorating"
+     },
+     {
+      "key": "C",
+      "text": "decorated"
+     },
+     {
+      "key": "D",
+      "text": "to decorate"
+     }
+    ],
+    "answer": "B"
+   },
+   {
+    "n": 71,
+    "stem": "I can't stand _____ in an office.",
+    "passage": "",
+    "options": [
+     {
+      "key": "A",
+      "text": "working"
+     },
+     {
+      "key": "B",
+      "text": "work"
+     },
+     {
+      "key": "C",
+      "text": "worked"
+     },
+     {
+      "key": "D",
+      "text": "to work"
+     }
+    ],
+    "answer": "A"
+   },
+   {
+    "n": 72,
+    "stem": "We expect you _____ on time.",
+    "passage": "",
+    "options": [
+     {
+      "key": "A",
+      "text": "arrive"
+     },
+     {
+      "key": "B",
+      "text": "arriving"
+     },
+     {
+      "key": "C",
+      "text": "arrived"
+     },
+     {
+      "key": "D",
+      "text": "to arrive"
+     }
+    ],
+    "answer": "D"
+   },
+   {
+    "n": 73,
+    "stem": "It was a wonderful holiday. I will always remember _____ the Niagara Falls.",
+    "passage": "",
+    "options": [
+     {
+      "key": "A",
+      "text": "seeing"
+     },
+     {
+      "key": "B",
+      "text": "to see"
+     },
+     {
+      "key": "C",
+      "text": "saw"
+     },
+     {
+      "key": "D",
+      "text": "see"
+     }
+    ],
+    "answer": "A"
+   },
+   {
+    "n": 74,
+    "stem": "I would hate _____ your party.",
+    "passage": "",
+    "options": [
+     {
+      "key": "A",
+      "text": "miss"
+     },
+     {
+      "key": "B",
+      "text": "miss to"
+     },
+     {
+      "key": "C",
+      "text": "missed"
+     },
+     {
+      "key": "D",
+      "text": "to miss"
+     }
+    ],
+    "answer": "D"
+   },
+   {
+    "n": 75,
+    "stem": "They can't promise _____ the work today.",
+    "passage": "",
+    "options": [
+     {
+      "key": "A",
+      "text": "finish"
+     },
+     {
+      "key": "B",
+      "text": "finishing"
+     },
+     {
+      "key": "C",
+      "text": "finished"
+     },
+     {
+      "key": "D",
+      "text": "to finish"
+     }
+    ],
+    "answer": "B"
+   },
+   {
+    "n": 76,
+    "stem": "He hates _____ calculators.",
+    "passage": "",
+    "options": [
+     {
+      "key": "A",
+      "text": "use"
+     },
+     {
+      "key": "B",
+      "text": "using"
+     },
+     {
+      "key": "C",
+      "text": "used"
+     },
+     {
+      "key": "D",
+      "text": "to use"
+     }
+    ],
+    "answer": "B"
+   }
+  ]
+ },
+ {
+  "test": 7,
+  "level": "Intermediate",
+  "source": "Test Master — Book 1 Part A",
+  "questions": [
+   {
+    "n": 1,
+    "stem": "I was born _____ 1974.",
+    "passage": "",
+    "options": [
+     {
+      "key": "A",
+      "text": "for"
+     },
+     {
+      "key": "B",
+      "text": "since"
+     },
+     {
+      "key": "C",
+      "text": "in"
+     },
+     {
+      "key": "D",
+      "text": "ago"
+     }
+    ],
+    "answer": "C"
+   },
+   {
+    "n": 2,
+    "stem": "I've been a journalist _____ two years.",
+    "passage": "",
+    "options": [
+     {
+      "key": "A",
+      "text": "for"
+     },
+     {
+      "key": "B",
+      "text": "since"
+     },
+     {
+      "key": "C",
+      "text": "in"
+     },
+     {
+      "key": "D",
+      "text": "ago"
+     }
+    ],
+    "answer": "A"
+   },
+   {
+    "n": 3,
+    "stem": "I waited for you _____ hours.",
+    "passage": "",
+    "options": [
+     {
+      "key": "A",
+      "text": "for"
+     },
+     {
+      "key": "B",
+      "text": "since"
+     },
+     {
+      "key": "C",
+      "text": "in"
+     },
+     {
+      "key": "D",
+      "text": "ago"
+     }
+    ],
+    "answer": "A"
+   },
+   {
+    "n": 4,
+    "stem": "She left university three years _____.",
+    "passage": "",
+    "options": [
+     {
+      "key": "A",
+      "text": "for"
+     },
+     {
+      "key": "B",
+      "text": "since"
+     },
+     {
+      "key": "C",
+      "text": "in"
+     },
+     {
+      "key": "D",
+      "text": "ago"
+     }
+    ],
+    "answer": "D"
+   },
+   {
+    "n": 5,
+    "stem": "He's lived abroad _____ 1990.",
+    "passage": "",
+    "options": [
+     {
+      "key": "A",
+      "text": "for"
+     },
+     {
+      "key": "B",
+      "text": "since"
+     },
+     {
+      "key": "C",
+      "text": "in"
+     },
+     {
+      "key": "D",
+      "text": "ago"
+     }
+    ],
+    "answer": "B"
+   },
+   {
+    "n": 6,
+    "stem": "They got acquainted with each other _____ last year.",
+    "passage": "",
+    "options": [
+     {
+      "key": "A",
+      "text": "for"
+     },
+     {
+      "key": "B",
+      "text": "since"
+     },
+     {
+      "key": "C",
+      "text": "in"
+     },
+     {
+      "key": "D",
+      "text": "*"
+     }
+    ],
+    "answer": "D"
+   },
+   {
+    "n": 7,
+    "stem": "Have you _____ been to China?",
+    "passage": "",
+    "options": [
+     {
+      "key": "A",
+      "text": "never"
+     },
+     {
+      "key": "B",
+      "text": "ever"
+     },
+     {
+      "key": "C",
+      "text": "since"
+     },
+     {
+      "key": "D",
+      "text": "yet"
+     }
+    ],
+    "answer": "B"
+   },
+   {
+    "n": 8,
+    "stem": "Don't worry about phoning him because I've _____ done it.",
+    "passage": "",
+    "options": [
+     {
+      "key": "A",
+      "text": "ever"
+     },
+     {
+      "key": "B",
+      "text": "already"
+     },
+     {
+      "key": "C",
+      "text": "yet"
+     },
+     {
+      "key": "D",
+      "text": "never"
+     }
+    ],
+    "answer": "B"
+   },
+   {
+    "n": 9,
+    "stem": "I haven't finished my lunch _____ .",
+    "passage": "",
+    "options": [
+     {
+      "key": "A",
+      "text": "never"
+     },
+     {
+      "key": "B",
+      "text": "ever"
+     },
+     {
+      "key": "C",
+      "text": "already"
+     },
+     {
+      "key": "D",
+      "text": "yet"
+     }
+    ],
+    "answer": "D"
+   },
+   {
+    "n": 10,
+    "stem": "I've not _____ been skiing, but I'd like to try it.",
+    "passage": "",
+    "options": [
+     {
+      "key": "A",
+      "text": "never"
+     },
+     {
+      "key": "B",
+      "text": "ever"
+     },
+     {
+      "key": "C",
+      "text": "already"
+     },
+     {
+      "key": "D",
+      "text": "just"
+     }
+    ],
+    "answer": "B"
+   },
+   {
+    "n": 11,
+    "stem": "I can't come out because I've _____ washed my hair.",
+    "passage": "",
+    "options": [
+     {
+      "key": "A",
+      "text": "never"
+     },
+     {
+      "key": "B",
+      "text": "ever"
+     },
+     {
+      "key": "C",
+      "text": "just"
+     },
+     {
+      "key": "D",
+      "text": "yet"
+     }
+    ],
+    "answer": "C"
+   },
+   {
+    "n": 12,
+    "stem": "Have you met our new teacher _____?",
+    "passage": "",
+    "options": [
+     {
+      "key": "A",
+      "text": "just"
+     },
+     {
+      "key": "B",
+      "text": "ever"
+     },
+     {
+      "key": "C",
+      "text": "already"
+     },
+     {
+      "key": "D",
+      "text": "yet"
+     }
+    ],
+    "answer": "D"
+   },
+   {
+    "n": 13,
+    "stem": "I'm delighted because I've been _____ a pay rise.",
+    "passage": "",
+    "options": [
+     {
+      "key": "A",
+      "text": "gave"
+     },
+     {
+      "key": "B",
+      "text": "have given"
+     },
+     {
+      "key": "C",
+      "text": "given"
+     },
+     {
+      "key": "D",
+      "text": "was given"
+     }
+    ],
+    "answer": "C"
+   },
+   {
+    "n": 14,
+    "stem": "The director's children _____ .",
+    "passage": "",
+    "options": [
+     {
+      "key": "A",
+      "text": "have been kidnapped"
+     },
+     {
+      "key": "B",
+      "text": "have kidnapped"
+     },
+     {
+      "key": "C",
+      "text": "kidnapped"
+     },
+     {
+      "key": "D",
+      "text": "was kidnapped"
+     }
+    ],
+    "answer": "A"
+   },
+   {
+    "n": 15,
+    "stem": "They're really angry because someone _____ their car.",
+    "passage": "",
+    "options": [
+     {
+      "key": "A",
+      "text": "has been damaged"
+     },
+     {
+      "key": "B",
+      "text": "has damaged"
+     },
+     {
+      "key": "C",
+      "text": "damage"
+     },
+     {
+      "key": "D",
+      "text": "was damaged"
+     }
+    ],
+    "answer": "B"
+   },
+   {
+    "n": 16,
+    "stem": "She's going to be late because her plane _____ .",
+    "passage": "",
+    "options": [
+     {
+      "key": "A",
+      "text": "has been delayed"
+     },
+     {
+      "key": "B",
+      "text": "has delayed"
+     },
+     {
+      "key": "C",
+      "text": "delayed"
+     },
+     {
+      "key": "D",
+      "text": "was delayed"
+     }
+    ],
+    "answer": "A"
+   },
+   {
+    "n": 17,
+    "stem": "He _____ to a senior designer.",
+    "passage": "",
+    "options": [
+     {
+      "key": "A",
+      "text": "has been promoted"
+     },
+     {
+      "key": "B",
+      "text": "has promoted"
+     },
+     {
+      "key": "C",
+      "text": "promoted"
+     },
+     {
+      "key": "D",
+      "text": "are promoted"
+     }
+    ],
+    "answer": "A"
+   },
+   {
+    "n": 18,
+    "stem": "Hundreds of people _____ for the jobs.",
+    "passage": "",
+    "options": [
+     {
+      "key": "A",
+      "text": "have been applied"
+     },
+     {
+      "key": "B",
+      "text": "have applied"
+     },
+     {
+      "key": "C",
+      "text": "have applying"
+     },
+     {
+      "key": "D",
+      "text": "was applied"
+     }
+    ],
+    "answer": "B"
+   },
+   {
+    "n": 19,
+    "stem": "Four people _____ in a train crash.",
+    "passage": "",
+    "options": [
+     {
+      "key": "A",
+      "text": "have been killed"
+     },
+     {
+      "key": "B",
+      "text": "have killed"
+     },
+     {
+      "key": "C",
+      "text": "are killed"
+     },
+     {
+      "key": "D",
+      "text": "was killed"
+     }
+    ],
+    "answer": "A"
+   },
+   {
+    "n": 20,
+    "stem": "Local police _____ the bank robber.",
+    "passage": "",
+    "options": [
+     {
+      "key": "A",
+      "text": "have been arrested"
+     },
+     {
+      "key": "B",
+      "text": "have arrested"
+     },
+     {
+      "key": "C",
+      "text": "has arrested"
+     },
+     {
+      "key": "D",
+      "text": "was arrested"
+     }
+    ],
+    "answer": "B"
+   },
+   {
+    "n": 21,
+    "stem": "Floods _____ serious damage.",
+    "passage": "",
+    "options": [
+     {
+      "key": "A",
+      "text": "have been caused"
+     },
+     {
+      "key": "B",
+      "text": "have caused"
+     },
+     {
+      "key": "C",
+      "text": "has caused"
+     },
+     {
+      "key": "D",
+      "text": "was caused"
+     }
+    ],
+    "answer": "B"
+   },
+   {
+    "n": 22,
+    "stem": "My job application _____ .",
+    "passage": "",
+    "options": [
+     {
+      "key": "A",
+      "text": "haven't been accepted"
+     },
+     {
+      "key": "B",
+      "text": "haven't accepted"
+     },
+     {
+      "key": "C",
+      "text": "hasn't been accepted"
+     },
+     {
+      "key": "D",
+      "text": "hasn't accepted"
+     }
+    ],
+    "answer": "C"
+   },
+   {
+    "n": 23,
+    "stem": "The workers _____ a new representative.",
+    "passage": "",
+    "options": [
+     {
+      "key": "A",
+      "text": "have been elected"
+     },
+     {
+      "key": "B",
+      "text": "have elected"
+     },
+     {
+      "key": "C",
+      "text": "has elected"
+     },
+     {
+      "key": "D",
+      "text": "was elected"
+     }
+    ],
+    "answer": "A"
+   },
+   {
+    "n": 24,
+    "stem": "An occupation which gives opportunities for promotion is a/an _____ .",
+    "passage": "",
+    "options": [
+     {
+      "key": "A",
+      "text": "applicant"
+     },
+     {
+      "key": "B",
+      "text": "CV"
+     },
+     {
+      "key": "C",
+      "text": "career"
+     },
+     {
+      "key": "D",
+      "text": "retirement"
+     }
+    ],
+    "answer": "C"
+   },
+   {
+    "n": 25,
+    "stem": "A document which lists your personal and professional details is a(n) _____ .",
+    "passage": "",
+    "options": [
+     {
+      "key": "A",
+      "text": "applicant"
+     },
+     {
+      "key": "B",
+      "text": "CV"
+     },
+     {
+      "key": "C",
+      "text": "application"
+     },
+     {
+      "key": "D",
+      "text": "retirement"
+     }
+    ],
+    "answer": "B"
+   },
+   {
+    "n": 26,
+    "stem": "A person who has reached an age where they no longer work is _____ .",
+    "passage": "",
+    "options": [
+     {
+      "key": "A",
+      "text": "an applicant"
+     },
+     {
+      "key": "B",
+      "text": "a CV"
+     },
+     {
+      "key": "C",
+      "text": "an application"
+     },
+     {
+      "key": "D",
+      "text": "retired"
+     }
+    ],
+    "answer": "D"
+   },
+   {
+    "n": 27,
+    "stem": "When you want to leave a job, you have to give your _____ .",
+    "passage": "",
+    "options": [
+     {
+      "key": "A",
+      "text": "resignation"
+     },
+     {
+      "key": "B",
+      "text": "Resume"
+     },
+     {
+      "key": "C",
+      "text": "career"
+     },
+     {
+      "key": "D",
+      "text": "retirement"
+     }
+    ],
+    "answer": "A"
+   },
+   {
+    "n": 28,
+    "stem": "If you have the right talents and experience for a job, then you are _____ for it.",
+    "passage": "",
+    "options": [
+     {
+      "key": "A",
+      "text": "resignation"
+     },
+     {
+      "key": "B",
+      "text": "resume"
+     },
+     {
+      "key": "C",
+      "text": "career"
+     },
+     {
+      "key": "D",
+      "text": "qualified"
+     }
+    ],
+    "answer": "D"
+   },
+   {
+    "n": 29,
+    "stem": "When you try and get a job, you usually have to complete a/an _____ form.",
+    "passage": "",
+    "options": [
+     {
+      "key": "A",
+      "text": "resignation"
+     },
+     {
+      "key": "B",
+      "text": "resume"
+     },
+     {
+      "key": "C",
+      "text": "application"
+     },
+     {
+      "key": "D",
+      "text": "retirement"
+     }
+    ],
+    "answer": "C"
+   },
+   {
+    "n": 30,
+    "stem": "If an employee is no longer needed, he or she can be made _____ .",
+    "passage": "",
+    "options": [
+     {
+      "key": "A",
+      "text": "resigned"
+     },
+     {
+      "key": "B",
+      "text": "redundant"
+     },
+     {
+      "key": "C",
+      "text": "employer"
+     },
+     {
+      "key": "D",
+      "text": "retiring"
+     }
+    ],
+    "answer": "B"
+   },
+   {
+    "n": 31,
+    "stem": "You can often find about a new job by a/an _____ in a newspaper.",
+    "passage": "",
+    "options": [
+     {
+      "key": "A",
+      "text": "news"
+     },
+     {
+      "key": "B",
+      "text": "completion"
+     },
+     {
+      "key": "C",
+      "text": "sensation"
+     },
+     {
+      "key": "D",
+      "text": "advertisement"
+     }
+    ],
+    "answer": "D"
+   },
+   {
+    "n": 32,
+    "stem": "If an employer is interested in meeting you, you will be asked to come to a/an _____ .",
+    "passage": "",
+    "options": [
+     {
+      "key": "A",
+      "text": "sensation"
+     },
+     {
+      "key": "B",
+      "text": "add"
+     },
+     {
+      "key": "C",
+      "text": "completion"
+     },
+     {
+      "key": "D",
+      "text": "interview"
+     }
+    ],
+    "answer": "D"
+   },
+   {
+    "n": 33,
+    "stem": "Tom's just _____ to the area manager of Eastern Europe.",
+    "passage": "",
+    "options": [
+     {
+      "key": "A",
+      "text": "promoted"
+     },
+     {
+      "key": "B",
+      "text": "been promoted"
+     },
+     {
+      "key": "D",
+      "text": "to promote"
+     }
+    ],
+    "answer": "B"
+   },
+   {
+    "n": 34,
+    "stem": "I _____ for a new job.",
+    "passage": "",
+    "options": [
+     {
+      "key": "A",
+      "text": "have applied"
+     },
+     {
+      "key": "B",
+      "text": "have been applied"
+     },
+     {
+      "key": "C",
+      "text": "apply"
+     },
+     {
+      "key": "D",
+      "text": "been applied"
+     }
+    ],
+    "answer": "A"
+   },
+   {
+    "n": 35,
+    "stem": "How many times _____ redundant?",
+    "passage": "",
+    "options": [
+     {
+      "key": "A",
+      "text": "were you"
+     },
+     {
+      "key": "B",
+      "text": "have you been made"
+     },
+     {
+      "key": "C",
+      "text": "you"
+     },
+     {
+      "key": "D",
+      "text": "have you made"
+     }
+    ],
+    "answer": "B"
+   },
+   {
+    "n": 36,
+    "stem": "Bob's wife _____ her job.",
+    "passage": "",
+    "options": [
+     {
+      "key": "A",
+      "text": "has lost"
+     },
+     {
+      "key": "B",
+      "text": "were lost"
+     },
+     {
+      "key": "C",
+      "text": "was losing"
+     },
+     {
+      "key": "D",
+      "text": "has been lost"
+     }
+    ],
+    "answer": "A"
+   },
+   {
+    "n": 37,
+    "stem": "My father _____ early retirement.",
+    "passage": "",
+    "options": [
+     {
+      "key": "A",
+      "text": "was taken"
+     },
+     {
+      "key": "B",
+      "text": "has taken"
+     },
+     {
+      "key": "C",
+      "text": "has been taken"
+     },
+     {
+      "key": "D",
+      "text": "take"
+     }
+    ],
+    "answer": "B"
+   },
+   {
+    "n": 38,
+    "stem": "My brother _____ the sack. His boss said he was lazy.",
+    "passage": "",
+    "options": [
+     {
+      "key": "A",
+      "text": "has been given"
+     },
+     {
+      "key": "B",
+      "text": "gave"
+     },
+     {
+      "key": "C",
+      "text": "given"
+     },
+     {
+      "key": "D",
+      "text": "has given"
+     }
+    ],
+    "answer": "A"
+   },
+   {
+    "n": 39,
+    "stem": "The number of people out of work _____ to nearly 3 million.",
+    "passage": "",
+    "options": [
+     {
+      "key": "A",
+      "text": "has risen"
+     },
+     {
+      "key": "B",
+      "text": "have risen"
+     },
+     {
+      "key": "C",
+      "text": "have been risen"
+     },
+     {
+      "key": "D",
+      "text": "has been risen"
+     }
+    ],
+    "answer": "A"
+   },
+   {
+    "n": 40,
+    "stem": "A strike _____ by the air traffic controllers.",
+    "passage": "",
+    "options": [
+     {
+      "key": "A",
+      "text": "called"
+     },
+     {
+      "key": "B",
+      "text": "has called"
+     },
+     {
+      "key": "C",
+      "text": "has been called"
+     },
+     {
+      "key": "D",
+      "text": "is given"
+     }
+    ],
+    "answer": "C"
+   },
+   {
+    "n": 41,
+    "stem": "They ______ more money by the management.",
+    "passage": "",
+    "options": [
+     {
+      "key": "A",
+      "text": "haven't offered"
+     },
+     {
+      "key": "B",
+      "text": "haven't been offered"
+     },
+     {
+      "key": "C",
+      "text": "offer"
+     },
+     {
+      "key": "D",
+      "text": "offered"
+     }
+    ],
+    "answer": "B"
+   },
+   {
+    "n": 42,
+    "stem": "How much money _____ for your retirement?",
+    "passage": "",
+    "options": [
+     {
+      "key": "A",
+      "text": "saved"
+     },
+     {
+      "key": "B",
+      "text": "have you been saved"
+     },
+     {
+      "key": "C",
+      "text": "have you saved"
+     },
+     {
+      "key": "D",
+      "text": "you saved"
+     }
+    ],
+    "answer": "C"
+   },
+   {
+    "n": 43,
+    "stem": "The factory workers are _____ strike because they want more money.",
+    "passage": "",
+    "options": [
+     {
+      "key": "A",
+      "text": "in"
+     },
+     {
+      "key": "B",
+      "text": "on"
+     },
+     {
+      "key": "C",
+      "text": "out of"
+     },
+     {
+      "key": "D",
+      "text": "of"
+     }
+    ],
+    "answer": "B"
+   },
+   {
+    "n": 44,
+    "stem": "Thousands of people are _____ work in this town. It's really difficult to get a job.",
+    "passage": "",
+    "options": [
+     {
+      "key": "A",
+      "text": "in"
+     },
+     {
+      "key": "B",
+      "text": "on"
+     },
+     {
+      "key": "C",
+      "text": "out of"
+     },
+     {
+      "key": "D",
+      "text": "of"
+     }
+    ],
+    "answer": "C"
+   },
+   {
+    "n": 45,
+    "stem": "I got a cheque _____ a hundred pounds this morning.",
+    "passage": "",
+    "options": [
+     {
+      "key": "A",
+      "text": "in"
+     },
+     {
+      "key": "B",
+      "text": "on"
+     },
+     {
+      "key": "C",
+      "text": "out of"
+     },
+     {
+      "key": "D",
+      "text": "of"
+     }
+    ],
+    "answer": "D"
+   },
+   {
+    "n": 46,
+    "stem": "You're really annoying me. You're doing it _____ purpose, aren't you?",
+    "passage": "",
+    "options": [
+     {
+      "key": "A",
+      "text": "in"
+     },
+     {
+      "key": "B",
+      "text": "on"
+     },
+     {
+      "key": "C",
+      "text": "out of"
+     },
+     {
+      "key": "D",
+      "text": "of"
+     }
+    ],
+    "answer": "B"
+   },
+   {
+    "n": 47,
+    "stem": "Can you tell the difference _____ butter and margarine.",
+    "passage": "",
+    "options": [
+     {
+      "key": "A",
+      "text": "between"
+     },
+     {
+      "key": "B",
+      "text": "on"
+     },
+     {
+      "key": "C",
+      "text": "out of"
+     },
+     {
+      "key": "D",
+      "text": "of"
+     }
+    ],
+    "answer": "A"
+   },
+   {
+    "n": 48,
+    "stem": "There have been a lot of complaints _____ your behavior.",
+    "passage": "",
+    "options": [
+     {
+      "key": "A",
+      "text": "in"
+     },
+     {
+      "key": "B",
+      "text": "on"
+     },
+     {
+      "key": "C",
+      "text": "out of"
+     },
+     {
+      "key": "D",
+      "text": "about"
+     }
+    ],
+    "answer": "D"
+   },
+   {
+    "n": 49,
+    "stem": "You are always _____ trouble because you don't listen to anybody.",
+    "passage": "",
+    "options": [
+     {
+      "key": "A",
+      "text": "in"
+     },
+     {
+      "key": "B",
+      "text": "on"
+     },
+     {
+      "key": "C",
+      "text": "with"
+     },
+     {
+      "key": "D",
+      "text": "of"
+     }
+    ],
+    "answer": "A"
+   },
+   {
+    "n": 50,
+    "stem": "I'm fed up _____ cooking. Let's eat _____ for a change.",
+    "passage": "",
+    "options": [
+     {
+      "key": "A",
+      "text": "in / out"
+     },
+     {
+      "key": "B",
+      "text": "on / now"
+     },
+     {
+      "key": "C",
+      "text": "with / out"
+     },
+     {
+      "key": "D",
+      "text": "at / out"
+     }
+    ],
+    "answer": "C"
+   },
+   {
+    "n": 51,
+    "stem": "How much do you spend a week _____ average?",
+    "passage": "",
+    "options": [
+     {
+      "key": "A",
+      "text": "in"
+     },
+     {
+      "key": "B",
+      "text": "on"
+     },
+     {
+      "key": "C",
+      "text": "out of"
+     },
+     {
+      "key": "D",
+      "text": "of"
+     }
+    ],
+    "answer": "B"
+   },
+   {
+    "n": 52,
+    "stem": "Watch your step with Dad. He's _____ a terrible mood.",
+    "passage": "",
+    "options": [
+     {
+      "key": "A",
+      "text": "in"
+     },
+     {
+      "key": "B",
+      "text": "on"
+     },
+     {
+      "key": "C",
+      "text": "out of"
+     },
+     {
+      "key": "D",
+      "text": "of"
+     }
+    ],
+    "answer": "A"
+   },
+   {
+    "n": 53,
+    "stem": "Could you take a photo _____ me, please?",
+    "passage": "",
+    "options": [
+     {
+      "key": "A",
+      "text": "in"
+     },
+     {
+      "key": "B",
+      "text": "on"
+     },
+     {
+      "key": "C",
+      "text": "with"
+     },
+     {
+      "key": "D",
+      "text": "of"
+     }
+    ],
+    "answer": "D"
+   },
+   {
+    "n": 54,
+    "stem": "I had a crash this morning. Fortunately, I didn't do much damage _____ my car.",
+    "passage": "",
+    "options": [
+     {
+      "key": "A",
+      "text": "in"
+     },
+     {
+      "key": "B",
+      "text": "on"
+     },
+     {
+      "key": "C",
+      "text": "out of"
+     },
+     {
+      "key": "D",
+      "text": "to"
+     }
+    ],
+    "answer": "D"
+   },
+   {
+    "n": 55,
+    "stem": "'Where's Peter?' 'He's _____ on holiday.'",
+    "passage": "",
+    "options": [
+     {
+      "key": "A",
+      "text": "in"
+     },
+     {
+      "key": "B",
+      "text": "gone"
+     },
+     {
+      "key": "C",
+      "text": "been"
+     },
+     {
+      "key": "D",
+      "text": "being"
+     }
+    ],
+    "answer": "B"
+   },
+   {
+    "n": 56,
+    "stem": "Where have you ____? You're so brown!",
+    "passage": "",
+    "options": [
+     {
+      "key": "A",
+      "text": "been"
+     },
+     {
+      "key": "B",
+      "text": "in gone"
+     },
+     {
+      "key": "C",
+      "text": ""
+     },
+     {
+      "key": "D",
+      "text": "being"
+     }
+    ],
+    "answer": "A"
+   },
+   {
+    "n": 57,
+    "stem": "'Are you going to the shops this afternoon?' 'No, I've already ____ . I went this morning.'",
+    "passage": "",
+    "options": [
+     {
+      "key": "A",
+      "text": "going"
+     },
+     {
+      "key": "B",
+      "text": "gone"
+     },
+     {
+      "key": "C",
+      "text": "been"
+     },
+     {
+      "key": "D",
+      "text": "being"
+     }
+    ],
+    "answer": "C"
+   },
+   {
+    "n": 58,
+    "stem": "'Can I speak to Jenny, please?' 'I'm afraid she's _____ to lunch. Can I take a message?'",
+    "passage": "",
+    "options": [
+     {
+      "key": "A",
+      "text": "going"
+     },
+     {
+      "key": "B",
+      "text": "gone"
+     },
+     {
+      "key": "C",
+      "text": "been"
+     },
+     {
+      "key": "D",
+      "text": "being"
+     }
+    ],
+    "answer": "B"
+   },
+   {
+    "n": 59,
+    "stem": "I've never _____ to Australia, but I'd like to go.",
+    "passage": "",
+    "options": [
+     {
+      "key": "A",
+      "text": "went"
+     },
+     {
+      "key": "B",
+      "text": "gone"
+     },
+     {
+      "key": "C",
+      "text": "been"
+     },
+     {
+      "key": "D",
+      "text": "being"
+     }
+    ],
+    "answer": "C"
+   },
+   {
+    "n": 60,
+    "stem": "'When's your holiday?' 'We've already _____ . We went to France.'",
+    "passage": "",
+    "options": [
+     {
+      "key": "A",
+      "text": "gone"
+     },
+     {
+      "key": "B",
+      "text": "were"
+     },
+     {
+      "key": "C",
+      "text": "been"
+     },
+     {
+      "key": "D",
+      "text": "being"
+     }
+    ],
+    "answer": "C"
+   },
+   {
+    "n": 61,
+    "stem": "'Where's Harry these days?' 'Didn't you know? He's _____ to another company.'",
+    "passage": "",
+    "options": [
+     {
+      "key": "A",
+      "text": "went"
+     },
+     {
+      "key": "B",
+      "text": "gone"
+     },
+     {
+      "key": "C",
+      "text": "been"
+     },
+     {
+      "key": "D",
+      "text": "being"
+     }
+    ],
+    "answer": "B"
+   },
+   {
+    "n": 62,
+    "stem": "The Prime Minister of Italy ____ .",
+    "passage": "",
+    "options": [
+     {
+      "key": "A",
+      "text": "has been resigned"
+     },
+     {
+      "key": "B",
+      "text": "have resigned"
+     },
+     {
+      "key": "C",
+      "text": "resigned"
+     },
+     {
+      "key": "D",
+      "text": "has resigned"
+     }
+    ],
+    "answer": "D"
+   },
+   {
+    "n": 63,
+    "stem": "A new prime minister _____ .",
+    "passage": "",
+    "options": [
+     {
+      "key": "A",
+      "text": "has elected"
+     },
+     {
+      "key": "B",
+      "text": "has been elected"
+     },
+     {
+      "key": "C",
+      "text": "have elected"
+     },
+     {
+      "key": "D",
+      "text": "elected"
+     }
+    ],
+    "answer": "B"
+   },
+   {
+    "n": 64,
+    "stem": "The Italian people ____ of his resignation on television yesterday evening.",
+    "passage": "",
+    "options": [
+     {
+      "key": "A",
+      "text": "was told"
+     },
+     {
+      "key": "B",
+      "text": "have been told"
+     },
+     {
+      "key": "C",
+      "text": "told"
+     },
+     {
+      "key": "D",
+      "text": "were told"
+     }
+    ],
+    "answer": "D"
+   },
+   {
+    "n": 65,
+    "stem": "I _____ my glasses. _____ them anywhere?",
+    "passage": "",
+    "options": [
+     {
+      "key": "A",
+      "text": "have been lost / Have you seen"
+     },
+     {
+      "key": "B",
+      "text": "lost / Have you seen"
+     },
+     {
+      "key": "C",
+      "text": "have lost / Did you see"
+     },
+     {
+      "key": "D",
+      "text": "lost / Did you see"
+     }
+    ],
+    "answer": "C"
+   },
+   {
+    "n": 66,
+    "stem": "\"Where _____ Liz _____ on holiday?\" \"She's in Paris.\"",
+    "passage": "",
+    "options": [
+     {
+      "key": "A",
+      "text": "did / went"
+     },
+     {
+      "key": "B",
+      "text": "has / been"
+     },
+     {
+      "key": "C",
+      "text": "did / go"
+     },
+     {
+      "key": "D",
+      "text": "has / gone"
+     }
+    ],
+    "answer": "B"
+   },
+   {
+    "n": 67,
+    "stem": "\"Where _____ Liz _____ on holiday?\" \"She went to Paris.\"",
+    "passage": "",
+    "options": [
+     {
+      "key": "A",
+      "text": "did / went"
+     },
+     {
+      "key": "B",
+      "text": "has / been"
+     },
+     {
+      "key": "C",
+      "text": "did / go"
+     },
+     {
+      "key": "D",
+      "text": "has / gone"
+     }
+    ],
+    "answer": "C"
+   },
+   {
+    "n": 68,
+    "stem": "\"____ John ever ____ to Paris?\" \"Oh, yes. Five times.\"",
+    "passage": "",
+    "options": [
+     {
+      "key": "A",
+      "text": "Did / go"
+     },
+     {
+      "key": "B",
+      "text": "Has / gone"
+     },
+     {
+      "key": "C",
+      "text": "Has / been"
+     },
+     {
+      "key": "D",
+      "text": "Does / go"
+     }
+    ],
+    "answer": "B"
+   },
+   {
+    "n": 69,
+    "stem": "The police _____ the public that the man is dangerous.",
+    "passage": "",
+    "options": [
+     {
+      "key": "A",
+      "text": "have warned"
+     },
+     {
+      "key": "B",
+      "text": "have been warned"
+     },
+     {
+      "key": "C",
+      "text": "has warned"
+     },
+     {
+      "key": "D",
+      "text": "warned Book 1 Part A Intermediate Test 7"
+     }
+    ],
+    "answer": "D"
+   }
+  ]
+ },
+ {
+  "test": 8,
+  "level": "Intermediate",
+  "source": "Test Master — Book 1 Part A",
+  "questions": [
+   {
+    "n": 1,
+    "stem": "Suppose! If it _____ last weekend, we _____ to play tennis.",
+    "passage": "",
+    "options": [
+     {
+      "key": "A",
+      "text": "rained - wouldn't be able"
+     },
+     {
+      "key": "B",
+      "text": "rains - won't be able"
+     },
+     {
+      "key": "C",
+      "text": "rain - would be able"
+     },
+     {
+      "key": "D",
+      "text": "had rained - could"
+     }
+    ],
+    "answer": "A"
+   },
+   {
+    "n": 2,
+    "stem": "Give me Peter's letter. If I _____ him, I _____ it to him.",
+    "passage": "",
+    "options": [
+     {
+      "key": "A",
+      "text": "see-will give"
+     },
+     {
+      "key": "B",
+      "text": "saw-would give"
+     },
+     {
+      "key": "C",
+      "text": "meet-would visit"
+     },
+     {
+      "key": "D",
+      "text": "had seen- would give"
+     }
+    ],
+    "answer": "A"
+   },
+   {
+    "n": 3,
+    "stem": "I have to work about 80 hours a week, so I'm very busy. But if I _____ any spare time, I _____ a sport like golf.",
+    "passage": "",
+    "options": [
+     {
+      "key": "A",
+      "text": "will have / will take up"
+     },
+     {
+      "key": "B",
+      "text": "had / will take up"
+     },
+     {
+      "key": "C",
+      "text": "will have / had"
+     },
+     {
+      "key": "D",
+      "text": "had / would take up"
+     }
+    ],
+    "answer": "D"
+   },
+   {
+    "n": 4,
+    "stem": "If I _____ taller, I _____ be a policeman, but I'm too short.",
+    "passage": "",
+    "options": [
+     {
+      "key": "A",
+      "text": "was / can"
+     },
+     {
+      "key": "B",
+      "text": "had / could"
+     },
+     {
+      "key": "C",
+      "text": "were / could"
+     },
+     {
+      "key": "D",
+      "text": "am / will"
+     }
+    ],
+    "answer": "C"
+   },
+   {
+    "n": 5,
+    "stem": "Please, start your meal. If you _____ your soup now, it _____ cold.",
+    "passage": "",
+    "options": [
+     {
+      "key": "A",
+      "text": "didn't have / would go"
+     },
+     {
+      "key": "B",
+      "text": "had / got"
+     },
+     {
+      "key": "C",
+      "text": "can eat / doesn't go"
+     },
+     {
+      "key": "D",
+      "text": "don't have / will go"
+     }
+    ],
+    "answer": "D"
+   },
+   {
+    "n": 6,
+    "stem": "What noisy neighbors you've got! If my neighbors _____ as bad as yours, I _____ crazy.",
+    "passage": "",
+    "options": [
+     {
+      "key": "A",
+      "text": "were / would go"
+     },
+     {
+      "key": "B",
+      "text": "are / will go"
+     },
+     {
+      "key": "C",
+      "text": "are / would go"
+     },
+     {
+      "key": "D",
+      "text": "had been / would have gone"
+     }
+    ],
+    "answer": "A"
+   },
+   {
+    "n": 7,
+    "stem": "If you _____ any problems, let me know and I _____ and help you straight away",
+    "passage": "",
+    "options": [
+     {
+      "key": "A",
+      "text": "had / would come"
+     },
+     {
+      "key": "B",
+      "text": "have / will come"
+     },
+     {
+      "key": "C",
+      "text": "had had / would come"
+     },
+     {
+      "key": "D",
+      "text": "have / would go"
+     }
+    ],
+    "answer": "B"
+   },
+   {
+    "n": 8,
+    "stem": "You're a brilliant cook! If I _____ cook as well as you, I _____ a restaurant.",
+    "passage": "",
+    "options": [
+     {
+      "key": "A",
+      "text": "could / would open"
+     },
+     {
+      "key": "B",
+      "text": "can / will open"
+     },
+     {
+      "key": "C",
+      "text": "could / will open"
+     },
+     {
+      "key": "D",
+      "text": "can / would open"
+     }
+    ],
+    "answer": "A"
+   },
+   {
+    "n": 9,
+    "stem": "If there _____ some nice fish in the supermarket, _____ you _____ some for supper tonight?",
+    "passage": "",
+    "options": [
+     {
+      "key": "A",
+      "text": "had been / would / buy"
+     },
+     {
+      "key": "B",
+      "text": "were / would / buy"
+     },
+     {
+      "key": "C",
+      "text": "is / will / buy"
+     },
+     {
+      "key": "D",
+      "text": "are /will / buy"
+     }
+    ],
+    "answer": "B"
+   },
+   {
+    "n": 10,
+    "stem": "I'm small. I wish I _____ small.",
+    "passage": "",
+    "options": [
+     {
+      "key": "A",
+      "text": "am not"
+     },
+     {
+      "key": "B",
+      "text": "was"
+     },
+     {
+      "key": "C",
+      "text": "were"
+     },
+     {
+      "key": "D",
+      "text": "weren't"
+     }
+    ],
+    "answer": "C"
+   },
+   {
+    "n": 11,
+    "stem": "I'm small. If only I _____ taller.",
+    "passage": "",
+    "options": [
+     {
+      "key": "A",
+      "text": "were"
+     },
+     {
+      "key": "B",
+      "text": "wasn't"
+     },
+     {
+      "key": "C",
+      "text": "am"
+     },
+     {
+      "key": "D",
+      "text": "have"
+     }
+    ],
+    "answer": "A"
+   },
+   {
+    "n": 12,
+    "stem": "\"We have mice in the kitchen.\" \"If you _____ a cat, the mice _____ soon _____ .\"",
+    "passage": "",
+    "options": [
+     {
+      "key": "A",
+      "text": "had / would / disappear"
+     },
+     {
+      "key": "B",
+      "text": "have / will / disappear"
+     },
+     {
+      "key": "C",
+      "text": "are / will / disappear"
+     },
+     {
+      "key": "D",
+      "text": "had / will / disappear"
+     }
+    ],
+    "answer": "A"
+   },
+   {
+    "n": 13,
+    "stem": "We live in the city. We wish we _____ in the country.",
+    "passage": "",
+    "options": [
+     {
+      "key": "A",
+      "text": "have lived"
+     },
+     {
+      "key": "B",
+      "text": "living"
+     },
+     {
+      "key": "C",
+      "text": "lived"
+     },
+     {
+      "key": "D",
+      "text": "live"
+     }
+    ],
+    "answer": "C"
+   },
+   {
+    "n": 14,
+    "stem": "We live in the city. If only we _____ in the city!",
+    "passage": "",
+    "options": [
+     {
+      "key": "A",
+      "text": "lived"
+     },
+     {
+      "key": "B",
+      "text": "didn't live"
+     },
+     {
+      "key": "C",
+      "text": "haven't lived"
+     },
+     {
+      "key": "D",
+      "text": "living"
+     }
+    ],
+    "answer": "A"
+   },
+   {
+    "n": 15,
+    "stem": "I'm not having a holiday this year. I wish I _____ a holiday.",
+    "passage": "",
+    "options": [
+     {
+      "key": "A",
+      "text": "was having"
+     },
+     {
+      "key": "B",
+      "text": "is having"
+     },
+     {
+      "key": "C",
+      "text": "will have"
+     },
+     {
+      "key": "D",
+      "text": "have"
+     }
+    ],
+    "answer": "D"
+   },
+   {
+    "n": 16,
+    "stem": "I'm going to the dentist tomorrow. I wish I _____ to the dentist.",
+    "passage": "",
+    "options": [
+     {
+      "key": "A",
+      "text": "am not going"
+     },
+     {
+      "key": "B",
+      "text": "will go"
+     },
+     {
+      "key": "C",
+      "text": "wasn't going"
+     },
+     {
+      "key": "D",
+      "text": "went"
+     }
+    ],
+    "answer": "C"
+   },
+   {
+    "n": 17,
+    "stem": "I can't ski. I wish I _____ ski.",
+    "passage": "",
+    "options": [
+     {
+      "key": "A",
+      "text": "can"
+     },
+     {
+      "key": "B",
+      "text": "could"
+     },
+     {
+      "key": "C",
+      "text": "will"
+     },
+     {
+      "key": "D",
+      "text": "couldn't"
+     }
+    ],
+    "answer": "B"
+   },
+   {
+    "n": 18,
+    "stem": "I wasn't happy at school. I wish I _____ happy.",
+    "passage": "",
+    "options": [
+     {
+      "key": "A",
+      "text": "has been"
+     },
+     {
+      "key": "B",
+      "text": "had had"
+     },
+     {
+      "key": "C",
+      "text": "will have"
+     },
+     {
+      "key": "D",
+      "text": "had been"
+     }
+    ],
+    "answer": "D"
+   },
+   {
+    "n": 19,
+    "stem": "He didn't pass his driving test. He wishes he _____ it.",
+    "passage": "",
+    "options": [
+     {
+      "key": "A",
+      "text": "have passed"
+     },
+     {
+      "key": "B",
+      "text": "had passed"
+     },
+     {
+      "key": "C",
+      "text": "will pass"
+     },
+     {
+      "key": "D",
+      "text": "pass"
+     }
+    ],
+    "answer": "B"
+   },
+   {
+    "n": 20,
+    "stem": "I haven't been to Beijing. I wish I _____ to Beijing.",
+    "passage": "",
+    "options": [
+     {
+      "key": "A",
+      "text": "had been"
+     },
+     {
+      "key": "B",
+      "text": "have been"
+     },
+     {
+      "key": "C",
+      "text": "has been"
+     },
+     {
+      "key": "D",
+      "text": "will be"
+     }
+    ],
+    "answer": "A"
+   }
+  ]
+ }
+]
