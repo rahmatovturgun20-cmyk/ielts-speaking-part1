@@ -4544,6 +4544,18 @@ html.dark .ai-loading { color: #94a3b8; }
   .plans-modal-plan { display: flex; justify-content: space-between; align-items: center; padding: 14px 16px; border: 1.5px solid var(--border); border-radius: 12px; cursor: pointer; transition: .2s; }
   .plans-modal-plan:hover { border-color: var(--primary); }
   .plans-modal-close { width: 100%; background: var(--surface2); border: none; color: var(--text); padding: 10px; border-radius: 10px; font-weight: 700; cursor: pointer; font-family: inherit; }
+  .share-modal { position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: rgba(0,0,0,.6); z-index: 9998; display: flex; align-items: center; justify-content: center; padding: 20px; }
+  .share-modal.hidden { display: none; }
+  .share-modal-box { background: var(--surface); border-radius: 16px; padding: 24px; max-width: 400px; width: 100%; box-shadow: 0 25px 60px rgba(0,0,0,.4); }
+  .share-modal-head { display: flex; align-items: center; justify-content: space-between; margin-bottom: 4px; font-size: 18px; font-weight: 800; }
+  .share-close { background: none; border: none; color: var(--muted); font-size: 18px; cursor: pointer; padding: 4px 8px; }
+  .share-modal-sub { color: var(--muted); font-size: 13px; margin-bottom: 16px; }
+  .share-btn { width: 100%; padding: 12px; border-radius: 12px; font-weight: 700; cursor: pointer; font-family: inherit; font-size: 14px; border: none; margin-bottom: 10px; transition: .2s; }
+  .share-tg { background: #229ed9; color: #fff; }
+  .share-tg:hover { opacity: .9; }
+  .share-copy { background: var(--surface2); color: var(--text); }
+  .share-copy:hover { border-color: var(--primary); }
+  .share-close-full { width: 100%; background: none; border: 1.5px solid var(--border); color: var(--muted); padding: 10px; border-radius: 10px; font-weight: 700; cursor: pointer; font-family: inherit; }
 </style>
 
 
@@ -4626,6 +4638,11 @@ html.dark .ai-loading { color: #94a3b8; }
     <span class="sp-label">Yuklab olishlar</span>
   </button>
 
+  <button type="button" id="spShare" class="sp-row" role="menuitem">
+    <span class="sp-ico">📤</span>
+    <span class="sp-label">Saytni ulashish</span>
+  </button>
+
   <hr class="sp-sep">
 
   <div class="sp-profile" id="spProfile">
@@ -4706,6 +4723,8 @@ html.dark .ai-loading { color: #94a3b8; }
     <button class="btn btn-full" id="mockBtn">🎯 Start Full Mock Test</button>
     <button type="button" class="btn btn-past" onclick="openRealExams()">📚 Real Past Exams</button>
   </div>
+
+  <div style="margin-top:26px;text-align:center;color:var(--muted);font-size:12.5px;opacity:.85;">Made by <strong style="color:var(--primary);font-weight:700;">Turg'un Rahmatov</strong> · 2026 ©</div>
 
 </div>
 
@@ -13386,6 +13405,18 @@ homeBtn.addEventListener('click', () => {
     <button class="plans-modal-close" onclick="closePlansModal()">Bekor qilish</button>
   </div>
 </div>
+<div class="share-modal hidden" id="shareModal">
+  <div class="share-modal-box">
+    <div class="share-modal-head">
+      <b>📤 Saytni ulashish</b>
+      <button class="share-close" id="shareClose" type="button">✕</button>
+    </div>
+    <p class="share-modal-sub">Do'stlaringizga taklif qiling — ular ham CEFR Speaking tayyorgarligini bepul boshlashlari mumkin</p>
+    <button class="share-btn share-tg" id="shareBtnTg" type="button">✈️ Telegram orqali ulashish</button>
+    <button class="share-btn share-copy" id="shareBtnCopy" type="button">🔗 Havolani nusxalash</button>
+    <button class="share-close-full" id="shareCloseFull" type="button">Yopish</button>
+  </div>
+</div>
 <script>
 (function () {
   var style = document.createElement('style');
@@ -13594,6 +13625,48 @@ homeBtn.addEventListener('click', () => {
   document.getElementById('spDownloads').onclick = function(e){
     e.stopPropagation();
     window._openDownloads();
+  };
+  var spShare = document.getElementById('spShare');
+  if (spShare) {
+    spShare.onclick = function (e) {
+      e.stopPropagation();
+      var p = document.getElementById('settingsPanel');
+      if (p) p.classList.add('hidden');
+      if (navigator.share) {
+        navigator.share({ title: 'Multilevel Mock Test', text: 'CEFR Speaking imtihoniga bepul tayyorlaning: mock test, model javoblar va AI baholash.', url: window.location.origin + '/' }).catch(function () {});
+      } else {
+        openShareModalMobile();
+      }
+    };
+  }
+  function openShareModalMobile() {
+    var m = document.getElementById('shareModal');
+    if (m) m.classList.remove('hidden');
+  }
+  function closeShareModalMobile() {
+    var m = document.getElementById('shareModal');
+    if (m) m.classList.add('hidden');
+  }
+  var shareModal = document.getElementById('shareModal');
+  if (shareModal) {
+    shareModal.addEventListener('click', function (e) {
+      if (e.target === shareModal) closeShareModalMobile();
+    });
+  }
+  var shareClose = document.getElementById('shareClose');
+  if (shareClose) shareClose.onclick = closeShareModalMobile;
+  var shareCloseFull = document.getElementById('shareCloseFull');
+  if (shareCloseFull) shareCloseFull.onclick = closeShareModalMobile;
+  var shareBtnTg = document.getElementById('shareBtnTg');
+  if (shareBtnTg) shareBtnTg.onclick = function () {
+    window.open('https://t.me/share/url?url=' + encodeURIComponent(window.location.origin + '/') + '&text=' + encodeURIComponent('Multilevel Mock Test — CEFR Speaking imtihoniga bepul tayyorlaning: mock test, model javoblar va AI baholash. 🎯'), '_blank', 'noopener');
+  };
+  var shareBtnCopy = document.getElementById('shareBtnCopy');
+  if (shareBtnCopy) shareBtnCopy.onclick = function () {
+    navigator.clipboard.writeText(window.location.origin + '/').then(function () {
+      shareBtnCopy.textContent = '✅ Nusxa olindi';
+      setTimeout(function () { shareBtnCopy.textContent = '🔗 Havolani nusxalash'; }, 1600);
+    }).catch(function () {});
   };
   function esc(s){ return String(s==null?'':s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;'); }
   function fmtPart(p){
