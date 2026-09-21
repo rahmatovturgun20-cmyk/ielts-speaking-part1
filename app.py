@@ -1613,10 +1613,14 @@ def _to_int16(frames, sw):
 
 def ai_score(audio_bytes, mime_type, question, part="1.1"):
     audio_bytes, mime_type = _prep_audio(audio_bytes, mime_type)
-    # Transcribe once with Groq whisper (reliable, free), then score the
-    # transcript with the first available free LLM provider in the chain:
-    # Groq LLM -> Z.ai (GLM) -> NVIDIA NIM. Gemini (audio-native) is the final
-    # fallback and can work even if Groq STT is unavailable.
+    # Avval Gemini (audio'ning o'zini eshitib baholaydi, transkriptni o'zi qiladi).
+    # Xato bersa Groq STT + LLM zanjiriga tashlanadi:
+    # Groq LLM -> Z.ai (GLM) -> NVIDIA NIM.
+    result, err = _ai_score_gemini(audio_bytes, mime_type, question, part)
+    if result is not None:
+        log.info("Scored via Gemini")
+        return _finalize_score(result, part)
+    log.warning("Gemini AI failed (%s) - falling back to Groq", err)
     transcript = _stt_groq(audio_bytes, mime_type)
     if transcript:
         for prov in _llm_providers():
@@ -1629,9 +1633,6 @@ def ai_score(audio_bytes, mime_type, question, part="1.1"):
             log.warning("%s LLM failed (%s)", prov["name"], err)
     else:
         log.warning("Groq STT produced no transcript")
-    result, err = _ai_score_gemini(audio_bytes, mime_type, question, part)
-    if result is not None:
-        return _finalize_score(result, part)
     return None, err or "Baholash xizmati vaqtincha band. Iltimos 30 soniyadan keyin qayta urinib ko'ring."
 
 
