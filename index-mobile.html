@@ -13724,7 +13724,6 @@ homeBtn.addEventListener('click', () => {
       var summary = '';
       var sumScore = 0, sumMax = 0, avgPct = 0, evCount = 0;
       var topRank = 0, topBand = '';
-      var sumRating = 0, ratingCount = 0;
       var scaleMap = {'1.1':5,'1.2':5,'2':5,'3':6,'full':21};
       var lvlRank = {'A1':1,'A2':2,'B1':3,'B2':4,'C1':5,'C2':6};
       var ratingMap = {};
@@ -13737,9 +13736,6 @@ homeBtn.addEventListener('click', () => {
         sumScore += Number(rc.score) || 0;
         sumMax += sm;
         avgPct += Math.max(0, Math.min(100, (Number(rc.score) || 0) / sm * 100));
-        var norm21 = Math.min(21, Math.max(0, (Number(rc.score) || 0) / sm * 21));
-        var rat = ratingMap[String(Math.round(norm21 * 2) / 2)];
-        if (rat != null){ sumRating += rat; ratingCount++; }
         var lv = (rc.cefr || rc.band || '').toUpperCase();
         if (lvlRank[lv] > topRank){ topRank = lvlRank[lv]; topBand = lv; }
         evCount++;
@@ -13747,12 +13743,9 @@ homeBtn.addEventListener('click', () => {
       if (evCount){
         avgPct = Math.round(avgPct / evCount);
         var totalPct = Math.round(sumScore / sumMax * 100);
-        var ratingLine = '';
-        if (ratingCount) ratingLine = '<div style="font-size:15px;font-weight:700;margin-top:2px">Reyting balli: ' + sumRating + ' / ' + (ratingCount * 75) + '</div>';
         summary = '<div style="background:linear-gradient(135deg,#1d4ed8,#2563eb);border-radius:12px;padding:14px 16px;color:#fff;margin-bottom:12px">'
           + '<div style="font-size:12px;opacity:.85">📊 Umumiy natija — ' + evCount + ' ta audio baholandi</div>'
           + '<div style="font-size:22px;font-weight:800;margin-top:2px">Xom ball: ' + sumScore + ' / ' + sumMax + ' · ' + totalPct + '%</div>'
-          + ratingLine
           + '<div style="font-size:12px;opacity:.9;margin-top:2px">O\'rtacha: ' + avgPct + '% · Eng yuqori daraja: ' + esc(topBand||'—') + '</div>'
           + '</div>';
       }
@@ -13765,8 +13758,12 @@ homeBtn.addEventListener('click', () => {
         var scoreBadge = '';
         if (r.has_result){
           var lbl = r.band ? (r.band + ' (' + (r.score||'-') + ')') : (r.score!=null ? String(r.score)+' / '+r.part : 'Baholangan');
+          var rsm = scaleMap[r.part] || 5;
+          var rn = Math.min(21, Math.max(0, (Number(r.score)||0) / rsm * 21));
+          var rr = ratingMap[String(Math.round(rn * 2) / 2)];
           scoreBadge = '<span style="background:#ecfdf5;color:#059669;border:1px solid #a7f3d0;padding:2px 8px;border-radius:10px;font-size:12px;font-weight:600;white-space:nowrap">'
-            + esc(lbl) + '</span>';
+            + esc(lbl) + '</span>'
+            + (rr != null ? '<span style="background:#eff6ff;color:#2563eb;border:1px solid #bfdbfe;padding:2px 8px;border-radius:10px;font-size:12px;font-weight:600;white-space:nowrap">⭐ Reyting: ' + rr + '/75</span>' : '');
         }
         var recBlock = '<div style="background:#f8fafc;border:1px solid #e5e7eb;border-radius:12px;padding:12px">'
           + '<div style="display:flex;align-items:center;gap:8px;flex-wrap:wrap">'
