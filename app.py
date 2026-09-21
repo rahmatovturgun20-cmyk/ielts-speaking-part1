@@ -1161,7 +1161,8 @@ def api_real_exams():
 
 @app.route("/api/grammar-tests")
 def api_grammar_tests():
-    """Test Master Grammar testlari (Intermediate 1-8). Test 1 bepul, qolganlari premium."""
+    """Test Master Grammar testlari (Elementary / Pre-Intermediate / Intermediate).
+    Har bir darajada 1-test bepul, qolganlari premium."""
     u = current_user()
     if u is None:
         return jsonify({"ok": False, "error": "auth"}), 401
@@ -1551,16 +1552,21 @@ RATING_TABLE = {
 
 def _prep_audio(data, mime_type):
     try:
-        if (mime_type or "").startswith("audio/wav") or data[:4] == b"RIFF":
-            import io
-            import wave
+        if not ((mime_type or "").startswith("audio/wav") or data[:4] == b"RIFF"):
+            return data, mime_type
+        import io
+        import wave
+        w = wave.open(io.BytesIO(data), "rb")
+        sr = w.getframerate()
+        ch = w.getnchannels()
+        sw = w.getsampwidth()
+        frames = w.readframes(w.getnframes())
+        w.close()
+        try:
             import audioop
-            w = wave.open(io.BytesIO(data), "rb")
-            sr = w.getframerate()
-            ch = w.getnchannels()
-            sw = w.getsampwidth()
-            frames = w.readframes(w.getnframes())
-            w.close()
+        except ImportError:
+            audioop = None
+        if audioop is not None:
             if sw != 2:
                 frames = audioop.lin2lin(frames, sw, 2)
             if ch > 1:
@@ -1575,30 +1581,107 @@ def _prep_audio(data, mime_type):
             w2.writeframes(frames)
             w2.close()
             return buf.getvalue(), "audio/wav"
+        # Pure-Python fallback (no audioop; e.g. Python 3.13+)
+        import array
+        a = _to_int16(frames, sw)
+        if ch > 1:
+            a = a[0::ch]
+        if sr > 16000:
+            factor = max(2, int(round(float(sr) / 16000.0)))
+            a = a[::factor]
+        buf2 = io.BytesIO()
+        w3 = wave.open(buf2, "wb")
+        w3.setnchannels(1)
+        w3.setsampwidth(2)
+        w3.setframerate(min(16000, sr))
+        w3.writeframes(a.tobytes())
+        w3.close()
+        return buf2.getvalue(), "audio/wav"
     except Exception:
         pass
     return data, mime_type
 
 
+def _to_int16(frames, sw):
+    import array
+    if sw == 2:
+        a = array.array("h")
+        a.frombytes(frames)
+        return a
+    if sw == 1:
+        b = array.array("B")
+        b.frombytes(frames)
+        return array.array("h", ((v - 128) << 8 for v in b))
+    if sw == 4:
+        x = array.array("i")
+        x.frombytes(frames)
+        return array.array("h", (v >> 16 for v in x))
+    raise ValueError("unsupported sample width: %s" % sw)
+
+
 def ai_score(audio_bytes, mime_type, question, part="1.1"):
     audio_bytes, mime_type = _prep_audio(audio_bytes, mime_type)
-    # Gemini is the primary AI path: it transcribes audio natively (no separate
-    # STT call) and is currently the working provider. Groq is used as fallback.
+    # Transcribe once with Groq whisper (reliable, free), then score the
+    # transcript with the first available free LLM provider in the chain:
+    # Groq LLM -> Z.ai (GLM) -> NVIDIA NIM. Gemini (audio-native) is the final
+    # fallback and can work even if Groq STT is unavailable.
+    transcript = _stt_groq(audio_bytes, mime_type)
+    if transcript:
+        for prov in _llm_providers():
+            if not prov["api_key"]:
+                continue
+            result, err = _score_transcript(transcript, question, part, prov)
+            if result is not None:
+                log.info("Scored via %s", prov["name"])
+                return _finalize_score(result, part)
+            log.warning("%s LLM failed (%s)", prov["name"], err)
+    else:
+        log.warning("Groq STT produced no transcript")
     result, err = _ai_score_gemini(audio_bytes, mime_type, question, part)
-    if result is None:
-        log.warning("Gemini AI failed (%s) - falling back to Groq", err)
-        result, err = _ai_score_groq(audio_bytes, mime_type, question, part)
     if result is not None:
-        _attach_band(result, part)
-        _attach_cefr(result, part)
-        _sanitize_rewrites(result)
-        errs = result.get("errors")
-        if not isinstance(errs, list):
-            result["errors"] = []
-        else:
-            result["errors"] = [e for e in errs if isinstance(e, dict) and e.get("wrong")][:5]
-        return result, None
+        return _finalize_score(result, part)
     return None, err or "Baholash xizmati vaqtincha band. Iltimos 30 soniyadan keyin qayta urinib ko'ring."
+
+
+def _finalize_score(result, part):
+    _attach_band(result, part)
+    _attach_cefr(result, part)
+    _sanitize_rewrites(result)
+    errs = result.get("errors")
+    if not isinstance(errs, list):
+        result["errors"] = []
+    else:
+        result["errors"] = [e for e in errs if isinstance(e, dict) and e.get("wrong")][:5]
+    return result, None
+
+
+def _llm_providers():
+    return [
+        {
+            "name": "Groq",
+            "base_url": "https://api.groq.com/openai/v1",
+            "api_key": cfg.get("groq_api_key", "").strip(),
+            "model": (cfg.get("groq_llm_model", "") or "qwen/qwen3.8-27b").strip(),
+            "max_tokens": 900,
+            "retries": 6,
+        },
+        {
+            "name": "Z.ai GLM",
+            "base_url": (cfg.get("zai_base_url", "") or "https://api.z.ai/api/paas/v4").rstrip("/"),
+            "api_key": cfg.get("zai_api_key", "").strip(),
+            "model": (cfg.get("zai_model", "") or "glm-4.7-flash").strip(),
+            "max_tokens": 1200,
+            "retries": 4,
+        },
+        {
+            "name": "NVIDIA NIM",
+            "base_url": (cfg.get("nvidia_base_url", "") or "https://integrate.api.nvidia.com/v1").rstrip("/"),
+            "api_key": cfg.get("nvidia_api_key", "").strip(),
+            "model": (cfg.get("nvidia_model", "") or "nvidia/llama-3.1-70b-instruct").strip(),
+            "max_tokens": 1200,
+            "retries": 4,
+        },
+    ]
 
 
 BAND_BY_RATING = [(65, "C1"), (51, "B2"), (37, "B1"), (21, "A2"), (10, "A1")]
@@ -1674,10 +1757,10 @@ def _sanitize_rewrites(result):
         result.pop("rewrites", None)
 
 
-def _ai_score_groq(audio_bytes, mime_type, question, part):
+def _stt_groq(audio_bytes, mime_type):
     key = cfg.get("groq_api_key", "").strip()
     if not key:
-        return None, "Groq API kaliti sozlanmagan"
+        return None
     import requests
     import time as _time
 
@@ -1686,7 +1769,7 @@ def _ai_score_groq(audio_bytes, mime_type, question, part):
             try:
                 r = requests.post(url, headers={"Authorization": "Bearer " + key}, timeout=120, **kwargs)
             except Exception as e:
-                log.error("Groq request error: %s", str(e))
+                log.error("Groq STT request error: %s", str(e))
                 return None
             if r.status_code == 429 and _attempt < retries:
                 wait = 15.0
@@ -1701,7 +1784,7 @@ def _ai_score_groq(audio_bytes, mime_type, question, part):
                             wait = min(float(m.group(1)) + 1.0, 60.0)
                 except Exception:
                     pass
-                log.warning("Groq 429 - retrying in %.0fs", wait)
+                log.warning("Groq STT 429 - retrying in %.0fs", wait)
                 _time.sleep(wait)
                 continue
             return r
@@ -1710,21 +1793,55 @@ def _ai_score_groq(audio_bytes, mime_type, question, part):
     stt_model = (cfg.get("groq_stt_model", "") or "whisper-large-v3-turbo").strip()
     r = _post(
         "https://api.groq.com/openai/v1/audio/transcriptions",
+        retries=5,
         files={"file": ("answer.wav", audio_bytes, mime_type or "audio/wav")},
         data={"model": stt_model},
     )
-    if r is None:
-        return None, "Groq STT bilan bog'lanib bo'lmadi"
-    if r.status_code != 200:
-        log.error("Groq STT error %s: %s", r.status_code, r.text[:300])
-        return None, "Groq STT xatosi (HTTP %s)" % r.status_code
+    if r is None or r.status_code != 200:
+        if r is not None:
+            log.error("Groq STT error %s: %s", r.status_code, r.text[:300])
+        return None
     try:
         transcript = (r.json().get("text") or "").strip()
     except Exception:
         transcript = ""
+    return transcript or None
+
+
+def _score_transcript(transcript, question, part, prov):
+    key = prov["api_key"]
+    if not key:
+        return None, prov["name"] + " API kaliti sozlanmagan"
+    import requests
+    import time as _time
+
+    def _post(url, retries, **kwargs):
+        for _attempt in range(retries + 1):
+            try:
+                r = requests.post(url, headers={"Authorization": "Bearer " + key}, timeout=120, **kwargs)
+            except Exception as e:
+                log.error("%s request error: %s", prov["name"], str(e))
+                return None
+            if r.status_code == 429 and _attempt < retries:
+                wait = 15.0
+                try:
+                    ra = r.headers.get("Retry-After")
+                    if ra:
+                        wait = min(float(ra) + 1.0, 60.0)
+                    else:
+                        import re as _re
+                        m = _re.search(r"try again in ([\d.]+)s", (r.text or "").lower())
+                        if m:
+                            wait = min(float(m.group(1)) + 1.0, 60.0)
+                except Exception:
+                    pass
+                log.warning("%s 429 - retrying in %.0fs", prov["name"], wait)
+                _time.sleep(wait)
+                continue
+            return r
+        return None
 
     rb = RUBRICS.get(part, RUBRICS["1.1"])
-    llm_model = (cfg.get("groq_llm_model", "") or "openai/gpt-oss-20b").strip()
     prompt = (
         "You are a certified Multilevel (CEFR) speaking examiner. "
         "Assess the answer of the student for " + PART_LABEL.get(part, "Part " + part) + " (target level " + rb["level"] + "). "
@@ -1732,15 +1849,15 @@ def _ai_score_groq(audio_bytes, mime_type, question, part):
         "The transcript of the student is: " + transcript + ". "
         "OFFICIAL RUBRIC (scale " + rb["scale"] + "): " + rb["text"] + " "
         "Assess these 5 criteria: vocabulary, grammar, fluency, pronunciation, communicative. "
-        "You only see the transcript (not audio), so infer pronunciation and pausing cautiously. " +
+        "You only see the transcript (not audio): assess pronunciation and fluency from the transcript, and give the student the benefit of the doubt where audio-only features (sound quality) cannot be judged - do not penalize pronunciation purely because you cannot hear it. " +
         ("Each score (overall and each criterion) is a multiple of 0.5 from 0 to 21. " if part == "full" else "Each score (overall and each criterion) is an integer from 0 to " + str(rb["max"]) + ". ") +
-        "Write all comments in Uzbek. "
-        "Find the 3-5 most important grammar or vocabulary mistakes in the transcript and list them in an 'errors' array (empty array if there are no mistakes). "
-        "Each item must be: {\"type\": \"grammar\" or \"vocabulary\", \"wrong\": \"the exact wrong phrase as the student said it\", \"right\": \"the corrected phrase\", \"note\": \"short explanation in Uzbek, max 10 words\"}. "
+        "Write all comments in Uzbek. Keep each comment SHORT (max 12 words). "
+        "Find up to 3 of the most important grammar or vocabulary mistakes in the transcript and list them in an 'errors' array (empty array if there are no mistakes). "
+        "Each item must be: {\"type\": \"grammar\" or \"vocabulary\", \"wrong\": \"the exact wrong phrase as the student said it\", \"right\": \"the corrected phrase\", \"note\": \"short explanation in Uzbek, max 8 words\"}. "
         "Also include 'cefr': the estimated CEFR level of this student's answer as ONE string from A1, A2, B1, B2, C1, C2. "
-        "Also include 'rewrites': rewrite the student's answer into improved versions that demonstrate higher CEFR levels (B1, B2, C1) - same ideas, natural English, not longer than the original. "
+        "Also include 'rewrites': rewrite the student's answer into improved versions that demonstrate higher CEFR levels (B1, B2, C1) - same ideas, natural English, each concise (max 30 words). "
         "In 'rewrites', use null for any level at or below the student's current level. "
-        "Reply with ONLY valid JSON (no markdown), for example: "
+        "Reply with ONLY valid JSON (no markdown) and keep the WHOLE JSON compact, for example: "
         '{"score": 4, "cefr": "B1", '
         '"rewrites": {"b1": "...", "b2": "...", "c1": "..."}, '
         '"vocabulary": {"score": 4, "comment": "soz boyligi keng"}, '
@@ -1749,25 +1866,27 @@ def _ai_score_groq(audio_bytes, mime_type, question, part):
         '"errors": [{"type": "grammar", "wrong": "I go school", "right": "I go to school", "note": "predlog yetishmayapti"}], '
         '"tip": "bitta aniq maslahat"}'
     )
+    url = prov["base_url"].rstrip("/") + "/chat/completions"
     r2 = _post(
-        "https://api.groq.com/openai/v1/chat/completions",
+        url,
+        retries=prov.get("retries", 4),
         json={
-            "model": llm_model,
+            "model": prov["model"],
             "messages": [
                 {"role": "system", "content": "You are a JSON assistant. Reply ONLY with valid JSON. No markdown, no explanation."},
                 {"role": "user", "content": prompt},
             ],
             "temperature": 0,
-            "max_tokens": 3000,
+            "max_tokens": prov.get("max_tokens", 1200),
         },
     )
     if r2 is None:
-        return None, "Groq bilan bog'lanib bo'lmadi"
+        return None, prov["name"] + " bilan bog'lanib bo'lmadi"
     if r2.status_code != 200:
-        log.error("Groq LLM error %s: %s", r2.status_code, r2.text[:300])
+        log.error("%s LLM error %s: %s", prov["name"], r2.status_code, r2.text[:300])
         if r2.status_code == 429:
-            return None, "Groq limiti oshdi (429)"
-        return None, "Groq baholash xatosi (HTTP %s)" % r2.status_code
+            return None, prov["name"] + " limiti oshdi (429)"
+        return None, prov["name"] + " baholash xatosi (HTTP %s)" % r2.status_code
     try:
         content = r2.json()["choices"][0]["message"]["content"]
     except Exception:
@@ -1798,6 +1917,7 @@ def _ai_score_groq(audio_bytes, mime_type, question, part):
     result["transcript"] = transcript
     result["scale"] = rb["scale"]
     result["max"] = rb["max"]
+    result["scored_by"] = prov["name"]
     return result, None
 
 

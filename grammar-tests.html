@@ -190,19 +190,19 @@
       .replace(/"/g, '&quot;').replace(/'/g, '&#39;');
   }
 
-  function bestOf(testNo) {
+  function bestOf(level, testNo) {
     var b = {};
     try { b = JSON.parse(window.localStorage.getItem(STORE_KEY) || '{}'); } catch (e) {}
-    return b[String(testNo)] || null;
+    return b[String(level) + '|' + String(testNo)] || null;
   }
-  function saveBest(testNo, correct, total) {
-    var best = bestOf(testNo);
+  function saveBest(level, testNo, correct, total) {
+    var best = bestOf(level, testNo);
     var pct = total ? Math.round(100 * correct / total) : 0;
     var prevPct = best ? best.pct : -1;
     if (pct > prevPct) {
       var b = {};
       try { b = JSON.parse(window.localStorage.getItem(STORE_KEY) || '{}'); } catch (e) {}
-      b[String(testNo)] = { pct: pct, d: new Date().toISOString().slice(0, 10) };
+      b[String(level) + '|' + String(testNo)] = { pct: pct, d: new Date().toISOString().slice(0, 10) };
       try { window.localStorage.setItem(STORE_KEY, JSON.stringify(b)); } catch (e) {}
     }
   }
@@ -220,6 +220,7 @@
     pickerCard.classList.remove('hidden');
     quizArea.innerHTML = '';
     var lv = levelsFrom();
+    if (!state.level && lv.names.length) state.level = lv.names[0];
     levelChips.innerHTML = lv.names.map(function (l) {
       var active = l === state.level ? ' active' : '';
       return '<button type="button" class="chip' + active + '" data-level="' + esc(l) + '">' + esc(l) + '</button>';
@@ -237,7 +238,7 @@
     var list = lv.map[state.level] || state.tests;
     testChips.innerHTML = list.map(function (t) {
       var active = t.test === state.testNo ? ' active' : '';
-      var best = bestOf(t.test);
+      var best = bestOf(t.level, t.test);
       var bestHtml = best ? '<span class="best">🏆 ' + best.pct + '% · ' + esc(best.d) + '</span>' : '';
       var lock = t.locked ? ' 🔒' : '';
       return '<button type="button" class="chip' + active + (t.locked ? ' locked' : '') + '" data-test="' + t.test + '">Test ' + t.test + lock + bestHtml + '</button>';
@@ -257,7 +258,7 @@
 
     var freeSet = state.tests.filter(function (t) { return t.locked === false; });
     if (freeSet.length && !state.access) {
-      teaser.innerHTML = '✨ <b>Test 1</b> ('.concat(freeSet[0].questions.length, ' ta savol) bepul. Qolgan testlar premium obuna bilan ochiladi.');
+      teaser.innerHTML = '✨ <b>' + esc(freeSet[0].level) + ' — Test 1</b> ('.concat(freeSet[0].questions.length, ' ta savol) bepul. Har bir darajadagi 1-test bepul, qolganlari premium obuna bilan ochiladi.');
     } else {
       teaser.innerHTML = '';
     }
@@ -267,7 +268,7 @@
     quizArea.innerHTML =
       '<div class="card locked-note"><div class="ic">🔒</div>' +
       '<div class="big">Test ' + t.test + ' premium</div>' +
-      '<p>' + esc(t.level) + ' darajadagi Test ' + t.test + ' faqat premium obuna egalari uchun ochiq. Obuna olish orqali barcha 8 testga kirishingiz mumkin.</p>' +
+      '<p>' + esc(t.level) + ' darajadagi Test ' + t.test + ' faqat premium obuna egalari uchun ochiq. Obuna olish orqali barcha 36 testga kirishingiz mumkin.</p>' +
       '<button type="button" class="btn" style="background:linear-gradient(135deg,#d97706,#f59e0b);color:#fff" id="buyBtn">🚀 Obuna sotib olish</button></div>';
     document.getElementById('buyBtn').addEventListener('click', function () {
       if (window.parent && window.parent !== window) { window.parent.postMessage({ type: 'grammar-open-plans' }, '*'); }
@@ -423,9 +424,9 @@
   };
 
   function finishQuiz() {
-    saveBest(state.test.test, state.score, state.total);
+    saveBest(state.test.level, state.test.test, state.score, state.total);
     var pct = Math.round(100 * state.score / state.total);
-    var best = bestOf(state.test.test);
+    var best = bestOf(state.test.level, state.test.test);
     var msg = pct >= 90 ? 'Juda zo\'r! 🌟' : pct >= 70 ? 'Yaxshi natija! 👍' : pct >= 50 ? 'O\'rtacha. Mashq qilishda davom eting 💪' : 'Yana bir bor urinib ko\'ring 🔁';
     var bars = '';
     for (var i = 0; i < state.total; i++) {
