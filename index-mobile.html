@@ -13721,7 +13721,42 @@ homeBtn.addEventListener('click', () => {
           + '<div style="font-size:13px;margin-top:6px;color:#888">Full Mock test yuborganingizda avtomatik saqlanadi</div></div>';
         return;
       }
-      var html = '<div style="display:flex;flex-direction:column;gap:10px">';
+      var summary = '';
+      var sumScore = 0, sumMax = 0, avgPct = 0, evCount = 0;
+      var topRank = 0, topBand = '';
+      var sumRating = 0, ratingCount = 0;
+      var scaleMap = {'1.1':5,'1.2':5,'2':5,'3':6,'full':21};
+      var lvlRank = {'A1':1,'A2':2,'B1':3,'B2':4,'C1':5,'C2':6};
+      var ratingMap = {};
+      var rtData = [[21,75],[20.5,73],[20,71],[19.5,69],[19,67],[18.5,65],[18,64],[17.5,63],[17,61],[16.5,59],[16,57],[15.5,56],[15,54],[14.5,52],[14,51],[13.5,50],[13,49],[12.5,47],[12,46],[11.5,45],[11,43],[10.5,42],[10,40],[9.5,39],[9,38],[8.5,37],[8,35],[7.5,33],[7,32],[6.5,30],[6,29],[5.5,27],[5,26],[4.5,24],[4,23],[3.5,21],[3,19],[2.5,17],[2,15],[1.5,13],[1,11],[0.5,10],[0,0]];
+      for (var t=0;t<rtData.length;t++) ratingMap[String(rtData[t][0])] = rtData[t][1];
+      for (var s=0;s<list.length;s++){
+        var rc = list[s];
+        if (!rc.has_result || rc.score == null) continue;
+        var sm = scaleMap[rc.part] || 5;
+        sumScore += Number(rc.score) || 0;
+        sumMax += sm;
+        avgPct += Math.max(0, Math.min(100, (Number(rc.score) || 0) / sm * 100));
+        var norm21 = Math.min(21, Math.max(0, (Number(rc.score) || 0) / sm * 21));
+        var rat = ratingMap[String(Math.round(norm21 * 2) / 2)];
+        if (rat != null){ sumRating += rat; ratingCount++; }
+        var lv = (rc.cefr || rc.band || '').toUpperCase();
+        if (lvlRank[lv] > topRank){ topRank = lvlRank[lv]; topBand = lv; }
+        evCount++;
+      }
+      if (evCount){
+        avgPct = Math.round(avgPct / evCount);
+        var totalPct = Math.round(sumScore / sumMax * 100);
+        var ratingLine = '';
+        if (ratingCount) ratingLine = '<div style="font-size:15px;font-weight:700;margin-top:2px">Reyting balli: ' + sumRating + ' / ' + (ratingCount * 75) + '</div>';
+        summary = '<div style="background:linear-gradient(135deg,#1d4ed8,#2563eb);border-radius:12px;padding:14px 16px;color:#fff;margin-bottom:12px">'
+          + '<div style="font-size:12px;opacity:.85">📊 Umumiy natija — ' + evCount + ' ta audio baholandi</div>'
+          + '<div style="font-size:22px;font-weight:800;margin-top:2px">Xom ball: ' + sumScore + ' / ' + sumMax + ' · ' + totalPct + '%</div>'
+          + ratingLine
+          + '<div style="font-size:12px;opacity:.9;margin-top:2px">O\'rtacha: ' + avgPct + '% · Eng yuqori daraja: ' + esc(topBand||'—') + '</div>'
+          + '</div>';
+      }
+      var html = summary + '<div style="display:flex;flex-direction:column;gap:10px">';
       for (var i=0;i<list.length;i++){
         var r=list[i];
         var dt = (r.created_at||'').replace('T',' ');
