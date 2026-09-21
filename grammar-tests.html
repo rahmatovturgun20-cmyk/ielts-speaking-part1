@@ -256,9 +256,9 @@
       });
     });
 
-    var freeSet = state.tests.filter(function (t) { return t.locked === false; });
-    if (freeSet.length && !state.access) {
-      teaser.innerHTML = '✨ <b>' + esc(freeSet[0].level) + ' — Test 1</b> ('.concat(freeSet[0].questions.length, ' ta savol) bepul. Har bir darajadagi 1-test bepul, qolganlari premium obuna bilan ochiladi.');
+    var lockedSet = state.tests.filter(function (t) { return t.locked === true; });
+    if (lockedSet.length && !state.access) {
+      teaser.innerHTML = '🔒 Premium obuna bilan barcha qolgan testlar ochiladi.';
     } else {
       teaser.innerHTML = '';
     }

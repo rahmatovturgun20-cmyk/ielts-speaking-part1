@@ -530,7 +530,7 @@ FREEMIUM_FREE_ITEMS = 4        # Part 1.2 / 2 / 3: birinchi 4 rasm/karta/topshir
 FREE_AI_DAILY = 6              # Bepul foydalanuvchi uchun kunlik AI baholash limiti
 FREE_MOCK_USES = 2             # Obunasiz foydalanuvchi uchun bepul full-mock test soni
 REAL_EXAM_FREE_DAYS = 2        # Obunasiz foydalanuvchi uchun eng yangi 2 ta real imtihon kuni to'liq bepul
-FREE_GRAMMAR_TESTS = 1         # Obunasiz foydalanuvchi uchun bepul Grammar Test soni (Test 1)
+FREE_GRAMMAR_TESTS = 1         # (Eski freemium sozlamasi; barcha Grammar testlari endi hamma uchun tekin)
 REAL_EXAM_FREE_DATES = {"2023-01-14", "2023-02-11", "14.01.2023", "11.02.2023"}  # Maxsus bepul sanalar
 SESSION_KICK_GRACE_SECONDS = 3 * 3600  # Boshqa qurilmadan kirilgach eski sessiya yana 3 soat ishlaydi (mock tugatish uchun)
 
@@ -1162,7 +1162,7 @@ def api_real_exams():
 @app.route("/api/grammar-tests")
 def api_grammar_tests():
     """Test Master Grammar testlari (Elementary / Pre-Intermediate / Intermediate).
-    Har bir darajada 1-test bepul, qolganlari premium."""
+    Barcha testlar obuna bo'lgan va bo'lmagan barcha foydalanuvchilar uchun tekin."""
     u = current_user()
     if u is None:
         return jsonify({"ok": False, "error": "auth"}), 401
@@ -1172,14 +1172,6 @@ def api_grammar_tests():
             tests = json.load(f)
     except (OSError, ValueError):
         tests = []
-    if not access:
-        free = set(range(1, FREE_GRAMMAR_TESTS + 1))
-        for t in tests:
-            if t.get("test") in free:
-                t["locked"] = False
-            else:
-                t["locked"] = True
-                t["questions"] = []
     return jsonify({"ok": True, "access": bool(access),
                     "free_tests": FREE_GRAMMAR_TESTS, "tests": tests})
 
