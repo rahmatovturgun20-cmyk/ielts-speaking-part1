@@ -12419,7 +12419,7 @@ homeBtn.addEventListener('click', () => {
     spSubRow.addEventListener('click', function (e) {
       e.stopPropagation();
       closeSettings();
-      if (typeof window.openPlansModal === 'function') { window.openPlansModal(); }
+      openPlansModal();
     });
   }
 
