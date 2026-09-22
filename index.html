@@ -5727,6 +5727,7 @@ function selectPlan(p) {
     openTg(msg);
   }).catch(function(){ openTg(base); });
 }
+window.openPlansModal = openPlansModal;
 function applyFreemium() {
   markFree('groupList', 4, function(){ selGroupStart = 0; selGroupEnd = 3; });
   markFree('picGroupList', 4, function(){ picSelStart = 0; picTotal = 1; });
@@ -12419,7 +12420,7 @@ homeBtn.addEventListener('click', () => {
     spSubRow.addEventListener('click', function (e) {
       e.stopPropagation();
       closeSettings();
-      openPlansModal();
+      if (typeof window.openPlansModal === 'function') { window.openPlansModal(); }
     });
   }
 
