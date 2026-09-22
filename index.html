@@ -10402,26 +10402,47 @@ window.fullAiFeedback = function () {
   fd.append("audio", fullAudioBlob, "full-mock-test.wav");
   fd.append("question", "Full Mock Test - barcha javoblar birga (Part 1.1, 1.2, 2, 3)");
   fd.append("part", "full");
-  var attempts = 0;
-  function doFullAI() {
-    attempts++;
+  var overallTimeout = 600000;
+  var startedAt = Date.now();
+  var tickId = null;
+  function stopTick() { if (tickId) { clearInterval(tickId); tickId = null; } }
+  function showWait(sec) {
+    var until = Date.now() + Math.max(3, sec) * 1000;
+    stopTick();
+    function draw() {
+      var left = Math.max(0, Math.round((until - Date.now()) / 1000));
+      var mm = Math.floor(left / 60), ss = left % 60;
+      box.innerHTML = "<span class='ai-loading'>⏳ AI baholash navbatda…<br><b>Qolgan taxminiy vaqt: " + mm + " daqiqa " + ss + " soniya</b></span>";
+      if (left <= 0) { stopTick(); trySend(1); }
+    }
+    tickId = setInterval(draw, 1000);
+    draw();
+  }
+  function trySend(attempts) {
+    attempts = attempts || 1;
+    if (Date.now() - startedAt >= overallTimeout) { stopTick(); box.innerHTML = "<span class='ai-error'>Juda uzoq davom etdi, qayta urinib ko'ring</span>"; return; }
+    box.innerHTML = "<span class='ai-loading'>⏳ To'liq test baholanmoqda…</span>";
     var ctrl = new AbortController();
-    var timer = setTimeout(function () { ctrl.abort(); }, 600000);
+    var remain = Math.max(10000, overallTimeout - (Date.now() - startedAt));
+    var timer = setTimeout(function () { ctrl.abort(); }, remain);
     fetch("/api/ai/score", { method: "POST", body: fd, signal: ctrl.signal }).then(function (resp) { return resp.json(); }).then(function (d) {
       clearTimeout(timer);
-      if (d && d.ok && d.result) { box.innerHTML = renderAI(d.result); }
-      else { box.innerHTML = "<span class='ai-error'>" + escapeHtml((d && d.error) || "Xatolik yuz berdi") + "</span>"; }
+      if (d && d.ok && d.result) { stopTick(); box.innerHTML = renderAI(d.result); }
+      else if (d && d.queued) { showWait(d.eta_seconds || 30); }
+      else if (d && !d.ok && d.error) { stopTick(); box.innerHTML = "<span class='ai-error'>" + escapeHtml(d.error) + "</span>"; }
+      else { stopTick(); if (attempts < 2) setTimeout(function () { trySend(attempts + 1); }, 2500); else box.innerHTML = "<span class='ai-error'>Xatolik yuz berdi</span>"; }
     }).catch(function (e) {
       clearTimeout(timer);
+      stopTick();
       if (attempts < 2 && e && e.name !== 'AbortError') {
         box.innerHTML = "<span class='ai-loading'>✨ Qayta urinilmoqda…</span>";
-        setTimeout(doFullAI, 2500);
+        setTimeout(function () { trySend(attempts + 1); }, 2500);
       } else {
         box.innerHTML = "<span class='ai-error'>" + (e && e.name === 'AbortError' ? "Juda uzoq davom etdi, qayta urinib ko'ring" : "Server bilan bog'lanishda xatolik") + "</span>";
       }
     });
   }
-  doFullAI();
+  trySend(1);
 }
 
 function renderAI(res) {

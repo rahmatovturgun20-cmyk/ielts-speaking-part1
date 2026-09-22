@@ -12,6 +12,7 @@ import logging
 import os
 import secrets
 import sqlite3
+import threading
 import time
 import traceback
 import urllib.parse
@@ -2060,6 +2061,42 @@ def _ext_for_mime(mime):
     return "wav"
 
 
+# ---- Full-mock AI baholash uchun navbat (taxminiy vaqt bilan) ----
+_AI_MAX_FULL = 2                       # bir vaqtda nechta full eval ishlashi mumkin
+_ai_full_lock = threading.Lock()
+_ai_full_active = 0
+_ai_full_avg_sec = 150.0               # bitta full evalning o'rtacha vaqti (sekund, EWMA)
+
+
+def _ai_full_enter():
+    global _ai_full_active
+    with _ai_full_lock:
+        _ai_full_active += 1
+
+
+def _ai_full_leave():
+    global _ai_full_active
+    with _ai_full_lock:
+        _ai_full_active = max(0, _ai_full_active - 1)
+
+
+def _ai_full_record(dur):
+    global _ai_full_avg_sec
+    if dur <= 0:
+        return
+    _ai_full_avg_sec = round(0.85 * _ai_full_avg_sec + 0.15 * dur, 1)
+
+
+def _ai_full_eta():
+    """Band bo'lsa True, taxminiy kutish (sek). Aks holda (False, 0)."""
+    with _ai_full_lock:
+        a = _ai_full_active
+    if a < _AI_MAX_FULL:
+        return False, 0
+    ahead = a - _AI_MAX_FULL + 1
+    return True, int(round(ahead * _ai_full_avg_sec))
+
+
 def _save_recording(uid, data, mime, part, question, result=None):
     """AI baholovchi jo'natgan audioni diskka + DB ga saqlaydi (takror yozilmaydi)."""
     h = hashlib.sha1(data).hexdigest()
@@ -2111,17 +2148,30 @@ def api_ai_score():
         return api_error("Audio juda katta (max 50MB)")
     mime = (f.content_type or "").split(";")[0].strip() or "audio/wav"
     part = (request.form.get("part") or "1.1").strip()
-    key = _score_cache_key(data, mime, question, part)
-    cached = _score_cache_get(key)
-    if cached is not None:
-        rid = _save_recording(u["id"], data, mime, part, question, cached)
-        return jsonify({"ok": True, "result": cached, "cached": True, "rid": rid})
-    result, err = ai_score(data, mime, question, part)
-    rid = _save_recording(u["id"], data, mime, part, question, result)
-    if err:
-        return api_error(err, 502)
-    _score_cache_set(key, result)
-    return jsonify({"ok": True, "result": result, "rid": rid})
+    is_full = (part == "full")
+    full_started = None
+    if is_full:
+        busy, eta = _ai_full_eta()
+        if busy:
+            return jsonify({"ok": False, "queued": True, "eta_seconds": eta})
+        _ai_full_enter()
+    try:
+        key = _score_cache_key(data, mime, question, part)
+        cached = _score_cache_get(key)
+        if cached is not None:
+            rid = _save_recording(u["id"], data, mime, part, question, cached)
+            return jsonify({"ok": True, "result": cached, "cached": True, "rid": rid})
+        full_started = time.time()
+        result, err = ai_score(data, mime, question, part)
+        rid = _save_recording(u["id"], data, mime, part, question, result)
+        if err:
+            return api_error(err, 502)
+        _score_cache_set(key, result)
+        return jsonify({"ok": True, "result": result, "rid": rid})
+    finally:
+        if is_full:
+            _ai_full_leave()
+            _ai_full_record((time.time() - full_started) if full_started else 0.0)
 
 
 def _recording_row(user, rid):
