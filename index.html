@@ -3721,9 +3721,13 @@ html.dark .ai-loading { color: #94a3b8; }
   #setupCard .action-buttons .btn:hover { animation: none; transform: translateY(-4px); }
   #setupCard .action-buttons .btn-full { background: #2563eb; box-shadow: 0 14px 30px -12px rgba(37, 99, 235, .6); }
   #setupCard .action-buttons .btn-full:hover { box-shadow: 0 20px 44px -12px rgba(37, 99, 235, .7); }
-  #setupCard .action-buttons .btn-past { background: #10b981; box-shadow: 0 14px 30px -12px rgba(16, 185, 129, .65); }
+#setupCard .action-buttons .btn-past { background: #10b981; box-shadow: 0 14px 30px -12px rgba(16, 185, 129, .65); }
+
   #setupCard .action-buttons .btn-past:hover { box-shadow: 0 20px 44px -12px rgba(16, 185, 129, .75); }
 
+  #setupCard .action-buttons #homeShareBtn { background: linear-gradient(135deg, #8b5cf6, #6d28d9); box-shadow: 0 14px 30px -12px rgba(139, 92, 246, .65); }
+
+  #setupCard .action-buttons #homeShareBtn:hover { box-shadow: 0 20px 44px -12px rgba(139, 92, 246, .8); }
   /* Desktop: setup page fills more of the screen */
   @media (min-width: 900px) {
     .container { max-width: min(1500px, 96vw); }
@@ -3944,6 +3948,7 @@ html.dark .ai-loading { color: #94a3b8; }
     <button class="btn btn-full" id="mockBtn">🎯 Start Full Mock Test</button>
     <button type="button" class="btn btn-past" onclick="openRealExams()">📚 Real Past Exams</button>
     <button type="button" class="btn btn-past" id="grammarBtn">📖 Grammar Tests</button>
+    <button type="button" class="btn btn-past" id="homeShareBtn">📤 Saytni ulashish</button>
   </div>
 
   <div style="margin-top:26px;text-align:center;color:var(--muted);font-size:12.5px;opacity:.85;">Made by <strong style="color:var(--primary);font-weight:700;">Turg'un Rahmatov</strong> · <span id="footerYear">2026</span> ©</div>
@@ -12723,6 +12728,15 @@ homeBtn.addEventListener('click', () => {
   if (spShare) spShare.onclick = function () {
     var p = document.getElementById('settingsPanel');
     if (p) p.classList.add('hidden');
+    if (navigator.share) {
+      navigator.share({ title: 'Multilevel Mock Test', text: 'CEFR Speaking imtihoniga bepul tayyorlaning: mock test, model javoblar va AI baholash.', url: window.location.origin + '/' }).catch(function () {});
+    } else {
+      openShareModal();
+    }
+  };
+
+  var homeShareBtn = document.getElementById('homeShareBtn');
+  if (homeShareBtn) homeShareBtn.onclick = function () {
     if (navigator.share) {
       navigator.share({ title: 'Multilevel Mock Test', text: 'CEFR Speaking imtihoniga bepul tayyorlaning: mock test, model javoblar va AI baholash.', url: window.location.origin + '/' }).catch(function () {});
     } else {
