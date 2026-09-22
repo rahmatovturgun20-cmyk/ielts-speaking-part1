@@ -4642,11 +4642,6 @@ html.dark .ai-loading { color: #94a3b8; }
     <span class="sp-label">Yuklab olishlar</span>
   </button>
 
-  <button type="button" id="spShare" class="sp-row" role="menuitem">
-    <span class="sp-ico">📤</span>
-    <span class="sp-label">Saytni ulashish</span>
-  </button>
-
   <hr class="sp-sep">
 
   <div class="sp-profile" id="spProfile">
@@ -13666,19 +13661,6 @@ homeBtn.addEventListener('click', () => {
     e.stopPropagation();
     window._openDownloads();
   };
-  var spShare = document.getElementById('spShare');
-  if (spShare) {
-    spShare.onclick = function (e) {
-      e.stopPropagation();
-      var p = document.getElementById('settingsPanel');
-      if (p) p.classList.add('hidden');
-      if (navigator.share) {
-        navigator.share({ title: 'Multilevel Mock Test', text: 'CEFR Speaking imtihoniga bepul tayyorlaning: mock test, model javoblar va AI baholash.', url: window.location.origin + '/' }).catch(function () {});
-      } else {
-        openShareModalMobile();
-      }
-    };
-  }
   var homeShareBtn = document.getElementById('homeShareBtn');
   if (homeShareBtn) homeShareBtn.onclick = function () {
     if (navigator.share) {
