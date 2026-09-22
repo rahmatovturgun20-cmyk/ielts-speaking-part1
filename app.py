@@ -2062,7 +2062,7 @@ def _ext_for_mime(mime):
 
 
 # ---- Full-mock AI baholash uchun navbat (taxminiy vaqt bilan) ----
-_AI_MAX_FULL = 2                       # bir vaqtda nechta full eval ishlashi mumkin
+_AI_MAX_FULL = 10                       # bir vaqtda nechta full eval ishlashi mumkin
 _ai_full_lock = threading.Lock()
 _ai_full_active = 0
 _ai_full_avg_sec = 150.0               # bitta full evalning o'rtacha vaqti (sekund, EWMA)
