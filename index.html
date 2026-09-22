@@ -3604,7 +3604,8 @@ html.dark .ai-loading { color: #94a3b8; }
   html.dark .sp-profile-phone { color: #94a3b8; }
   .sp-profile-stats { font-size: 11.5px; color: #2563eb; font-weight: 600; }
   html.dark .sp-profile-stats { color: #60a5fa; }
-  .sp-sub { display: flex; align-items: center; gap: 10px; padding: 11px 10px; border-top: 1px solid var(--border); }
+  .sp-sub { display: flex; align-items: center; gap: 10px; padding: 11px 10px; border-top: 1px solid var(--border); cursor: pointer; transition: background .15s; }
+  .sp-sub:hover { background: var(--surface2); }
   .sp-sub-meta { display: flex; flex-direction: column; min-width: 0; flex: 1; }
   .sp-sub-value { font-size: 13px; font-weight: 600; color: inherit; }
   .sp-logout {
@@ -10347,7 +10348,7 @@ window.aiFeedback = function (idx) {
   function doAIRequest() {
     attempts++;
     var ctrl = new AbortController();
-    var timer = setTimeout(function () { ctrl.abort(); }, 300000);
+    var timer = setTimeout(function () { ctrl.abort(); }, 600000);
     fetch("/api/ai/score", { method: "POST", body: fd, signal: ctrl.signal }).then(function (resp) { return resp.json(); }).then(function (d) {
       clearTimeout(timer);
       if (d && d.ok && d.result) { box.innerHTML = renderAI(d.result); }
@@ -10404,7 +10405,7 @@ window.fullAiFeedback = function () {
   function doFullAI() {
     attempts++;
     var ctrl = new AbortController();
-    var timer = setTimeout(function () { ctrl.abort(); }, 300000);
+    var timer = setTimeout(function () { ctrl.abort(); }, 600000);
     fetch("/api/ai/score", { method: "POST", body: fd, signal: ctrl.signal }).then(function (resp) { return resp.json(); }).then(function (d) {
       clearTimeout(timer);
       if (d && d.ok && d.result) { box.innerHTML = renderAI(d.result); }
@@ -12410,6 +12411,15 @@ homeBtn.addEventListener('click', () => {
       if (confirm("Profildan chiqishni xohlaysizmi?")) {
         window.location.href = '/logout';
       }
+    });
+  }
+
+  var spSubRow = document.getElementById('spSubRow');
+  if (spSubRow) {
+    spSubRow.addEventListener('click', function (e) {
+      e.stopPropagation();
+      closeSettings();
+      if (typeof window.openPlansModal === 'function') { window.openPlansModal(); }
     });
   }
 

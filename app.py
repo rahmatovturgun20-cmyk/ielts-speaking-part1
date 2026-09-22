@@ -527,7 +527,6 @@ def has_access(u):
 
 FREEMIUM_FREE_QUESTIONS = 12  # Part 1.1: birinchi 4 guruh (3 tadan savol) bepul
 FREEMIUM_FREE_ITEMS = 4        # Part 1.2 / 2 / 3: birinchi 4 rasm/karta/topshiriq bepul
-FREE_AI_DAILY = 6              # Bepul foydalanuvchi uchun kunlik AI baholash limiti
 FREE_MOCK_USES = 2             # Obunasiz foydalanuvchi uchun bepul full-mock test soni
 REAL_EXAM_FREE_DAYS = 2        # Obunasiz foydalanuvchi uchun eng yangi 2 ta real imtihon kuni to'liq bepul
 FREE_GRAMMAR_TESTS = 1         # (Eski freemium sozlamasi; barcha Grammar testlari endi hamma uchun tekin)
@@ -2101,9 +2100,6 @@ def api_ai_score():
         return api_error("Sessiya tugagan. Iltimos tizimga qayta kiring, so'ng yana 'Baholash' tugmasini bosing.", 401)
     if u["blocked"]:
         return api_error("Hisobingiz bloklangan", 403)
-    if not has_access(u):
-        if rate_limited("ai_free:" + str(u["id"]), limit=FREE_AI_DAILY, window=86400):
-            return api_error("Bepul AI baholash limiti tugadi (" + str(FREE_AI_DAILY) + " ta / kun). To'liq imkoniyat uchun obuna oling.", 429)
     question = (request.form.get("question") or "").strip()
     f = request.files.get("audio")
     if f is None or f.filename == "":
