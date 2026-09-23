@@ -185,6 +185,8 @@ DEFAULT_CONFIG = {
     "groq_api_key": "",
     "groq_stt_model": "whisper-large-v3-turbo",
     "groq_llm_model": "openai/gpt-oss-20b",
+    "openai_api_key": "",
+    "openai_model": "gpt-4o-mini",
     "payme": {"merchant_id": "", "merchant_key": "", "enabled": False},
     "click": {"service_id": "", "merchant_id": "", "merchant_user_id": "", "secret_key": "", "enabled": False},
     "uzum": {"shop_id": "", "service_id": "", "api_key": "", "enabled": False},
@@ -1650,6 +1652,14 @@ def _finalize_score(result, part):
 
 def _llm_providers():
     return [
+        {
+            "name": "OpenAI (GPT)",
+            "base_url": "https://api.openai.com/v1",
+            "api_key": cfg.get("openai_api_key", "").strip(),
+            "model": (cfg.get("openai_model", "") or "gpt-4o-mini").strip(),
+            "max_tokens": 900,
+            "retries": 4,
+        },
         {
             "name": "Groq",
             "base_url": "https://api.groq.com/openai/v1",

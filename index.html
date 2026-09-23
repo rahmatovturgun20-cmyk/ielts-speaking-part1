@@ -4165,7 +4165,7 @@ html.dark .ai-loading { color: #94a3b8; }
 
 
 
-        <div class="group-title">🖼️ Choose a task card — <span style="text-transform:none">1 minute preparation, 2 minutes speaking. Put your images in the part3/ folder as 1.jpg … 31.jpg</span></div>
+        <div class="group-title">🖼️ Choose a task card — <span style="text-transform:none">1 minute preparation, 2 minutes speaking. Put your images in the part3/ folder as 1.jpg … 36.jpg</span></div>
 
 
 
@@ -4827,7 +4827,7 @@ function getSample(q, img) {
 
 
 
-   part3/1.jpg, part3/2.jpg ... part3/31.jpg
+   part3/1.jpg, part3/2.jpg ... part3/36.jpg
 
 
 
@@ -4869,7 +4869,7 @@ const PART3_IMAGES = (function () {
 
 
 
-  for (let i = 1; i <= 31; i++) {
+  for (let i = 1; i <= 36; i++) {
 
 
 
@@ -4917,7 +4917,7 @@ const PART3_IMAGES = (function () {
 
 
 
-   Keyed by image path: 'part3/1.jpg' ... 'part3/31.jpg'
+   Keyed by image path: 'part3/1.jpg' ... 'part3/36.jpg'
 
 
 
@@ -5642,8 +5642,9 @@ let results = [];
         const img = PART3_IMAGES[g.from];
         let body = '';
         if (img) { body += '<img class="gacc-img" src="' + escapeHtml(img) + '" alt="Task ' + (g.from + 1) + '"><div class="gacc-q">' + qstartBtn('p3', g.from) + '</div>'; }
+        const isNew = !g.all && g.from >= 31;
         const card = makeGroupAcc({
-          head: '\uD83D\uDDBC\uFE0F ' + escapeHtml(g.label),
+          head: (isNew ? '\uD83C\uDD95 ' : '\uD83D\uDDBC\uFE0F ') + escapeHtml(g.label),
           count: (g.to - g.from) + ' ta',
           body: body,
           active: g.all,
@@ -5656,6 +5657,7 @@ let results = [];
             co.classList.add('active');
           }
         });
+        if (isNew) { card.classList.add('new'); }
         cards.push(card);
         part3GroupList.appendChild(card);
       });
@@ -5747,7 +5749,8 @@ function markFree(id, freeCount, setDefault) {
         card.classList.add('premium');
         card.classList.remove('free');
         if (label.indexOf('\uD83D\uDD12') === -1 && main) {
-          main.innerHTML = label + ' <span class="prem-badge">\uD83D\uDD12 Premium</span>';
+          var isNewCard = card.classList.contains('new');
+          main.innerHTML = label + ' <span class="prem-badge">\uD83D\uDD12 ' + (isNewCard ? 'New ' : '') + 'Premium</span>';
         }
       } else {
         card.classList.add('free');
