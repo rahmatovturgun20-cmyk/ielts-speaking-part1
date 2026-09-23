@@ -6432,8 +6432,9 @@ let results = [];
         let body = '';
         if (img) { body += '<img class="gacc-img" src="' + escapeHtml(img) + '" alt="Task ' + (g.from + 1) + '"><div class="gacc-q">' + qstartBtn('p3', g.from) + '</div>'; }
         const isNew = !g.all && g.from >= 31;
+        const newBadge = isNew && hasAccess ? ' <span class="prem-badge">New</span>' : '';
         const card = makeGroupAcc({
-          head: (isNew ? '\uD83C\uDD95 ' : '\uD83D\uDDBC\uFE0F ') + escapeHtml(g.label),
+          head: (isNew ? '\uD83C\uDD95 ' : '\uD83D\uDDBC\uFE0F ') + escapeHtml(g.label) + newBadge,
           count: (g.to - g.from) + ' ta',
           body: body,
           active: g.all,
