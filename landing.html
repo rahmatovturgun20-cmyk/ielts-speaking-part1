@@ -305,26 +305,6 @@ fetch('/api/plans').then(function(r){return r.json()}).then(function(plans){
     el.innerHTML = '<p style="text-align:center;color:var(--muted)">Tariflar yaqinda e\'lon qilinadi</p>';
   }
 }).catch(function(){});
-
-function tgLogin(){
-  if(!(window.Telegram && Telegram.WebApp && Telegram.WebApp.initData))return;
-  fetch('/auth/telegram',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({init_data:Telegram.WebApp.initData})})
-    .then(function(r){return r.json()})
-    .then(function(d){
-      if(d.ok){
-        window.location.href='/';
-      } else if(window.location.search.indexOf('tg=1')>=0){
-        var b=document.querySelector('.btn.accent');
-        if(b){b.style.display='none'}
-        var w=document.getElementById('tgLoginErr');
-        if(w)w.style.display='block';
-        if(w)w.textContent=d.error||'Telegram kirishda xatolik. Google bilan urinib ko\'ring.';
-      }
-    }).catch(function(){});
-}
-(function(){
-  if(window.Telegram && Telegram.WebApp && Telegram.WebApp.initData){tgLogin()}
-})();
 </script>
 </body>
 </html>

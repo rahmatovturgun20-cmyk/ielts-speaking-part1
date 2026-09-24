@@ -102,7 +102,7 @@
       <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" style="width:20px;height:20px" aria-hidden="true"><path d="M9.04 15.5l-.37 5.62c.54 0 .77-.23 1.05-.52l2.53-2.42 5.25 3.85c.97.54 1.66.26 1.92-.9L22.9 3.84c.31-1.43-.53-2-1.46-1.66L2.73 10.09c-1.4.53-1.39 1.32-.23 1.7l5.03 1.57 11.66-7.32c.55-.37 1.06-.16.64.2L9.04 15.5z"/></svg>
       Telegram bilan kirish
     </a>
-    <div class="hint" id="tgLoginHint" style="display:none;margin-top:14px">Foydalanuvchi Telegram'dan taniladi — Google kerak emas.</div>
+    <div class="hint" id="tgLoginHint" style="display:none;margin-top:14px"></div>
 
     <a class="btn google" href="/auth/google" style="display:flex">
       <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 48 48"><path fill="#EA4335" d="M24 9.5c3.54 0 6.71 1.22 9.21 3.6l6.85-6.85C35.9 2.38 30.47 0 24 0 14.62 0 6.51 5.38 2.56 13.22l7.98 6.19C12.43 13.72 17.74 9.5 24 9.5z"/><path fill="#4285F4" d="M46.98 24.55c0-1.57-.15-3.09-.38-4.55H24v9.02h12.94c-.58 2.96-2.26 5.48-4.78 7.18l7.73 6c4.51-4.18 7.09-10.36 7.09-17.65z"/><path fill="#FBBC05" d="M10.53 28.59c-.48-1.45-.76-2.99-.76-4.59s.27-3.14.76-4.59l-7.98-6.19C.92 16.46 0 20.12 0 24c0 3.88.92 7.54 2.56 10.78l7.97-6.19z"/><path fill="#34A853" d="M24 48c6.48 0 11.93-2.13 15.89-5.81l-7.73-6c-2.15 1.45-4.92 2.3-8.16 2.3-6.26 0-11.57-4.22-13.47-9.91l-7.98 6.19C6.51 42.62 14.62 48 24 48z"/></svg>
@@ -168,30 +168,24 @@ fetch('/api/config-public').then(function(r){return r.json()}).then(function(c){
 function tgIsInside(){
   try{return !!(window.Telegram && Telegram.WebApp && Telegram.WebApp.initData)}catch(e){return false}
 }
-function tgQuickLogin(){
-  var btn=document.getElementById('tgBtn');
-  if(btn){btn.disabled=true;btn.style.opacity=.6}
-  return fetch('/auth/telegram',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({init_data:Telegram.WebApp.initData})})
-    .then(function(r){return r.json()})
-    .then(function(d){
-      if(d.ok){window.location.href='/'}
-      else{
-        if(btn){btn.disabled=false;btn.style.opacity=1}
-        var h=document.getElementById('tgLoginHint');if(h)h.textContent=d.error||'Telegram kirishda xatolik. Google bilan urinib ko\'ring.';
-      }
-    }).catch(function(){if(btn){btn.disabled=false;btn.style.opacity=1}});
-}
 (function(){
   if(tgIsInside()){
     var btn=document.getElementById('tgBtn');
     if(btn)btn.style.display='flex';
     var h=document.getElementById('tgLoginHint');if(h)h.style.display='block';
-    if(btn)btn.onclick=function(){tgQuickLogin()};
-    var errVisible=window.location.search.indexOf('error=')>=0;
-    var firstVisit=window.location.search.indexOf('tg=1')>=0;
-    if(!errVisible){
-      tgQuickLogin();
-    }
+    if(btn)btn.onclick=function(){
+      if(!window.Telegram||!Telegram.WebApp||!Telegram.WebApp.initData)return;
+      btn.disabled=true;btn.style.opacity=.6;
+      fetch('/auth/telegram',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({init_data:Telegram.WebApp.initData})})
+        .then(function(r){return r.json()})
+        .then(function(d){
+          if(d.ok){window.location.href='/'}
+          else{
+            btn.disabled=false;btn.style.opacity=1;
+            var h=document.getElementById('tgLoginHint');if(h)h.textContent=d.error||'Xatolik';
+          }
+        }).catch(function(){btn.disabled=false;btn.style.opacity=1});
+    };
   }
 })();
 </script>
