@@ -1,4 +1,4 @@
-const CACHE = 'mmt-static-v2';
+const CACHE = 'mmt-static-v3';
 const ASSETS = ['/icon-192.png', '/icon-512.png', '/icon-maskable-512.png', '/manifest.json'];
 
 self.addEventListener('install', (e) => {
