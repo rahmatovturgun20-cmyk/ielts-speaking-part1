@@ -384,6 +384,11 @@ def init_db():
             conn.execute("ALTER TABLE users ADD COLUMN " + _col)
         except sqlite3.OperationalError:
             pass
+    for _col in ("telegram_id TEXT", "telegram_username TEXT"):
+        try:
+            conn.execute("ALTER TABLE users ADD COLUMN " + _col)
+        except sqlite3.OperationalError:
+            pass
     conn.execute("""
     CREATE TABLE IF NOT EXISTS push_subscriptions (
       id INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -933,6 +938,101 @@ def auth_google_callback():
     u = _google_login_session(u)
     log.info("GOOGLE LOGIN OK: uid=%s email=%s", u["id"], email)
     return redirect("/")
+
+
+TELEGRAM_APP_VERSION = "7.8"
+
+
+def telegram_validate_init_data(init_data, bot_token):
+    """Telegram WebApp initData ni HMAC-SHA256 orqali tekshiradi."""
+    if not init_data or not bot_token:
+        return None
+    try:
+        raw_pairs = []
+        for kv in init_data.split("&"):
+            if "=" in kv:
+                k, v = kv.split("=", 1)
+                raw_pairs.append((k, v))
+        provided = ""
+        for k, v in raw_pairs:
+            if k == "hash":
+                provided = v
+                break
+        if not provided:
+            return None
+
+        def calc(pairs):
+            dcs = "\n".join("{}={}".format(k, v) for k, v in sorted(pairs))
+            sk = hmac.new(b"WebAppData", bot_token.encode("utf-8"), hashlib.sha256).digest()
+            return hmac.new(sk, dcs.encode("utf-8"), hashlib.sha256).hexdigest()
+
+        decoded = [(k, urllib.parse.unquote_plus(v)) for k, v in raw_pairs]
+        provided_dec = [v for k, v in decoded if k == "hash"][0]
+        raw_ok = hmac.compare_digest(calc([(k, v) for k, v in raw_pairs if k != "hash"]), provided)
+        dec_ok = hmac.compare_digest(calc([(k, v) for k, v in decoded if k != "hash"]), provided_dec)
+        if not (raw_ok or dec_ok):
+            return None
+
+        params = {k: v for k, v in decoded}
+        auth_date = int(params.get("auth_date", "0"))
+        if time.time() - auth_date > 86400 * 3:
+            return None
+        user = json.loads(params.get("user", "null"))
+        if not isinstance(user, dict) or not user.get("id"):
+            return None
+        return user
+    except Exception:
+        return None
+
+
+@app.route("/auth/telegram", methods=["POST"])
+def auth_telegram():
+    token = cfg.get("telegram_bot_token", "").strip()
+    try:
+        body = request.get_json(silent=True) or {}
+        init_data = (body.get("init_data") or "").strip()
+    except Exception:
+        return api_error("Noto'g'ri so'rov"), 400
+    if not token:
+        return jsonify({"ok": False, "error": "Bot token sozlanmagan"}), 419
+    user = telegram_validate_init_data(init_data, token)
+    if user is None:
+        return jsonify({"ok": False, "error": "Telegram ma'lumoti tasdiqlanmadi"}), 401
+    tg_id = str(user.get("id", "")).strip()
+    if not tg_id:
+        return jsonify({"ok": False, "error": "Telegram ID topilmadi"}), 401
+    first = (user.get("first_name") or "").strip()
+    last = (user.get("last_name") or "").strip()
+    username = (user.get("username") or "").strip()
+    name = (first + (" " + last if last else "")).strip() or username or ("tg_" + tg_id)
+    now = datetime.datetime.now()
+    try:
+        conn = db()
+        u = conn.execute("SELECT * FROM users WHERE telegram_id=? OR phone=?", (tg_id, "tg:" + tg_id)).fetchone()
+        if u is None:
+            gphone = ("tg:" + tg_id)
+            conn.execute(
+                "INSERT INTO users (phone, password_hash, name, created_at, session_token, session_token_at, telegram_id, telegram_username) VALUES (?,?,?,?,?,?,?,?)",
+                (gphone, hash_password(secrets.token_urlsafe(24)), name,
+                 now.isoformat(timespec="seconds"), secrets.token_hex(16),
+                 now.isoformat(timespec="seconds"), tg_id, username))
+            conn.commit()
+            u = conn.execute("SELECT * FROM users WHERE phone=?", (gphone,)).fetchone()
+            conn.close()
+        else:
+            conn.execute("UPDATE users SET telegram_username=? WHERE id=?", (username, u["id"]))
+            conn.commit()
+            conn.close()
+    except sqlite3.Error:
+        log.error("TELEGRAM DB error: %s", traceback.format_exc())
+        return jsonify({"ok": False, "error": "Server xatosi"}), 500
+    if u is None:
+        return jsonify({"ok": False, "error": "Server xatosi"}), 500
+    if u["blocked"]:
+        session.clear()
+        return jsonify({"ok": False, "error": "blocked"}), 403
+    _google_login_session(u)
+    return jsonify({"ok": True, "user_id": u["id"]})
 
 
 @app.route("/auth/register", methods=["POST"])
