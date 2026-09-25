@@ -635,9 +635,309 @@
         "How did the person react to your advice?",
         "Why is giving and receiving advice important in life?"
       ]
+    },
+    {
+      "q": "Describe a memorable journey you have had.",
+      "p": [
+        "Where did you go?",
+        "Who did you go with?",
+        "What did you do there?",
+        "Why was the journey memorable?"
+      ]
+    },
+    {
+      "q": "Describe a positive change in your life.",
+      "p": [
+        "What was the change?",
+        "When did it happen?",
+        "How did it change your life?",
+        "Why was it positive?"
+      ]
+    },
+    {
+      "q": "Describe a competition you would like to take part in.",
+      "p": [
+        "What is the competition?",
+        "What is it about?",
+        "Why would you like to join it?",
+        "How would you prepare for it?"
+      ]
+    },
+    {
+      "q": "Describe a person who gives you interesting ideas and opinions.",
+      "p": [
+        "Who is this person?",
+        "How do you know them?",
+        "What kind of ideas do they give you?",
+        "Why do you find their ideas interesting?"
+      ]
+    },
+    {
+      "q": "Describe your dream job.",
+      "p": [
+        "What is the job?",
+        "Where would you like to work?",
+        "What would you have to do?",
+        "Why is it your dream job?"
+      ]
+    },
+    {
+      "q": "Describe a supermarket you often visit.",
+      "p": [
+        "Where is it?",
+        "What does it look like?",
+        "What do you usually buy there?",
+        "Why do you like visiting it?"
+      ]
+    },
+    {
+      "q": "Describe a movie you watched at the cinema or at home.",
+      "p": [
+        "What was the movie?",
+        "When and where did you watch it?",
+        "What was it about?",
+        "Why did you like or dislike it?"
+      ]
+    },
+    {
+      "q": "Describe your favourite place.",
+      "p": [
+        "Where is it?",
+        "What does it look like?",
+        "What do you do there?",
+        "Why is it your favourite place?"
+      ]
+    },
+    {
+      "q": "Describe an old person you admire.",
+      "p": [
+        "Who is this person?",
+        "How do you know them?",
+        "What do you admire about them?",
+        "Why do you respect them?"
+      ]
+    },
+    {
+      "q": "Describe an unforgettable event from your childhood.",
+      "p": [
+        "What happened?",
+        "When did it happen?",
+        "Who was with you?",
+        "Why do you still remember it?"
+      ]
+    },
+    {
+      "q": "Describe an activity you enjoy doing at the weekend.",
+      "p": [
+        "What is the activity?",
+        "When do you usually do it?",
+        "Who do you do it with?",
+        "Why do you enjoy it?"
+      ]
+    },
+    {
+      "q": "Describe a female leader you admire.",
+      "p": [
+        "Who is she?",
+        "What is she known for?",
+        "What qualities does she have?",
+        "Why do you admire her?"
+      ]
+    },
+    {
+      "q": "Describe an interesting neighbour you know.",
+      "p": [
+        "Who is the person?",
+        "How long have they been your neighbour?",
+        "What makes them interesting?",
+        "Why do you like talking to them?"
+      ]
+    },
+    {
+      "q": "Describe a positive person you know.",
+      "p": [
+        "Who is this person?",
+        "How do you know them?",
+        "What makes them positive?",
+        "How do they influence you?"
+      ]
+    },
+    {
+      "q": "Describe your favourite singer.",
+      "p": [
+        "Who is the singer?",
+        "What kind of music do they make?",
+        "When did you start listening to them?",
+        "Why do you like them?"
+      ]
+    },
+    {
+      "q": "Describe an event when you helped someone.",
+      "p": [
+        "Who did you help?",
+        "What problem did they have?",
+        "What did you do to help them?",
+        "How did you feel afterwards?"
+      ]
+    },
+    {
+      "q": "Describe a piece of equipment that you have a lot of.",
+      "p": [
+        "What is it?",
+        "How many do you have?",
+        "What do you use it for?",
+        "Why do you have so many of them?"
+      ]
+    },
+    {
+      "q": "Describe a place that you have visited.",
+      "p": [
+        "Where is it?",
+        "When did you visit it?",
+        "What did you do there?",
+        "What did you like about the place?"
+      ]
+    },
+    {
+      "q": "Describe a useful conversation you had with somebody.",
+      "p": [
+        "Who did you talk to?",
+        "When did you have the conversation?",
+        "What did you talk about?",
+        "Why was the conversation useful?"
+      ]
+    },
+    {
+      "q": "Describe an English lesson you remember well.",
+      "p": [
+        "When did you have the lesson?",
+        "Who taught it?",
+        "What did you learn?",
+        "Why do you remember it?"
+      ]
+    },
+    {
+      "q": "Describe a TV programme you enjoy watching.",
+      "p": [
+        "What is the programme?",
+        "What is it about?",
+        "When do you usually watch it?",
+        "Why do you enjoy it?"
+      ]
+    },
+    {
+      "q": "Describe some books you have at home.",
+      "p": [
+        "What kinds of books are they?",
+        "How did you get them?",
+        "Which one do you like most?",
+        "Why do you keep them at home?"
+      ]
+    },
+    {
+      "q": "Describe a letter or email you received.",
+      "p": [
+        "Who sent it?",
+        "When did you receive it?",
+        "What was it about?",
+        "How did you feel when you received it?"
+      ]
+    },
+    {
+      "q": "Describe a shopping experience you remember.",
+      "p": [
+        "Where did you go shopping?",
+        "What did you buy?",
+        "Who did you go with?",
+        "Why do you remember the experience?"
+      ]
+    },
+    {
+      "q": "Describe a lucky experience you have had.",
+      "p": [
+        "What happened?",
+        "When did it happen?",
+        "Who was with you?",
+        "Why do you consider yourself lucky?"
+      ]
+    },
+    {
+      "q": "Describe a beautiful place to visit in your country.",
+      "p": [
+        "Where is it?",
+        "What does it look like?",
+        "What can people do there?",
+        "Why do you recommend visiting it?"
+      ]
+    },
+    {
+      "q": "Describe a new food that you tried to prepare.",
+      "p": [
+        "What was the food?",
+        "Why did you decide to prepare it?",
+        "How did you prepare it?",
+        "How did you feel about the result?"
+      ]
+    },
+    {
+      "q": "Describe your favourite season.",
+      "p": [
+        "Which season is it?",
+        "What is the weather like?",
+        "What do you usually do during this season?",
+        "Why is it your favourite season?"
+      ]
+    },
+    {
+      "q": "Describe a historical building you know.",
+      "p": [
+        "What is the building?",
+        "Where is it?",
+        "What does it look like?",
+        "Why is it important?"
+      ]
+    },
+    {
+      "q": "Describe a time when someone thanked you.",
+      "p": [
+        "Who thanked you?",
+        "What did you do for them?",
+        "When did it happen?",
+        "How did you feel when they thanked you?"
+      ]
     }
   ],
   "PART2_SAMPLES": {
+    "Describe a memorable journey you have had.": "Right, I would like to talk about a memorable journey to Samarkand two years ago. I went there with my older sister for four days during the summer holidays. We visited Registan, walked through the old streets, tried local food and took a long train ride through the countryside. The journey became memorable because my sister and I had never spent so much time together without our phones, and the beautiful architecture made me feel proud of my country.",
+    "Describe a positive change in your life.": "One positive change in my life was becoming much more organised. It happened in my first year at university, when I started using a weekly planner and studying at a fixed time every day. As a result, I stopped leaving assignments until the last minute and felt calmer before exams. I consider this change positive because it gave me more free time and much greater confidence in my abilities.",
+    "Describe a competition you would like to take part in.": "The competition I would like to take part in is an international English speaking competition for university students. It is about presenting a short speech on a social topic and answering questions from experienced judges. I would like to join because it would help me improve my pronunciation, confidence and ability to think quickly in English. I would prepare by studying past topics, recording my answers every day and practising with friends and teachers.",
+    "Describe a person who gives you interesting ideas and opinions.": "A person who gives me interesting ideas and opinions is my older cousin, who works as a journalist. I know him very well because he grew up with me, although he is several years older. He always encourages me to question common assumptions and look at events from different points of view. I find his ideas interesting because they are clear, balanced and often make me see ordinary problems in a completely new way.",
+    "Describe your dream job.": "My dream job is to be an English teacher who works with children in a modern school near my hometown. I would prepare colourful lessons, explain difficult grammar simply and organise activities that make students want to speak. I would also need to plan lessons, check pupils' progress and communicate with parents. I consider it my dream job because teaching is a combination of my favourite subjects, language and people, and I would love to help children gain confidence.",
+    "Describe a supermarket you often visit.": "There is a large supermarket about ten minutes from my home. It is bright and spacious, with long rows of shelves, fresh fruit and vegetables, a bakery section and helpful staff. I usually buy bread, milk, vegetables, fruit, rice and household items there. I like visiting it because everything is in one place, the prices are reasonable and the quality is usually reliable, which makes weekly shopping quick and convenient.",
+    "Describe a movie you watched at the cinema or at home.": "I would like to talk about The Green Knight, which I watched at a cinema with my cousin last winter. It was about a medieval knight who had to complete a strange journey and prove his courage. I liked the film because the scenery was beautiful and the story was mysterious without being too complicated. The large screen and excellent music also made the experience more exciting than watching it at home.",
+    "Describe your favourite place.": "My favourite place is a small park beside the river in my hometown. It has tall trees, green grass, benches and a narrow path where people walk in the evening. I usually read a book, talk with friends or simply sit and watch the sunset. I love this place because it is peaceful, easy to reach and always makes me feel relaxed after a busy day.",
+    "Describe an old person you admire.": "The old person I admire most is my grandmother, who is seventy-eight years old. I know her very well because she has lived with our family my entire life. I admire her patience, honesty and incredible ability to remain calm when life becomes difficult. I respect her because she has never complained about hardship and has always offered practical help to anyone who needs it.",
+    "Describe an unforgettable event from your childhood.": "An unforgettable event from my childhood happened when I was eight years old. Our house was flooded during a heavy storm, and the water reached the first floor. I was with my parents and younger sister, and we spent the night helping neighbours move their belongings to safety. I still remember it because it was frightening, but our family worked together and nobody was harmed.",
+    "Describe an activity you enjoy doing at the weekend.": "The activity I enjoy doing at the weekend is cycling with my friends. We usually ride along the river on Saturday morning, usually for two or three hours. We stop at small tea shops and take photos when the weather is good. I enjoy it because it helps me relax, improves my fitness and gives me a chance to spend time with people I care about outside the classroom.",
+    "Describe a female leader you admire.": "A female leader I admire is Malala Yousafzai, the Pakistani education activist. She is known for defending girls' right to receive an education, even after being targeted for her beliefs. She is brave, patient and intelligent, and she continues to speak publicly about an issue that is extremely important. I admire her because she risked her safety for something she believed in and inspired young people around the world to stand up for their rights.",
+    "Describe an interesting neighbour you know.": "An interesting neighbour I know is Mr Karim, a retired engineer who has lived in the flat next to mine for about eight years. He is always ready to explain how everyday objects work, and he once repaired our old radio for free. What makes him interesting is his enormous general knowledge and his good sense of humour. I like talking to him because every conversation feels like a relaxed lesson.",
+    "Describe a positive person you know.": "A positive person I know is my aunt, who is a primary-school teacher. I have known her my whole life, and she is always cheerful, patient and willing to help. She stays positive even when her plans change, and she encourages everyone around her instead of complaining. She influences me by showing that optimism is not about ignoring problems, but about finding a constructive way to deal with them.",
+    "Describe your favourite singer.": "My favourite singer is Ulugbek Rahmatullaev, an Uzbek artist who makes warm modern pop music with beautiful melodies. I started listening to him when I was about fifteen, after a friend recommended one of his songs. I like his music because the lyrics talk about real feelings and the melodies are easy to remember. Listening to him often makes me feel relaxed and connected to my culture.",
+    "Describe an event when you helped someone.": "I once helped my younger cousin prepare for an important English exam. He had forgotten most of the grammar topics and was extremely nervous about the speaking test. I explained the difficult rules, made short practice dialogues with him and recorded his answers so we could correct his pronunciation. He passed the exam with a good result, and I felt proud and happy afterwards because I had given him useful support when he needed it.",
+    "Describe a piece of equipment that you have a lot of.": "A piece of equipment I have a lot of is a pen. I have approximately twenty different pens in several drawers, although I usually need only one at a time. I use them for university notes, revision, writing plans and filling out forms. I have so many because pens disappear easily around my family, and I like having one available for every subject, colour and purpose.",
+    "Describe a place that you have visited.": "I would like to describe a place I visited last autumn: the historic city of Bukhara. I went there with two friends for four days, and we visited the old fortress, walked through narrow markets and watched traditional musicians in the evening. I liked the place because it combined beautiful architecture with a warm atmosphere, and every street seemed to tell a story about Uzbek history. I would love to return there one day.",
+    "Describe a useful conversation you had with somebody.": "A useful conversation I had was with my university tutor at the end of my first year. We met in her office and talked about my future studies, my strengths and the subjects I found difficult. She suggested that I take some practical language courses and explained how they could help me find a better job. The conversation was useful because it gave me a clear plan and made me feel confident about making a decision.",
+    "Describe an English lesson you remember well.": "I remember an English lesson from my first year at university very well. Our teacher organised a role-play in which students had to act as travellers solving problems at an airport. I learned useful expressions for asking for information and explaining a situation, and I also became less afraid of speaking spontaneously. I remember the lesson because it was interactive and I successfully handled a difficult conversation without looking at my notes.",
+    "Describe a TV programme you enjoy watching.": "A TV programme I enjoy watching is Our Planet, a documentary series about wildlife and natural environments. It is about animals, oceans, forests and the challenges they face because of human activity. I usually watch an episode on Saturday evening after dinner. I enjoy it because the photography is beautiful, the narration is calm and it gives me useful knowledge without making me feel stressed.",
+    "Describe some books you have at home.": "I have different kinds of books at home, including novels, textbooks, biographies and a few books about science and travel. Some were given to me by relatives, others were bought at second-hand markets, and my university books came from the library. My favourite is a novel with an exciting story because I enjoy spending time with its characters. I keep all of them at home because books help me relax and learn, and I do not want to lose my favourite stories.",
+    "Describe a letter or email you received.": "I received an email from my aunt last summer, when she was travelling abroad. She wrote to tell me that she had safely arrived and that my cousin was going to visit her during the summer holidays. The message was full of photographs and descriptions of the places she had seen. I felt relieved and excited because I had been worried about her long journey, and the email made me feel close to her.",
+    "Describe a shopping experience you remember.": "A shopping experience I remember clearly was my first large supermarket trip without my parents. I went with my older sister and bought ingredients for a family dinner, including vegetables, meat, rice and a cake. We compared prices, chose the freshest products and carried everything home ourselves. I remember it because it was a small but important step towards becoming more independent, and we laughed a lot while cooking together.",
+    "Describe a lucky experience you have had.": "A lucky experience I had was finding a traveller's passport on a bus and being able to return it to its owner before she left the station. It happened last spring, when I was travelling home with my cousin. I noticed the passport on the seat and noticed that the owner was panicking. I was lucky because I could help her avoid a serious problem, and the whole situation reminded me that small acts of kindness can make a big difference.",
+    "Describe a beautiful place to visit in your country.": "A beautiful place I would recommend visiting in my country is the Chimgan region. It is a mountainous area with green slopes, clear rivers, pine forests and dramatic peaks. People can hike, ride horses, visit small villages and breathe fresh air far from the noise of the city. I recommend it because the scenery is genuinely beautiful and it offers both adventure and peaceful places to relax.",
+    "Describe a new food that you tried to prepare.": "A new food I tried to prepare was lasagna. I decided to make it because I had watched a cooking video and wanted to practise a more difficult recipe. I first prepared the meat and vegetables, then layered them with pasta, sauce and cheese, and baked the dish for about forty minutes. The result was not perfect, but it tasted delicious, and I felt proud because I had created something completely new.",
+    "Describe your favourite season.": "My favourite season is summer. The weather is usually warm and sunny, with long bright days and occasional cool evenings. During this season, I spend more time outside with friends, go cycling, visit relatives and sometimes study near a park or by a window. I love summer because I can enjoy fresh air and activities after the busy school year.",
+    "Describe a historical building you know.": "A historical building I know is the Registan complex in Samarkand. It is in the centre of the city and is famous for its magnificent blue-tiled buildings, tall gateways and old minarets. It looks impressive because every surface is covered with detailed patterns and colours that have lasted for centuries. It is important as a historic landmark and as part of Uzbekistan's cultural identity.",
+    "Describe a time when someone thanked you.": "A time when someone thanked me was during my first year at university, when I helped a new student find the correct classroom before an important lecture. I noticed that she looked worried and offered to walk with her, even though I was also late. We reached the room just as the teacher started, and she thanked me at the door and later sent me a message. I felt happy because my small act of kindness had made someone's day easier.",
     "Talk about a time when you had to make a difficult decision.": "Right, I would like to talk about a genuinely difficult decision I had to make a couple of years ago. After finishing school, I was offered a place at a university in the capital, which meant leaving my hometown, my family and all my childhood friends behind. On the other hand, I had a comfortable option to stay closer to home, where I knew everybody, but the choice of subjects there was much narrower. Honestly, it was one of the hardest choices of my life. When I think about how I evaluated the possible outcomes, I remember making three lists — one for the advantages, one for the drawbacks and one for the risks. I also talked to my parents and to a couple of students who were already studying there. What really helped was visualising myself five years in the future and asking which path I would regret less in the long run. It became clear that staying comfortable was tempting, but it would probably limit my opportunities later. In the end, I decided to move, and looking back, I am certain I made the right call. The course turned out to be exactly what I needed, I met wonderful people and I grew up a lot in the process. So yes, would I make the same decision again? Absolutely, without a second thought — even though it was frightening, it was probably the single most important step of my life so far.",
     "Describe a time when you made an important decision.": "I would like to describe a time when I made an important decision — the moment I chose what career to pursue. For a long time I was torn between studying law, which my parents considered reliable, and pursuing languages, which was my real passion. It felt like choosing between security and happiness, and the pressure was quite heavy. As for the factors that influenced my choice, there were three main ones. First, my own interest — I realised that I could spend hours reading about languages without feeling tired, which was never the case with law books. Second, the advice of my English teacher, who told me that a career built on what you love will always feel like less work. And third, the job market, because nowadays being fluent in foreign languages opens doors in almost every field, from tourism to IT. How did I feel after making the decision? Honestly, relieved, but also a little scared, because I was going against the expectations of some relatives. However, once the academic year started and I genuinely enjoyed every lecture, any doubt simply disappeared. Today I can confidently say that choosing my passion was the right decision, and it has already started to pay off in my studies and my part-time work.",
     "Describe a situation when you faced a dilemma.": "I remember a real dilemma I faced in my second year of university. I had been offered a scholarship to study abroad for one year, which was an incredible opportunity, but at the same time, my grandmother was seriously ill and my family really needed my support at home. So I had two options in front of me, and both of them were pulling my heart in opposite directions. Why was it so hard to choose? Well, the scholarship was a golden ticket — it would give me a world-class education, international experience and valuable connections for my future career. But leaving my family at that moment felt impossible, because I knew how much my presence meant to them. I spent nights weighing the pros and cons, and every time I made a decision, I changed my mind within a few hours. How did I feel once I resolved the dilemma? I eventually chose to stay, and I cannot say it was easy. Part of me felt I had missed a once-in-a-lifetime chance. But when my grandmother recovered, and I saw how grateful my family was, something inside me calmed down. I understood that I had made the choice with my heart, and there is no rule that says every dilemma has to have a perfect answer. To this day I believe it was the right decision for that particular moment.",
@@ -1548,8 +1848,8 @@
     "SAMPLES": 209,
     "PART12_SETS": 51,
     "PART12_SAMPLES": 51,
-    "PART2_CARDS": 41,
-    "PART2_SAMPLES": 41,
+    "PART2_CARDS": 71,
+    "PART2_SAMPLES": 71,
     "PART3_SAMPLES": 31,
     "PART3_IMAGES": 31
   },
