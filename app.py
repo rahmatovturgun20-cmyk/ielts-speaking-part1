@@ -245,7 +245,7 @@ app.config["SESSION_COOKIE_HTTPONLY"] = True
 app.config["SESSION_COOKIE_SAMESITE"] = "Lax"
 app.config["SESSION_COOKIE_SECURE"] = True
 app.config["PERMANENT_SESSION_LIFETIME"] = datetime.timedelta(days=7)
-app.config["MAX_CONTENT_LENGTH"] = 50 * 1024 * 1024
+app.config["MAX_CONTENT_LENGTH"] = 100 * 1024 * 1024
 
 
 # ---- Error handlers ----
@@ -698,6 +698,49 @@ def logout():
     return redirect("/")
 
 
+# ---------------- TTS (server-side ovoz) ----------------
+_TTS_CACHE = {}
+_TTS_CACHE_LOCK = threading.Lock()
+
+
+def _fetch_tts_audio(text, voice):
+    """Google TTS => MP3 olib keladi, xato bo'lsa None qaytaradi."""
+    try:
+        url = "https://translate.google.com/translate_tts?ie=UTF-8&tl=en&client=tw-ob&q=" + urllib.parse.quote(text)
+        req = urllib.request.Request(url, headers={"User-Agent": "Mozilla/5.0"})
+        with urllib.request.urlopen(req, timeout=15) as r:
+            data = r.read()
+        if data and (data[:3] == b"ID3" or len(data) > 100):
+            return data
+    except Exception as e:
+        log.debug("TTS google xatosi: %s", str(e))
+    return None
+
+
+@app.route("/tts")
+def tts():
+    text = (request.args.get("q") or "").strip()
+    voice = (request.args.get("v") or "Amy").strip()
+    if not text or len(text) > 200:
+        return abort(400)
+    key = (voice, text)
+    with _TTS_CACHE_LOCK:
+        data = _TTS_CACHE.get(key)
+    if data is None:
+        data = _fetch_tts_audio(text, voice)
+        if data:
+            with _TTS_CACHE_LOCK:
+                if len(_TTS_CACHE) > 500:
+                    _TTS_CACHE.clear()
+                _TTS_CACHE[key] = data
+    if not data:
+        return "", 502
+    resp = make_response(data)
+    resp.headers["Content-Type"] = "audio/mpeg"
+    resp.headers["Cache-Control"] = "public, max-age=86400"
+    return resp
+
+
 @app.route("/qa")
 def dev_quick_login():
     host = (request.host or "").lower()
@@ -804,7 +847,7 @@ def google_redirect_uri():
     host = (request.host or "").lower()
     if "localhost" in host or host.startswith("127.") or host.startswith("0.0.0.0"):
         base = request.host_url.rstrip("/")
-    return base + "/auth/google/callback"
+    return base + "/auth/google/"
 
 
 def _post_form_json(url, data, headers=None):
@@ -858,7 +901,7 @@ def auth_google():
     return redirect(GOOGLE_AUTH_URL + "?" + urllib.parse.urlencode(params))
 
 
-@app.route("/auth/google/callback")
+@app.route("/auth/google/")
 def auth_google_callback():
     if not google_configured():
         return redirect("/paywall?error=google&msg=Google+kirish+hali+sozlanmagan")
@@ -1644,6 +1687,26 @@ RATING_TABLE = {
 }
 
 
+PREP_RATE = 16000
+PREP_SMALL_RATE = 8000
+# STT limitlaridan (Gemini inline 20MB, Groq 25MB) xavfsiz chegara
+PREP_MAX_BYTES = 10 * 1024 * 1024
+
+
+def _wav_bytes(pcm, rate):
+    """16-bit mono PCM ni WAV konteyneriga yozadi."""
+    import io
+    import wave
+    buf = io.BytesIO()
+    w = wave.open(buf, "wb")
+    w.setnchannels(1)
+    w.setsampwidth(2)
+    w.setframerate(rate)
+    w.writeframes(pcm)
+    w.close()
+    return buf.getvalue()
+
+
 def _prep_audio(data, mime_type):
     try:
         if not ((mime_type or "").startswith("audio/wav") or data[:4] == b"RIFF"):
@@ -1665,32 +1728,31 @@ def _prep_audio(data, mime_type):
                 frames = audioop.lin2lin(frames, sw, 2)
             if ch > 1:
                 frames = audioop.tomono(frames, 2, 0.5, 0.5)
-            if sr != 16000:
-                frames, _ = audioop.ratecv(frames, 2, 1, sr, 16000, None)
-            buf = io.BytesIO()
-            w2 = wave.open(buf, "wb")
-            w2.setnchannels(1)
-            w2.setsampwidth(2)
-            w2.setframerate(16000)
-            w2.writeframes(frames)
-            w2.close()
-            return buf.getvalue(), "audio/wav"
+            if sr != PREP_RATE:
+                frames, _ = audioop.ratecv(frames, 2, 1, sr, PREP_RATE, None)
+                sr = PREP_RATE
+            out = _wav_bytes(frames, PREP_RATE)
+            if len(out) <= PREP_MAX_BYTES:
+                return out, "audio/wav"
+            # Juda uzun yozuv (to'liq mock test) - 8 kHz ga tushiramiz
+            small, _ = audioop.ratecv(frames, 2, 1, PREP_RATE, PREP_SMALL_RATE, None)
+            return _wav_bytes(small, PREP_SMALL_RATE), "audio/wav"
         # Pure-Python fallback (no audioop; e.g. Python 3.13+)
-        import array
         a = _to_int16(frames, sw)
         if ch > 1:
             a = a[0::ch]
-        if sr > 16000:
-            factor = max(2, int(round(float(sr) / 16000.0)))
+        if sr > PREP_RATE:
+            factor = max(2, int(round(float(sr) / PREP_RATE)))
             a = a[::factor]
-        buf2 = io.BytesIO()
-        w3 = wave.open(buf2, "wb")
-        w3.setnchannels(1)
-        w3.setsampwidth(2)
-        w3.setframerate(min(16000, sr))
-        w3.writeframes(a.tobytes())
-        w3.close()
-        return buf2.getvalue(), "audio/wav"
+            sr = max(1, sr // factor)   # sarlavha haqiqiy chastotani ko'rsatsin
+        out = _wav_bytes(a.tobytes(), min(PREP_RATE, sr))
+        if len(out) <= PREP_MAX_BYTES:
+            return out, "audio/wav"
+        # Juda uzun yozuv (to'liq mock test) - 8 kHz ga tushiramiz
+        if sr > PREP_SMALL_RATE:
+            a = a[::2]
+            sr = sr // 2
+        return _wav_bytes(a.tobytes(), sr), "audio/wav"
     except Exception:
         pass
     return data, mime_type
@@ -1713,18 +1775,226 @@ def _to_int16(frames, sw):
     raise ValueError("unsupported sample width: %s" % sw)
 
 
+# ---- Nutqni aniqlash: jimlik / juda qisqa audio ----
+# Brauzer har doim audio/wav yuboradi va _prep_audio uni 16 kHz mono PCM'ga
+# o'giradi, shuning uchun quyidagi tekshiruv ishonchli ishlaydi.
+SILENCE_PEAK = 200             # 16-bit PCM da mutlaq jimlik chegarasi
+VAD_NOISE_FLOOR = 30            # kadrlar shundan past bo'lsa shovqin hisoblanadi
+SILENCE_VOICED_RATIO = 0.08    # kamida shuncha ulush kadrlar ovozli bo'lishi kerak
+MIN_ANSWER_SECONDS = 0.6       # bitta to'liq javob ham bundan qisqa bo'lmaydi
+VAD_FRAME_MS = 25
+VAD_HOP_MS = 10
+VAD_MAX_FRAMES = 4000          # juda uzun audioni tahlil qilish vaqti cheklansin
+
+
+def _speech_metrics(audio_bytes, mime_type):
+    """WAV audini ochib (davomiylik, peak, ovozli kadrlar ulushi) qaytaradi.
+    Decode qilinmaydigan formatda None qaytaradi."""
+    try:
+        import io
+        import wave
+        w = wave.open(io.BytesIO(audio_bytes), "rb")
+        sr = w.getframerate()
+        ch = w.getnchannels()
+        sw = w.getsampwidth()
+        n = w.getnframes()
+        frames = w.readframes(n)
+        w.close()
+        samples = _to_int16(frames, sw)
+    except Exception:
+        return None
+    if not sr or n <= 0 or not len(samples):
+        return None
+    if ch > 1:
+        samples = samples[0::ch]
+    hi = max(samples)
+    lo = min(samples)
+    peak = hi if hi > -lo else -lo
+    step = max(1, int(sr * VAD_FRAME_MS / 1000))
+    hop = max(1, int(sr * VAD_HOP_MS / 1000))
+    if len(samples) > step:
+        total = (len(samples) - step) // hop + 1
+        if total > VAD_MAX_FRAMES:
+            hop = hop * (total // VAD_MAX_FRAMES + 1)
+    rms = []
+    zcr = []
+    for i in range(0, len(samples) - step + 1, hop):
+        chunk = samples[i:i + step]
+        acc = 0
+        cross = 0
+        last = None
+        for v in chunk:
+            acc += v * v
+            if last is not None and (last < 0) != (v < 0):
+                cross += 1
+            last = v
+        rms.append((acc / len(chunk)) ** 0.5)
+        zcr.append(cross * float(sr) / len(chunk))
+    if not rms:
+        return {"duration": 0.0, "peak": peak, "voiced": 0.0, "steady": True, "frames": 0}
+    ordered = sorted(rms)
+    floor = ordered[min(len(ordered) - 1, int(len(ordered) * 0.1))]
+    top = max(rms)
+    # Nisbiy chegara: doimiy ovozli haqiqiy nutq ham "ovozli" qoladi,
+    # jimlik esa "ovozsiz" bo'lib qoladi. Mutlaq chegara past qo'yiladi,
+    # aks holda juda sekin gapiruvchilar rad etilardi.
+    thresh = max(float(VAD_NOISE_FLOOR), floor + 0.25 * (top - floor))
+    voiced = 0
+    for r in rms:
+        if r > thresh:
+            voiced += 1
+    # Soz o'zgaruvchanligi: sof tovushda barcha kadrlar bir xil, nutqda o'zgaradi.
+    oz = sorted(zcr)
+    med = oz[len(oz) // 2]
+    spread = max(50.0, med * 0.3)
+    varying = 0
+    for z in zcr:
+        if abs(z - med) > spread:
+            varying += 1
+    steady = (varying / float(len(zcr))) < 0.05
+    total_rms = 0.0
+    for r in rms:
+        total_rms += r
+    return {
+        "duration": round(n / float(sr), 2),
+        "peak": peak,
+        "rms": int(total_rms / len(rms)),
+        "floor": int(floor),
+        "voiced": round(voiced / float(len(rms)), 3),
+        "steady": steady,
+        "frames": len(rms),
+    }
+
+
+def _speech_problem(m):
+    """Audio'da gaplashish bormi? Muammo bo'lsa matn, yo'qsa None."""
+    if m is None:
+        return None
+    if m["duration"] < MIN_ANSWER_SECONDS:
+        return "Javob juda qisqa (%.1f sekund) - savolga to'liq javob bering." % m["duration"]
+    if m["peak"] < SILENCE_PEAK:
+        return "Mikrofon ovozi qayd qilmadi. Qaytadan yozib ko'ring."
+    # Ovozli kadrlar juda kam bo'lsa, faqat shovqin/tovush bo'lganligini
+    # tekshiramiz - aks holda sekin yoki doimiy ovozli haqiqiy nutqni
+    # noto'g'ri "ovoz yo'q" deb rad etmamak kerak.
+    if m["voiced"] < SILENCE_VOICED_RATIO and (m["peak"] <= SILENCE_PEAK * 4 or m.get("steady")):
+        return "Ovozli javob topilmadi - faqat shovqin yoki tovush qayd qilingan."
+    return None
+
+
+def _transcript_missing(t):
+    """Transkript bo'sh yoki gaplashuvni ifodalamaydigan placeholder bo'lsa True."""
+    t = (t or "").strip()
+    if not t:
+        return True
+    if not any(ch.isalnum() for ch in t):
+        return True
+    if t.startswith("[") and t.endswith("]"):
+        return True
+    return False
+
+
+def _no_speech_result(part, problem):
+    """Ovoz topilmaganda qaytariladigan natija (frontend shu tuzilmani kutadi)."""
+    rb = RUBRICS.get(part, RUBRICS["1.1"])
+    zero = 0.0 if part == "full" else 0
+    return {
+        "transcript": "",
+        "score": zero,
+        "cefr": "A1",
+        "vocabulary": {"score": zero, "comment": "Nutq yo'q, so'z boyligi baholanmadi."},
+        "grammar": {"score": zero, "comment": "Nutq yo'q, grammatika baholanmadi."},
+        "fluency": {"score": zero, "comment": "Nutq yo'q, ravonlik baholanmadi."},
+        "pronunciation": {"score": zero, "comment": "Nutq yo'q, talaffuz baholanmadi."},
+        "communicative": {"score": zero, "comment": "Muloqot amalga oshilmadi."},
+        "errors": [],
+        "tip": problem,
+        "level": rb["level"],
+        "scale": rb["scale"],
+        "max": rb["max"],
+        "no_speech": True,
+    }
+
+
+_GEMINI_MODEL_COOLDOWN = {}      # model -> qayta urinish vaqti (time.time())
+_GEMINI_QUOTA_COOLDOWN = 900.0
+_GEMINI_AUTH_COOLDOWN = 3600.0
+_GEMINI_BUSY_COOLDOWN = 120.0    # 429/5xx: vaqtincha band
+_GEMINI_QUOTA_HINTS = (
+    "quota", "exceeded your current", "billing", "free tier",
+    "insufficient", "not available in your country",
+)
+# Free-tier kvota modelga xos: bitta model tugasa boshqasi ishlab turadi.
+_GEMINI_FALLBACK_MODELS = (
+    "gemini-3.7-flash",
+    "gemini-3.6-flash",
+    "gemini-3.5-flash",
+    "gemini-3.5-flash-lite",
+    "gemini-flash-lite-latest",
+)
+
+
+def _gemini_quota_exceeded(text):
+    t = (text or "").lower()
+    for h in _GEMINI_QUOTA_HINTS:
+        if h in t:
+            return True
+    return False
+
+
+def _gemini_pause(model, reason, seconds):
+    _GEMINI_MODEL_COOLDOWN[model] = time.time() + seconds
+    log.warning("Gemini %s pauzada (%s, %.0fs) - keyingi so'rovlar uni saklaydi",
+                model, reason, seconds)
+
+
+def _gemini_model_chain():
+    """Asosiy model + zaxira modellar. Kvotasi tugagan modellar chiqarib tashlanadi."""
+    chain = []
+    primary = (cfg.get("gemini_model", "") or "gemini-3.7-flash").strip()
+    for m in (primary,) + _GEMINI_FALLBACK_MODELS:
+        if m and m not in chain:
+            chain.append(m)
+    now = time.time()
+    ready = [m for m in chain if _GEMINI_MODEL_COOLDOWN.get(m, 0) <= now]
+    for m in chain:
+        if m not in ready:
+            log.info("Gemini %s saklandi (%.0fs qoldi)",
+                     m, _GEMINI_MODEL_COOLDOWN.get(m, 0) - now)
+    return ready
+
+
 def ai_score(audio_bytes, mime_type, question, part="1.1"):
     audio_bytes, mime_type = _prep_audio(audio_bytes, mime_type)
-    # Avval Gemini (audio'ning o'zini eshitib baholaydi, transkriptni o'zi qiladi).
-    # Xato bersa Groq STT + LLM zanjiriga tashlanadi:
+    # 1) Ovoz bor-yo'qligini API chaqirishidan OLDIN tekshiramiz.
+    # Aks holda bo'sh audio'ga AI "I am a student at school" deb o'ylab topadi
+    # va foydalanuvchi haqiqiy baho olmaydi.
+    metrics = _speech_metrics(audio_bytes, mime_type)
+    problem = _speech_problem(metrics)
+    if problem:
+        log.warning("Nutq topilmadi -> AI chaqirilmaydi: %s (dur=%s peak=%s voiced=%s)",
+                    problem, metrics.get("duration"), metrics.get("peak"), metrics.get("voiced"))
+        return _finalize_score(_no_speech_result(part, problem), part)
+    # 2) Avval Gemini (audio'ning o'zini eshitib baholaydi, transkriptni o'zi qiladi).
+    # Model kvotasi tugagan bo'lsa zaxiraga o'tamiz (pauza = 0, darhol).
+    # Hammasi tugasa Groq STT + LLM zanjiriga tashlanadi:
     # Groq LLM -> Z.ai (GLM) -> NVIDIA NIM.
-    result, err = _ai_score_gemini(audio_bytes, mime_type, question, part)
+    result, err = None, "Gemini modellari kvota sabab pauzada"
+    for m in _gemini_model_chain():
+        result, err = _ai_score_gemini(audio_bytes, mime_type, question, part, m)
+        if result is not None:
+            break
+        log.warning("Gemini %s ishlamadi (%s)", m, err)
     if result is not None:
+        if _transcript_missing(result.get("transcript")):
+            log.warning("Gemini bo'sh transkript qaytardi (%s) - nutq yo'q deb hisoblanadi",
+                        part)
+            return _finalize_score(_no_speech_result(part, "Ovozli javob topilmadi."), part)
         log.info("Scored via Gemini")
         return _finalize_score(result, part)
     log.warning("Gemini AI failed (%s) - falling back to Groq", err)
     transcript = _stt_groq(audio_bytes, mime_type)
-    if transcript:
+    if transcript and not _transcript_missing(transcript):
         for prov in _llm_providers():
             if not prov["api_key"]:
                 continue
@@ -1734,7 +2004,8 @@ def ai_score(audio_bytes, mime_type, question, part="1.1"):
                 return _finalize_score(result, part)
             log.warning("%s LLM failed (%s)", prov["name"], err)
     else:
-        log.warning("Groq STT produced no transcript")
+        log.warning("Groq STT real nutq topa olmadi (STT=%r)", (transcript or "")[:40])
+        return _finalize_score(_no_speech_result(part, "Ovozli javobni tushunib bo'lmadi."), part)
     return None, err or "Baholash xizmati vaqtincha band. Iltimos 30 soniyadan keyin qayta urinib ko'ring."
 
 
@@ -2024,7 +2295,7 @@ def _score_transcript(transcript, question, part, prov):
     return result, None
 
 
-def _ai_score_gemini(audio_bytes, mime_type, question, part):
+def _ai_score_gemini(audio_bytes, mime_type, question, part, model=None):
     key = cfg.get("gemini_api_key", "").strip()
     if not key:
         return None, "Gemini API kaliti sozlanmagan"
@@ -2066,33 +2337,28 @@ def _ai_score_gemini(audio_bytes, mime_type, question, part):
             "responseMimeType": "application/json",
         },
     }
-    import time as _time
-    model = (cfg.get("gemini_model", "") or "gemini-3.6-flash").strip()
+    model = (model or cfg.get("gemini_model", "") or "gemini-3.7-flash").strip()
     url = "https://generativelanguage.googleapis.com/v1beta/models/" + urllib.parse.quote(model) + ":generateContent?key=" + urllib.parse.quote(key)
-    r = None
-    for _attempt in range(3):
-        try:
-            r = requests.post(url, json=body, timeout=120)
-        except Exception as e:
-            log.error("Gemini request error: %s", str(e))
-            return None, "Gemini bilan bog'lanib bo'lmadi"
-        if r.status_code in (429, 500, 502, 503) and _attempt < 2:
-            wait = 10.0
-            try:
-                ra = r.headers.get("Retry-After")
-                if ra:
-                    wait = min(float(ra) + 1.0, 60.0)
-                else:
-                    import re as _re
-                    m = _re.search(r"try again in ([\d.]+)s", (r.text or "").lower())
-                    if m:
-                        wait = min(float(m.group(1)) + 1.0, 60.0)
-            except Exception:
-                pass
-            log.warning("Gemini %s - retrying in %.0fs (attempt %d/3)", r.status_code, wait, _attempt + 1)
-            _time.sleep(wait)
-            continue
-        break
+    try:
+        r = requests.post(url, json=body, timeout=120)
+    except Exception as e:
+        log.error("Gemini request error: %s", str(e))
+        return None, "Gemini bilan bog'lanib bo'lmadi"
+    # Kvota/billing xatosida qayta urish natija bermaydi.
+    if r.status_code == 429 and _gemini_quota_exceeded(r.text):
+        log.error("Gemini %s kvota/billing xatosi (429)", model)
+        _gemini_pause(model, "kvota tugagan", _GEMINI_QUOTA_COOLDOWN)
+        return None, "Gemini %s kvotasi tugagan (429)" % model
+    if r.status_code in (401, 403):
+        log.error("Gemini %s ruxsat xatosi (%s) - kalitni tekshirish kerak", model, r.status_code)
+        _gemini_pause(model, "ruxsat xatosi %s" % r.status_code, _GEMINI_AUTH_COOLDOWN)
+        return None, "Gemini ruxsat xatosi (HTTP %s)" % r.status_code
+    # 429/5xx vaqtincha xatolar: kutib o'tirmaydi, darhol keyingi modelga
+    # o'tamiz (zaxira zanjir allaqachon "qayta urish" vazifasini bajaradi).
+    if r.status_code in (429, 500, 502, 503, 504):
+        log.warning("Gemini %s vaqtincha band (%s) - keyingi modelga o'tamiz", model, r.status_code)
+        _gemini_pause(model, "vaqtincha HTTP %s" % r.status_code, _GEMINI_BUSY_COOLDOWN)
+        return None, "Gemini %s vaqtincha band (HTTP %s)" % (model, r.status_code)
     if r is None:
         return None, "Gemini bilan bog'lanib bo'lmadi"
     if r.status_code != 200:
@@ -2101,6 +2367,14 @@ def _ai_score_gemini(audio_bytes, mime_type, question, part):
     try:
         content = r.json()["candidates"][0]["content"]["parts"][0]["text"]
     except Exception:
+        try:
+            reason = (r.json().get("promptFeedback") or {}).get("blockReason")
+        except Exception:
+            reason = None
+        if reason:
+            log.warning("Gemini javobini blokladi: %s", reason)
+            return None, "Gemini javobni blokladi (%s)" % reason
+        log.error("Gemini javobida content yo'q: %s", r.text[:200])
         return None, "Gemini javobini o'qib bo'lmadi"
     content = content.strip()
     if content.startswith("```"):
@@ -2254,8 +2528,8 @@ def api_ai_score():
     if not question:
         question = "Speaking task"
     data = f.read()
-    if len(data) > 50 * 1024 * 1024:
-        return api_error("Audio juda katta (max 50MB)")
+    if len(data) > 100 * 1024 * 1024:
+        return api_error("Audio juda katta (max 100MB). Yozuvni qisqartirib, qayta urinib ko'ring.")
     mime = (f.content_type or "").split(";")[0].strip() or "audio/wav"
     part = (request.form.get("part") or "1.1").strip()
     is_full = (part == "full")
@@ -2268,6 +2542,9 @@ def api_ai_score():
     try:
         key = _score_cache_key(data, mime, question, part)
         cached = _score_cache_get(key)
+        if cached is not None and not cached.get("no_speech") and _transcript_missing(cached.get("transcript")):
+            log.info("Eski noto'g'ri natija (transkriptsiz) - qayta baholanadi")
+            cached = None
         if cached is not None:
             rid = _save_recording(u["id"], data, mime, part, question, cached)
             return jsonify({"ok": True, "result": cached, "cached": True, "rid": rid})
