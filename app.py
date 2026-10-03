@@ -10,6 +10,7 @@ import hmac
 import json
 import logging
 import os
+import re
 import secrets
 import sqlite3
 import threading
@@ -2254,6 +2255,35 @@ def _stt_groq(audio_bytes, mime_type):
     return transcript or None
 
 
+def _parse_llm_json(content):
+    """LLM javobidan JSON ni oladi. Kesilgan/buzilgan JSON -> None.
+
+    Truncated JSON (max_tokens limiti) parse bo'lmaydi. Bunday javobni 0 ball
+    sifatida saqlash o'quvchiga noto'g'ri baho ko'rsatadi, shuning uchun None
+    qaytariladi -> keyingi provayderga o'tiladi.
+    """
+    if not content:
+        return None
+    content = content.strip()
+    if content.startswith("```"):
+        content = content.split("\n", 1)[-1] if "\n" in content else content[3:]
+        if content.endswith("```"):
+            content = content[:-3]
+        content = content.strip()
+    try:
+        return json.loads(content)
+    except Exception:
+        pass
+    # JSON atrofida qo'shimcha matn bo'lishi mumkin
+    m = re.search(r'\{.*\}', content, re.DOTALL)
+    if m:
+        try:
+            return json.loads(m.group())
+        except Exception:
+            pass
+    return None
+
+
 def _score_transcript(transcript, question, part, prov):
     key = prov["api_key"]
     if not key:
@@ -2313,6 +2343,11 @@ def _score_transcript(transcript, question, part, prov):
         '"tip": "bitta aniq maslahat"}'
     )
     url = prov["base_url"].rstrip("/") + "/chat/completions"
+    # Full mock javobi katta (3 ta rewrite + 5 ta mezon + xatolar). 900 token
+    # chegarasi JSON ni kesib qoldiradi -> parse bo'lmaydi -> 0 ball. Ko'taramiz.
+    max_tokens = prov.get("max_tokens", 1200)
+    if part == "full":
+        max_tokens = max(max_tokens, 3000)
     r2 = _post(
         url,
         retries=prov.get("retries", 4),
@@ -2323,7 +2358,7 @@ def _score_transcript(transcript, question, part, prov):
                 {"role": "user", "content": prompt},
             ],
             "temperature": 0,
-            "max_tokens": prov.get("max_tokens", 1200),
+            "max_tokens": max_tokens,
         },
     )
     if r2 is None:
@@ -2335,30 +2370,19 @@ def _score_transcript(transcript, question, part, prov):
         return None, prov["name"] + " baholash xatosi (HTTP %s)" % r2.status_code
     try:
         content = r2.json()["choices"][0]["message"]["content"]
+        finish = r2.json()["choices"][0].get("finish_reason")
     except Exception:
-        content = ""
+        content, finish = "", None
+    if finish == "length":
+        log.error("%s javobi token chegarasida KESILDI (%d token) - qayta urinish kerak",
+                  prov["name"], max_tokens)
 
-    # Strip markdown code fences if present
-    content = content.strip()
-    if content.startswith("```"):
-        content = content.split("\n", 1)[-1] if "\n" in content else content[3:]
-        if content.endswith("```"):
-            content = content[:-3]
-        content = content.strip()
-
-    try:
-        result = json.loads(content)
-    except Exception:
-        # Try to extract JSON from surrounding text
-        import re
-        m = re.search(r'\{.*\}', content, re.DOTALL)
-        if m:
-            try:
-                result = json.loads(m.group())
-            except Exception:
-                result = {"score": 0, "raw": content}
-        else:
-            result = {"score": 0, "raw": content}
+    result = _parse_llm_json(content)
+    if result is None or not isinstance(result, dict):
+        # Kesilgan yoki buzilgan JSON: 0 ball QAYTARMAYMIZ, keyingi provayderga o'tamiz
+        log.error("%s javobi parse qilinmadi (finish=%s, uzunlik=%d) - keyingi provayderga o'tamiz",
+                  prov["name"], finish, len(content or ""))
+        return None, prov["name"] + " javobi to'liq kelmadi (kesilgan), keyingi model sinov qilinadi"
     result["level"] = rb["level"]
     result["transcript"] = transcript
     result["scale"] = rb["scale"]
@@ -2448,16 +2472,12 @@ def _ai_score_gemini(audio_bytes, mime_type, question, part, model=None):
             return None, "Gemini javobni blokladi (%s)" % reason
         log.error("Gemini javobida content yo'q: %s", r.text[:200])
         return None, "Gemini javobini o'qib bo'lmadi"
-    content = content.strip()
-    if content.startswith("```"):
-        content = content.strip("`")
-        if content.lower().startswith("json"):
-            content = content[4:]
-        content = content.strip()
-    try:
-        result = json.loads(content)
-    except Exception:
-        result = {"score": 0, "raw": content}
+    result = _parse_llm_json(content)
+    if result is None or not isinstance(result, dict):
+        # Kesilgan/buzilgan JSON: 0 ball QAYTARMAYMIZ, keyingi provayderga o'tamiz
+        log.error("Gemini javobi parse qilinmadi (uzunlik=%d) - keyingi provayderga o'tamiz",
+                  len(content or ""))
+        return None, "Gemini javobi to'liq kelmadi (kesilgan), keyingi model sinov qilinadi"
     result["level"] = rb["level"]
     result["scale"] = rb["scale"]
     result["max"] = rb["max"]
