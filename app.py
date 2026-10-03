@@ -398,6 +398,20 @@ def init_db():
       created_at TEXT
     );
     """)
+    # Ko'p qurilma: har bir qurilma o'z sessiya tokeniga ega (users.session_token
+    # eski bir-qurilma mexanizmi uchun saqlanib qoladi).
+    conn.execute("""
+    CREATE TABLE IF NOT EXISTS user_sessions (
+      token TEXT PRIMARY KEY,
+      user_id INTEGER NOT NULL,
+      created_at TEXT,
+      last_seen TEXT
+    );
+    """)
+    try:
+        conn.execute("CREATE INDEX IF NOT EXISTS idx_user_sessions_uid ON user_sessions(user_id)")
+    except sqlite3.Error:
+        pass
     conn.execute("""
     CREATE TABLE IF NOT EXISTS ai_scores (
       cache_key TEXT PRIMARY KEY,
@@ -468,55 +482,126 @@ def verify_password(pw, stored):
         return False
 
 
+MAX_DEVICES_PER_USER = 5      # bitta hisobdan bir vaqtda ishlashi mumkin bo'lgan qurilmalar soni
+SESSION_TOUCH_SECONDS = 300   # last_seen shu oralig'da yangilanadi (har so'rovda yozmay qo'yish uchun)
+
+
+def _sess_now():
+    return datetime.datetime.now().isoformat(timespec="seconds")
+
+
+def _sess_register(uid, token):
+    """Yangi qurilma uchun sessiya tokenini ro'yxatga oladi."""
+    now = datetime.datetime.now()
+    now_iso = now.isoformat(timespec="seconds")
+    try:
+        conn = db()
+        conn.execute(
+            "INSERT OR REPLACE INTO user_sessions (token, user_id, created_at, last_seen) VALUES (?,?,?,?)",
+            (token, uid, now_iso, now_iso))
+        conn.execute("DELETE FROM user_sessions WHERE user_id=? AND last_seen < ?",
+                     (uid, (now - datetime.timedelta(days=30)).isoformat(timespec="seconds")))
+        n = conn.execute("SELECT COUNT(*) FROM user_sessions WHERE user_id=?", (uid,)).fetchone()[0]
+        if n > MAX_DEVICES_PER_USER:
+            conn.execute(
+                "DELETE FROM user_sessions WHERE token IN (SELECT token FROM user_sessions"
+                " WHERE user_id=? ORDER BY last_seen ASC LIMIT ?)", (uid, n - MAX_DEVICES_PER_USER))
+        # eski bir-qurilma mexanizmi ham sinxron qoladi (back-compat / boshqa kod)
+        conn.execute("UPDATE users SET session_token=?, session_token_at=? WHERE id=?", (token, now_iso, uid))
+        conn.commit()
+        conn.close()
+    except sqlite3.Error:
+        log.error("SESSION REGISTER DB error: %s", traceback.format_exc())
+
+
+def _sess_revoke(token):
+    """Chiqishda o'sha qurilmaning tokenini o'chiradi."""
+    if not token:
+        return
+    try:
+        conn = db()
+        conn.execute("DELETE FROM user_sessions WHERE token=?", (token,))
+        conn.commit()
+        conn.close()
+    except sqlite3.Error:
+        pass
+
+
+def _sess_valid(uid, token):
+    """Token shu foydalanuvchiga tegishli va hali amal qilmoqdamı."""
+    if not token:
+        return False
+    now = datetime.datetime.now()
+    try:
+        conn = db()
+        row = conn.execute("SELECT last_seen FROM user_sessions WHERE token=? AND user_id=?",
+                           (token, uid)).fetchone()
+        if row is None:
+            conn.close()
+            return False
+        stale = True
+        if row["last_seen"]:
+            try:
+                stale = (now - datetime.datetime.fromisoformat(row["last_seen"])).total_seconds() > SESSION_TOUCH_SECONDS
+            except ValueError:
+                stale = True
+        if stale:
+            conn.execute("UPDATE user_sessions SET last_seen=? WHERE token=?",
+                         (now.isoformat(timespec="seconds"), token))
+            conn.commit()
+        conn.close()
+        return True
+    except sqlite3.Error:
+        log.error("SESSION CHECK DB error: %s", traceback.format_exc())
+        return False
+
+
 def current_user(allow_revive=False):
     uid = session.get("uid")
     if not uid:
         return None
+    token = session.get("token")
     conn = db()
     u = conn.execute("SELECT * FROM users WHERE id=?", (uid,)).fetchone()
     conn.close()
     if u is None:
         session.clear()
         return None
-    # Bitta qurilma cheklovi: boshqa qurilmadan kirilsa, eski sessiya yopiladi.
-    # Lekin uzog'roq test (full mock) tugatib AI baholash olib bo'lishi uchun
-    # yangi kirishdan keyin ESKI sessiyaga 3 soatlik "grace" muddati beriladi.
-    if u["session_token"] != session.get("token"):
-        if allow_revive:
-            # Baholash kabi davomiy harakat uchun: sessiyani avtomatik tiklash.
-            token = secrets.token_hex(16)
-            try:
-                conn = db()
-                conn.execute(
-                    "UPDATE users SET session_token=?, session_token_at=? WHERE id=?",
-                    (token, datetime.datetime.now().isoformat(timespec="seconds"), u["id"]))
-                conn.commit()
-                conn.close()
-            except sqlite3.Error:
-                pass
-            session["token"] = token
-            session.pop("kicked", None)
-            return u
-        at = u["session_token_at"]
-        in_grace = False
-        if at:
-            try:
-                ts = datetime.datetime.fromisoformat(at)
-                in_grace = (datetime.datetime.now() - ts).total_seconds() < SESSION_KICK_GRACE_SECONDS
-            except ValueError:
-                in_grace = False
-        else:
-            # session_token_at dastlab qo'shilgunga qadar ro'yxatdan o'tgan foydalanuvchi:
-            # yangi login qilmagan bo'lsa, eski sessiyani ta'qib qilmaymiz.
-            in_grace = True
-        if in_grace:
-            return u
-        # uid ni saqlab qolamiz: SPA ichida (sahifa qayta yuklanmasdan) davom etayotgan
-        # baholash so'rovi revive orqali sessiyani tiklab, ishni bexato tugatishi uchun.
-        session.pop("token", None)
-        session["kicked"] = "1"
-        return None
-    return u
+    # KO'P QURILMA: har bir qurilma o'z tokeni bilan ishlaydi. Boshqa qurilmadan
+    # kirish bu sessiyani chiqarmaydi — 3-4 ta kompyuterda parallel ravishda
+    # full mock baholanadi.
+    if _sess_valid(uid, token):
+        return u
+    if u["session_token"] and u["session_token"] == token:
+        # migratsiyadan oldingi sessiya — jadvalga ko'chiriladi
+        _sess_register(u["id"], token)
+        return u
+    if allow_revive:
+        # Baholash kabi davomiy harakat uchun: sessiyani avtomatik tiklash.
+        new = secrets.token_hex(16)
+        _sess_register(u["id"], new)
+        session["token"] = new
+        session.pop("kicked", None)
+        return u
+    at = u["session_token_at"]
+    in_grace = False
+    if at:
+        try:
+            ts = datetime.datetime.fromisoformat(at)
+            in_grace = (datetime.datetime.now() - ts).total_seconds() < SESSION_KICK_GRACE_SECONDS
+        except ValueError:
+            in_grace = False
+    else:
+        # session_token_at dastlab qo'shilgunga qadar ro'yxatdan o'tgan foydalanuvchi:
+        # yangi login qilmagan bo'lsa, eski sessiyani ta'qib qilmaymiz.
+        in_grace = True
+    if in_grace:
+        return u
+    # uid ni saqlab qolamiz: SPA ichida (sahifa qayta yuklanmasdan) davom etayotgan
+    # baholash so'rovi revive orqali sessiyani tiklab, ishni bexato tugatishi uchun.
+    session.pop("token", None)
+    session["kicked"] = "1"
+    return None
 
 
 def has_access(u):
@@ -694,6 +779,7 @@ def landing():
 
 @app.route("/logout")
 def logout():
+    _sess_revoke(session.get("token"))
     session.clear()
     return redirect("/")
 
@@ -752,11 +838,7 @@ def dev_quick_login():
     if u is None or u["blocked"]:
         return redirect("/paywall")
     token = secrets.token_hex(16)
-    conn = db()
-    conn.execute("UPDATE users SET session_token=?, session_token_at=? WHERE id=?",
-                 (token, datetime.datetime.now().isoformat(timespec="seconds"), u["id"]))
-    conn.commit()
-    conn.close()
+    _sess_register(u["id"], token)
     session.clear()
     session["uid"] = u["id"]
     session["token"] = token
@@ -812,11 +894,7 @@ def auth_login():
         log.warning("LOGIN BLOCKED: ident=%s", ident)
         return redirect("/paywall?error=blocked")
     token = secrets.token_hex(16)
-    conn = db()
-    conn.execute("UPDATE users SET session_token=?, session_token_at=? WHERE id=?",
-                 (token, datetime.datetime.now().isoformat(timespec="seconds"), u["id"]))
-    conn.commit()
-    conn.close()
+    _sess_register(u["id"], token)
     session.clear()
     session["uid"] = u["id"]
     session["token"] = token
@@ -866,14 +944,7 @@ def _post_form_json(url, data, headers=None):
 
 def _google_login_session(u):
     token = secrets.token_hex(16)
-    try:
-        conn = db()
-        conn.execute("UPDATE users SET session_token=?, session_token_at=? WHERE id=?",
-                     (token, datetime.datetime.now().isoformat(timespec="seconds"), u["id"]))
-        conn.commit()
-        conn.close()
-    except sqlite3.Error:
-        token = secrets.token_hex(16)
+    _sess_register(u["id"], token)
     session.clear()
     session["uid"] = u["id"]
     session["token"] = token
@@ -1111,6 +1182,7 @@ def auth_register():
     except sqlite3.Error as e:
         log.error("DB error in register: %s", str(e))
         return redirect("/paywall?error=register&msg=Server+xatosi")
+    _sess_register(u_new["id"], token)
     session.clear()
     session["uid"] = u_new["id"]
     session["token"] = token
@@ -2803,10 +2875,7 @@ def admin_login():
                     email, u["id"], request.remote_addr)
         return redirect("/admin?error=login&email=" + urllib.parse.quote(email))
     token = secrets.token_hex(16)
-    conn = db()
-    conn.execute("UPDATE users SET session_token=? WHERE id=?", (token, u["id"]))
-    conn.commit()
-    conn.close()
+    _sess_register(u["id"], token)
     session.clear()
     session["uid"] = u["id"]
     session["token"] = token
