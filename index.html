@@ -6148,6 +6148,31 @@ function selectPart(part) {
 
   let _voicePrefURI = null;
 
+  let _ttsAudioMode = false;
+  let _ttsAudioEl = null;
+  try {
+    if (/telegram/i.test(navigator.userAgent)) { _ttsAudioMode = true; }
+    if (window.Telegram && window.Telegram.WebApp) { _ttsAudioMode = true; }
+    if (/tgWebApp|tgwebapp/i.test(location.search) || /tgWebApp/i.test(location.hash)) { _ttsAudioMode = true; }
+  } catch (e) { /* ignore */ }
+  if (!window.speechSynthesis) { _ttsAudioMode = true; }
+
+  function playTTSAudio(text, voice, onDone, token) {
+    try {
+      if (_ttsAudioEl) { try { _ttsAudioEl.pause(); _ttsAudioEl.src = ''; } catch (e2) { /* ignore */ } _ttsAudioEl = null; }
+      const a = new Audio('/tts?q=' + encodeURIComponent(text) + '&v=' + encodeURIComponent(voice || 'Amy'));
+      _ttsAudioEl = a;
+      a.addEventListener('ended', function () {
+        if (token === speakChainToken) { setTimeout(onDone, 40); }
+      });
+      a.addEventListener('error', function () {
+        if (token === speakChainToken) { setTimeout(onDone, 60); }
+      });
+      const p = a.play();
+      if (p && p.catch) { p.catch(() => { if (token === speakChainToken) { setTimeout(onDone, 60); } }); }
+    } catch (e) { setTimeout(onDone, 60); }
+  }
+
   function loadVoicePref() {
     try { _voicePrefURI = localStorage.getItem('voicePref') || null; } catch (e) { _voicePrefURI = null; }
   }
@@ -6186,6 +6211,10 @@ function selectPart(part) {
 
   function previewVoice() {
     try { window.speechSynthesis.cancel(); } catch (e) { /* ignore */ }
+    if (_ttsAudioMode) {
+      playTTSAudio('Hello, this is your examiner voice.', 'Amy', function () {}, speakChainToken);
+      return;
+    }
     const v = getSelectedVoice();
     const u = new SpeechSynthesisUtterance('Hello, this is your examiner voice.');
     u.lang = v ? v.lang : 'en-US';
@@ -6212,6 +6241,38 @@ function selectPart(part) {
   }
 
   initVoiceSelect();
+
+  let _ttsPrimed = false;
+  function primeTTS() {
+    if (_ttsPrimed) { return; }
+    try {
+      if (_ttsAudioMode) {
+        _ttsPrimed = true;
+        return;
+      }
+      refreshVoices();
+      if (window.speechSynthesis) {
+        try { window.speechSynthesis.resume(); } catch (e) { /* ignore */ }
+        try {
+          window.speechSynthesis.onvoiceschanged = function () {
+            refreshVoices();
+            populateVoiceSelect();
+          };
+        } catch (e) { /* ignore */ }
+      }
+      const probe = new SpeechSynthesisUtterance(' ');
+      probe.volume = 0.001;
+      probe.rate = 1;
+      probe.lang = 'en-US';
+      try { window.speechSynthesis.speak(probe); } catch (e) { /* ignore */ }
+      _ttsPrimed = true;
+    } catch (e) { /* ignore */ }
+  }
+  try {
+    document.addEventListener('pointerdown', primeTTS);
+    document.addEventListener('touchstart', primeTTS);
+    document.addEventListener('click', primeTTS);
+  } catch (e) { /* ignore */ }
 
   function waitVoices() {
 
@@ -6292,6 +6353,7 @@ function selectPart(part) {
 
 
   async function speechReadyForSpeak() {
+    if (_ttsAudioMode) { await new Promise(r => setTimeout(r, 60)); return; }
     await waitVoices();
     try { window.speechSynthesis.cancel(); } catch (e) { /* ignore */ }
     try {
@@ -6314,11 +6376,13 @@ function selectPart(part) {
     } catch (e) { /* ignore */ }
     try { window.speechSynthesis.cancel(); } catch (e) { /* ignore */ }
     try { window.speechSynthesis.resume(); } catch (e) { /* ignore */ }
-  }  function splitIntoChunks(text) {
+  }  function splitIntoChunks(text, maxLen) {
 
 
 
 
+
+    const limit = maxLen || 380;
 
     const sentences = String(text).match(/[^.!?]+[.!?]*/g) || [String(text)];
 
@@ -6356,7 +6420,7 @@ function selectPart(part) {
 
 
 
-      if (cur && (cur + ' ' + part).length > 380) { chunks.push(cur); cur = part; }
+      if (cur && (cur + ' ' + part).length > limit) { chunks.push(cur); cur = part; }
 
 
 
@@ -6409,6 +6473,23 @@ function selectPart(part) {
 
 
 
+
+    if (_ttsAudioMode) {
+      let ai = startIndex || 0;
+      let aOffset = charOffset || 0;
+      const aBoundary = (opts && opts.onBoundary) ? opts.onBoundary : null;
+      const aNext = () => {
+        if (token !== speakChainToken) { return; }
+        if (ai >= chunks.length) { if (onDone) { onDone(); } return; }
+        const aPiece = chunks[ai];
+        ai++;
+        if (aBoundary) { try { aBoundary(aOffset); } catch (e) { /* ignore */ } }
+        aOffset += aPiece.length + 1;
+        playTTSAudio(aPiece, (opts && opts.audioVoice) || 'Amy', aNext, token);
+      };
+      aNext();
+      return;
+    }
 
     let i = startIndex || 0;
 
@@ -6552,9 +6633,9 @@ function selectPart(part) {
     try {
       await speechReadyForSpeak();
       speakChainToken++;
-      const chunks = splitIntoChunks(text);
+      const chunks = splitIntoChunks(text, _ttsAudioMode ? 180 : 380);
       const voice = getSelectedVoice() || pickEnglishVoice(/samantha|karen|zira|jenny|aria|hazel|susan|victoria|google|natural|microsoft|female|en-us/i);
-      speakChunked(chunks, onDone, { rate: 0.95, pitch: 1, voice: voice }, 0, 0);
+      speakChunked(chunks, onDone, { rate: 0.95, pitch: 1, voice: voice, audioVoice: 'Amy' }, 0, 0);
     } catch (e) { if (onDone) { onDone(); } }
   }
 
@@ -6564,6 +6645,10 @@ function selectPart(part) {
 
   function stopSpeech() {
     speakChainToken++;
+    if (_ttsAudioEl) {
+      try { _ttsAudioEl.pause(); _ttsAudioEl.src = ''; } catch (e) { /* ignore */ }
+      _ttsAudioEl = null;
+    }
     try { window.speechSynthesis.cancel(); } catch (e) { /* ignore */ }
   }
 
@@ -6580,12 +6665,13 @@ function selectPart(part) {
       const chunkText = base > 0 ? full.slice(base) : full;
       await speechReadyForSpeak();
       speakChainToken++;
-      const chunks = splitIntoChunks(chunkText);
+      const chunks = splitIntoChunks(chunkText, _ttsAudioMode ? 180 : 380);
       const voice = pickEnglishVoice(/david|daniel|george|guy|mark|alex|james|ryan|tom|thomas|oliver|matthew|anthony|sean|aaron|fred|lee|microsoft|male/i);
       speakChunked(chunks, onDone, {
         rate: 0.92,
         pitch: 1,
         voice: voice,
+        audioVoice: 'Brian',
         onBoundary: (pos) => { sampleStartPos = pos; }
       }, 0, base);
     } catch (e) { if (onDone) { onDone(); } }
@@ -12948,7 +13034,19 @@ homeBtn.addEventListener('click', () => {
 (function(){
   var modal = document.getElementById('dlModal');
   var content = document.getElementById('dlContent');
-  document.getElementById('dlClose').onclick = function(){ modal.classList.add('hidden'); };
+  function pauseAllAudios(){
+    var audios = content.querySelectorAll('audio');
+    for (var i=0;i<audios.length;i++){ try { audios[i].pause(); } catch(err){} }
+  }
+  document.getElementById('dlClose').onclick = function(){ pauseAllAudios(); modal.classList.add('hidden'); };
+  content.addEventListener('play', function(e){
+    var t = e.target;
+    if (!t || String(t.tagName).toUpperCase() !== 'AUDIO') return;
+    var audios = content.querySelectorAll('audio');
+    for (var i=0;i<audios.length;i++){
+      if (audios[i] !== t){ try { audios[i].pause(); } catch(err){} }
+    }
+  }, true);
   window._openDownloads = function(){
     var sp = document.getElementById('settingsPanel');
     if (sp) sp.classList.add('hidden');
@@ -13005,7 +13103,13 @@ homeBtn.addEventListener('click', () => {
           + '<div style="font-size:12px;opacity:.9;margin-top:2px">O\'rtacha: ' + avgPct + '% · Eng yuqori daraja: ' + esc(topBand||'—') + '</div>'
           + '</div>';
       }
-      var html = summary + '<div style="display:flex;flex-direction:column;gap:10px">';
+      var html = summary;
+      html += '<div style="display:flex;align-items:center;gap:10px;flex-wrap:wrap;background:#f1f5f9;border:1px solid #e2e8f0;border-radius:12px;padding:8px 12px;margin-bottom:10px">'
+        + '<label style="display:flex;align-items:center;gap:6px;font-size:13px;font-weight:600;color:#374151;cursor:pointer"><input type="checkbox" id="dlSelAll" onchange="window._dlSelAll(this.checked)" style="width:16px;height:16px;accent-color:#2563eb"> Belgilash</label>'
+        + '<span style="flex:1"></span>'
+        + '<button onclick="window._delSelected()" style="font-size:13px;padding:6px 12px;border:1px solid #dc2626;background:#dc2626;color:#fff;border-radius:9px;cursor:pointer;white-space:nowrap">🗑️ Tanlanganlarni o\'chirish (<span id="dlSelCount">0</span>)</button>'
+        + '</div>';
+      html += '<div style="display:flex;flex-direction:column;gap:10px">';
       for (var i=0;i<list.length;i++){
         var r=list[i];
         var dt = (r.created_at||'').replace('T',' ');
@@ -13023,6 +13127,7 @@ homeBtn.addEventListener('click', () => {
         }
         var recBlock = '<div style="background:#f8fafc;border:1px solid #e5e7eb;border-radius:12px;padding:12px">'
           + '<div style="display:flex;align-items:center;gap:8px;flex-wrap:wrap">'
+          + '<input type="checkbox" class="dl-chk" data-id="'+r.id+'" onchange="window._dlSelUpdate()" style="width:17px;height:17px;accent-color:#2563eb;cursor:pointer;flex-shrink:0">'
           + '<span style="font-size:13px;font-weight:700;color:#111827">' + fmtPart(r.part) + '</span>'
           + scoreBadge
           + '<span style="flex:1"></span>'
@@ -13167,6 +13272,30 @@ homeBtn.addEventListener('click', () => {
     fetch('/api/recordings/'+rid, {method:'DELETE'}).then(function(r){ return r.json(); }).then(function(d){
       if (d.ok) loadRecordings();
     });
+  };
+  window._dlSelUpdate = function(){
+    var chks = content.querySelectorAll('.dl-chk');
+    var n = 0;
+    for (var i=0;i<chks.length;i++){ if (chks[i].checked) n++; }
+    var c = document.getElementById('dlSelCount');
+    if (c) c.textContent = n;
+    var all = document.getElementById('dlSelAll');
+    if (all) all.checked = (chks.length > 0 && n === chks.length);
+  };
+  window._dlSelAll = function(on){
+    var chks = content.querySelectorAll('.dl-chk');
+    for (var i=0;i<chks.length;i++) chks[i].checked = !!on;
+    window._dlSelUpdate();
+  };
+  window._delSelected = function(){
+    var chks = content.querySelectorAll('.dl-chk');
+    var ids = [];
+    for (var i=0;i<chks.length;i++){ if (chks[i].checked) ids.push(chks[i].getAttribute('data-id')); }
+    if (!ids.length){ alert('Avval o\'chirishni xohlagan yozuvlarni belgilang'); return; }
+    if (!confirm(ids.length + ' ta yozuvni o\'chirishni xohlaysizmi?')) return;
+    Promise.all(ids.map(function(id){
+      return fetch('/api/recordings/'+id, {method:'DELETE'}).then(function(r){ return r.json(); });
+    })).then(function(){ loadRecordings(); }).catch(function(){ loadRecordings(); });
   };
 })();
 </script>
