@@ -2015,6 +2015,17 @@ def _gemini_quota_exceeded(text):
     return False
 
 
+def _gemini_retry_delay(text):
+    """Gemini 429 javobidagi "retryDelay": "37s" ni oladi (sekund)."""
+    m = re.search(r'"retryDelay"\s*:\s*"(\d+(?:\.\d+)?)s"', text or "")
+    if not m:
+        return None
+    try:
+        return float(m.group(1))
+    except ValueError:
+        return None
+
+
 def _gemini_pause(model, reason, seconds):
     _GEMINI_MODEL_COOLDOWN[model] = time.time() + seconds
     log.warning("Gemini %s pauzada (%s, %.0fs) - keyingi so'rovlar uni saklaydi",
@@ -2211,28 +2222,40 @@ def _stt_groq(audio_bytes, mime_type):
     import requests
     import time as _time
 
+    # Uzun audio (full mock 7-10 daqiqa) whisper'da sekin ishlanadi. Eski 120s
+    # timeout 40MB faylda yetmay, "Read timed out" -> 502 bo'lardi. Audio
+    # hajmiga qarab kengaytiramiz (maks 300s).
+    timeout = min(300, max(120, len(audio_bytes) // 102400 + 120))
+
     def _post(url, retries=3, **kwargs):
         for _attempt in range(retries + 1):
             try:
-                r = requests.post(url, headers={"Authorization": "Bearer " + key}, timeout=120, **kwargs)
+                r = requests.post(url, headers={"Authorization": "Bearer " + key}, timeout=timeout, **kwargs)
             except Exception as e:
-                log.error("Groq STT request error: %s", str(e))
+                log.error("Groq STT request error (urinish %d/%d, timeout=%ds): %s",
+                          _attempt + 1, retries + 1, timeout, str(e))
+                if _attempt < retries:
+                    _time.sleep(3.0)
+                    continue
                 return None
             if r.status_code == 429 and _attempt < retries:
                 wait = 15.0
                 try:
                     ra = r.headers.get("Retry-After")
                     if ra:
-                        wait = min(float(ra) + 1.0, 60.0)
+                        wait = min(float(ra) + 1.0, 30.0)
                     else:
-                        import re as _re
-                        m = _re.search(r"try again in ([\d.]+)s", (r.text or "").lower())
+                        m = re.search(r"try again in ([\d.]+)s", (r.text or "").lower())
                         if m:
-                            wait = min(float(m.group(1)) + 1.0, 60.0)
+                            wait = min(float(m.group(1)) + 1.0, 30.0)
                 except Exception:
                     pass
                 log.warning("Groq STT 429 - retrying in %.0fs", wait)
                 _time.sleep(wait)
+                continue
+            if r.status_code >= 500 and _attempt < retries:
+                log.warning("Groq STT HTTP %s - qayta urinish", r.status_code)
+                _time.sleep(3.0)
                 continue
             return r
         return None
@@ -2440,8 +2463,16 @@ def _ai_score_gemini(audio_bytes, mime_type, question, part, model=None):
     except Exception as e:
         log.error("Gemini request error: %s", str(e))
         return None, "Gemini bilan bog'lanib bo'lmadi"
-    # Kvota/billing xatosida qayta urish natija bermaydi.
-    if r.status_code == 429 and _gemini_quota_exceeded(r.text):
+    # Kvota/billing xatosida qayta urish natija bermaydi. Lekin 429 ko'pincha
+    # daqiqalik rate limit bo'ladi (ayniqsa bir nechta qurilma birga baholaganda):
+    # Gemini "retryDelay" bersa, modelni uzoq pauzaga qo'ymaymiz - qisqa
+    # muddatga to'xtatib, tez qaytaramiz.
+    if r.status_code == 429:
+        delay = _gemini_retry_delay(r.text)
+        if delay is not None and delay <= 180:
+            log.warning("Gemini %s rate limit (429, %.0fs) - qisqa pauza", model, delay)
+            _gemini_pause(model, "rate limit", min(delay + 5.0, 180.0))
+            return None, "Gemini %s rate limit (429)" % model
         log.error("Gemini %s kvota/billing xatosi (429)", model)
         _gemini_pause(model, "kvota tugagan", _GEMINI_QUOTA_COOLDOWN)
         return None, "Gemini %s kvotasi tugagan (429)" % model
