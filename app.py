@@ -36,6 +36,7 @@ if not os.path.isdir(RECEIPTS_DIR):
 RECORDINGS_DIR = os.path.join(BASE_DIR, "recordings")
 if not os.path.isdir(RECORDINGS_DIR):
     os.makedirs(RECORDINGS_DIR)
+MAX_RECORDINGS_PER_USER = 50
 
 
 # ---- Logging ----
@@ -2604,6 +2605,29 @@ def _ai_full_eta():
     return True, int(round(ahead * _ai_full_avg_sec))
 
 
+def _prune_recordings(uid, limit=MAX_RECORDINGS_PER_USER):
+    """Foydalanuvchida eng ko'pi bilan `limit` ta yozuv qoladi (eskilari avtomatik o'chiriladi)."""
+    conn = db()
+    rows = conn.execute(
+        "SELECT id, filename FROM recordings WHERE user_id=? ORDER BY id DESC LIMIT -1 OFFSET ?",
+        (uid, limit)).fetchall()
+    if not rows:
+        conn.close()
+        return 0
+    for row in rows:
+        p = os.path.join(RECORDINGS_DIR, row["filename"])
+        if os.path.exists(p):
+            try:
+                os.remove(p)
+            except OSError as e:
+                log.warning("Failed to remove pruned recording file %s: %s", row["filename"], str(e))
+        conn.execute("DELETE FROM recordings WHERE id=?", (row["id"],))
+    conn.commit()
+    conn.close()
+    log.info("RECORDINGS pruned uid=%s removed=%d (limit=%d)", uid, len(rows), limit)
+    return len(rows)
+
+
 def _save_recording(uid, data, mime, part, question, result=None):
     """AI baholovchi jo'natgan audioni diskka + DB ga saqlaydi (takror yozilmaydi)."""
     h = hashlib.sha1(data).hexdigest()
@@ -2632,6 +2656,7 @@ def _save_recording(uid, data, mime, part, question, result=None):
     conn.commit()
     rid = cur.lastrowid
     conn.close()
+    _prune_recordings(uid)
     log.info("RECORDING saved id=%s uid=%s part=%s size=%s", rid, uid, part, len(data))
     return rid
 
